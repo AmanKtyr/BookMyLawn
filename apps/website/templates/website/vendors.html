@@ -2,6 +2,127 @@
 {% load static %}
 
 {% block content %}
+<style>
+    /* Premium Sidebar Styles */
+    .shop__sidebar .section-title h4 {
+        font-family: 'Playfair Display', serif;
+        font-weight: 700;
+        font-size: 20px;
+        margin-bottom: 20px;
+        position: relative;
+        padding-bottom: 10px;
+    }
+    .shop__sidebar .section-title h4::after {
+        content: '';
+        position: absolute;
+        left: 0;
+        bottom: 0;
+        width: 40px;
+        height: 2px;
+        background: #e72e77;
+    }
+    .sidebar__categories ul li a {
+        display: block;
+        padding: 8px 0;
+        transition: 0.3s;
+    }
+    .sidebar__categories ul li a:hover {
+        color: #e72e77 !important;
+        padding-left: 5px;
+    }
+    .filter-item {
+        display: flex;
+        align-items: center;
+        margin-bottom: 15px;
+        cursor: pointer;
+        font-size: 15px;
+        color: #555;
+        transition: 0.3s;
+    }
+    .filter-item:hover {
+        color: #e72e77;
+    }
+    .filter-item input[type="checkbox"] {
+        width: 18px;
+        height: 18px;
+        margin-right: 12px;
+        accent-color: #e72e77;
+        cursor: pointer;
+    }
+    
+    /* Premium Product Card Styles */
+    .product__item {
+        border-radius: 12px;
+        overflow: hidden;
+        box-shadow: 0 5px 20px rgba(0,0,0,0.05);
+        transition: all 0.3s ease;
+        background: #fff;
+        margin-bottom: 30px;
+        border: 1px solid #f0f0f0;
+    }
+    .product__item:hover {
+        transform: translateY(-8px);
+        box-shadow: 0 15px 35px rgba(231, 46, 119, 0.15);
+        border-color: #fbe6ee;
+    }
+    .product__item__pic {
+        height: 260px;
+        position: relative;
+        background-size: cover;
+        background-position: center;
+    }
+    .product__item__text {
+        padding: 20px;
+    }
+    .product__item__text h6 {
+        margin-bottom: 10px;
+    }
+    .product__item__text h6 a {
+        font-family: 'Playfair Display', serif;
+        font-size: 18px;
+        font-weight: 700;
+        color: #111;
+        transition: 0.3s;
+    }
+    .product__item__text h6 a:hover {
+        color: #e72e77;
+    }
+    .product__price {
+        font-size: 14px;
+        font-weight: 500;
+        color: #666;
+        background: #fcfcfc;
+        padding: 8px 15px;
+        border-radius: 20px;
+        display: inline-block;
+        margin-top: 15px;
+        border: 1px solid #eee;
+    }
+    .product__item__pic .label.new {
+        background: #e72e77 !important;
+        border-radius: 4px;
+        padding: 4px 10px;
+        font-size: 12px;
+        font-weight: 600;
+        top: 15px;
+        left: 15px;
+        position: absolute;
+        color: white;
+        box-shadow: 0 4px 10px rgba(231, 46, 119, 0.3);
+    }
+    .product__item__pic .label {
+        background: #28a745 !important;
+        border-radius: 4px;
+        padding: 4px 10px;
+        font-size: 12px;
+        font-weight: 600;
+        top: 15px;
+        left: 15px;
+        position: absolute;
+        color: white;
+        box-shadow: 0 4px 10px rgba(40, 167, 69, 0.3);
+    }
+</style>
     <!-- Breadcrumb Begin -->
     <div class="breadcrumb-option">
         <div class="container">
@@ -43,20 +164,32 @@
                             <div class="section-title">
                                 <h4>Filter by City</h4>
                             </div>
-                            <div class="size__list">
-                                <label for="mumbai">Mumbai <input type="checkbox" id="mumbai"><span class="checkmark"></span></label>
-                                <label for="delhi">Delhi <input type="checkbox" id="delhi"><span class="checkmark"></span></label>
-                                <label for="bangalore">Bangalore <input type="checkbox" id="bangalore"><span class="checkmark"></span></label>
+                            <div class="filter-list">
+                                <label class="filter-item" for="mumbai">
+                                    <input type="checkbox" id="mumbai"> Mumbai
+                                </label>
+                                <label class="filter-item" for="delhi">
+                                    <input type="checkbox" id="delhi"> Delhi NCR
+                                </label>
+                                <label class="filter-item" for="bangalore">
+                                    <input type="checkbox" id="bangalore"> Bangalore
+                                </label>
                             </div>
                         </div>
                         <div class="sidebar__filter mt-5">
                             <div class="section-title">
                                 <h4>Pricing</h4>
                             </div>
-                            <div class="size__list">
-                                <label for="budget">Budget (< ₹50,000) <input type="checkbox" id="budget"><span class="checkmark"></span></label>
-                                <label for="premium">Premium (₹50k - ₹2L) <input type="checkbox" id="premium"><span class="checkmark"></span></label>
-                                <label for="luxury">Luxury (> ₹2L) <input type="checkbox" id="luxury"><span class="checkmark"></span></label>
+                            <div class="filter-list">
+                                <label class="filter-item" for="budget">
+                                    <input type="checkbox" id="budget"> Budget (&lt; ₹50,000)
+                                </label>
+                                <label class="filter-item" for="premium">
+                                    <input type="checkbox" id="premium"> Premium (₹50k - ₹2L)
+                                </label>
+                                <label class="filter-item" for="luxury">
+                                    <input type="checkbox" id="luxury"> Luxury (&gt; ₹2L)
+                                </label>
                             </div>
                         </div>
                     </div>
@@ -67,11 +200,11 @@
                         <div class="col-lg-4 col-md-6">
                             <div class="product__item">
                                 <div class="product__item__pic set-bg" 
-                                     {% if vendor.image %}style="background-image: url('{{ vendor.image.url }}');" data-setbg="{{ vendor.image.url }}"{% else %}style="background-image: url('{% static 'website/img/product/product-1.jpg' %}?v=2');" data-setbg="{% static 'website/img/product/product-1.jpg' %}?v=2"{% endif %}>
+                                     {% if vendor.image %}style="background-image: url({{ vendor.image.url }});" data-setbg="{{ vendor.image.url }}"{% else %}style="background-image: url({% static 'website/img/product/product-1.jpg' %});" data-setbg="{% static 'website/img/product/product-1.jpg' %}"{% endif %}>
                                     {% if vendor.is_premium %}
-                                    <div class="label new" style="background: #e72e77;">Premium</div>
+                                    <div class="label new">Premium</div>
                                     {% elif vendor.is_verified %}
-                                    <div class="label" style="background: #28a745;">Verified</div>
+                                    <div class="label">Verified</div>
                                     {% endif %}
                                 </div>
                                 <div class="product__item__text text-center">
@@ -82,9 +215,9 @@
                                         <i class="fa fa-star text-warning"></i>
                                         <i class="fa fa-star text-warning"></i>
                                         <i class="fa fa-star text-warning"></i>
-                                        <span class="text-muted ml-1">({{ vendor.reviews.count }})</span>
+                                        <span class="text-muted ml-1" style="font-size: 13px;">({{ vendor.reviews.count }} Reviews)</span>
                                     </div>
-                                    <div class="product__price mt-2" style="font-size: 14px; font-weight: 500; color: #666;">{{ vendor.location }} • ₹{{ vendor.price_starting }}/day</div>
+                                    <div class="product__price mt-2"><i class="fa fa-map-marker mr-1" style="color: #e72e77;"></i> {{ vendor.location }} &nbsp;•&nbsp; ₹{{ vendor.price_starting }}/day</div>
                                 </div>
                             </div>
                         </div>

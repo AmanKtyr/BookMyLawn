@@ -34,3 +34,6 @@ def vendors(request):
 def vendor_details(request, id):
     vendor = get_object_or_404(Vendor, id=id)
     return render(request, 'website/vendor-details.html', {'vendor': vendor})
+
+def contact(request):
+    return render(request, 'website/contact.html')

@@ -4,68 +4,231 @@
 {% block content %}
 
 
-    <!-- Breadcrumb Begin -->
-    <div class="breadcrumb-option">
+<style>
+    /* Premium Contact Us Styles */
+    .contact-hero {
+        background-size: cover;
+        background-position: center;
+        padding: 120px 0;
+        position: relative;
+        border-radius: 0 0 30px 30px;
+        margin-bottom: 60px;
+    }
+    .contact-hero::before {
+        content: '';
+        position: absolute;
+        top: 0; left: 0; right: 0; bottom: 0;
+        background: rgba(0, 0, 0, 0.6);
+        border-radius: 0 0 30px 30px;
+    }
+    .contact-hero-content {
+        position: relative;
+        z-index: 1;
+        text-align: center;
+        color: white;
+    }
+    .contact-hero-content h2 {
+        font-family: 'Playfair Display', serif;
+        font-size: 50px;
+        font-weight: 700;
+        color: white;
+        margin-bottom: 15px;
+    }
+    .contact-hero-content p {
+        font-size: 18px;
+        opacity: 0.9;
+    }
+    
+    /* Contact Cards */
+    .contact-info-card {
+        background: #fff;
+        border-radius: 15px;
+        padding: 30px;
+        box-shadow: 0 5px 20px rgba(0,0,0,0.05);
+        margin-bottom: 25px;
+        display: flex;
+        align-items: flex-start;
+        border: 1px solid #f0f0f0;
+        transition: 0.3s;
+    }
+    .contact-info-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 15px 30px rgba(231, 46, 119, 0.1);
+        border-color: #fbe6ee;
+    }
+    .contact-info-icon {
+        width: 60px;
+        height: 60px;
+        background: #ffe4ef;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #e72e77;
+        font-size: 24px;
+        margin-right: 20px;
+        flex-shrink: 0;
+    }
+    .contact-info-text h6 {
+        font-family: 'Playfair Display', serif;
+        font-size: 20px;
+        font-weight: 700;
+        margin-bottom: 8px;
+    }
+    .contact-info-text p {
+        color: #666;
+        margin: 0;
+        font-size: 15px;
+        line-height: 1.6;
+    }
+
+    /* Form Styles */
+    .premium-form {
+        background: #fff;
+        padding: 40px;
+        border-radius: 15px;
+        box-shadow: 0 10px 40px rgba(0,0,0,0.06);
+    }
+    .premium-form h3 {
+        font-family: 'Playfair Display', serif;
+        font-size: 28px;
+        font-weight: 700;
+        margin-bottom: 30px;
+        color: #111;
+    }
+    .form-group {
+        margin-bottom: 25px;
+    }
+    .premium-form input, .premium-form textarea {
+        width: 100%;
+        padding: 15px 20px;
+        border: 1px solid #eee;
+        border-radius: 8px;
+        font-size: 15px;
+        background: #fdfdfd;
+        transition: 0.3s;
+    }
+    .premium-form input:focus, .premium-form textarea:focus {
+        border-color: #e72e77;
+        background: #fff;
+        box-shadow: 0 0 0 4px rgba(231, 46, 119, 0.1);
+        outline: none;
+    }
+    .premium-form textarea {
+        height: 150px;
+        resize: none;
+    }
+    .btn-submit {
+        background: #e72e77;
+        color: white;
+        padding: 15px 40px;
+        border: none;
+        border-radius: 30px;
+        font-weight: 600;
+        font-size: 16px;
+        text-transform: uppercase;
+        cursor: pointer;
+        transition: 0.3s;
+        box-shadow: 0 5px 15px rgba(231, 46, 119, 0.3);
+        width: 100%;
+    }
+    .btn-submit:hover {
+        background: #c2185b;
+        transform: translateY(-2px);
+        box-shadow: 0 8px 25px rgba(231, 46, 119, 0.4);
+    }
+    
+    /* Map */
+    .map-container {
+        border-radius: 15px;
+        overflow: hidden;
+        box-shadow: 0 10px 40px rgba(0,0,0,0.06);
+        height: 100%;
+        min-height: 400px;
+    }
+</style>
+
+    <!-- Contact Hero Begin -->
+    <section class="contact-hero" style="background-image: url({% static 'website/img/banner/contact-banner.jpg' %});">
         <div class="container">
             <div class="row">
                 <div class="col-lg-12">
-                    <div class="breadcrumb__links">
-                        <a href="./index.html"><i class="fa fa-home"></i> Home</a>
-                        <span>Contact</span>
+                    <div class="contact-hero-content">
+                        <h2>Get in Touch</h2>
+                        <p>We're here to help you plan the perfect wedding. Reach out to us anytime!</p>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-    <!-- Breadcrumb End -->
+    </section>
+    <!-- Contact Hero End -->
 
     <!-- Contact Section Begin -->
-    <section class="contact spad">
+    <section class="contact spad" style="padding-top: 20px;">
         <div class="container">
             <div class="row">
-                <div class="col-lg-6 col-md-6">
-                    <div class="contact__content">
-                        <div class="contact__address">
-                            <h5>Contact info</h5>
-                            <ul>
-                                <li>
-                                    <h6><i class="fa fa-map-marker"></i> Address</h6>
-                                    <p>160 Pennsylvania Ave NW, Washington, Castle, PA 16101-5161</p>
-                                </li>
-                                <li>
-                                    <h6><i class="fa fa-phone"></i> Phone</h6>
-                                    <p><span>125-711-811</span><span>125-668-886</span></p>
-                                </li>
-                                <li>
-                                    <h6><i class="fa fa-headphones"></i> Support</h6>
-                                    <p>Support.photography@gmail.com</p>
-                                </li>
-                            </ul>
+                <div class="col-lg-5">
+                    <div class="contact-info-wrapper">
+                        <div class="contact-info-card">
+                            <div class="contact-info-icon"><i class="fa fa-map-marker"></i></div>
+                            <div class="contact-info-text">
+                                <h6>Headquarters</h6>
+                                <p>BookMyLawn Tower, Bandra Kurla Complex<br>Mumbai, Maharashtra 400051</p>
+                            </div>
                         </div>
-                        <div class="contact__form">
-                            <h5>SEND MESSAGE</h5>
-                            <form action="#">
-                                <input type="text" placeholder="Name">
-                                <input type="text" placeholder="Email">
-                                <input type="text" placeholder="Website">
-                                <textarea placeholder="Message"></textarea>
-                                <button type="submit" class="site-btn">Send Message</button>
-                            </form>
+                        <div class="contact-info-card">
+                            <div class="contact-info-icon"><i class="fa fa-phone"></i></div>
+                            <div class="contact-info-text">
+                                <h6>Call Us</h6>
+                                <p>+91 98765 43210<br>+91 87654 32109</p>
+                            </div>
+                        </div>
+                        <div class="contact-info-card">
+                            <div class="contact-info-icon"><i class="fa fa-envelope"></i></div>
+                            <div class="contact-info-text">
+                                <h6>Email Support</h6>
+                                <p>hello@bookmylawn.com<br>support@bookmylawn.com</p>
+                            </div>
                         </div>
                     </div>
                 </div>
-                <div class="col-lg-6 col-md-6">
-                    <div class="contact__map">
-                        <iframe
-                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d48158.305462977965!2d-74.13283844036356!3d41.02757295168286!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89c2e440473470d7%3A0xcaf503ca2ee57958!2sSaddle%20River%2C%20NJ%2007458%2C%20USA!5e0!3m2!1sen!2sbd!4v1575917275626!5m2!1sen!2sbd"
-                        height="780" style="border:0" allowfullscreen="">
-                    </iframe>
+                <div class="col-lg-7">
+                    <div class="premium-form">
+                        <h3>Send Us a Message</h3>
+                        <form action="#">
+                            <div class="row">
+                                <div class="col-md-6 form-group">
+                                    <input type="text" placeholder="Your Name">
+                                </div>
+                                <div class="col-md-6 form-group">
+                                    <input type="email" placeholder="Your Email">
+                                </div>
+                                <div class="col-md-12 form-group">
+                                    <input type="text" placeholder="Subject / Occasion">
+                                </div>
+                                <div class="col-md-12 form-group">
+                                    <textarea placeholder="Tell us about your wedding plans..."></textarea>
+                                </div>
+                                <div class="col-md-12">
+                                    <button type="submit" class="btn-submit">Send Message</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="row mt-5">
+                <div class="col-lg-12">
+                    <div class="map-container">
+                        <!-- Mumbai Maps Embed -->
+                        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d241317.11609995167!2d72.74109995!3d19.08219785!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3be7c6306644edc1%3A0x5da4ed8f8d648c69!2sMumbai%2C%20Maharashtra!5e0!3m2!1sen!2sin!4v1650000000000!5m2!1sen!2sin" width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-</section>
-<!-- Contact Section End -->
+    </section>
+    <!-- Contact Section End -->
 
 
 {% endblock %}
