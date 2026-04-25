@@ -1,0 +1,146 @@
+{% extends 'superadmin/base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container-fluid">
+  <div class="row justify-content-center">
+    <div class="col-12">
+      
+      <div class="row align-items-center mb-4">
+        <div class="col">
+          <h2 class="h5 page-title">Vendor Dashboard</h2>
+        </div>
+        <div class="col-auto">
+          <a href="/admin/website/vendor/add/" class="btn btn-primary" style="background: #e72e77; border-color: #e72e77;">
+            <i class="fe fe-plus"></i> Add New Vendor
+          </a>
+        </div>
+      </div>
+      
+      <!-- Widgets -->
+      <div class="row">
+        <div class="col-md-6 col-xl-3 mb-4">
+          <div class="card shadow border-0">
+            <div class="card-body">
+              <div class="row align-items-center">
+                <div class="col-3 text-center">
+                  <span class="circle circle-sm bg-primary-light">
+                    <i class="fe fe-16 fe-users text-white mb-0"></i>
+                  </span>
+                </div>
+                <div class="col pr-0">
+                  <p class="small text-muted mb-0">Total Vendors</p>
+                  <span class="h3 mb-0">{{ total_vendors }}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6 col-xl-3 mb-4">
+          <div class="card shadow border-0">
+            <div class="card-body">
+              <div class="row align-items-center">
+                <div class="col-3 text-center">
+                  <span class="circle circle-sm bg-success-light">
+                    <i class="fe fe-16 fe-check-circle text-white mb-0"></i>
+                  </span>
+                </div>
+                <div class="col pr-0">
+                  <p class="small text-muted mb-0">Verified Vendors</p>
+                  <span class="h3 mb-0">{{ verified_vendors }}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6 col-xl-3 mb-4">
+          <div class="card shadow border-0">
+            <div class="card-body">
+              <div class="row align-items-center">
+                <div class="col-3 text-center">
+                  <span class="circle circle-sm bg-warning-light">
+                    <i class="fe fe-16 fe-star text-white mb-0"></i>
+                  </span>
+                </div>
+                <div class="col pr-0">
+                  <p class="small text-muted mb-0">Premium Vendors</p>
+                  <span class="h3 mb-0">{{ premium_vendors }}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6 col-xl-3 mb-4">
+          <div class="card shadow border-0">
+            <div class="card-body">
+              <div class="row align-items-center">
+                <div class="col-3 text-center">
+                  <span class="circle circle-sm bg-info-light">
+                    <i class="fe fe-16 fe-message-circle text-white mb-0"></i>
+                  </span>
+                </div>
+                <div class="col pr-0">
+                  <p class="small text-muted mb-0">Total Reviews</p>
+                  <span class="h3 mb-0">{{ total_reviews }}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- / Widgets -->
+
+      <!-- Recent Vendors Table -->
+      <div class="row">
+        <div class="col-md-12">
+          <div class="card shadow">
+            <div class="card-header border-0">
+              <strong class="card-title">Recently Added Vendors</strong>
+            </div>
+            <div class="card-body table-responsive">
+              <table class="table table-borderless table-hover">
+                <thead>
+                  <tr>
+                    <th>Name</th>
+                    <th>Category</th>
+                    <th>Location</th>
+                    <th>Starting Price</th>
+                    <th>Status</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for vendor in recent_vendors %}
+                  <tr>
+                    <td><strong>{{ vendor.name }}</strong></td>
+                    <td>{{ vendor.category.name }}</td>
+                    <td>{{ vendor.location }}</td>
+                    <td>₹{{ vendor.price_starting }}</td>
+                    <td>
+                      {% if vendor.is_verified %}
+                      <span class="badge badge-success">Verified</span>
+                      {% else %}
+                      <span class="badge badge-secondary">Pending</span>
+                      {% endif %}
+                    </td>
+                    <td>
+                      <a href="/admin/website/vendor/{{ vendor.id }}/change/" class="btn btn-sm btn-outline-primary">Edit</a>
+                    </td>
+                  </tr>
+                  {% empty %}
+                  <tr>
+                    <td colspan="6" class="text-center text-muted">No vendors found.</td>
+                  </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- / Recent Vendors Table -->
+
+    </div>
+  </div>
+</div>
+{% endblock %}

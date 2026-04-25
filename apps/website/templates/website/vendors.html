@@ -1,0 +1,113 @@
+{% extends 'website/base.html' %}
+{% load static %}
+
+{% block content %}
+    <!-- Breadcrumb Begin -->
+    <div class="breadcrumb-option">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="breadcrumb__links">
+                        <a href="/"><i class="fa fa-home"></i> Home</a>
+                        <span>Vendors</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Breadcrumb End -->
+
+    <!-- Vendors Section Begin -->
+    <section class="shop spad">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-3 col-md-3">
+                    <div class="shop__sidebar">
+                        <div class="sidebar__categories">
+                            <div class="section-title">
+                                <h4>Categories</h4>
+                            </div>
+                            <div class="categories__accordion">
+                                <ul style="list-style: none; padding-left: 0;">
+                                    {% for cat in categories %}
+                                    <li style="margin-bottom: 15px;">
+                                        <a href="{% url 'vendors' %}?category={{ cat.slug }}" style="color: #444; font-weight: 500;">{{ cat.name }} ({{ cat.vendors.count }})</a>
+                                    </li>
+                                    {% empty %}
+                                    <li style="margin-bottom: 15px;">No categories found</li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="sidebar__filter mt-5">
+                            <div class="section-title">
+                                <h4>Filter by City</h4>
+                            </div>
+                            <div class="size__list">
+                                <label for="mumbai">Mumbai <input type="checkbox" id="mumbai"><span class="checkmark"></span></label>
+                                <label for="delhi">Delhi <input type="checkbox" id="delhi"><span class="checkmark"></span></label>
+                                <label for="bangalore">Bangalore <input type="checkbox" id="bangalore"><span class="checkmark"></span></label>
+                            </div>
+                        </div>
+                        <div class="sidebar__filter mt-5">
+                            <div class="section-title">
+                                <h4>Pricing</h4>
+                            </div>
+                            <div class="size__list">
+                                <label for="budget">Budget (< ₹50,000) <input type="checkbox" id="budget"><span class="checkmark"></span></label>
+                                <label for="premium">Premium (₹50k - ₹2L) <input type="checkbox" id="premium"><span class="checkmark"></span></label>
+                                <label for="luxury">Luxury (> ₹2L) <input type="checkbox" id="luxury"><span class="checkmark"></span></label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-9 col-md-9">
+                    <div class="row">
+                        {% for vendor in vendors %}
+                        <div class="col-lg-4 col-md-6">
+                            <div class="product__item">
+                                <div class="product__item__pic set-bg" 
+                                     {% if vendor.image %}style="background-image: url('{{ vendor.image.url }}');" data-setbg="{{ vendor.image.url }}"{% else %}style="background-image: url('{% static 'website/img/product/product-1.jpg' %}?v=2');" data-setbg="{% static 'website/img/product/product-1.jpg' %}?v=2"{% endif %}>
+                                    {% if vendor.is_premium %}
+                                    <div class="label new" style="background: #e72e77;">Premium</div>
+                                    {% elif vendor.is_verified %}
+                                    <div class="label" style="background: #28a745;">Verified</div>
+                                    {% endif %}
+                                </div>
+                                <div class="product__item__text text-center">
+                                    <h6><a href="{% url 'vendor_details' vendor.id %}">{{ vendor.name }}</a></h6>
+                                    <div class="rating mt-2">
+                                        <i class="fa fa-star text-warning"></i>
+                                        <i class="fa fa-star text-warning"></i>
+                                        <i class="fa fa-star text-warning"></i>
+                                        <i class="fa fa-star text-warning"></i>
+                                        <i class="fa fa-star text-warning"></i>
+                                        <span class="text-muted ml-1">({{ vendor.reviews.count }})</span>
+                                    </div>
+                                    <div class="product__price mt-2" style="font-size: 14px; font-weight: 500; color: #666;">{{ vendor.location }} • ₹{{ vendor.price_starting }}/day</div>
+                                </div>
+                            </div>
+                        </div>
+                        {% empty %}
+                        <div class="col-12 text-center">
+                            <p>No vendors found at the moment.</p>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-12 text-center mt-4">
+                            <div class="pagination__option">
+                                <a href="#">1</a>
+                                <a href="#">2</a>
+                                <a href="#">3</a>
+                                <a href="#"><i class="fa fa-angle-right"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Vendors Section End -->
+
+{% endblock %}

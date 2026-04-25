@@ -1,0 +1,275 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="zxx">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="description"
+        content="{% block meta_description %}BookMyLawn - Your ultimate wedding planning companion. Find the best venues, photographers, and decorators.{% endblock %}">
+    <meta name="keywords" content="wedding, venues, photographers, decorators, BookMyLawn">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>{% block title %}BookMyLawn | Wedding Venues & Vendors{% endblock %}</title>
+
+    <!-- Google Font -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Montserrat:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        h1,
+        h2,
+        h3,
+        h4,
+        h5,
+        h6 {
+            font-family: 'Playfair Display', serif;
+        }
+
+        .hero-search {
+            background: rgba(255, 255, 255, 0.9);
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
+        }
+
+        .hero-search input,
+        .hero-search select {
+            border: 1px solid #ddd;
+            padding: 15px;
+            width: 100%;
+            border-radius: 5px;
+            margin-bottom: 15px;
+        }
+
+        .hero-search button {
+            background: #e72e77;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 5px;
+            width: 100%;
+            font-weight: 600;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .hero-search button:hover {
+            background: #c2185b;
+        }
+
+        .vendor-category {
+            text-align: center;
+            padding: 20px;
+            transition: transform 0.3s;
+            cursor: pointer;
+        }
+
+        .vendor-category:hover {
+            transform: translateY(-10px);
+        }
+
+        .vendor-category img {
+            border-radius: 50%;
+            width: 150px;
+            height: 150px;
+            object-fit: cover;
+            margin-bottom: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+
+    <!-- Css Styles -->
+    <link rel="stylesheet" href="{% static 'website/css/bootstrap.min.css' %}" type="text/css">
+    <link rel="stylesheet" href="{% static 'website/css/font-awesome.min.css' %}" type="text/css">
+    <link rel="stylesheet" href="{% static 'website/css/elegant-icons.css' %}" type="text/css">
+    <link rel="stylesheet" href="{% static 'website/css/jquery-ui.min.css' %}" type="text/css">
+    <link rel="stylesheet" href="{% static 'website/css/magnific-popup.css' %}" type="text/css">
+    <link rel="stylesheet" href="{% static 'website/css/owl.carousel.min.css' %}" type="text/css">
+    <link rel="stylesheet" href="{% static 'website/css/slicknav.min.css' %}" type="text/css">
+    <link rel="stylesheet" href="{% static 'website/css/style.css' %}" type="text/css">
+</head>
+
+<body>
+    <!-- Page Preloder -->
+    <div id="preloder">
+        <div class="loader"></div>
+    </div>
+
+    <!-- Offcanvas Menu Begin -->
+    <div class="offcanvas-menu-overlay"></div>
+    <div class="offcanvas-menu-wrapper">
+        <div class="offcanvas__close">+</div>
+        <ul class="offcanvas__widget">
+            <li><span class="icon_search search-switch"></span></li>
+            <li><a href="#"><span class="icon_heart_alt"></span>
+                    <div class="tip">2</div>
+                </a></li>
+            <li><a href="#"><span class="icon_bag_alt"></span>
+                    <div class="tip">2</div>
+                </a></li>
+        </ul>
+        <div class="offcanvas__logo">
+            <a href="/">
+                <h2 style="color: #e72e77; font-weight: bold; margin: 0;">BookMyLawn</h2>
+            </a>
+        </div>
+        <div id="mobile-menu-wrap"></div>
+        <div class="offcanvas__auth">
+            <a href="/admin/">Vendor Login</a>
+            <a href="/admin/">User Login</a>
+        </div>
+    </div>
+    <!-- Offcanvas Menu End -->
+
+    <!-- Header Section Begin -->
+    <header class="header">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-xl-3 col-lg-2">
+                    <div class="header__logo">
+                        <a href="/">
+                            <h2 style="color: #e72e77; font-weight: bold; margin: 0; padding-top: 5px;">BookMyLawn</h2>
+                        </a>
+                    </div>
+                </div>
+                <div class="col-xl-6 col-lg-7">
+                    <nav class="header__menu">
+                        <ul>
+                            <li class="active"><a href="/">Home</a></li>
+                            <li><a href="{% url 'vendors' %}">Venues</a></li>
+                            <li><a href="{% url 'vendors' %}">Vendors</a></li>
+                            <li><a href="#">Real Weddings</a></li>
+                            <li><a href="#">Blog</a></li>
+                            <li><a href="#">Contact</a></li>
+                        </ul>
+                    </nav>
+                </div>
+                <div class="col-lg-3">
+                    <div class="header__right">
+                        <div class="header__right__auth">
+                            <a href="/admin/">Vendor Login</a>
+                            <a href="/admin/">User Login</a>
+                        </div>
+                        <ul class="header__right__widget">
+                            <li><span class="icon_search search-switch"></span></li>
+                            <li><a href="#"><span class="icon_heart_alt"></span>
+                                    <div class="tip">2</div>
+                                </a></li>
+                            <li><a href="#"><span class="icon_bag_alt"></span>
+                                    <div class="tip">2</div>
+                                </a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="canvas__open">
+                <i class="fa fa-bars"></i>
+            </div>
+        </div>
+    </header>
+    <!-- Header Section End -->
+
+    {% block content %}
+    {% endblock %}
+
+    <!-- Footer Section Begin -->
+    <footer class="footer" style="background-color: #111; padding-top: 60px;">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-4 col-md-6 col-sm-7">
+                    <div class="footer__about">
+                        <div class="footer__logo">
+                            <a href="/">
+                                <h2 style="color: white; font-weight: bold; margin: 0;">BookMyLawn</h2>
+                            </a>
+                        </div>
+                        <p style="color: #b7b7b7;">Your ultimate wedding planning companion. Find the best venues,
+                            photographers, makeup artists, and more for your special day.</p>
+                    </div>
+                </div>
+                <div class="col-lg-2 col-md-3 col-sm-5">
+                    <div class="footer__widget">
+                        <h6 style="color: white;">Quick links</h6>
+                        <ul style="list-style: none; padding: 0;">
+                            <li><a href="#" style="color: #b7b7b7;">About Us</a></li>
+                            <li><a href="#" style="color: #b7b7b7;">Real Weddings</a></li>
+                            <li><a href="#" style="color: #b7b7b7;">Contact</a></li>
+                            <li><a href="#" style="color: #b7b7b7;">FAQ</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-lg-2 col-md-3 col-sm-4">
+                    <div class="footer__widget">
+                        <h6 style="color: white;">Top Vendors</h6>
+                        <ul style="list-style: none; padding: 0;">
+                            <li><a href="#" style="color: #b7b7b7;">Banquet Halls</a></li>
+                            <li><a href="#" style="color: #b7b7b7;">Photographers</a></li>
+                            <li><a href="#" style="color: #b7b7b7;">Makeup Artists</a></li>
+                            <li><a href="#" style="color: #b7b7b7;">Event Decorators</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-8 col-sm-8">
+                    <div class="footer__newslatter">
+                        <h6>NEWSLETTER</h6>
+                        <form action="#">
+                            <input type="text" placeholder="Email">
+                            <button type="submit" class="site-btn">Subscribe</button>
+                        </form>
+                        <div class="footer__social">
+                            <a href="#"><i class="fa fa-facebook"></i></a>
+                            <a href="#"><i class="fa fa-twitter"></i></a>
+                            <a href="#"><i class="fa fa-youtube-play"></i></a>
+                            <a href="#"><i class="fa fa-instagram"></i></a>
+                            <a href="#"><i class="fa fa-pinterest"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-12">
+                    <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+                    <div class="footer__copyright__text">
+                        <p>Copyright &copy;
+                            <script>document.write(new Date().getFullYear());</script> All rights reserved | A Product
+                            Of <a href="https://helyonex.com" target="_blank">Helyonex</a>
+                        </p>
+                    </div>
+                    <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+                </div>
+            </div>
+        </div>
+    </footer>
+    <!-- Footer Section End -->
+
+    <!-- Search Begin -->
+    <div class="search-model">
+        <div class="h-100 d-flex align-items-center justify-content-center">
+            <div class="search-close-switch">+</div>
+            <form class="search-model-form">
+                <input type="text" id="search-input" placeholder="Search here.....">
+            </form>
+        </div>
+    </div>
+    <!-- Search End -->
+
+    <!-- Js Plugins -->
+    <script src="{% static 'website/js/jquery-3.3.1.min.js' %}"></script>
+    <script src="{% static 'website/js/bootstrap.min.js' %}"></script>
+    <script src="{% static 'website/js/jquery.magnific-popup.min.js' %}"></script>
+    <script src="{% static 'website/js/jquery-ui.min.js' %}"></script>
+    <script src="{% static 'website/js/mixitup.min.js' %}"></script>
+    <script src="{% static 'website/js/jquery.countdown.min.js' %}"></script>
+    <script src="{% static 'website/js/jquery.slicknav.js' %}"></script>
+    <script src="{% static 'website/js/owl.carousel.min.js' %}"></script>
+    <script src="{% static 'website/js/jquery.nicescroll.min.js' %}"></script>
+    <script src="{% static 'website/js/main.js' %}"></script>
+</body>
+
+</html>
