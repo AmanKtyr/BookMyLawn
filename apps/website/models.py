@@ -34,3 +34,16 @@ class Review(models.Model):
     
     def __str__(self):
         return f"{self.reviewer_name} - {self.vendor.name} ({self.rating}/5)"
+
+class RealWedding(models.Model):
+    couple_name = models.CharField(max_length=200)
+    location = models.CharField(max_length=150)
+    venue = models.ForeignKey(Vendor, on_delete=models.SET_NULL, null=True, blank=True, related_name='weddings_at_venue')
+    photographer = models.ForeignKey(Vendor, on_delete=models.SET_NULL, null=True, blank=True, related_name='weddings_shot')
+    date = models.DateField()
+    description = models.TextField(blank=True)
+    main_image = models.ImageField(upload_to='real_weddings/', null=True, blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.couple_name

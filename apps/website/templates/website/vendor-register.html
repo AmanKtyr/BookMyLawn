@@ -1,0 +1,229 @@
+{% extends 'website/base.html' %}
+{% load static %}
+
+{% block content %}
+<style>
+    .vendor-reg-hero {
+        background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url('{% static "website/img/banner/banner-3.jpg" %}');
+        background-size: cover;
+        background-position: center;
+        padding: 80px 0;
+        text-align: center;
+        color: white;
+        border-radius: 0 0 40px 40px;
+    }
+    .vendor-reg-hero h2 {
+        font-family: 'Playfair Display', serif;
+        font-size: 42px;
+        font-weight: 700;
+        margin-bottom: 10px;
+        color: white;
+    }
+    .vendor-reg-hero p {
+        font-size: 18px;
+        color: white;
+        opacity: 0.9;
+    }
+
+    .reg-section {
+        padding: 80px 0;
+        background: #fdfdfd;
+    }
+    .reg-card {
+        background: white;
+        border-radius: 24px;
+        box-shadow: 0 20px 60px rgba(0,0,0,0.06);
+        padding: 60px;
+        border: 1px solid #f0f0f0;
+    }
+    .reg-card h3 {
+        font-family: 'Playfair Display', serif;
+        font-weight: 700;
+        margin-bottom: 30px;
+        color: #111;
+        font-size: 28px;
+    }
+    .form-row {
+        display: flex;
+        gap: 20px;
+        margin-bottom: 20px;
+    }
+    .form-group {
+        flex: 1;
+        margin-bottom: 20px;
+    }
+    .form-group label {
+        display: block;
+        font-weight: 600;
+        font-size: 14px;
+        margin-bottom: 8px;
+        color: #444;
+    }
+    .form-group input, .form-group select, .form-group textarea {
+        width: 100%;
+        padding: 12px 15px;
+        border: 1px solid #e0e0e0;
+        border-radius: 10px;
+        transition: 0.3s;
+        background: #fafafa;
+    }
+    .form-group input:focus, .form-group select:focus {
+        border-color: #e72e77;
+        background: white;
+        box-shadow: 0 0 0 4px rgba(231, 46, 119, 0.1);
+        outline: none;
+    }
+    .btn-submit-vendor {
+        background: #e72e77;
+        color: white;
+        width: 100%;
+        padding: 16px;
+        border: none;
+        border-radius: 12px;
+        font-weight: 700;
+        font-size: 16px;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        cursor: pointer;
+        transition: 0.3s;
+        margin-top: 20px;
+        box-shadow: 0 10px 25px rgba(231, 46, 119, 0.2);
+    }
+    .btn-submit-vendor:hover {
+        background: #c2185b;
+        transform: translateY(-3px);
+        box-shadow: 0 15px 30px rgba(231, 46, 119, 0.3);
+    }
+    
+    .benefit-item {
+        margin-bottom: 30px;
+        display: flex;
+        gap: 20px;
+    }
+    .benefit-icon {
+        width: 50px;
+        height: 50px;
+        background: #fbe6ee;
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #e72e77;
+        font-size: 20px;
+        flex-shrink: 0;
+    }
+    .benefit-text h5 {
+        font-weight: 700;
+        margin-bottom: 5px;
+        font-size: 18px;
+    }
+    .benefit-text p {
+        font-size: 14px;
+        color: #777;
+        line-height: 1.5;
+    }
+</style>
+
+<div class="vendor-reg-hero">
+    <div class="container">
+        <h2>List Your Business on BookMyLawn</h2>
+        <p>Connect with thousands of couples and grow your wedding business today.</p>
+    </div>
+</div>
+
+<section class="reg-section">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-7">
+                <div class="reg-card">
+                    <h3>Tell us about your business</h3>
+                    <form action="#">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Business Name</label>
+                                <input type="text" placeholder="e.g. Royal Banquet Hall" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Category</label>
+                                <select required>
+                                    <option value="">Select Category</option>
+                                    <option value="venues">Venues</option>
+                                    <option value="photographers">Photographers</option>
+                                    <option value="decorators">Decorators</option>
+                                    <option value="makeup">Makeup Artists</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Full Name</label>
+                                <input type="text" placeholder="Owner Name" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Email Address</label>
+                                <input type="email" placeholder="contact@business.com" required>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Phone Number</label>
+                                <input type="tel" placeholder="+91 00000 00000" required>
+                            </div>
+                            <div class="form-group">
+                                <label>City</label>
+                                <input type="text" placeholder="e.g. Lucknow" required>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Short Description</label>
+                            <textarea rows="4" placeholder="Tell couples what makes your services unique..."></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label>Password</label>
+                            <input type="password" placeholder="Create a secure password" required>
+                        </div>
+                        <button type="submit" class="btn-submit-vendor">Register My Business</button>
+                    </form>
+                </div>
+            </div>
+            <div class="col-lg-5">
+                <div class="pl-lg-5 mt-5 mt-lg-0">
+                    <h3 style="font-family: 'Playfair Display', serif; font-weight: 700; margin-bottom: 40px;">Why partner with us?</h3>
+                    
+                    <div class="benefit-item">
+                        <div class="benefit-icon"><i class="fa fa-line-chart"></i></div>
+                        <div class="benefit-text">
+                            <h5>Increased Visibility</h5>
+                            <p>Get listed on India's most modern wedding platform and reach couples actively looking for your services.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="benefit-item">
+                        <div class="benefit-icon"><i class="fa fa-envelope-o"></i></div>
+                        <div class="benefit-text">
+                            <h5>Verified Leads</h5>
+                            <p>Receive direct inquiries and booking requests from verified users in your city.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="benefit-item">
+                        <div class="benefit-icon"><i class="fa fa-star-o"></i></div>
+                        <div class="benefit-text">
+                            <h5>Build Reputation</h5>
+                            <p>Collect reviews from your clients and build a professional portfolio that attracts high-value bookings.</p>
+                        </div>
+                    </div>
+
+                    <div class="benefit-item">
+                        <div class="benefit-icon"><i class="fa fa-mobile"></i></div>
+                        <div class="benefit-text">
+                            <h5>Lead Management</h5>
+                            <p>Manage all your inquiries, chats, and bookings through our easy-to-use vendor dashboard.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
