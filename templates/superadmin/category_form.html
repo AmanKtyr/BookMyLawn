@@ -1,0 +1,57 @@
+{% extends 'superadmin/base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container-fluid">
+  <div class="row justify-content-center">
+    <div class="col-12 col-xl-10">
+      <div class="row align-items-center my-4">
+        <div class="col">
+          <h2 class="h3 mb-0 page-title">{% if category %}Edit{% else %}Add New{% endif %} Category</h2>
+        </div>
+      </div>
+      <form action="{% if category %}{% url 'superadmin_category_edit' category.id %}{% else %}{% url 'superadmin_category_add' %}{% endif %}" method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        <hr class="my-4">
+        <h5 class="mb-2 mt-4">Category Details</h5>
+        <p class="text-muted">Information about the category.</p>
+        <div class="form-row">
+          <div class="form-group col-md-6">
+            <label for="name">Category Name</label>
+            <input type="text" id="name" name="name" class="form-control" value="{{ category.name|default:'' }}" required>
+          </div>
+          <div class="form-group col-md-6">
+            <label for="slug">Slug (Optional)</label>
+            <input type="text" id="slug" name="slug" class="form-control" value="{{ category.slug|default:'' }}" placeholder="Leave blank to auto-generate">
+          </div>
+        </div>
+        <div class="form-group mb-3">
+          <label for="image">Category Image</label>
+          {% if category.image %}
+          <div class="mb-2">
+            <img src="{{ category.image.url }}" alt="{{ category.name }}" style="width: 100px; height: 100px; object-fit: cover; border-radius: 8px;">
+          </div>
+          {% endif %}
+          <div class="custom-file">
+            <input type="file" class="custom-file-input" id="image" name="image" accept="image/*">
+            <label class="custom-file-label" for="image">Choose file...</label>
+          </div>
+        </div>
+        <div class="form-group mb-3">
+          <div class="custom-control custom-switch">
+            <input type="checkbox" class="custom-control-input" id="is_popular" name="is_popular" {% if category.is_popular %}checked{% endif %}>
+            <label class="custom-control-label" for="is_popular">Mark as Popular Category (Show on Homepage)</label>
+          </div>
+        </div>
+        <hr class="my-4">
+        <div class="form-row">
+          <div class="col-md-6 text-right">
+            <a href="{% url 'superadmin_categories' %}" class="btn btn-secondary">Cancel</a>
+            <button type="submit" class="btn btn-primary">{% if category %}Update{% else %}Save{% endif %} Category</button>
+          </div>
+        </div>
+      </form>
+    </div> <!-- .col-12 -->
+  </div> <!-- .row -->
+</div> <!-- .container-fluid -->
+{% endblock %}

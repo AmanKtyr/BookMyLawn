@@ -5,6 +5,7 @@ class Category(models.Model):
     name = models.CharField(max_length=100)
     slug = models.SlugField(unique=True)
     image = models.ImageField(upload_to='categories/', null=True, blank=True)
+    is_popular = models.BooleanField(default=False)
     
     class Meta:
         verbose_name_plural = 'Categories'
@@ -25,6 +26,25 @@ class Vendor(models.Model):
     
     def __str__(self):
         return self.name
+
+class VendorRequest(models.Model):
+    STATUS_CHOICES = (
+        ('pending', 'Pending'),
+        ('approved', 'Approved'),
+        ('rejected', 'Rejected'),
+    )
+    business_name = models.CharField(max_length=200)
+    category = models.CharField(max_length=100) # Simple charfield for form submission
+    owner_name = models.CharField(max_length=150)
+    email = models.EmailField()
+    phone = models.CharField(max_length=20)
+    city = models.CharField(max_length=100)
+    description = models.TextField(blank=True)
+    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='pending')
+    created_at = models.DateTimeField(auto_now_add=True)
+    
+    def __str__(self):
+        return f"{self.business_name} ({self.status})"
 
 class Review(models.Model):
     vendor = models.ForeignKey(Vendor, on_delete=models.CASCADE, related_name='reviews')
@@ -94,3 +114,16 @@ class OrderItem(models.Model):
     def __str__(self):
         return f"{self.vendor.name} in Order {self.order.id}"
 
+class Inquiry(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
+    vendor = models.ForeignKey(Vendor, on_delete=models.CASCADE, related_name='inquiries')
+    customer_name = models.CharField(max_length=150)
+    customer_email = models.EmailField()
+    customer_phone = models.CharField(max_length=20)
+    event_date = models.DateField(null=True, blank=True)
+    message = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+    status = models.CharField(max_length=20, choices=[('new', 'New'), ('contacted', 'Contacted'), ('closed', 'Closed')], default='new')
+
+    def __str__(self):
+        return f"Inquiry for {self.vendor.name} by {self.customer_name}"

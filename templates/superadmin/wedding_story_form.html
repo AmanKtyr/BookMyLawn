@@ -1,0 +1,76 @@
+{% extends 'superadmin/base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container-fluid">
+  <div class="row justify-content-center">
+    <div class="col-12 col-xl-10">
+      <div class="row align-items-center my-4">
+        <div class="col">
+          <h2 class="h3 mb-0 page-title">Add New Wedding Story</h2>
+        </div>
+      </div>
+      <form action="{% url 'superadmin_wedding_story_add' %}" method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        <hr class="my-4">
+        <h5 class="mb-2 mt-4">Story Details</h5>
+        <p class="text-muted">Information about the real wedding.</p>
+        <div class="form-row">
+          <div class="form-group col-md-6">
+            <label for="couple_name">Couple Name</label>
+            <input type="text" id="couple_name" name="couple_name" class="form-control" placeholder="e.g. John & Jane" required>
+          </div>
+          <div class="form-group col-md-6">
+            <label for="date">Wedding Date</label>
+            <input type="date" id="date" name="date" class="form-control" required>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group col-md-12">
+            <label for="location">Location / City</label>
+            <input type="text" id="location" name="location" class="form-control" required>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group col-md-6">
+            <label for="venue">Venue (Optional)</label>
+            <select id="venue" name="venue" class="form-control">
+              <option value="">Choose venue...</option>
+              {% for venue in venues %}
+              <option value="{{ venue.id }}">{{ venue.name }}</option>
+              {% endfor %}
+            </select>
+          </div>
+          <div class="form-group col-md-6">
+            <label for="photographer">Photographer (Optional)</label>
+            <select id="photographer" name="photographer" class="form-control">
+              <option value="">Choose photographer...</option>
+              {% for photographer in photographers %}
+              <option value="{{ photographer.id }}">{{ photographer.name }}</option>
+              {% endfor %}
+            </select>
+          </div>
+        </div>
+        <div class="form-group mb-3">
+          <label for="description">Story Description</label>
+          <textarea class="form-control" id="description" name="description" rows="5" placeholder="Tell the story of their special day..."></textarea>
+        </div>
+        <div class="form-group mb-3">
+          <label for="main_image">Main Image</label>
+          <div class="custom-file">
+            <input type="file" class="custom-file-input" id="main_image" name="main_image" accept="image/*">
+            <label class="custom-file-label" for="main_image">Choose file...</label>
+          </div>
+        </div>
+        <hr class="my-4">
+        <div class="form-row">
+          <div class="col-md-12 text-right">
+            <a href="{% url 'superadmin_wedding_stories' %}" class="btn btn-secondary mr-2">Cancel</a>
+            <button type="submit" class="btn btn-primary">Save Story</button>
+          </div>
+        </div>
+      </form>
+    </div> <!-- .col-12 -->
+  </div> <!-- .row -->
+</div> <!-- .container-fluid -->
+{% endblock %}

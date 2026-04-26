@@ -4,10 +4,10 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="">
-    <meta name="author" content="">
+    <meta name="description" content="BookMyLawn Super Admin Dashboard">
+    <meta name="author" content="BookMyLawn">
     <link rel="icon" href="favicon.ico">
-    <title>Tiny Dashboard - A Bootstrap Dashboard Template</title>
+    <title>BookMyLawn | Super Admin Dashboard</title>
     <!-- Simple bar CSS -->
     <link rel="stylesheet" href="{% static 'admin/css/simplebar.css' %}">
     <!-- Fonts CSS -->
@@ -25,6 +25,29 @@
     <!-- App CSS -->
     <link rel="stylesheet" href="{% static 'admin/css/app-light.css' %}" id="lightTheme">
     <link rel="stylesheet" href="{% static 'admin/css/app-dark.css' %}" id="darkTheme" disabled>
+    <!-- White Labeling Custom Theme Color Override -->
+    <style>
+      :root {
+        --theme-color: #e72e77;
+        --theme-color-dark: #c2185b;
+      }
+      .bg-primary { background-color: var(--theme-color) !important; }
+      .btn-primary { background-color: var(--theme-color) !important; border-color: var(--theme-color) !important; color: white !important; }
+      .btn-primary:hover, .btn-primary:focus, .btn-primary:active { background-color: var(--theme-color-dark) !important; border-color: var(--theme-color-dark) !important; }
+      .btn-outline-primary { color: var(--theme-color) !important; border-color: var(--theme-color) !important; }
+      .btn-outline-primary:hover { background-color: var(--theme-color) !important; color: white !important; }
+      .text-primary { color: var(--theme-color) !important; }
+      .badge-primary { background-color: var(--theme-color) !important; }
+      .nav-pills .nav-link.active, .nav-pills .show > .nav-link { background-color: var(--theme-color) !important; }
+      .page-item.active .page-link { background-color: var(--theme-color) !important; border-color: var(--theme-color) !important; }
+      .custom-control-input:checked ~ .custom-control-label::before { background-color: var(--theme-color) !important; border-color: var(--theme-color) !important; }
+      a { color: var(--theme-color); }
+      a:hover { color: var(--theme-color-dark); }
+      /* Dashboard Logo Override */
+      .navbar-brand-img.brand-sm { display: none; }
+      .navbar-brand.text-center { font-weight: 800; font-size: 1.2rem; color: var(--theme-color) !important; text-decoration: none; }
+      .vertnav .nav-link:hover i { color: var(--theme-color); }
+    </style>
   </head>
   <body class="vertical  light  ">
     <div class="wrapper">
@@ -75,14 +98,8 @@
         <nav class="vertnav navbar navbar-light">
           <!-- nav bar -->
           <div class="w-100 mb-4 d-flex">
-            <a class="navbar-brand mx-auto mt-2 flex-fill text-center" href="./index.html">
-              <svg version="1.1" id="logo" class="navbar-brand-img brand-sm" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 120 120" xml:space="preserve">
-                <g>
-                  <polygon class="st0" points="78,105 15,105 24,87 87,87 	" />
-                  <polygon class="st0" points="96,69 33,69 42,51 105,51 	" />
-                  <polygon class="st0" points="78,33 15,33 24,15 87,15 	" />
-                </g>
-              </svg>
+            <a class="navbar-brand mx-auto mt-2 flex-fill text-center" href="/">
+              BookMyLawn
             </a>
           </div>
           <ul class="navbar-nav flex-fill w-100 mb-2">
@@ -98,19 +115,43 @@
           </p>
           <ul class="navbar-nav flex-fill w-100 mb-2">
             <li class="nav-item w-100">
-              <a class="nav-link" href="/admin/website/vendor/">
-                <i class="fe fe-users fe-16"></i>
-                <span class="ml-3 item-text">Vendors</span>
-              </a>
-            </li>
-            <li class="nav-item w-100">
-              <a class="nav-link" href="/admin/website/category/">
+              <a class="nav-link" href="{% url 'superadmin_categories' %}">
                 <i class="fe fe-grid fe-16"></i>
                 <span class="ml-3 item-text">Categories</span>
               </a>
             </li>
             <li class="nav-item w-100">
-              <a class="nav-link" href="/admin/website/review/">
+              <a class="nav-link" href="{% url 'superadmin_vendors' %}">
+                <i class="fe fe-users fe-16"></i>
+                <span class="ml-3 item-text">Vendors</span>
+              </a>
+            </li>
+            <li class="nav-item w-100">
+              <a class="nav-link" href="{% url 'superadmin_wedding_stories' %}">
+                <i class="fe fe-image fe-16"></i>
+                <span class="ml-3 item-text">Wedding Stories</span>
+              </a>
+            </li>
+            <li class="nav-item w-100">
+              <a class="nav-link" href="{% url 'superadmin_partners' %}">
+                <i class="fe fe-user-plus fe-16"></i>
+                <span class="ml-3 item-text">Partners / Requests</span>
+              </a>
+            </li>
+            <li class="nav-item w-100">
+              <a class="nav-link" href="{% url 'superadmin_users' %}">
+                <i class="fe fe-users fe-16"></i>
+                <span class="ml-3 item-text">Customers</span>
+              </a>
+            </li>
+            <li class="nav-item w-100">
+              <a class="nav-link" href="{% url 'superadmin_inquiries' %}">
+                <i class="fe fe-inbox fe-16"></i>
+                <span class="ml-3 item-text">Leads & Inquiries</span>
+              </a>
+            </li>
+            <li class="nav-item w-100">
+              <a class="nav-link" href="{% url 'superadmin_reviews' %}">
                 <i class="fe fe-message-circle fe-16"></i>
                 <span class="ml-3 item-text">Reviews</span>
               </a>

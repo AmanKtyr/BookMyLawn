@@ -1,0 +1,71 @@
+{% extends 'superadmin/base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container-fluid">
+  <div class="row justify-content-center">
+    <div class="col-12">
+      <div class="row align-items-center mb-4">
+        <div class="col">
+          <h2 class="h5 page-title">Leads & Inquiries</h2>
+          <p class="text-muted">Manage all customer inquiries and leads sent to vendors.</p>
+        </div>
+      </div>
+      
+      <div class="row">
+        <div class="col-md-12">
+          <div class="card shadow">
+            <div class="card-body">
+              <table class="table table-hover table-bordered mb-0">
+                <thead class="thead-dark">
+                  <tr>
+                    <th>ID</th>
+                    <th>Customer Name</th>
+                    <th>Contact Info</th>
+                    <th>Vendor Inquiry</th>
+                    <th>Event Date</th>
+                    <th>Status</th>
+                    <th>Date Received</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for inquiry in inquiries %}
+                  <tr>
+                    <td>{{ inquiry.id }}</td>
+                    <td><strong>{{ inquiry.customer_name }}</strong></td>
+                    <td>
+                      <div><small><i class="fe fe-mail mr-1"></i>{{ inquiry.customer_email }}</small></div>
+                      <div><small><i class="fe fe-phone mr-1"></i>{{ inquiry.customer_phone }}</small></div>
+                    </td>
+                    <td><a href="#">{{ inquiry.vendor.name }}</a></td>
+                    <td>{{ inquiry.event_date|default:"Not specified" }}</td>
+                    <td>
+                      {% if inquiry.status == 'new' %}
+                      <span class="badge badge-pill badge-primary">New</span>
+                      {% elif inquiry.status == 'contacted' %}
+                      <span class="badge badge-pill badge-warning">Contacted</span>
+                      {% else %}
+                      <span class="badge badge-pill badge-success">Closed</span>
+                      {% endif %}
+                    </td>
+                    <td>{{ inquiry.created_at|date:"M d, Y H:i" }}</td>
+                    <td>
+                      <button class="btn btn-sm btn-outline-secondary">View Message</button>
+                    </td>
+                  </tr>
+                  {% empty %}
+                  <tr>
+                    <td colspan="8" class="text-center">No inquiries found.</td>
+                  </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

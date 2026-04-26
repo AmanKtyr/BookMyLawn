@@ -1,0 +1,80 @@
+{% extends 'superadmin/base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container-fluid">
+  <div class="row justify-content-center">
+    <div class="col-12">
+      <div class="row align-items-center mb-4">
+        <div class="col">
+          <h2 class="h5 page-title">Partners (Vendor Requests)</h2>
+          <p class="text-muted">Manage all new business registrations waiting for approval.</p>
+        </div>
+      </div>
+      
+      <div class="row">
+        <div class="col-md-12">
+          <div class="card shadow">
+            <div class="card-body">
+              <table class="table table-hover table-bordered mb-0">
+                <thead class="thead-dark">
+                  <tr>
+                    <th>ID</th>
+                    <th>Business Name</th>
+                    <th>Owner Name</th>
+                    <th>Category</th>
+                    <th>Contact Info</th>
+                    <th>City</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for req in requests %}
+                  <tr>
+                    <td>{{ req.id }}</td>
+                    <td><strong>{{ req.business_name }}</strong></td>
+                    <td>{{ req.owner_name }}</td>
+                    <td>{{ req.category }}</td>
+                    <td>
+                      <div><small><i class="fe fe-mail mr-1"></i>{{ req.email }}</small></div>
+                      <div><small><i class="fe fe-phone mr-1"></i>{{ req.phone }}</small></div>
+                    </td>
+                    <td>{{ req.city }}</td>
+                    <td>
+                      {% if req.status == 'pending' %}
+                      <span class="badge badge-pill badge-warning">Pending</span>
+                      {% elif req.status == 'approved' %}
+                      <span class="badge badge-pill badge-success">Approved</span>
+                      {% else %}
+                      <span class="badge badge-pill badge-danger">Rejected</span>
+                      {% endif %}
+                    </td>
+                    <td>
+                      <div class="dropdown">
+                        <button class="btn btn-sm dropdown-toggle" type="button" id="dr1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                          <span class="text-muted sr-only">Action</span>
+                        </button>
+                        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dr1">
+                          <a class="dropdown-item text-success" href="#">Approve & Create Vendor</a>
+                          <a class="dropdown-item text-danger" href="#">Reject Request</a>
+                          <a class="dropdown-item" href="#">View Details</a>
+                        </div>
+                      </div>
+                    </td>
+                  </tr>
+                  {% empty %}
+                  <tr>
+                    <td colspan="8" class="text-center">No vendor registration requests found.</td>
+                  </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
