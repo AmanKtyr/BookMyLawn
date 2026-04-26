@@ -195,11 +195,21 @@
                                 <img src="#" alt="Preview" style="max-width: 150px; border-radius: 8px; border: 1px solid #ddd;">
                             </div>
                         </div>
-                        <div class="form-group">
-                            <label>Short Description</label>
-                            <textarea name="description" rows="4" placeholder="Tell couples what makes your services unique..."></textarea>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Account Password</label>
+                                <input type="password" name="password" id="password" placeholder="Create a password" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Confirm Password</label>
+                                <input type="password" name="confirm_password" id="confirm_password" placeholder="Repeat password" required>
+                            </div>
                         </div>
-                        <button type="submit" class="btn-submit-vendor">Register My Business</button>
+                        <div id="passwordError" style="color: #e72e77; font-size: 13px; margin-top: -15px; margin-bottom: 15px; display: none;">
+                            <i class="fa fa-exclamation-circle"></i> Passwords do not match!
+                        </div>
+                        <small class="text-muted d-block mb-3">You will use this password to log in once your request is approved.</small>
+                        <button type="submit" class="btn-submit-vendor" id="submitBtn">Register My Business</button>
                     </form>
                 </div>
 
@@ -214,6 +224,27 @@
             reader.readAsDataURL(input.files[0]);
         }
     }
+
+    // Password Match Validation
+    const password = document.getElementById('password');
+    const confirm = document.getElementById('confirm_password');
+    const errorDiv = document.getElementById('passwordError');
+    const submitBtn = document.getElementById('submitBtn');
+
+    function validatePasswords() {
+        if (confirm.value && password.value !== confirm.value) {
+            errorDiv.style.display = 'block';
+            submitBtn.disabled = true;
+            submitBtn.style.opacity = '0.5';
+        } else {
+            errorDiv.style.display = 'none';
+            submitBtn.disabled = false;
+            submitBtn.style.opacity = '1';
+        }
+    }
+
+    password.addEventListener('keyup', validatePasswords);
+    confirm.addEventListener('keyup', validatePasswords);
 </script>
             </div>
             <div class="col-lg-5">

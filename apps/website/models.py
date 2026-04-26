@@ -14,11 +14,24 @@ class Category(models.Model):
         return self.name
         
 class Vendor(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE, null=True, blank=True, related_name='vendor_profile')
     name = models.CharField(max_length=200)
     category = models.ForeignKey(Category, on_delete=models.CASCADE, related_name='vendors')
     location = models.CharField(max_length=150)
+    address = models.TextField(blank=True)
     price_starting = models.DecimalField(max_digits=10, decimal_places=2, default=0.0)
+    
+    # Specifics for Venues
+    veg_price = models.DecimalField(max_digits=10, decimal_places=2, default=0.0)
+    non_veg_price = models.DecimalField(max_digits=10, decimal_places=2, default=0.0)
+    capacity = models.IntegerField(default=0)
+    rooms = models.IntegerField(default=0)
+    
+    # Details
     description = models.TextField(blank=True)
+    amenities = models.TextField(blank=True, help_text="Comma separated values: AC, Parking, etc.")
+    map_link = models.URLField(blank=True, null=True)
+    
     is_verified = models.BooleanField(default=False)
     is_premium = models.BooleanField(default=False)
     image = models.ImageField(upload_to='vendors/', null=True, blank=True)
@@ -26,8 +39,23 @@ class Vendor(models.Model):
     experience_years = models.IntegerField(default=0)
     created_at = models.DateTimeField(auto_now_add=True)
     
+    @property
+    def amenities_list(self):
+        if not self.amenities:
+            return []
+        return [a.strip() for a in self.amenities.split(',') if a.strip()]
+    
     def __str__(self):
         return self.name
+
+class VendorImage(models.Model):
+    vendor = models.ForeignKey(Vendor, on_delete=models.CASCADE, related_name='gallery')
+    image = models.ImageField(upload_to='vendor_gallery/')
+    caption = models.CharField(max_length=100, blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"Gallery for {self.vendor.name}"
 
 class VendorRequest(models.Model):
     STATUS_CHOICES = (
@@ -46,6 +74,7 @@ class VendorRequest(models.Model):
     experience_years = models.IntegerField(default=0)
     business_image = models.ImageField(upload_to='vendor_requests/', null=True, blank=True)
     description = models.TextField(blank=True)
+    password = models.CharField(max_length=128, null=True, blank=True) # Desired password for the account
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='pending')
     created_at = models.DateTimeField(auto_now_add=True)
     

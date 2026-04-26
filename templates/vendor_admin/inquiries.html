@@ -1,0 +1,143 @@
+{% extends 'vendor_admin/base.html' %}
+
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-12">
+    <h2 class="h3 mb-4 page-title">Inquiries & Leads</h2>
+    <div class="card shadow">
+      <div class="card-body">
+        <!-- Table -->
+        <table class="table table-hover datatables" id="dataTable-1">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Customer</th>
+              <th>Date Received</th>
+              <th>Event Date</th>
+              <th>Phone</th>
+              <th>Status</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for inquiry in inquiries %}
+            <tr>
+              <td>#{{ inquiry.id }}</td>
+              <td>
+                <div class="d-flex align-items-center">
+                  <div class="ml-2">
+                    <strong>{{ inquiry.customer_name }}</strong><br>
+                    <small class="text-muted">{{ inquiry.customer_email }}</small>
+                  </div>
+                </div>
+              </td>
+              <td>{{ inquiry.created_at|date:"M d, Y" }}</td>
+              <td>{{ inquiry.event_date|date:"M d, Y"|default:"Not specified" }}</td>
+              <td>{{ inquiry.customer_phone }}</td>
+              <td>
+                {% if inquiry.status == 'new' %}
+                <span class="badge badge-pill badge-primary">New</span>
+                {% elif inquiry.status == 'contacted' %}
+                <span class="badge badge-pill badge-warning">Contacted</span>
+                {% else %}
+                <span class="badge badge-pill badge-success">Closed</span>
+                {% endif %}
+              </td>
+              <td>
+                <div class="dropdown">
+                    <button class="btn btn-sm btn-outline-primary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                      Actions
+                    </button>
+                    <div class="dropdown-menu dropdown-menu-right shadow-sm border-0">
+                      <a class="dropdown-item font-weight-bold text-primary" href="#" data-toggle="modal" data-target="#msgModal{{ inquiry.id }}">
+                          <i class="fa fa-eye mr-2"></i> View Details & Message
+                      </a>
+                      <div class="dropdown-divider"></div>
+                      <a class="dropdown-item" href="https://wa.me/{{ inquiry.customer_phone|cut:'+'|cut:' ' }}" target="_blank">
+                          <i class="fa fa-whatsapp mr-2 text-success"></i> Message on WhatsApp
+                      </a>
+                      <a class="dropdown-item" href="tel:{{ inquiry.customer_phone }}">
+                          <i class="fa fa-phone mr-2 text-info"></i> Call Customer
+                      </a>
+                    </div>
+                </div>
+              </td>
+            </tr>
+            
+            <!-- Beautiful CRM-Style Lead Modal -->
+            <div class="modal fade" id="msgModal{{ inquiry.id }}" tabindex="-1" role="dialog" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content" style="border-radius: 15px; border: none; overflow: hidden;">
+                        <div class="modal-header bg-primary text-white pb-3 pt-4 px-4" style="background: linear-gradient(135deg, #e72e77, #ff6b6b) !important;">
+                            <div>
+                                <h5 class="modal-title font-weight-bold text-white mb-1">Lead Details</h5>
+                                <p class="mb-0 small text-white-50">Received on {{ inquiry.created_at|date:"M d, Y - h:i A" }}</p>
+                            </div>
+                            <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close" style="opacity: 1;">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body p-0">
+                            <!-- Customer Info Header -->
+                            <div class="bg-light p-4 border-bottom">
+                                <div class="d-flex align-items-center mb-3">
+                                    <div class="avatar avatar-md bg-white text-primary font-weight-bold rounded-circle d-flex align-items-center justify-content-center shadow-sm" style="width: 50px; height: 50px; font-size: 20px;">
+                                        {{ inquiry.customer_name|first|upper }}
+                                    </div>
+                                    <div class="ml-3">
+                                        <h5 class="mb-0 font-weight-bold">{{ inquiry.customer_name }}</h5>
+                                        <span class="badge badge-pill {% if inquiry.status == 'new' %}badge-danger{% else %}badge-success{% endif %} mt-1">
+                                            {{ inquiry.status|title }} Lead
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="row text-muted small">
+                                    <div class="col-6 mb-2">
+                                        <i class="fa fa-envelope mr-1 text-primary"></i> {{ inquiry.customer_email }}
+                                    </div>
+                                    <div class="col-6 mb-2">
+                                        <i class="fa fa-phone mr-1 text-primary"></i> {{ inquiry.customer_phone }}
+                                    </div>
+                                    <div class="col-12 mt-2 pt-2 border-top">
+                                        <i class="fa fa-calendar mr-1 text-primary"></i> <strong>Event Date:</strong> {{ inquiry.event_date|date:"F d, Y"|default:"Not specified" }}
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Customer Message -->
+                            <div class="p-4">
+                                <h6 class="font-weight-bold text-dark mb-3"><i class="fa fa-comment-o mr-2 text-primary"></i> Customer Message</h6>
+                                <div class="p-3 bg-light rounded" style="border-left: 4px solid #e72e77;">
+                                    {% if inquiry.message %}
+                                        <p class="mb-0" style="white-space: pre-wrap; font-size: 15px;">{{ inquiry.message }}</p>
+                                    {% else %}
+                                        <p class="mb-0 text-muted font-italic">The customer did not leave a specific message, but is requesting a callback regarding the event date.</p>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer bg-light px-4 py-3 border-top-0 d-flex justify-content-between">
+                            <button type="button" class="btn btn-outline-secondary rounded-pill px-4" data-dismiss="modal">Close</button>
+                            <a href="https://wa.me/{{ inquiry.customer_phone|cut:'+'|cut:' ' }}" target="_blank" class="btn btn-success rounded-pill px-4 font-weight-bold shadow-sm">
+                                <i class="fa fa-whatsapp mr-1"></i> WhatsApp Now
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% empty %}
+            <tr>
+              <td colspan="7" class="text-center py-5">
+                  <i class="fa fa-inbox fa-3x text-muted mb-3 d-block"></i>
+                  <h5 class="text-muted">No inquiries yet</h5>
+                  <p class="text-muted small">When customers contact you, their leads will appear here.</p>
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

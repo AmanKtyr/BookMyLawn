@@ -50,7 +50,11 @@ def vendors(request):
 
 def vendor_details(request, id):
     vendor = get_object_or_404(Vendor, id=id)
-    return render(request, 'website/vendor-details.html', {'vendor': vendor})
+    related_vendors = Vendor.objects.filter(category=vendor.category).exclude(id=id)[:4]
+    return render(request, 'website/vendor-details.html', {
+        'vendor': vendor,
+        'related_vendors': related_vendors
+    })
 
 def contact(request):
     return render(request, 'website/contact.html')
@@ -60,7 +64,42 @@ def real_weddings(request):
     return render(request, 'website/real-weddings.html', {'weddings': weddings})
 
 def login_view(request):
+    from django.contrib.auth import authenticate, login
     user_type = request.GET.get('type')
+    
+    if request.method == 'POST':
+        email = request.POST.get('email')
+        password = request.POST.get('password')
+        
+        # In Django, authenticate usually takes 'username'. 
+        # If the email is the username, we use it. 
+        # Let's try to find the user by email first.
+        from django.contrib.auth.models import User
+        try:
+            user_obj = User.objects.get(email=email)
+            username = user_obj.username
+        except User.DoesNotExist:
+            username = email # Fallback to email as username
+            
+        user = authenticate(request, username=username, password=password)
+        
+        if user is not None:
+            login(request, user)
+            if hasattr(user, 'vendor_profile'):
+                return redirect('vendor_dashboard')
+            elif user.is_superuser:
+                return redirect('superadmin_dashboard')
+            else:
+                return redirect('index')
+        else:
+            from django.contrib import messages
+            # Check if this email has a pending vendor request
+            from .models import VendorRequest
+            if VendorRequest.objects.filter(email=email, status='pending').exists():
+                messages.info(request, "Your vendor registration is still pending approval. Please wait for the administrator to review your profile.")
+            else:
+                messages.error(request, "Invalid email or password.")
+            
     return render(request, 'website/login.html', {'user_type': user_type})
 
 def register_view(request):
@@ -80,6 +119,14 @@ def vendor_register_view(request):
         experience_years = request.POST.get('experience_years', 0)
         description = request.POST.get('description', '')
         business_image = request.FILES.get('business_image')
+        password = request.POST.get('password')
+        confirm_password = request.POST.get('confirm_password')
+
+        if password != confirm_password:
+            from django.contrib import messages
+            messages.error(request, "Passwords do not match.")
+            categories = Category.objects.all()
+            return render(request, 'website/vendor-register.html', {'categories': categories})
 
         VendorRequest.objects.create(
             business_name=business_name,
@@ -92,7 +139,8 @@ def vendor_register_view(request):
             website_link=website_link,
             experience_years=experience_years,
             description=description,
-            business_image=business_image
+            business_image=business_image,
+            password=password
         )
         return redirect('registration_success')
 
@@ -182,3 +230,61 @@ def checkout_view(request):
         
     total = sum(item.vendor.price_starting for item in items)
     return render(request, 'website/checkout.html', {'cart_items': items, 'total': total})
+
+def submit_inquiry(request):
+    if request.method == 'POST':
+        vendor_id = request.POST.get('vendor_id')
+        vendor = get_object_or_404(Vendor, id=vendor_id)
+        
+        customer_name = request.POST.get('name')
+        customer_email = request.POST.get('email')
+        customer_phone = request.POST.get('phone')
+        event_date = request.POST.get('event_date')
+        message = request.POST.get('message', f'Inquiry for {vendor.name}')
+        
+        from .models import Inquiry
+        Inquiry.objects.create(
+            vendor=vendor,
+            customer_name=customer_name,
+            customer_email=customer_email,
+            customer_phone=customer_phone,
+            event_date=event_date,
+            message=message,
+            user=request.user if request.user.is_authenticated else None
+        )
+        
+        return JsonResponse({
+            'status': 'success', 
+            'message': f'Your inquiry has been sent to {vendor.name}. They will contact you shortly!'
+        })
+    return JsonResponse({'status': 'error', 'message': 'Invalid request.'})
+
+def registration_success(request):
+    return render(request, 'website/registration-success.html')
+
+from django.contrib.auth.decorators import login_required
+from .models import Review
+
+@login_required(login_url='/login/')
+def submit_review(request):
+    if request.method == 'POST':
+        vendor_id = request.POST.get('vendor_id')
+        rating = request.POST.get('rating')
+        comment = request.POST.get('comment')
+        
+        vendor = get_object_or_404(Vendor, id=vendor_id)
+        
+        # Check if user already reviewed
+        if Review.objects.filter(vendor=vendor, user=request.user).exists():
+            return JsonResponse({'status': 'error', 'message': 'You have already reviewed this vendor.'})
+            
+        Review.objects.create(
+            vendor=vendor,
+            user=request.user,
+            rating=rating,
+            comment=comment
+        )
+        
+        return JsonResponse({'status': 'success', 'message': 'Your review has been published successfully!'})
+        
+    return JsonResponse({'status': 'error', 'message': 'Invalid request.'})

@@ -87,7 +87,23 @@ def partner_approve(request, pk):
         from django.utils.text import slugify
         cat, _ = Category.objects.get_or_create(name=req.category, defaults={'slug': slugify(req.category)})
         
-        Vendor.objects.create(
+        # Create User for Vendor
+        from django.contrib.auth.models import User
+        import random
+        import string
+        
+        # Generate a random password if none provided
+        password = req.password or ''.join(random.choices(string.ascii_letters + string.digits, k=10))
+        username = slugify(req.business_name).replace('-', '_')
+        
+        # Ensure username is unique
+        if User.objects.filter(username=username).exists():
+            username = f"{username}_{random.randint(10, 99)}"
+            
+        user = User.objects.create_user(username=username, email=req.email, password=password)
+        
+        vendor = Vendor.objects.create(
+            user=user,
             name=req.business_name,
             category=cat,
             location=req.city,
@@ -99,7 +115,9 @@ def partner_approve(request, pk):
         )
         req.status = 'approved'
         req.save()
-        messages.success(request, f'Request approved. Vendor "{req.business_name}" has been created.')
+        messages.success(request, f'Request approved. Vendor account created! Username: {username}')
+        if not req.password:
+             messages.info(request, f'Note: A random password was generated: {password}')
     else:
         messages.warning(request, 'Vendor with this name already exists.')
         

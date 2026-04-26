@@ -1,0 +1,277 @@
+{% extends 'vendor_admin/base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-12">
+    <div class="row align-items-center mb-4">
+      <div class="col">
+        <h2 class="h5 page-title">Welcome back, {{ vendor.name }}!</h2>
+        <p class="text-muted">Here is what's happening with your business today.</p>
+      </div>
+      <div class="col-auto">
+        <a href="{% url 'vendor_profile' %}" class="btn btn-primary">Edit Profile</a>
+      </div>
+    </div>
+    
+    <div class="row">
+      <div class="col-md-6 col-xl-3 mb-4">
+        <div class="card shadow border-0">
+          <div class="card-body">
+            <div class="row align-items-center">
+              <div class="col-3 text-center">
+                <span class="circle circle-sm bg-primary">
+                  <i class="fe fe-inbox fe-24 text-white"></i>
+                </span>
+              </div>
+              <div class="col">
+                <p class="small text-muted mb-0">Total Inquiries</p>
+                <span class="h3 mb-0">{{ total_inquiries }}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6 col-xl-3 mb-4">
+        <div class="card shadow border-0">
+          <div class="card-body">
+            <div class="row align-items-center">
+              <div class="col-3 text-center">
+                <span class="circle circle-sm bg-success">
+                  <i class="fe fe-mail fe-24 text-white"></i>
+                </span>
+              </div>
+              <div class="col">
+                <p class="small text-muted mb-0">New Inquiries</p>
+                <span class="h3 mb-0">{{ new_inquiries }}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6 col-xl-3 mb-4">
+        <div class="card shadow border-0">
+          <div class="card-body">
+            <div class="row align-items-center">
+              <div class="col-3 text-center">
+                <span class="circle circle-sm bg-success">
+                  <i class="fe fe-dollar-sign fe-24 text-white"></i>
+                </span>
+              </div>
+              <div class="col">
+                <p class="small text-muted mb-0">Potential Revenue</p>
+                <span class="h3 mb-0">₹{{ potential_revenue|floatformat:0 }}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6 col-xl-3 mb-4">
+        <div class="card shadow border-0">
+          <div class="card-body">
+            <div class="row align-items-center">
+              <div class="col-3 text-center">
+                <span class="circle circle-sm bg-info">
+                  <i class="fe fe-check-circle fe-24 text-white"></i>
+                </span>
+              </div>
+              <div class="col">
+                <p class="small text-muted mb-0">Profile Status</p>
+                <span class="h4 mb-0">{% if vendor.is_verified %}Verified{% else %}Pending{% endif %}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div> <!-- end section -->
+
+    <div class="row">
+      <!-- Inquiries Trend Chart -->
+      <div class="col-md-8 mb-4">
+        <div class="card shadow">
+          <div class="card-header d-flex justify-content-between align-items-center">
+            <strong class="card-title mb-0">Inquiries Trend (Last 6 Months)</strong>
+            <div class="dropdown">
+              <button class="btn btn-sm btn-light dropdown-toggle" type="button" data-toggle="dropdown">Monthly</button>
+              <div class="dropdown-menu">
+                <a class="dropdown-item" href="#">Monthly</a>
+                <a class="dropdown-item" href="#">Weekly</a>
+              </div>
+            </div>
+          </div>
+          <div class="card-body">
+            <div id="inquiryTrendChart"></div>
+          </div>
+        </div>
+      </div>
+      <!-- Quick Actions -->
+      <div class="col-md-4 mb-4">
+        <div class="card shadow">
+          <div class="card-header">
+            <strong class="card-title">Quick Actions</strong>
+          </div>
+          <div class="card-body">
+            <div class="list-group list-group-flush ml-n3 mr-n3 mb-n3">
+              <a href="{% url 'vendor_profile' %}" class="list-group-item list-group-item-action border-0">
+                <i class="fe fe-user fe-16 mr-2"></i> Update Business Profile
+              </a>
+              <a href="{% url 'vendor_inquiries' %}" class="list-group-item list-group-item-action border-0">
+                <i class="fe fe-mail fe-16 mr-2"></i> View New Inquiries
+              </a>
+              <a href="{% url 'vendor_reviews' %}" class="list-group-item list-group-item-action border-0">
+                <i class="fe fe-star fe-16 mr-2"></i> Check Latest Reviews
+              </a>
+              <a href="/" target="_blank" class="list-group-item list-group-item-action border-0">
+                <i class="fe fe-eye fe-16 mr-2"></i> View Public Listing
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <!-- Recent Inquiries -->
+      <div class="col-md-8">
+        <div class="card shadow mb-4">
+          <div class="card-header">
+            <strong class="card-title">Recent Inquiries</strong>
+            <a class="float-right small text-muted" href="{% url 'vendor_inquiries' %}">View all</a>
+          </div>
+          <div class="card-body">
+            <table class="table table-hover">
+              <thead>
+                <tr>
+                  <th>Customer</th>
+                  <th>Email</th>
+                  <th>Phone</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for inquiry in recent_inquiries %}
+                <tr>
+                  <td>{{ inquiry.customer_name }}</td>
+                  <td>{{ inquiry.customer_email }}</td>
+                  <td>{{ inquiry.customer_phone }}</td>
+                  <td>
+                    {% if inquiry.status == 'new' %}
+                    <span class="badge badge-pill badge-primary">New</span>
+                    {% elif inquiry.status == 'contacted' %}
+                    <span class="badge badge-pill badge-warning">Contacted</span>
+                    {% else %}
+                    <span class="badge badge-pill badge-success">Closed</span>
+                    {% endif %}
+                  </td>
+                </tr>
+                {% empty %}
+                <tr>
+                  <td colspan="4" class="text-center py-4">No inquiries yet.</td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+      <!-- Recent Reviews -->
+      <div class="col-md-4">
+        <div class="card shadow mb-4">
+          <div class="card-header">
+            <strong class="card-title">Latest Reviews</strong>
+            <a class="float-right small text-muted" href="{% url 'vendor_reviews' %}">View all</a>
+          </div>
+          <div class="card-body">
+            {% for review in recent_reviews %}
+            <div class="mb-3 border-bottom pb-2">
+              <div class="d-flex justify-content-between align-items-center mb-1">
+                <span class="small font-weight-bold">{{ review.reviewer_name }}</span>
+                <span class="text-warning small">
+                    <i class="fe fe-star fill"></i> {{ review.rating }}/5
+                </span>
+              </div>
+              <p class="small text-muted mb-0">{{ review.comment|truncatechars:60 }}</p>
+            </div>
+            {% empty %}
+            <p class="text-center text-muted py-4">No reviews yet.</p>
+            {% endfor %}
+          </div>
+        </div>
+
+        <div class="card shadow mb-4 bg-primary text-white">
+            <div class="card-body">
+                <div class="row align-items-center">
+                    <div class="col">
+                        <p class="small mb-1">Reviews Distribution</p>
+                        <div id="ratingsDistChartMini"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    // 1. Inquiry Trend Chart
+    var trendOptions = {
+        series: [{
+            name: 'Inquiries',
+            data: {{ trend_counts|safe }}
+        }],
+        chart: {
+            height: 350,
+            type: 'area',
+            toolbar: { show: false }
+        },
+        colors: ['#e72e77'],
+        dataLabels: { enabled: false },
+        stroke: { curve: 'smooth' },
+        xaxis: {
+            categories: {{ trend_labels|safe }},
+        },
+        tooltip: {
+            x: { format: 'dd/MM/yy HH:mm' },
+        },
+    };
+    var trendChart = new ApexCharts(document.querySelector("#inquiryTrendChart"), trendOptions);
+    trendChart.render();
+
+    // 2. Ratings Distribution Chart (Mini)
+    var ratingOptions = {
+        series: {{ rating_counts|safe }},
+        chart: {
+            height: 180,
+            type: 'donut',
+        },
+        labels: {{ rating_labels|safe }},
+        colors: ['#ffffff', 'rgba(255,255,255,0.7)', 'rgba(255,255,255,0.5)', 'rgba(255,255,255,0.3)', 'rgba(255,255,255,0.1)'],
+        legend: { show: false },
+        dataLabels: { enabled: false },
+        stroke: { show: false },
+        plotOptions: {
+            pie: {
+                donut: {
+                    size: '70%',
+                    labels: {
+                        show: true,
+                        total: {
+                            show: true,
+                            label: 'Reviews',
+                            color: '#fff',
+                            formatter: function (w) {
+                                return {{ total_reviews }}
+                            }
+                        }
+                    }
+                }
+            }
+        },
+    };
+    var ratingChart = new ApexCharts(document.querySelector("#ratingsDistChartMini"), ratingOptions);
+    ratingChart.render();
+</script>
+{% endblock %}

@@ -5,7 +5,7 @@
 
 <!-- Hero Begin -->
 <div class="page-hero set-bg" data-setbg="{% static 'website/img/banner/real-weddings-banner.jpg' %}?v=2"
-    style='background-image: url("{% static "website/img/banner/real-weddings-banner.jpg" %}?v=2");'>
+    style="background-image: url('{% static 'website/img/banner/real-weddings-banner.jpg' %}?v=2');">
     <div class="container">
         <div class="page-hero-content">
             <h2>Wedding Stories</h2>
@@ -22,7 +22,7 @@
             <div class="col-lg-4 col-md-6">
                 <div class="wedding-card">
                     <div class="wedding-image"
-                        style='background-image: url("{% if wedding.main_image %}{{ wedding.main_image.url }}{% else %}{% static "website/img/product/product-1.jpg" %}{% endif %}");'>
+                        style="background-image: url('{% if wedding.main_image %}{{ wedding.main_image.url }}{% else %}{% static 'website/img/product/product-1.jpg' %}{% endif %}');">
                     </div>
                     <div class="wedding-content">
                         <div class="wedding-title">{{ wedding.couple_name }}</div>

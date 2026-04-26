@@ -1,0 +1,72 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="Vendor Login - BookMyLawn">
+    <meta name="author" content="BookMyLawn">
+    <link rel="icon" href="favicon.ico">
+    <title>Vendor Login | BookMyLawn</title>
+    <!-- Simple bar CSS -->
+    <link rel="stylesheet" href="{% static 'admin/css/simplebar.css' %}">
+    <!-- Fonts CSS -->
+    <link href="https://fonts.googleapis.com/css2?family=Overpass:ital,wght@0,100;0,200;0,300;0,400;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+    <!-- Icons CSS -->
+    <link rel="stylesheet" href="{% static 'admin/css/feather.css' %}">
+    <!-- App CSS -->
+    <link rel="stylesheet" href="{% static 'admin/css/app-light.css' %}" id="lightTheme">
+    <link rel="stylesheet" href="{% static 'admin/css/app-dark.css' %}" id="darkTheme" disabled>
+    <style>
+      :root {
+        --theme-color: #e72e77;
+        --theme-color-dark: #c2185b;
+      }
+      .btn-primary { background-color: var(--theme-color) !important; border-color: var(--theme-color) !important; color: white !important; }
+      .btn-primary:hover { background-color: var(--theme-color-dark) !important; }
+      .text-primary { color: var(--theme-color) !important; }
+    </style>
+  </head>
+  <body class="light">
+    <div class="wrapper vh-100">
+      <div class="row align-items-center h-100">
+        <form class="col-lg-3 col-md-4 col-10 mx-auto text-center" method="POST">
+          {% csrf_token %}
+          <a class="navbar-brand mx-auto mt-2 flex-fill text-center" href="/">
+            <img src="{% static 'website/img/logo/logo.png' %}" alt="Logo" style="height: 50px; margin-bottom: 20px;">
+          </a>
+          <h1 class="h6 mb-3">Vendor Sign In</h1>
+          
+          {% if messages %}
+            {% for message in messages %}
+              <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                {{ message }}
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+            {% endfor %}
+          {% endif %}
+
+          <div class="form-group text-left">
+            <label for="inputEmail" class="sr-only">Username</label>
+            <input type="text" name="username" id="inputEmail" class="form-control form-control-lg" placeholder="Username" required autofocus="">
+          </div>
+          <div class="form-group text-left">
+            <label for="inputPassword" class="sr-only">Password</label>
+            <input type="password" name="password" id="inputPassword" class="form-control form-control-lg" placeholder="Password" required>
+          </div>
+          <div class="checkbox mb-3">
+            <label>
+              <input type="checkbox" value="remember-me"> Stay logged in </label>
+          </div>
+          <button class="btn btn-lg btn-primary btn-block" type="submit">Sign In</button>
+          <p class="mt-5 mb-3 text-muted">© 2026 BookMyLawn</p>
+        </form>
+      </div>
+    </div>
+    <script src="{% static 'admin/js/jquery.min.js' %}"></script>
+    <script src="{% static 'admin/js/popper.min.js' %}"></script>
+    <script src="{% static 'admin/js/bootstrap.min.js' %}"></script>
+  </body>
+</html>

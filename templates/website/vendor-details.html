@@ -2,248 +2,700 @@
 {% load static %}
 
 {% block title %}{{ vendor.name }} - {{ vendor.category.name }} in {{ vendor.location }} | BookMyLawn{% endblock %}
-{% block meta_description %}Looking for a {{ vendor.category.name }} in {{ vendor.location }}? Check out {{ vendor.name }}, read verified reviews, and view starting prices on BookMyLawn.{% endblock %}
 
 {% block content %}
+<style>
+    .vendor-header-section {
+        padding: 40px 0;
+        background: #fff;
+        border-bottom: 1px solid #eee;
+    }
+    .gallery-grid {
+        display: grid;
+        grid-template-columns: 2fr 1fr;
+        grid-template-rows: repeat(2, 250px);
+        gap: 10px;
+        margin-bottom: 30px;
+        border-radius: 15px;
+        overflow: hidden;
+    }
+    .gallery-item {
+        position: relative;
+        overflow: hidden;
+        cursor: pointer;
+    }
+    .gallery-item img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: 0.5s;
+    }
+    .gallery-item:hover img {
+        transform: scale(1.05);
+    }
+    .main-gallery {
+        grid-row: span 2;
+    }
+    .more-photos {
+        position: absolute;
+        bottom: 20px;
+        right: 20px;
+        background: rgba(0,0,0,0.7);
+        color: white;
+        padding: 10px 20px;
+        border-radius: 30px;
+        font-size: 14px;
+        font-weight: 600;
+    }
 
-    <!-- Breadcrumb Begin -->
-    <div class="breadcrumb-option">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-12">
-                    <div class="breadcrumb__links">
-                        <a href="/"><i class="fa fa-home"></i> Home</a>
-                        <a href="/vendors/">{{ vendor.category.name }}</a>
-                        <span>{{ vendor.name }}</span>
-                    </div>
+    .vendor-main-info h2 {
+        font-family: 'Playfair Display', serif;
+        font-weight: 700;
+        font-size: 36px;
+        margin-bottom: 10px;
+    }
+    .vendor-meta {
+        display: flex;
+        gap: 20px;
+        align-items: center;
+        color: #666;
+        margin-bottom: 20px;
+    }
+    .rating-badge {
+        background: #008000;
+        color: white;
+        padding: 4px 10px;
+        border-radius: 4px;
+        font-weight: 700;
+        font-size: 14px;
+    }
+
+    .info-card {
+        background: white;
+        border-radius: 15px;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+        padding: 25px;
+        margin-bottom: 30px;
+        border: 1px solid #f0f0f0;
+    }
+    .price-box {
+        display: flex;
+        justify-content: space-between;
+        padding: 15px 0;
+        border-bottom: 1px solid #eee;
+    }
+    .price-box:last-child {
+        border-bottom: none;
+    }
+    .price-label {
+        color: #e72e77;
+        font-weight: 700;
+        font-size: 18px;
+    }
+
+    .amenity-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 15px;
+    }
+    .amenity-item {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-size: 14px;
+        color: #444;
+    }
+    .amenity-item i {
+        color: #00c0a3;
+    }
+
+    .sticky-booking-card {
+        position: sticky;
+        top: 100px;
+        z-index: 10;
+    }
+    .btn-book-now {
+        background: #e72e77;
+        color: white;
+        width: 100%;
+        padding: 15px;
+        border-radius: 10px;
+        font-weight: 700;
+        font-size: 18px;
+        border: none;
+        transition: 0.3s;
+        margin-bottom: 15px;
+    }
+    .btn-book-now:hover {
+        background: #c2185b;
+        transform: translateY(-2px);
+    }
+</style>
+
+<style>
+    /* Mobile Sticky Bar */
+    .mobile-sticky-bar {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        background: white;
+        box-shadow: 0 -5px 20px rgba(0,0,0,0.1);
+        padding: 15px 20px;
+        display: none;
+        z-index: 1000;
+        justify-content: space-between;
+        align-items: center;
+    }
+    @media (max-width: 991px) {
+        .mobile-sticky-bar { display: flex; }
+        .product-details { padding-bottom: 80px; }
+    }
+</style>
+
+<div class="mobile-sticky-bar">
+    <div>
+        <span class="text-muted small">Starting from</span>
+        <div class="font-weight-bold text-primary">₹{{ vendor.price_starting }}</div>
+    </div>
+    <button class="btn btn-primary px-4 py-2 font-weight-bold" style="border-radius: 8px;" onclick="document.querySelector('#event_date').focus()">Check Availability</button>
+</div>
+
+<div class="breadcrumb-option bg-light py-3 mb-4">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="breadcrumb__links">
+                    <a href="{% url 'index' %}" class="text-muted"><i class="fa fa-home"></i> Home</a>
+                    <a href="{% url 'vendors' %}?category={{ vendor.category.slug }}" class="text-muted">{{ vendor.category.name }}</a>
+                    <span class="font-weight-bold text-dark">{{ vendor.name }}</span>
                 </div>
             </div>
         </div>
     </div>
-    <!-- Breadcrumb End -->
+</div>
 
-    <!-- Vendor Details Section Begin -->
-    <section class="product-details spad">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-6">
-                    <div class="product__details__pic">
-                        <div class="product__details__slider__content">
-                            <img src="{% if vendor.image %}{{ vendor.image.url }}{% else %}{% static 'website/img/product/product-1.jpg' %}?v=2{% endif %}"
-                                 alt="Vendor Gallery"
-                                 class="vendor-main-image">
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-6">
-                    <div class="vendor-info-card">
-                        <h3 class="vendor-title">
-                            {{ vendor.name }}
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/glightbox/dist/css/glightbox.min.css" />
+
+<div class="vendor-header-section">
+    <div class="container">
+        <div class="gallery-grid">
+            <a href="{% if vendor.image %}{{ vendor.image.url }}{% else %}https://images.pexels.com/photos/169190/pexels-photo-169190.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1{% endif %}" class="glightbox gallery-item main-gallery" data-gallery="vendor-gallery">
+                <img src="{% if vendor.image %}{{ vendor.image.url }}{% else %}https://images.pexels.com/photos/169190/pexels-photo-169190.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1{% endif %}" alt="Main Image">
+            </a>
+            
+            {% if vendor.gallery.all %}
+                {% for img in vendor.gallery.all|slice:":2" %}
+                <a href="{{ img.image.url }}" class="glightbox gallery-item" data-gallery="vendor-gallery">
+                    <img src="{{ img.image.url }}" alt="Gallery Image">
+                    {% if forloop.last and vendor.gallery.all.count > 2 %}
+                    <div class="more-photos"><i class="fa fa-camera"></i> {{ vendor.gallery.all.count }} Photos</div>
+                    {% endif %}
+                </a>
+                {% endfor %}
+                
+                <!-- Hidden images for the lightbox -->
+                {% for img in vendor.gallery.all|slice:"2:" %}
+                <a href="{{ img.image.url }}" class="glightbox" data-gallery="vendor-gallery" style="display: none;"></a>
+                {% endfor %}
+            {% else %}
+                <a href="https://images.pexels.com/photos/1035665/pexels-photo-1035665.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" class="glightbox gallery-item" data-gallery="vendor-gallery">
+                    <img src="https://images.pexels.com/photos/1035665/pexels-photo-1035665.jpeg?auto=compress&cs=tinysrgb&w=600" alt="Gallery 1">
+                </a>
+                <a href="https://images.pexels.com/photos/2291462/pexels-photo-2291462.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" class="glightbox gallery-item" data-gallery="vendor-gallery">
+                    <img src="https://images.pexels.com/photos/2291462/pexels-photo-2291462.jpeg?auto=compress&cs=tinysrgb&w=600" alt="Gallery 2">
+                    <div class="more-photos"><i class="fa fa-camera"></i> 12+ Photos</div>
+                </a>
+            {% endif %}
+        </div>
+
+        <div class="row">
+            <div class="col-lg-8">
+                <div class="vendor-main-info">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <div class="d-flex align-items-center gap-3">
+                            <span class="rating-badge"><i class="fa fa-star"></i> 4.8</span>
+                            <span class="text-muted">{{ vendor.reviews.count }} reviews</span>
                             {% if vendor.is_verified %}
-                            <i class="fa fa-check-circle text-success" style="font-size: 22px;" title="Verified"></i>
+                            <span class="badge badge-success px-3 py-1 ml-2"><i class="fa fa-check-circle"></i> Verified</span>
                             {% endif %}
-                        </h3>
-                        <p class="vendor-location"><i class="fa fa-map-marker"></i> {{ vendor.location }}</p>
-                        <div class="rating mb-4">
-                            <i class="fa fa-star text-warning"></i>
-                            <i class="fa fa-star text-warning"></i>
-                            <i class="fa fa-star text-warning"></i>
-                            <i class="fa fa-star text-warning"></i>
-                            <i class="fa fa-star text-warning"></i>
-                            <span class="ml-2 text-muted">( {{ vendor.reviews.count }} verified reviews )</span>
                         </div>
-                        <div class="price-badge">₹{{ vendor.price_starting }} <span>/ per day</span></div>
-                        <p>{{ vendor.description|default:"Contact the vendor to learn more about their exceptional services and customize a package for your special day." }}</p>
+                        <button class="btn btn-sm btn-outline-secondary rounded-pill px-3" onclick="shareVendor()">
+                            <i class="fa fa-share-alt mr-1"></i> Share
+                        </button>
+                    </div>
+                    <h2>{{ vendor.name }}</h2>
+                    <div class="vendor-meta">
+                        <span><i class="fa fa-map-marker text-danger"></i> {{ vendor.location }}, {{ vendor.address|default:"Lucknow" }}</span>
+                        <span><i class="fa fa-building-o text-primary"></i> {{ vendor.category.name }}</span>
+                    </div>
 
-                        <div class="product__details__widget mt-4 mb-4">
-                            <h6 style="font-weight: 700; margin-bottom: 15px;">Key Details</h6>
+                    {% if 'venue' in vendor.category.slug or 'lawn' in vendor.category.slug or 'banquet' in vendor.category.slug %}
+                        <!-- Venue Specific Details -->
+                        <div class="row mb-4">
+                            <div class="col-md-4">
+                                <div class="info-card text-center">
+                                    <i class="fa fa-users fa-2x mb-2 text-info"></i>
+                                    <p class="mb-0 text-muted small">Capacity</p>
+                                    <h5 class="mb-0 font-weight-bold">{{ vendor.capacity|default:"500-1500" }}</h5>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="info-card text-center">
+                                    <i class="fa fa-bed fa-2x mb-2 text-warning"></i>
+                                    <p class="mb-0 text-muted small">Rooms</p>
+                                    <h5 class="mb-0 font-weight-bold">{{ vendor.rooms|default:"20" }} Rooms</h5>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="info-card text-center">
+                                    <i class="fa fa-cutlery fa-2x mb-2 text-success"></i>
+                                    <p class="mb-0 text-muted small">Cuisine</p>
+                                    <h5 class="mb-0 font-weight-bold">Veg & Non-Veg</h5>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="info-card">
+                            <h4 class="mb-4 font-weight-bold">Pricing Details</h4>
+                            <div class="price-box">
+                                <div>
+                                    <h5 class="mb-0 font-weight-bold text-success">Veg Plate</h5>
+                                    <p class="text-muted small mb-0">Taxes included</p>
+                                </div>
+                                <span class="price-label">₹{{ vendor.veg_price|default:"800" }}</span>
+                            </div>
+                            <div class="price-box">
+                                <div>
+                                    <h5 class="mb-0 font-weight-bold text-danger">Non-Veg Plate</h5>
+                                    <p class="text-muted small mb-0">Taxes included</p>
+                                </div>
+                                <span class="price-label">₹{{ vendor.non_veg_price|default:"1100" }}</span>
+                            </div>
+                            <div class="mt-3 text-muted small">
+                                <i class="fa fa-info-circle"></i> Pricing may vary based on guest count and menu selection.
+                            </div>
+                        </div>
+                    {% else %}
+                        <!-- Non-Venue Specific Details (Photographers, Makeup Artists, etc.) -->
+                        <div class="row mb-4">
+                            <div class="col-md-4">
+                                <div class="info-card text-center">
+                                    <i class="fa fa-briefcase fa-2x mb-2 text-info"></i>
+                                    <p class="mb-0 text-muted small">Experience</p>
+                                    <h5 class="mb-0 font-weight-bold">{{ vendor.experience_years|default:"5" }} Years</h5>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="info-card text-center">
+                                    <i class="fa fa-star fa-2x mb-2 text-warning"></i>
+                                    <p class="mb-0 text-muted small">Events Completed</p>
+                                    <h5 class="mb-0 font-weight-bold">100+</h5>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="info-card text-center">
+                                    <i class="fa fa-calendar-check-o fa-2x mb-2 text-success"></i>
+                                    <p class="mb-0 text-muted small">Availability</p>
+                                    <h5 class="mb-0 font-weight-bold">Open for Booking</h5>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="info-card">
+                            <h4 class="mb-4 font-weight-bold">Pricing Details</h4>
+                            <div class="price-box">
+                                <div>
+                                    <h5 class="mb-0 font-weight-bold text-primary">Starting Price</h5>
+                                    <p class="text-muted small mb-0">Per Day / Per Event</p>
+                                </div>
+                                <span class="price-label">₹{{ vendor.price_starting }}</span>
+                            </div>
+                            <div class="mt-3 text-muted small">
+                                <i class="fa fa-info-circle"></i> Exact pricing depends on package selection and event requirements.
+                            </div>
+                        </div>
+                    {% endif %}
+
+                    <div class="info-card">
+                        <h4 class="mb-4 font-weight-bold">About {{ vendor.name }}</h4>
+                        <p style="line-height: 1.8; color: #555;">
+                            {{ vendor.description|default:"Located in the heart of the city, this venue offers a perfect blend of luxury and convenience. With state-of-the-art facilities and a dedicated staff, we ensure your special day is nothing short of magical." }}
+                        </p>
+                    </div>
+
+                    {% if vendor.amenities_list %}
+                    <div class="info-card">
+                        <h4 class="mb-4 font-weight-bold">Amenities & Features</h4>
+                        <div class="amenity-grid">
+                            {% for amenity in vendor.amenities_list|slice:":6" %}
+                            <div class="amenity-item">
+                                <i class="fa fa-check-circle"></i> {{ amenity }}
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    {% endif %}
+
+                    <div class="info-card">
+                        <h4 class="mb-4 font-weight-bold">Business Policies</h4>
+                        <div class="row">
+                            {% if 'venue' in vendor.category.slug or 'lawn' in vendor.category.slug or 'banquet' in vendor.category.slug %}
+                                <!-- Venue Policies -->
+                                <div class="col-6 mb-4">
+                                    <div class="d-flex align-items-start">
+                                        <div class="policy-icon-box mr-3"><i class="fa fa-cutlery"></i></div>
+                                        <div>
+                                            <span class="small d-block text-muted">Food Policy</span>
+                                            <span class="font-weight-bold">Outside Food Allowed</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-6 mb-4">
+                                    <div class="d-flex align-items-start">
+                                        <div class="policy-icon-box mr-3"><i class="fa fa-glass"></i></div>
+                                        <div>
+                                            <span class="small d-block text-muted">Alcohol</span>
+                                            <span class="font-weight-bold">Allowed (Permit Req.)</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-6 mb-3">
+                                    <div class="d-flex align-items-start">
+                                        <div class="policy-icon-box mr-3"><i class="fa fa-magic"></i></div>
+                                        <div>
+                                            <span class="small d-block text-muted">Decorators</span>
+                                            <span class="font-weight-bold">Outside Allowed</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-6 mb-3">
+                                    <div class="d-flex align-items-start">
+                                        <div class="policy-icon-box mr-3"><i class="fa fa-volume-up"></i></div>
+                                        <div>
+                                            <span class="small d-block text-muted">Music</span>
+                                            <span class="font-weight-bold">Until 10:00 PM</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% else %}
+                                <!-- Non-Venue Policies (Photographers, Makeup, etc.) -->
+                                <div class="col-6 mb-4">
+                                    <div class="d-flex align-items-start">
+                                        <div class="policy-icon-box mr-3"><i class="fa fa-plane"></i></div>
+                                        <div>
+                                            <span class="small d-block text-muted">Travel Policy</span>
+                                            <span class="font-weight-bold">Travels Outstation</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-6 mb-4">
+                                    <div class="d-flex align-items-start">
+                                        <div class="policy-icon-box mr-3"><i class="fa fa-credit-card"></i></div>
+                                        <div>
+                                            <span class="small d-block text-muted">Payment Terms</span>
+                                            <span class="font-weight-bold">50% Advance</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-6 mb-3">
+                                    <div class="d-flex align-items-start">
+                                        <div class="policy-icon-box mr-3"><i class="fa fa-ban"></i></div>
+                                        <div>
+                                            <span class="small d-block text-muted">Cancellation</span>
+                                            <span class="font-weight-bold">Non-Refundable</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-6 mb-3">
+                                    <div class="d-flex align-items-start">
+                                        <div class="policy-icon-box mr-3"><i class="fa fa-clock-o"></i></div>
+                                        <div>
+                                            <span class="small d-block text-muted">Delivery Time</span>
+                                            <span class="font-weight-bold">2-3 Weeks</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+
+<style>
+    .policy-icon-box {
+        width: 40px;
+        height: 40px;
+        background: #f8f9fa;
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #e72e77;
+        font-size: 18px;
+        flex-shrink: 0;
+    }
+</style>
+
+                    <!-- FAQ Section -->
+                    <div class="info-card">
+                        <h4 class="mb-4 font-weight-bold">Frequently Asked Questions</h4>
+                        <div id="accordion">
                             <div class="mb-3">
-                                <span class="feature-chip"><i class="fa fa-users text-info"></i> 1000 Guests Max</span>
-                                <span class="feature-chip"><i class="fa fa-money text-success"></i> 50% Advance</span>
-                            </div>
-                            <div>
-                                <span style="font-weight: bold; font-size: 14px; display: block; margin-bottom: 10px;">Services Provided:</span>
-                                <span class="feature-chip">Venue</span>
-                                <span class="feature-chip">Catering</span>
-                                <span class="feature-chip">Decor</span>
-                                <span class="feature-chip">DJ</span>
-                                <span class="feature-chip">Valet Parking</span>
-                            </div>
-                        </div>
-
-                        <div class="product__details__widget mt-5 mb-4" style="background: var(--theme-color-light); padding: 30px; border-radius: var(--radius-lg); border: 1px solid var(--theme-color-border);">
-                            <h5 style="font-family: var(--font-heading); font-weight: 700; margin-bottom: 20px; color: var(--theme-color);">Plan Your Event</h5>
-                            <div class="row">
-                                <div class="col-md-6 mb-3">
-                                    <label style="font-size: 14px; font-weight: 600; color: var(--color-dark); display: block; margin-bottom: 8px;">Where is your event?</label>
-                                    <input type="text" id="detail_city" class="form-control" placeholder="City or Location" value="{{ request.GET.city|default:vendor.location }}" style="border-radius: 8px; padding: 12px; border: 1px solid #ddd;">
-                                </div>
-                                <div class="col-md-6 mb-3">
-                                    <label style="font-size: 14px; font-weight: 600; color: var(--color-dark); display: block; margin-bottom: 8px;">When is your event?</label>
-                                    <input type="date" id="detail_date" class="form-control" value="{{ request.GET.date|default:'' }}" style="border-radius: 8px; padding: 12px; border: 1px solid #ddd;">
+                                <button class="btn btn-link text-dark font-weight-bold p-0 w-100 text-left d-flex justify-content-between align-items-center" data-toggle="collapse" data-target="#faq1">
+                                    <span>Do you allow outside decorators?</span>
+                                    <i class="fa fa-chevron-down"></i>
+                                </button>
+                                <div id="faq1" class="collapse show mt-2 small text-muted">
+                                    Yes, we allow outside decorators with a small royalty fee. However, our in-house team is highly recommended for the best experience.
                                 </div>
                             </div>
-                            <div class="mt-4">
-                                <button class="btn-theme add-to-cart" data-id="{{ vendor.id }}" style="width: 100%; margin-bottom: 15px; padding: 15px; border-radius: var(--radius-pill);">
-                                    <i class="fa fa-shopping-bag mr-2"></i> Add to Cart & Reserve
+                            <hr>
+                            <div class="mb-3">
+                                <button class="btn btn-link text-dark font-weight-bold p-0 w-100 text-left d-flex justify-content-between align-items-center collapsed" data-toggle="collapse" data-target="#faq2">
+                                    <span>What is your cancellation policy?</span>
+                                    <i class="fa fa-chevron-down"></i>
                                 </button>
-                                <button class="btn-outline-theme add-to-wishlist" data-id="{{ vendor.id }}" style="width: 100%; padding: 15px; border-radius: var(--radius-pill);">
-                                    <i class="fa fa-heart-o mr-2"></i> Add to Wishlist
-                                </button>
+                                <div id="faq2" class="collapse mt-2 small text-muted">
+                                    The advance amount is non-refundable but can be adjusted for a future date within 6 months, subject to availability.
+                                </div>
                             </div>
-                            <p class="text-center mt-3 mb-0" style="font-size: 13px; color: #888;">
-                                <i class="fa fa-info-circle mr-1"></i> No immediate payment required. We will contact you to confirm details.
-                            </p>
                         </div>
                     </div>
                 </div>
+            </div>
 
-                <!-- Tabs -->
-                <div class="col-lg-12 mt-5">
-                    <div class="product__details__tab">
-                        <ul class="nav nav-tabs" role="tablist">
-                            <li class="nav-item">
-                                <a class="nav-link active" data-toggle="tab" href="#tabs-1" role="tab">About the Vendor</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" data-toggle="tab" href="#tabs-2" role="tab">Reviews ( {{ vendor.reviews.count }} )</a>
-                            </li>
-                        </ul>
-                        <div class="tab-content mt-4">
-                            <div class="tab-pane active" id="tabs-1" role="tabpanel">
-                                <h6>About {{ vendor.name }}</h6>
-                                <p>{{ vendor.description|default:"We pride ourselves in delivering perfection. Contact us to learn more about our services." }}</p>
+            <div class="col-lg-4">
+                <div class="sticky-booking-card">
+                    <div class="info-card" style="border: 2px solid #e72e77;">
+                        <h5 class="font-weight-bold mb-4">Send Inquiry</h5>
+                        <form id="inquiryForm">
+                            <div class="form-group">
+                                <label class="small font-weight-bold">Full Name</label>
+                                <input type="text" id="inq_name" class="form-control" value="{{ request.user.get_full_name|default:'' }}" required>
                             </div>
-                            <div class="tab-pane" id="tabs-2" role="tabpanel">
-                                <h6>Recent Reviews</h6>
-                                {% for review in vendor.reviews.all %}
-                                <div class="review-item">
-                                    <strong>{{ review.reviewer_name }}</strong>
-                                    <span class="text-warning">
-                                        {% for i in "12345"|make_list %}
+                            <div class="form-group">
+                                <label class="small font-weight-bold">Phone Number</label>
+                                <input type="tel" id="inq_phone" class="form-control" required>
+                            </div>
+                            <div class="form-group">
+                                <label class="small font-weight-bold">Email Address</label>
+                                <input type="email" id="inq_email" class="form-control" value="{{ request.user.email|default:'' }}" required>
+                            </div>
+                            <div class="form-group">
+                                <label class="small font-weight-bold">Event Date</label>
+                                <input type="date" id="inq_date" class="form-control" required>
+                            </div>
+                            <div class="form-group">
+                                <label class="small font-weight-bold">Your Message (Optional)</label>
+                                <textarea id="inq_message" class="form-control" rows="2" placeholder="Tell us more about your event..."></textarea>
+                            </div>
+                            <button type="submit" class="btn-book-now" id="submitInquiryBtn">
+                                <i class="fa fa-paper-plane"></i> Send Inquiry
+                            </button>
+                            <button type="button" class="btn btn-outline-dark w-100 py-3 font-weight-bold add-to-wishlist" data-id="{{ vendor.id }}" style="border-radius: 10px;">
+                                <i class="fa fa-heart-o"></i> Save to Wishlist
+                            </button>
+                        </form>
+                        <hr>
+                        <div class="text-center">
+                            <p class="mb-2 small font-weight-bold">Direct Contact</p>
+                            <a href="tel:+910000000000" class="h5 text-dark font-weight-bold"><i class="fa fa-phone"></i> +91 8853 000000</a>
+                        </div>
+                    </div>
+
+                    <div class="info-card bg-light">
+                        <h6 class="font-weight-bold">Location Map</h6>
+                        {% if vendor.map_link %}
+                        <div class="mt-3 rounded overflow-hidden" style="height: 200px;">
+                            <iframe src="{{ vendor.map_link }}" width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                        </div>
+                        {% else %}
+                        <div class="map-placeholder mt-3" style="height: 150px; background: #ddd; border-radius: 10px; display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                            <i class="fa fa-map-marker fa-3x text-muted mb-2"></i>
+                            <span class="small text-muted">Map not provided</span>
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Reviews Section -->
+        <div class="row mt-5">
+            <div class="col-lg-8">
+                <div class="info-card">
+                    <div class="d-flex justify-content-between align-items-center mb-4">
+                        <h4 class="font-weight-bold mb-0">Reviews & Ratings</h4>
+                        <button class="btn btn-outline-primary rounded-pill px-4" data-toggle="modal" data-target="#writeReviewModal">
+                            <i class="fa fa-pencil"></i> Write a Review
+                        </button>
+                    </div>
+                    
+                    {% if vendor.reviews.all %}
+                        {% for review in vendor.reviews.all %}
+                        <div class="review-item border-bottom pb-4 mb-4">
+                            <div class="d-flex align-items-start gap-3">
+                                <div class="review-avatar bg-light rounded-circle d-flex align-items-center justify-content-center text-primary font-weight-bold" style="width: 50px; height: 50px; font-size: 20px;">
+                                    {{ review.user.first_name|first|default:"U" }}
+                                </div>
+                                <div class="flex-grow-1 ml-3">
+                                    <div class="d-flex justify-content-between align-items-center mb-1">
+                                        <h6 class="font-weight-bold mb-0">{{ review.user.get_full_name|default:"Anonymous User" }}</h6>
+                                        <span class="text-muted small">{{ review.created_at|date:"M d, Y" }}</span>
+                                    </div>
+                                    <div class="text-warning small mb-2">
+                                        {% for i in "12345" %}
                                             {% if forloop.counter <= review.rating %}
                                             <i class="fa fa-star"></i>
                                             {% else %}
                                             <i class="fa fa-star-o"></i>
                                             {% endif %}
                                         {% endfor %}
-                                    </span>
-                                    <p>"{{ review.comment }}"</p>
-                                    <small class="text-muted">{{ review.created_at|date:"M d, Y" }}</small>
+                                    </div>
+                                    <p class="text-muted mb-0">{{ review.comment }}</p>
                                 </div>
-                                {% empty %}
-                                <p>No reviews yet.</p>
-                                {% endfor %}
                             </div>
                         </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Similar Venues -->
-            <div class="row mt-5">
-                <div class="col-lg-12 text-center">
-                    <div class="related__title">
-                        <h5>SIMILAR VENUES</h5>
-                    </div>
-                </div>
-                <div class="col-lg-4 col-md-6">
-                    <div class="product__item">
-                        <div class="product__item__pic set-bg" data-setbg="{% static 'website/img/product/product-2.jpg' %}"></div>
-                        <div class="product__item__text text-center">
-                            <h6><a href="#">Royal Palace Gardens</a></h6>
-                            <div class="rating">
-                                <i class="fa fa-star text-warning"></i>
-                                <i class="fa fa-star text-warning"></i>
-                                <i class="fa fa-star text-warning"></i>
-                                <i class="fa fa-star text-warning"></i>
-                                <i class="fa fa-star text-warning"></i>
-                            </div>
-                            <div class="product__price mt-2"><i class="fa fa-map-marker mr-1 icon-theme"></i> Mumbai &nbsp;•&nbsp; ₹2,00,000/day</div>
+                        {% endfor %}
+                    {% else %}
+                        <div class="text-center py-5 bg-light rounded">
+                            <i class="fa fa-star-o fa-3x text-muted mb-3"></i>
+                            <h5 class="text-muted">No reviews yet</h5>
+                            <p class="text-muted small">Be the first to share your experience!</p>
                         </div>
-                    </div>
-                </div>
-                <div class="col-lg-4 col-md-6">
-                    <div class="product__item">
-                        <div class="product__item__pic set-bg" data-setbg="{% static 'website/img/product/product-3.jpg' %}"></div>
-                        <div class="product__item__text text-center">
-                            <h6><a href="#">Sea View Banquets</a></h6>
-                            <div class="rating">
-                                <i class="fa fa-star text-warning"></i>
-                                <i class="fa fa-star text-warning"></i>
-                                <i class="fa fa-star text-warning"></i>
-                                <i class="fa fa-star text-warning"></i>
-                                <i class="fa fa-star-half-o text-warning"></i>
-                            </div>
-                            <div class="product__price mt-2"><i class="fa fa-map-marker mr-1 icon-theme"></i> Mumbai &nbsp;•&nbsp; ₹1,20,000/day</div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-4 col-md-6">
-                    <div class="product__item">
-                        <div class="product__item__pic set-bg" data-setbg="{% static 'website/img/product/product-4.jpg' %}"></div>
-                        <div class="product__item__text text-center">
-                            <h6><a href="#">Luxe Event Space</a></h6>
-                            <div class="rating">
-                                <i class="fa fa-star text-warning"></i>
-                                <i class="fa fa-star text-warning"></i>
-                                <i class="fa fa-star text-warning"></i>
-                                <i class="fa fa-star text-warning"></i>
-                                <i class="fa fa-star-o text-warning"></i>
-                            </div>
-                            <div class="product__price mt-2"><i class="fa fa-map-marker mr-1 icon-theme"></i> Mumbai &nbsp;•&nbsp; ₹90,000/day</div>
-                        </div>
-                    </div>
+                    {% endif %}
                 </div>
             </div>
         </div>
-    </section>
-    <!-- Vendor Details Section End -->
+
+        <!-- Related Vendors -->
+        <div class="mt-5">
+            <h3 class="font-weight-bold mb-4">Similar {{ vendor.category.name }} in {{ vendor.location }}</h3>
+            <div class="row">
+                {% for related in related_vendors %}
+                <div class="col-lg-3 col-md-6">
+                    <div class="info-card p-0 overflow-hidden h-100">
+                        <img src="{% if related.image %}{{ related.image.url }}{% else %}https://images.pexels.com/photos/169190/pexels-photo-169190.jpeg?auto=compress&cs=tinysrgb&w=300{% endif %}" class="w-100" style="height: 180px; object-fit: cover;">
+                        <div class="p-3">
+                            <h6 class="font-weight-bold mb-1"><a href="{% url 'vendor_details' related.id %}" class="text-dark">{{ related.name }}</a></h6>
+                            <p class="small text-muted mb-2"><i class="fa fa-map-marker"></i> {{ related.location }}</p>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <span class="text-primary font-weight-bold">₹{{ related.price_starting }}</span>
+                                <span class="badge badge-success"><i class="fa fa-star"></i> 4.5</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Write Review Modal -->
+<div class="modal fade" id="writeReviewModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content" style="border-radius: 15px;">
+            <div class="modal-header border-0 pb-0">
+                <h5 class="font-weight-bold">Rate Your Experience</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                {% if request.user.is_authenticated %}
+                <form id="reviewForm">
+                    <div class="text-center mb-4">
+                        <div class="rating-stars" style="font-size: 30px; color: #ddd; cursor: pointer;">
+                            <i class="fa fa-star star-select" data-rating="1"></i>
+                            <i class="fa fa-star star-select" data-rating="2"></i>
+                            <i class="fa fa-star star-select" data-rating="3"></i>
+                            <i class="fa fa-star star-select" data-rating="4"></i>
+                            <i class="fa fa-star star-select" data-rating="5"></i>
+                        </div>
+                        <input type="hidden" id="review_rating" name="rating" required>
+                        <p class="small text-muted mt-2" id="rating-text">Select a star rating</p>
+                    </div>
+                    <div class="form-group">
+                        <label class="small font-weight-bold">Your Review</label>
+                        <textarea class="form-control" id="review_text" rows="4" placeholder="Tell others about your experience..." required></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary w-100 font-weight-bold py-2" style="border-radius: 8px;">Submit Review</button>
+                </form>
+                {% else %}
+                <div class="text-center py-4">
+                    <i class="fa fa-lock fa-3x text-muted mb-3"></i>
+                    <h5>Login Required</h5>
+                    <p class="text-muted">You must be logged in to write a review.</p>
+                    <a href="{% url 'login' %}?next={{ request.path }}" class="btn btn-primary px-4 mt-2">Log In Now</a>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
 
 {% endblock %}
 
 {% block extra_js %}
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="https://cdn.jsdelivr.net/gh/mcstudios/glightbox/dist/js/glightbox.min.js"></script>
 <script>
+    const lightbox = GLightbox({
+        selector: '.glightbox',
+        touchNavigation: true,
+        loop: true,
+        autoplayVideos: true
+    });
+
     const csrfToken = '{{ csrf_token }}';
 
-    $('.add-to-cart').click(function(e) {
+    $('#inquiryForm').submit(function(e) {
         e.preventDefault();
-        const selectedDate = $('#detail_date').val();
-        const selectedCity = $('#detail_city').val();
-
-        if (!selectedDate || !selectedCity) {
-            alert('Please select a Date and Location to check availability before adding to cart.');
-            return;
-        }
         
-        let vendorId = $(this).data('id');
-        let btn = $(this);
+        let formData = {
+            'vendor_id': '{{ vendor.id }}',
+            'name': $('#inq_name').val(),
+            'phone': $('#inq_phone').val(),
+            'email': $('#inq_email').val(),
+            'event_date': $('#inq_date').val(),
+            'message': $('#inq_message').val(),
+            'csrfmiddlewaretoken': csrfToken
+        };
+
+        let btn = $('#submitInquiryBtn');
         let originalText = btn.html();
-        btn.html('<i class="fa fa-spinner fa-spin"></i> Adding to Cart...');
+        btn.html('<i class="fa fa-spinner fa-spin"></i> Sending...').prop('disabled', true);
         
         $.ajax({
-            url: "{% url 'add_to_cart' %}",
+            url: "{% url 'submit_inquiry' %}",
             type: "POST",
-            data: {
-                'vendor_id': vendorId,
-                'event_date': selectedDate,
-                'location': selectedCity,
-                'csrfmiddlewaretoken': csrfToken
-            },
+            data: formData,
             success: function(response) {
                 if (response.status === 'success') {
-                    btn.html('<i class="fa fa-check"></i> Added to Cart').addClass('btn-success').removeClass('btn-theme').css('background', '#28a745');
-                } else if (response.status === 'info') {
-                    alert(response.message);
-                    btn.html('<i class="fa fa-check"></i> Already in Cart').addClass('btn-success').removeClass('btn-theme').css('background', '#28a745');
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Inquiry Sent!',
+                        text: response.message,
+                        confirmButtonColor: '#e72e77'
+                    });
+                    $('#inquiryForm')[0].reset();
                 } else {
-                    alert(response.message);
-                    btn.html(originalText);
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: response.message
+                    });
                 }
             },
             error: function() {
-                alert('You must be logged in to add items to the cart.');
-                window.location.href = "{% url 'login' %}";
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: 'Something went wrong. Please try again later.'
+                });
+            },
+            complete: function() {
+                btn.html(originalText).prop('disabled', false);
             }
         });
     });
@@ -252,7 +704,6 @@
         e.preventDefault();
         let vendorId = $(this).data('id');
         let btn = $(this);
-        let originalText = btn.html();
         
         $.ajax({
             url: "{% url 'add_to_wishlist' %}",
@@ -263,14 +714,102 @@
             },
             success: function(response) {
                 if (response.status === 'success' || response.status === 'info') {
-                    btn.html('<i class="fa fa-heart"></i> In Wishlist').addClass('btn-danger').removeClass('btn-outline-theme').css('color', 'white');
+                    btn.html('<i class="fa fa-heart"></i> Saved').addClass('btn-danger text-white').removeClass('btn-outline-dark');
+                }
+            }
+        });
+    });
+    // Share Functionality
+    function shareVendor() {
+        if (navigator.share) {
+            navigator.share({
+                title: "{{ vendor.name }} | BookMyLawn",
+                text: "Check out {{ vendor.name }} on BookMyLawn!",
+                url: window.location.href,
+            }).then(() => console.log('Successful share'))
+            .catch((error) => console.log('Error sharing', error));
+        } else {
+            // Fallback: Copy to clipboard
+            const el = document.createElement('textarea');
+            el.value = window.location.href;
+            document.body.appendChild(el);
+            el.select();
+            document.execCommand('copy');
+            document.body.removeChild(el);
+            alert('Link copied to clipboard!');
+        }
+    }
+    // Review Star Rating Logic
+    $('.star-select').hover(
+        function() {
+            var rating = $(this).data('rating');
+            $('.star-select').each(function() {
+                if ($(this).data('rating') <= rating) {
+                    $(this).css('color', '#ffc107');
                 } else {
-                    alert(response.message);
+                    $(this).css('color', '#ddd');
+                }
+            });
+        },
+        function() {
+            var rating = $('#review_rating').val() || 0;
+            $('.star-select').each(function() {
+                if ($(this).data('rating') <= rating) {
+                    $(this).css('color', '#ffc107');
+                } else {
+                    $(this).css('color', '#ddd');
+                }
+            });
+        }
+    );
+
+    $('.star-select').click(function() {
+        var rating = $(this).data('rating');
+        $('#review_rating').val(rating);
+        var texts = {1: 'Terrible', 2: 'Poor', 3: 'Average', 4: 'Very Good', 5: 'Excellent'};
+        $('#rating-text').text(texts[rating]).css('color', '#ffc107').addClass('font-weight-bold');
+    });
+
+    // Submit Review
+    $('#reviewForm').submit(function(e) {
+        e.preventDefault();
+        
+        let rating = $('#review_rating').val();
+        if (!rating) {
+            Swal.fire('Wait!', 'Please select a star rating.', 'warning');
+            return;
+        }
+
+        let btn = $(this).find('button[type="submit"]');
+        let originalText = btn.html();
+        btn.html('<i class="fa fa-spinner fa-spin"></i> Submitting...').prop('disabled', true);
+        
+        $.ajax({
+            url: "{% url 'submit_review' %}",
+            type: "POST",
+            data: {
+                'vendor_id': '{{ vendor.id }}',
+                'rating': rating,
+                'comment': $('#review_text').val(),
+                'csrfmiddlewaretoken': csrfToken
+            },
+            success: function(response) {
+                if (response.status === 'success') {
+                    $('#writeReviewModal').modal('hide');
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Thank You!',
+                        text: response.message,
+                        confirmButtonColor: '#e72e77'
+                    }).then(() => location.reload());
+                } else {
+                    Swal.fire('Error', response.message, 'error');
+                    btn.html(originalText).prop('disabled', false);
                 }
             },
             error: function() {
-                alert('You must be logged in to add items to wishlist.');
-                window.location.href = "{% url 'login' %}";
+                Swal.fire('Error', 'Something went wrong.', 'error');
+                btn.html(originalText).prop('disabled', false);
             }
         });
     });
