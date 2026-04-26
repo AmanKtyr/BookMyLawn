@@ -42,8 +42,9 @@
                       {% endif %}
                     </td>
                     <td>
-                      <button class="btn btn-sm btn-outline-secondary">View Profile</button>
-                      <button class="btn btn-sm btn-outline-danger">Suspend</button>
+                      <a href="javascript:void(0)" class="btn btn-sm btn-outline-warning" onclick="confirmAction('{% url 'superadmin_user_toggle' user.id %}', 'Are you sure?', 'You want to change the active status of this customer?')">
+                        {% if user.is_active %}Suspend{% else %}Activate{% endif %}
+                      </a>
                     </td>
                   </tr>
                   {% empty %}

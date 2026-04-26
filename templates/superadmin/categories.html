@@ -41,7 +41,7 @@
                     <td>{{ category.slug }}</td>
                     <td>
                       <a href="{% url 'superadmin_category_edit' category.id %}" class="btn btn-sm btn-outline-secondary">Edit</a>
-                      <a href="{% url 'superadmin_category_delete' category.id %}" class="btn btn-sm btn-outline-danger" onclick="return confirm('Are you sure you want to delete this category?')">Delete</a>
+                      <a href="javascript:void(0)" class="btn btn-sm btn-outline-danger" onclick="confirmDelete('{% url 'superadmin_category_delete' category.id %}', 'category')">Delete</a>
                     </td>
                   </tr>
                   {% empty %}

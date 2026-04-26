@@ -3,52 +3,55 @@
 
 {% block content %}
 
-    <!-- Hero Begin -->
-    <div class="page-hero set-bg" data-setbg="{% static 'website/img/banner/real-weddings-banner.jpg' %}?v=2" style='background-image: url("{% static "website/img/banner/real-weddings-banner.jpg" %}?v=2");'>
-        <div class="container">
-            <div class="page-hero-content">
-                <h2>Real Weddings</h2>
-                <p>Inspiration from the most beautiful celebrations planned with BookMyLawn</p>
-            </div>
+<!-- Hero Begin -->
+<div class="page-hero set-bg" data-setbg="{% static 'website/img/banner/real-weddings-banner.jpg' %}?v=2"
+    style='background-image: url("{% static "website/img/banner/real-weddings-banner.jpg" %}?v=2");'>
+    <div class="container">
+        <div class="page-hero-content">
+            <h2>Wedding Stories</h2>
+            <p>Inspiration from the most beautiful celebrations planned with BookMyLawn</p>
         </div>
     </div>
-    <!-- Hero End -->
+</div>
+<!-- Hero End -->
 
-    <section class="real-weddings-section spad">
-        <div class="container">
-            <div class="row">
-                {% for wedding in weddings %}
-                <div class="col-lg-4 col-md-6">
-                    <div class="wedding-card">
-                        <div class="wedding-image" style='background-image: url("{% if wedding.main_image %}{{ wedding.main_image.url }}{% else %}{% static "website/img/product/product-1.jpg" %}{% endif %}");'></div>
-                        <div class="wedding-content">
-                            <div class="wedding-title">{{ wedding.couple_name }}</div>
-                            <div class="wedding-meta">
-                                <span><i class="fa fa-map-marker"></i> {{ wedding.location }}</span>
-                                <span><i class="fa fa-calendar"></i> {{ wedding.date|date:"F Y" }}</span>
-                            </div>
-                            <div class="wedding-description">
-                                {{ wedding.description|truncatewords:20 }}
-                            </div>
-                            {% if wedding.venue %}
-                            <div class="mb-3" style="font-size: 13px;">
-                                <strong>Venue:</strong> <span class="wedding-venue-link">{{ wedding.venue.name }}</span>
-                            </div>
-                            {% endif %}
-                            <a href="#" class="read-story-btn">Read Story <i class="fa fa-angle-right"></i></a>
+<section class="real-weddings-section spad">
+    <div class="container">
+        <div class="row">
+            {% for wedding in weddings %}
+            <div class="col-lg-4 col-md-6">
+                <div class="wedding-card">
+                    <div class="wedding-image"
+                        style='background-image: url("{% if wedding.main_image %}{{ wedding.main_image.url }}{% else %}{% static "website/img/product/product-1.jpg" %}{% endif %}");'>
+                    </div>
+                    <div class="wedding-content">
+                        <div class="wedding-title">{{ wedding.couple_name }}</div>
+                        <div class="wedding-meta">
+                            <span><i class="fa fa-map-marker"></i> {{ wedding.location }}</span>
+                            <span><i class="fa fa-calendar"></i> {{ wedding.date|date:"F Y" }}</span>
                         </div>
+                        <div class="wedding-description">
+                            {{ wedding.description|truncatewords:20 }}
+                        </div>
+                        {% if wedding.venue %}
+                        <div class="mb-3" style="font-size: 13px;">
+                            <strong>Venue:</strong> <span class="wedding-venue-link">{{ wedding.venue.name }}</span>
+                        </div>
+                        {% endif %}
+                        <a href="#" class="read-story-btn">Read Story <i class="fa fa-angle-right"></i></a>
                     </div>
                 </div>
-                {% empty %}
-                <div class="col-lg-12 text-center">
-                    <i class="fa fa-heart-o empty-icon"></i>
-                    <h4>No stories shared yet</h4>
-                    <p>Be the first one to share your beautiful journey with us!</p>
-                    <a href="{% url 'contact' %}" class="btn-theme mt-3">Share Your Story</a>
-                </div>
-                {% endfor %}
             </div>
+            {% empty %}
+            <div class="col-lg-12 text-center">
+                <i class="fa fa-heart-o empty-icon"></i>
+                <h4>No stories shared yet</h4>
+                <p>Be the first one to share your beautiful journey with us!</p>
+                <a href="{% url 'contact' %}" class="btn-theme mt-3">Share Your Story</a>
+            </div>
+            {% endfor %}
         </div>
-    </section>
+    </div>
+</section>
 
 {% endblock %}

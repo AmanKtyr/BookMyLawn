@@ -50,8 +50,8 @@
                       {% endif %}
                     </td>
                     <td>
-                      <button class="btn btn-sm btn-outline-secondary">Edit</button>
-                      <button class="btn btn-sm btn-outline-danger">Delete</button>
+                      <a href="{% url 'superadmin_vendor_edit' vendor.id %}" class="btn btn-sm btn-outline-secondary">Edit</a>
+                      <a href="javascript:void(0)" class="btn btn-sm btn-outline-danger" onclick="confirmDelete('{% url 'superadmin_vendor_delete' vendor.id %}', 'vendor')">Delete</a>
                     </td>
                   </tr>
                   {% empty %}

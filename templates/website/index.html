@@ -3,342 +3,348 @@
 
 {% block content %}
 
-    <!-- Hero Section Begin -->
-    <section class="hero set-bg" data-setbg="{% static 'website/img/banner/banner-1.jpg' %}?v=2"
-             style="background-image: url('{% static 'website/img/banner/banner-1.jpg' %}?v=2'); padding: 150px 0; background-size: cover; background-position: center;">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-8 m-auto text-center">
-                    <h1 style="color: white; font-size: 50px; text-shadow: 2px 2px 4px rgba(0,0,0,0.5); margin-bottom: 30px;">Find the Perfect Wedding Vendors</h1>
-                    <div class="hero-search">
-                        <form action="{% url 'vendors' %}" method="GET">
-                            <div class="row">
-                                <div class="col-md-4">
-                                    <input type="text" name="q" placeholder="Search for vendors, venues...">
-                                </div>
-                                <div class="col-md-4">
-                                    <input type="text" name="city" placeholder="City or Zip code">
-                                </div>
-                                <div class="col-md-4">
-                                    <button type="submit">Search</button>
-                                </div>
+<!-- Hero Section Begin -->
+<section class="hero set-bg" data-setbg="{% static 'website/img/banner/banner-1.jpg' %}?v=2"
+    style="background-image: url('{% static 'website/img/banner/banner-1.jpg' %}?v=2'); padding: 150px 0; background-size: cover; background-position: center;">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 m-auto text-center">
+                <h1
+                    style="color: white; font-size: 50px; text-shadow: 2px 2px 4px rgba(0,0,0,0.5); margin-bottom: 30px;">
+                    Find the Perfect Wedding Vendors</h1>
+                <div class="hero-search">
+                    <form action="{% url 'vendors' %}" method="GET">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <input type="text" name="q" placeholder="Search for vendors, venues...">
                             </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-    <!-- Hero Section End -->
-
-    <!-- Categories Section Begin -->
-    <section class="categories spad">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-12 text-center">
-                    <div class="section-title">
-                        <h2>Popular Categories</h2>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-lg-3 col-md-6 col-sm-6">
-                    <div class="vendor-category">
-                        <img src="{% static 'website/img/categories/category-1.jpg' %}?v=2" alt="Venues">
-                        <h4>Venues</h4>
-                        <p>Find the perfect location</p>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-md-6 col-sm-6">
-                    <div class="vendor-category">
-                        <img src="{% static 'website/img/categories/category-2.jpg' %}?v=2" alt="Photographers">
-                        <h4>Photographers</h4>
-                        <p>Capture your moments</p>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-md-6 col-sm-6">
-                    <div class="vendor-category">
-                        <img src="{% static 'website/img/categories/category-3.jpg' %}?v=2" alt="Decorators">
-                        <h4>Decorators</h4>
-                        <p>Beautiful themes</p>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-md-6 col-sm-6">
-                    <div class="vendor-category">
-                        <img src="{% static 'website/img/categories/category-4.jpg' %}?v=2" alt="Makeup">
-                        <h4>Makeup Artists</h4>
-                        <p>Look your best</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-    <!-- Categories Section End -->
-
-    <!-- Featured Vendors Section Begin -->
-    <section class="featured-vendors spad">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-12 text-center">
-                    <div class="section-title">
-                        <h2>Top Rated Vendors</h2>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                {% for vendor in featured_vendors %}
-                <div class="col-lg-4 col-md-6">
-                    <div class="product__item">
-                        <div class="product__item__pic set-bg"
-                             {% if vendor.image %}data-setbg="{{ vendor.image.url }}"{% else %}data-setbg="{% static 'website/img/product/product-1.jpg' %}?v=2"{% endif %}>
-                            {% if vendor.is_premium %}
-                            <div class="label new">Premium</div>
-                            {% elif vendor.is_verified %}
-                            <div class="label">Verified</div>
-                            {% endif %}
-                        </div>
-                        <div class="product__item__text text-center">
-                            <h6><a href="{% url 'vendor_details' vendor.id %}">{{ vendor.name }}</a></h6>
-                            <div class="rating mt-2">
-                                <i class="fa fa-star text-warning"></i>
-                                <i class="fa fa-star text-warning"></i>
-                                <i class="fa fa-star text-warning"></i>
-                                <i class="fa fa-star text-warning"></i>
-                                <i class="fa fa-star text-warning"></i>
-                                <span class="text-muted ml-1">({{ vendor.reviews.count }} Reviews)</span>
+                            <div class="col-md-4">
+                                <input type="text" name="city" placeholder="City or Zip code">
                             </div>
-                            <div class="product__price mt-2">
-                                {{ vendor.category.name }}, {{ vendor.location }}
+                            <div class="col-md-4">
+                                <button type="submit">Search</button>
                             </div>
                         </div>
-                    </div>
-                </div>
-                {% empty %}
-                <div class="col-12 text-center">
-                    <p>No featured vendors found at the moment.</p>
-                </div>
-                {% endfor %}
-            </div>
-            <div class="row">
-                <div class="col-lg-12 text-center mt-4">
-                    <a href="{% url 'vendors' %}" class="btn-theme">View All Vendors</a>
+                    </form>
                 </div>
             </div>
         </div>
-    </section>
-    <!-- Featured Vendors Section End -->
+    </div>
+</section>
+<!-- Hero Section End -->
 
-    <!-- Real Weddings Inspiration Begin -->
-    <section class="real-weddings spad">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-12 text-center">
-                    <div class="section-title">
-                        <h2>Real Weddings &amp; Inspiration</h2>
-                        <p class="section-subtitle">Get inspired by beautiful couples and stunning setups</p>
-                    </div>
-                </div>
-            </div>
-            <div class="row mt-4">
-                <div class="col-lg-4 col-md-6 mb-4">
-                    <div class="wedding-card">
-                        <img src="{% static 'website/img/product/product-2.jpg' %}?v=2" alt="Real Wedding" class="wedding-image" style="width:100%; object-fit:cover;">
-                        <div class="wedding-content">
-                            <h5 class="wedding-title">A Royal Affair in Udaipur</h5>
-                            <p class="wedding-description">Ankit &amp; Priya's Grand Celebration</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-4 col-md-6 mb-4">
-                    <div class="wedding-card">
-                        <img src="{% static 'website/img/product/product-3.jpg' %}?v=2" alt="Real Wedding" class="wedding-image" style="width:100%; object-fit:cover;">
-                        <div class="wedding-content">
-                            <h5 class="wedding-title">Modern Minimalist Delhi Wedding</h5>
-                            <p class="wedding-description">Rohan &amp; Sneha's Intimate Vows</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-4 col-md-6 mb-4">
-                    <div class="wedding-card">
-                        <img src="{% static 'website/img/product/product-1.jpg' %}?v=2" alt="Real Wedding" class="wedding-image" style="width:100%; object-fit:cover;">
-                        <div class="wedding-content">
-                            <h5 class="wedding-title">Beachside Bliss in Goa</h5>
-                            <p class="wedding-description">Kabir &amp; Meera's Sunset Reception</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-lg-12 text-center mt-3">
-                    <a href="#" class="btn-outline-theme">View Gallery</a>
+<!-- Categories Section Begin -->
+<section class="categories spad">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 text-center">
+                <div class="section-title">
+                    <h2>Popular Categories</h2>
                 </div>
             </div>
         </div>
-    </section>
-    <!-- Real Weddings Inspiration End -->
+        <div class="row">
+            <div class="col-lg-3 col-md-6 col-sm-6">
+                <div class="vendor-category">
+                    <img src="{% static 'website/img/categories/category-1.jpg' %}?v=2" alt="Venues">
+                    <h4>Venues</h4>
+                    <p>Find the perfect location</p>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6 col-sm-6">
+                <div class="vendor-category">
+                    <img src="{% static 'website/img/categories/category-2.jpg' %}?v=2" alt="Photographers">
+                    <h4>Photographers</h4>
+                    <p>Capture your moments</p>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6 col-sm-6">
+                <div class="vendor-category">
+                    <img src="{% static 'website/img/categories/category-3.jpg' %}?v=2" alt="Decorators">
+                    <h4>Decorators</h4>
+                    <p>Beautiful themes</p>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6 col-sm-6">
+                <div class="vendor-category">
+                    <img src="{% static 'website/img/categories/category-4.jpg' %}?v=2" alt="Makeup">
+                    <h4>Makeup Artists</h4>
+                    <p>Look your best</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Categories Section End -->
 
-    <!-- How it Works Section Begin -->
-    <section class="how-it-works spad" style="background-color: #fffafb;">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-12 text-center">
-                    <div class="section-title">
-                        <h2>How It Works</h2>
-                        <p class="section-subtitle">Plan your dream wedding in 4 simple steps</p>
-                    </div>
-                </div>
-            </div>
-            <div class="row text-center mt-4">
-                <div class="col-lg-3 col-md-6 mb-4">
-                    <div class="step-card">
-                        <div class="step-icon"><i class="fa fa-search"></i></div>
-                        <h5 style="font-weight: 700; font-family: var(--font-heading);">1. Discover</h5>
-                        <p>Search for venues and vendors in your preferred city.</p>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-md-6 mb-4">
-                    <div class="step-card">
-                        <div class="step-icon"><i class="fa fa-sliders"></i></div>
-                        <h5 style="font-weight: 700; font-family: var(--font-heading);">2. Compare</h5>
-                        <p>Filter by prices, ratings, and read verified reviews.</p>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-md-6 mb-4">
-                    <div class="step-card">
-                        <div class="step-icon"><i class="fa fa-envelope-o"></i></div>
-                        <h5 style="font-weight: 700; font-family: var(--font-heading);">3. Contact</h5>
-                        <p>Chat directly with vendors to get personalized quotes.</p>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-md-6 mb-4">
-                    <div class="step-card">
-                        <div class="step-icon"><i class="fa fa-calendar-check-o"></i></div>
-                        <h5 style="font-weight: 700; font-family: var(--font-heading);">4. Book</h5>
-                        <p>Confirm your bookings and relax while we handle the rest.</p>
-                    </div>
+<!-- Featured Vendors Section Begin -->
+<section class="featured-vendors spad">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 text-center">
+                <div class="section-title">
+                    <h2>Top Rated Vendors</h2>
                 </div>
             </div>
         </div>
-    </section>
-    <!-- How it Works Section End -->
+        <div class="row">
+            {% for vendor in featured_vendors %}
+            <div class="col-lg-4 col-md-6">
+                <div class="product__item">
+                    <div class="product__item__pic set-bg" {% if vendor.image %}data-setbg="{{ vendor.image.url }}" {%
+                        else %}data-setbg="{% static 'website/img/product/product-1.jpg' %}?v=2" {% endif %}>
+                        {% if vendor.is_premium %}
+                        <div class="label new">Premium</div>
+                        {% elif vendor.is_verified %}
+                        <div class="label">Verified</div>
+                        {% endif %}
+                    </div>
+                    <div class="product__item__text text-center">
+                        <h6><a href="{% url 'vendor_details' vendor.id %}">{{ vendor.name }}</a></h6>
+                        <div class="rating mt-2">
+                            <i class="fa fa-star text-warning"></i>
+                            <i class="fa fa-star text-warning"></i>
+                            <i class="fa fa-star text-warning"></i>
+                            <i class="fa fa-star text-warning"></i>
+                            <i class="fa fa-star text-warning"></i>
+                            <span class="text-muted ml-1">({{ vendor.reviews.count }} Reviews)</span>
+                        </div>
+                        <div class="product__price mt-2">
+                            {{ vendor.category.name }}, {{ vendor.location }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% empty %}
+            <div class="col-12 text-center">
+                <p>No featured vendors found at the moment.</p>
+            </div>
+            {% endfor %}
+        </div>
+        <div class="row">
+            <div class="col-lg-12 text-center mt-4">
+                <a href="{% url 'vendors' %}" class="btn-theme">View All Vendors</a>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Featured Vendors Section End -->
 
-    <!-- Top Cities Section Begin -->
-    <section class="top-cities spad" style="background: #fcfcfc;">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-12 text-center">
-                    <div class="section-title">
-                        <h2>Popular Venues by City</h2>
-                        <p class="section-subtitle">Handpicked destinations for your perfect wedding</p>
-                    </div>
-                </div>
-            </div>
-            <div class="row mt-4">
-                <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
-                    <a href="{% url 'vendors' %}?city=Mumbai" class="city-card">
-                        <img src="{% static 'website/img/cities/mumbai.jpg' %}" alt="Mumbai">
-                        <div class="city-overlay">
-                            <div class="city-name">Mumbai</div>
-                            <div class="venue-count">120+ Venues</div>
-                        </div>
-                    </a>
-                </div>
-                <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
-                    <a href="{% url 'vendors' %}?city=Delhi" class="city-card">
-                        <img src="{% static 'website/img/cities/delhi.jpg' %}" alt="Delhi">
-                        <div class="city-overlay">
-                            <div class="city-name">Delhi NCR</div>
-                            <div class="venue-count">150+ Venues</div>
-                        </div>
-                    </a>
-                </div>
-                <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
-                    <a href="{% url 'vendors' %}?city=Bangalore" class="city-card">
-                        <img src="{% static 'website/img/cities/bangalore.jpg' %}" alt="Bangalore">
-                        <div class="city-overlay">
-                            <div class="city-name">Bangalore</div>
-                            <div class="venue-count">95+ Venues</div>
-                        </div>
-                    </a>
-                </div>
-                <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
-                    <a href="{% url 'vendors' %}?city=Udaipur" class="city-card">
-                        <img src="{% static 'website/img/cities/udaipur.jpg' %}" alt="Udaipur">
-                        <div class="city-overlay">
-                            <div class="city-name">Udaipur</div>
-                            <div class="venue-count">45+ Venues</div>
-                        </div>
-                    </a>
-                </div>
-                <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
-                    <a href="{% url 'vendors' %}?city=Lucknow" class="city-card">
-                        <img src="{% static 'website/img/cities/lucknow.jpg' %}?v=3" alt="Lucknow">
-                        <div class="city-overlay">
-                            <div class="city-name">Lucknow</div>
-                            <div class="venue-count">60+ Venues</div>
-                        </div>
-                    </a>
-                </div>
-                <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
-                    <a href="{% url 'vendors' %}?city=Jaipur" class="city-card">
-                        <img src="{% static 'website/img/cities/jaipur.jpg' %}" alt="Jaipur">
-                        <div class="city-overlay">
-                            <div class="city-name">Jaipur</div>
-                            <div class="venue-count">80+ Venues</div>
-                        </div>
-                    </a>
-                </div>
-                <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
-                    <a href="{% url 'vendors' %}?city=Goa" class="city-card">
-                        <img src="{% static 'website/img/cities/goa.jpg' %}" alt="Goa">
-                        <div class="city-overlay">
-                            <div class="city-name">Goa</div>
-                            <div class="venue-count">55+ Venues</div>
-                        </div>
-                    </a>
-                </div>
-                <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
-                    <a href="{% url 'vendors' %}?city=Chandigarh" class="city-card">
-                        <img src="{% static 'website/img/cities/chandigarh.jpg' %}?v=3" alt="Chandigarh">
-                        <div class="city-overlay">
-                            <div class="city-name">Chandigarh</div>
-                            <div class="venue-count">40+ Venues</div>
-                        </div>
-                    </a>
+<!-- Wedding Stories Inspiration Begin -->
+<section class="real-weddings spad">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 text-center">
+                <div class="section-title">
+                    <h2>Wedding Stories &amp; Inspiration</h2>
+                    <p class="section-subtitle">Get inspired by beautiful couples and stunning setups</p>
                 </div>
             </div>
         </div>
-    </section>
-    <!-- Top Cities Section End -->
+        <div class="row mt-4">
+            <div class="col-lg-4 col-md-6 mb-4">
+                <div class="wedding-card">
+                    <img src="{% static 'website/img/product/product-2.jpg' %}?v=2" alt="Real Wedding"
+                        class="wedding-image" style="width:100%; object-fit:cover;">
+                    <div class="wedding-content">
+                        <h5 class="wedding-title">A Royal Affair in Udaipur</h5>
+                        <p class="wedding-description">Ankit &amp; Priya's Grand Celebration</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-6 mb-4">
+                <div class="wedding-card">
+                    <img src="{% static 'website/img/product/product-3.jpg' %}?v=2" alt="Real Wedding"
+                        class="wedding-image" style="width:100%; object-fit:cover;">
+                    <div class="wedding-content">
+                        <h5 class="wedding-title">Modern Minimalist Delhi Wedding</h5>
+                        <p class="wedding-description">Rohan &amp; Sneha's Intimate Vows</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-6 mb-4">
+                <div class="wedding-card">
+                    <img src="{% static 'website/img/product/product-1.jpg' %}?v=2" alt="Real Wedding"
+                        class="wedding-image" style="width:100%; object-fit:cover;">
+                    <div class="wedding-content">
+                        <h5 class="wedding-title">Beachside Bliss in Goa</h5>
+                        <p class="wedding-description">Kabir &amp; Meera's Sunset Reception</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-12 text-center mt-3">
+                <a href="#" class="btn-outline-theme">View Gallery</a>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Wedding Stories Inspiration End -->
 
-    <!-- Trust Section Begin -->
-    <section class="services spad" style="background: #fdfdfd; border-top: 1px solid #f0f0f0;">
-        <div class="container">
-            <div class="row text-center">
-                <div class="col-lg-4 col-md-6 mb-4">
-                    <div class="trust-card">
-                        <i class="fa fa-check-circle trust-icon"></i>
-                        <h6 style="font-weight: 700; font-family: var(--font-heading); font-size: 20px;">Verified Vendors</h6>
-                        <p>Thousands of trusted professionals evaluated for excellence.</p>
-                    </div>
-                </div>
-                <div class="col-lg-4 col-md-6 mb-4">
-                    <div class="trust-card">
-                        <i class="fa fa-star trust-icon"></i>
-                        <h6 style="font-weight: 700; font-family: var(--font-heading); font-size: 20px;">Real Reviews</h6>
-                        <p>Read honest experiences and ratings from actual couples.</p>
-                    </div>
-                </div>
-                <div class="col-lg-4 col-md-6 mb-4">
-                    <div class="trust-card">
-                        <i class="fa fa-heart trust-icon"></i>
-                        <h6 style="font-weight: 700; font-family: var(--font-heading); font-size: 20px;">Easy Planning</h6>
-                        <p>Book securely and coordinate your entire event seamlessly.</p>
-                    </div>
+<!-- How it Works Section Begin -->
+<section class="how-it-works spad" style="background-color: #fffafb;">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 text-center">
+                <div class="section-title">
+                    <h2>How It Works</h2>
+                    <p class="section-subtitle">Plan your dream wedding in 4 simple steps</p>
                 </div>
             </div>
         </div>
-    </section>
-    <!-- Trust Section End -->
+        <div class="row text-center mt-4">
+            <div class="col-lg-3 col-md-6 mb-4">
+                <div class="step-card">
+                    <div class="step-icon"><i class="fa fa-search"></i></div>
+                    <h5 style="font-weight: 700; font-family: var(--font-heading);">1. Discover</h5>
+                    <p>Search for venues and vendors in your preferred city.</p>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6 mb-4">
+                <div class="step-card">
+                    <div class="step-icon"><i class="fa fa-sliders"></i></div>
+                    <h5 style="font-weight: 700; font-family: var(--font-heading);">2. Compare</h5>
+                    <p>Filter by prices, ratings, and read verified reviews.</p>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6 mb-4">
+                <div class="step-card">
+                    <div class="step-icon"><i class="fa fa-envelope-o"></i></div>
+                    <h5 style="font-weight: 700; font-family: var(--font-heading);">3. Contact</h5>
+                    <p>Chat directly with vendors to get personalized quotes.</p>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6 mb-4">
+                <div class="step-card">
+                    <div class="step-icon"><i class="fa fa-calendar-check-o"></i></div>
+                    <h5 style="font-weight: 700; font-family: var(--font-heading);">4. Book</h5>
+                    <p>Confirm your bookings and relax while we handle the rest.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- How it Works Section End -->
+
+<!-- Top Cities Section Begin -->
+<section class="top-cities spad" style="background: #fcfcfc;">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 text-center">
+                <div class="section-title">
+                    <h2>Popular Venues by City</h2>
+                    <p class="section-subtitle">Handpicked destinations for your perfect wedding</p>
+                </div>
+            </div>
+        </div>
+        <div class="row mt-4">
+            <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
+                <a href="{% url 'vendors' %}?city=Mumbai" class="city-card">
+                    <img src="{% static 'website/img/cities/mumbai.jpg' %}" alt="Mumbai">
+                    <div class="city-overlay">
+                        <div class="city-name">Mumbai</div>
+                        <div class="venue-count">120+ Venues</div>
+                    </div>
+                </a>
+            </div>
+            <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
+                <a href="{% url 'vendors' %}?city=Delhi" class="city-card">
+                    <img src="{% static 'website/img/cities/delhi.jpg' %}" alt="Delhi">
+                    <div class="city-overlay">
+                        <div class="city-name">Delhi NCR</div>
+                        <div class="venue-count">150+ Venues</div>
+                    </div>
+                </a>
+            </div>
+            <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
+                <a href="{% url 'vendors' %}?city=Bangalore" class="city-card">
+                    <img src="{% static 'website/img/cities/bangalore.jpg' %}" alt="Bangalore">
+                    <div class="city-overlay">
+                        <div class="city-name">Bangalore</div>
+                        <div class="venue-count">95+ Venues</div>
+                    </div>
+                </a>
+            </div>
+            <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
+                <a href="{% url 'vendors' %}?city=Udaipur" class="city-card">
+                    <img src="{% static 'website/img/cities/udaipur.jpg' %}" alt="Udaipur">
+                    <div class="city-overlay">
+                        <div class="city-name">Udaipur</div>
+                        <div class="venue-count">45+ Venues</div>
+                    </div>
+                </a>
+            </div>
+            <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
+                <a href="{% url 'vendors' %}?city=Lucknow" class="city-card">
+                    <img src="{% static 'website/img/cities/lucknow.jpg' %}?v=3" alt="Lucknow">
+                    <div class="city-overlay">
+                        <div class="city-name">Lucknow</div>
+                        <div class="venue-count">60+ Venues</div>
+                    </div>
+                </a>
+            </div>
+            <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
+                <a href="{% url 'vendors' %}?city=Jaipur" class="city-card">
+                    <img src="{% static 'website/img/cities/jaipur.jpg' %}" alt="Jaipur">
+                    <div class="city-overlay">
+                        <div class="city-name">Jaipur</div>
+                        <div class="venue-count">80+ Venues</div>
+                    </div>
+                </a>
+            </div>
+            <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
+                <a href="{% url 'vendors' %}?city=Goa" class="city-card">
+                    <img src="{% static 'website/img/cities/goa.jpg' %}" alt="Goa">
+                    <div class="city-overlay">
+                        <div class="city-name">Goa</div>
+                        <div class="venue-count">55+ Venues</div>
+                    </div>
+                </a>
+            </div>
+            <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
+                <a href="{% url 'vendors' %}?city=Chandigarh" class="city-card">
+                    <img src="{% static 'website/img/cities/chandigarh.jpg' %}?v=3" alt="Chandigarh">
+                    <div class="city-overlay">
+                        <div class="city-name">Chandigarh</div>
+                        <div class="venue-count">40+ Venues</div>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Top Cities Section End -->
+
+<!-- Trust Section Begin -->
+<section class="services spad" style="background: #fdfdfd; border-top: 1px solid #f0f0f0;">
+    <div class="container">
+        <div class="row text-center">
+            <div class="col-lg-4 col-md-6 mb-4">
+                <div class="trust-card">
+                    <i class="fa fa-check-circle trust-icon"></i>
+                    <h6 style="font-weight: 700; font-family: var(--font-heading); font-size: 20px;">Verified Vendors
+                    </h6>
+                    <p>Thousands of trusted professionals evaluated for excellence.</p>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-6 mb-4">
+                <div class="trust-card">
+                    <i class="fa fa-star trust-icon"></i>
+                    <h6 style="font-weight: 700; font-family: var(--font-heading); font-size: 20px;">Real Reviews</h6>
+                    <p>Read honest experiences and ratings from actual couples.</p>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-6 mb-4">
+                <div class="trust-card">
+                    <i class="fa fa-heart trust-icon"></i>
+                    <h6 style="font-weight: 700; font-family: var(--font-heading); font-size: 20px;">Easy Planning</h6>
+                    <p>Book securely and coordinate your entire event seamlessly.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Trust Section End -->
 
 {% endblock %}

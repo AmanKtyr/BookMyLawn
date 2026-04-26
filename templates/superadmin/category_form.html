@@ -27,14 +27,16 @@
         </div>
         <div class="form-group mb-3">
           <label for="image">Category Image</label>
-          {% if category.image %}
-          <div class="mb-2">
-            <img src="{{ category.image.url }}" alt="{{ category.name }}" style="width: 100px; height: 100px; object-fit: cover; border-radius: 8px;">
+          <div id="category-image-preview">
+            {% if category.image %}
+            <div class="mb-2">
+              <img src="{{ category.image.url }}" alt="{{ category.name }}" style="width: 100px; height: 100px; object-fit: cover; border-radius: 8px;" onerror="this.style.display='none'">
+            </div>
+            {% endif %}
           </div>
-          {% endif %}
           <div class="custom-file">
-            <input type="file" class="custom-file-input" id="image" name="image" accept="image/*">
-            <label class="custom-file-label" for="image">Choose file...</label>
+            <input type="file" class="custom-file-input" id="image" name="image" accept="image/*" onchange="previewImage(this, 'category-image-preview')">
+            <label class="custom-file-label" for="image">{% if category.image %}{{ category.image.name }}{% else %}Choose file...{% endif %}</label>
           </div>
         </div>
         <div class="form-group mb-3">

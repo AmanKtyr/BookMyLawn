@@ -7,25 +7,25 @@
     <div class="col-12 col-xl-10">
       <div class="row align-items-center my-4">
         <div class="col">
-          <h2 class="h3 mb-0 page-title">Add New Vendor</h2>
+          <h2 class="h3 mb-0 page-title">{% if vendor %}Edit{% else %}Add New{% endif %} Vendor</h2>
         </div>
       </div>
-      <form action="{% url 'superadmin_vendor_add' %}" method="POST" enctype="multipart/form-data">
+      <form action="{% if vendor %}{% url 'superadmin_vendor_edit' vendor.id %}{% else %}{% url 'superadmin_vendor_add' %}{% endif %}" method="POST" enctype="multipart/form-data">
         {% csrf_token %}
         <hr class="my-4">
         <h5 class="mb-2 mt-4">Vendor Details</h5>
-        <p class="text-muted">Information about the new vendor.</p>
+        <p class="text-muted">Information about the vendor.</p>
         <div class="form-row">
           <div class="form-group col-md-6">
             <label for="name">Business Name</label>
-            <input type="text" id="name" name="name" class="form-control" required>
+            <input type="text" id="name" name="name" class="form-control" value="{{ vendor.name|default:'' }}" required>
           </div>
           <div class="form-group col-md-6">
             <label for="category">Category</label>
             <select id="category" name="category" class="form-control" required>
               <option value="">Choose category...</option>
               {% for category in categories %}
-              <option value="{{ category.id }}">{{ category.name }}</option>
+              <option value="{{ category.id }}" {% if vendor.category.id == category.id %}selected{% endif %}>{{ category.name }}</option>
               {% endfor %}
             </select>
           </div>
@@ -33,7 +33,7 @@
         <div class="form-row">
           <div class="form-group col-md-6">
             <label for="location">Location / City</label>
-            <input type="text" id="location" name="location" class="form-control" required>
+            <input type="text" id="location" name="location" class="form-control" value="{{ vendor.location|default:'' }}" required>
           </div>
           <div class="form-group col-md-6">
             <label for="price_starting">Starting Price</label>
@@ -41,31 +41,38 @@
               <div class="input-group-prepend">
                 <span class="input-group-text">₹</span>
               </div>
-              <input type="number" id="price_starting" name="price_starting" class="form-control" value="0.00" step="0.01">
+              <input type="number" id="price_starting" name="price_starting" class="form-control" value="{{ vendor.price_starting|default:'0.00' }}" step="0.01">
             </div>
           </div>
         </div>
         <div class="form-group mb-3">
           <label for="description">Description</label>
-          <textarea class="form-control" id="description" name="description" rows="4"></textarea>
+          <textarea class="form-control" id="description" name="description" rows="4">{{ vendor.description|default:'' }}</textarea>
         </div>
         <div class="form-group mb-3">
           <label for="image">Cover Image</label>
+          <div id="vendor-image-preview">
+            {% if vendor.image %}
+            <div class="mb-2">
+              <img src="{{ vendor.image.url }}" alt="{{ vendor.name }}" style="width: 150px; height: 100px; object-fit: cover; border-radius: 8px;" onerror="this.style.display='none'">
+            </div>
+            {% endif %}
+          </div>
           <div class="custom-file">
-            <input type="file" class="custom-file-input" id="image" name="image" accept="image/*">
-            <label class="custom-file-label" for="image">Choose file...</label>
+            <input type="file" class="custom-file-input" id="image" name="image" accept="image/*" onchange="previewImage(this, 'vendor-image-preview')">
+            <label class="custom-file-label" for="image">{% if vendor.image %}{{ vendor.image.name }}{% else %}Choose file...{% endif %}</label>
           </div>
         </div>
         <div class="form-row mt-4">
           <div class="form-group col-md-6">
             <div class="custom-control custom-switch">
-              <input type="checkbox" class="custom-control-input" id="is_verified" name="is_verified">
+              <input type="checkbox" class="custom-control-input" id="is_verified" name="is_verified" {% if vendor.is_verified %}checked{% endif %}>
               <label class="custom-control-label" for="is_verified">Verified Vendor</label>
             </div>
           </div>
           <div class="form-group col-md-6">
             <div class="custom-control custom-switch">
-              <input type="checkbox" class="custom-control-input" id="is_premium" name="is_premium">
+              <input type="checkbox" class="custom-control-input" id="is_premium" name="is_premium" {% if vendor.is_premium %}checked{% endif %}>
               <label class="custom-control-label" for="is_premium">Premium Placement</label>
             </div>
           </div>
@@ -74,7 +81,7 @@
         <div class="form-row">
           <div class="col-md-12 text-right">
             <a href="{% url 'superadmin_vendors' %}" class="btn btn-secondary mr-2">Cancel</a>
-            <button type="submit" class="btn btn-primary">Save Vendor</button>
+            <button type="submit" class="btn btn-primary">{% if vendor %}Update{% else %}Save{% endif %} Vendor</button>
           </div>
         </div>
       </form>

@@ -25,6 +25,8 @@
     <!-- App CSS -->
     <link rel="stylesheet" href="{% static 'admin/css/app-light.css' %}" id="lightTheme">
     <link rel="stylesheet" href="{% static 'admin/css/app-dark.css' %}" id="darkTheme" disabled>
+    <!-- SweetAlert2 -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <!-- White Labeling Custom Theme Color Override -->
     <style>
       :root {
@@ -417,7 +419,111 @@
         });
       }
     </script>
+    </script>
     <script src="{% static 'admin/js/apps.js' %}"></script>
+
+    <!-- Global SweetAlert2 Logic -->
+    <script>
+      const Toast = Swal.mixin({
+        toast: true,
+        position: 'top-end',
+        showConfirmButton: false,
+        timer: 3000,
+        timerProgressBar: true,
+        didOpen: (toast) => {
+          toast.addEventListener('mouseenter', Swal.stopTimer)
+          toast.addEventListener('mouseleave', Swal.resumeTimer)
+        }
+      });
+
+      // Show Django Messages as Toasts
+      {% if messages %}
+        {% for message in messages %}
+          Toast.fire({
+            icon: '{{ message.tags }}' === 'error' ? 'error' : 'success',
+            title: '{{ message }}'
+          });
+        {% endfor %}
+      {% endif %}
+
+      // Helper for Delete Confirmation
+      function confirmDelete(url, itemName = 'item') {
+        Swal.fire({
+          title: 'Are you sure?',
+          text: `You want to delete this ${itemName}? This action cannot be undone.`,
+          icon: 'warning',
+          showCancelButton: true,
+          confirmButtonColor: '#e72e77',
+          cancelButtonColor: '#6c757d',
+          confirmButtonText: 'Yes, delete it!'
+        }).then((result) => {
+          if (result.isConfirmed) {
+            window.location.href = url;
+          }
+        })
+      }
+
+      // Helper for General Confirmation
+      function confirmAction(url, title, text) {
+        Swal.fire({
+          title: title,
+          text: text,
+          icon: 'question',
+          showCancelButton: true,
+          confirmButtonColor: '#e72e77',
+          cancelButtonColor: '#6c757d',
+          confirmButtonText: 'Yes, proceed!'
+        }).then((result) => {
+          if (result.isConfirmed) {
+            window.location.href = url;
+          }
+        })
+      }
+
+      // Helper for Image Preview and Validation
+      function previewImage(input, containerId) {
+        const file = input.files[0];
+        const container = document.getElementById(containerId);
+        
+        if (file) {
+          // Validation: Type
+          const validTypes = ['image/jpeg', 'image/png', 'image/webp', 'image/jpg'];
+          if (!validTypes.includes(file.type)) {
+            Swal.fire({ icon: 'error', title: 'Invalid file type', text: 'Please upload JPG, PNG or WEBP.' });
+            input.value = '';
+            return;
+          }
+
+          // Validation: Size (5MB)
+          if (file.size > 5 * 1024 * 1024) {
+            Swal.fire({ icon: 'error', title: 'File too large', text: 'Max size allowed is 5MB.' });
+            input.value = '';
+            return;
+          }
+
+          const reader = new FileReader();
+          reader.onload = function(e) {
+            let img = container.querySelector('img');
+            if (!img) {
+              img = document.createElement('img');
+              img.style.width = '150px';
+              img.style.height = '100px';
+              img.style.objectFit = 'cover';
+              img.style.borderRadius = '8px';
+              img.className = 'mb-2 d-block';
+              container.prepend(img);
+            }
+            img.src = e.target.result;
+            
+            // Update bootstrap label
+            const label = input.nextElementSibling;
+            if (label) label.innerText = file.name;
+          }
+          reader.readAsDataURL(file);
+        }
+      }
+    </script>
+
     <!-- Global site tag (gtag.js) - Google Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-56159088-1"></script>
     <script>

@@ -44,7 +44,7 @@
                     <td><small>{{ review.comment|truncatechars:50 }}</small></td>
                     <td>{{ review.created_at|date:"M d, Y" }}</td>
                     <td>
-                      <button class="btn btn-sm btn-outline-danger">Delete</button>
+                      <a href="javascript:void(0)" class="btn btn-sm btn-outline-danger" onclick="confirmDelete('{% url 'superadmin_review_delete' review.id %}', 'review')">Delete</a>
                     </td>
                   </tr>
                   {% empty %}

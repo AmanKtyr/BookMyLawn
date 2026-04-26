@@ -7,10 +7,10 @@
     <div class="col-12 col-xl-10">
       <div class="row align-items-center my-4">
         <div class="col">
-          <h2 class="h3 mb-0 page-title">Add New Wedding Story</h2>
+          <h2 class="h3 mb-0 page-title">{% if story %}Edit{% else %}Add New{% endif %} Wedding Story</h2>
         </div>
       </div>
-      <form action="{% url 'superadmin_wedding_story_add' %}" method="POST" enctype="multipart/form-data">
+      <form action="{% if story %}{% url 'superadmin_wedding_story_edit' story.id %}{% else %}{% url 'superadmin_wedding_story_add' %}{% endif %}" method="POST" enctype="multipart/form-data">
         {% csrf_token %}
         <hr class="my-4">
         <h5 class="mb-2 mt-4">Story Details</h5>
@@ -18,17 +18,17 @@
         <div class="form-row">
           <div class="form-group col-md-6">
             <label for="couple_name">Couple Name</label>
-            <input type="text" id="couple_name" name="couple_name" class="form-control" placeholder="e.g. John & Jane" required>
+            <input type="text" id="couple_name" name="couple_name" class="form-control" value="{{ story.couple_name|default:'' }}" placeholder="e.g. John & Jane" required>
           </div>
           <div class="form-group col-md-6">
             <label for="date">Wedding Date</label>
-            <input type="date" id="date" name="date" class="form-control" required>
+            <input type="date" id="date" name="date" class="form-control" value="{{ story.date|date:'Y-m-d' }}" required>
           </div>
         </div>
         <div class="form-row">
           <div class="form-group col-md-12">
             <label for="location">Location / City</label>
-            <input type="text" id="location" name="location" class="form-control" required>
+            <input type="text" id="location" name="location" class="form-control" value="{{ story.location|default:'' }}" required>
           </div>
         </div>
         <div class="form-row">
@@ -37,7 +37,7 @@
             <select id="venue" name="venue" class="form-control">
               <option value="">Choose venue...</option>
               {% for venue in venues %}
-              <option value="{{ venue.id }}">{{ venue.name }}</option>
+              <option value="{{ venue.id }}" {% if story.venue.id == venue.id %}selected{% endif %}>{{ venue.name }}</option>
               {% endfor %}
             </select>
           </div>
@@ -46,27 +46,34 @@
             <select id="photographer" name="photographer" class="form-control">
               <option value="">Choose photographer...</option>
               {% for photographer in photographers %}
-              <option value="{{ photographer.id }}">{{ photographer.name }}</option>
+              <option value="{{ photographer.id }}" {% if story.photographer.id == photographer.id %}selected{% endif %}>{{ photographer.name }}</option>
               {% endfor %}
             </select>
           </div>
         </div>
         <div class="form-group mb-3">
           <label for="description">Story Description</label>
-          <textarea class="form-control" id="description" name="description" rows="5" placeholder="Tell the story of their special day..."></textarea>
+          <textarea class="form-control" id="description" name="description" rows="5" placeholder="Tell the story of their special day...">{{ story.description|default:'' }}</textarea>
         </div>
         <div class="form-group mb-3">
           <label for="main_image">Main Image</label>
+          <div id="story-image-preview">
+            {% if story.main_image %}
+            <div class="mb-2">
+              <img src="{{ story.main_image.url }}" alt="{{ story.couple_name }}" style="width: 150px; height: 100px; object-fit: cover; border-radius: 8px;" onerror="this.style.display='none'">
+            </div>
+            {% endif %}
+          </div>
           <div class="custom-file">
-            <input type="file" class="custom-file-input" id="main_image" name="main_image" accept="image/*">
-            <label class="custom-file-label" for="main_image">Choose file...</label>
+            <input type="file" class="custom-file-input" id="main_image" name="main_image" accept="image/*" onchange="previewImage(this, 'story-image-preview')">
+            <label class="custom-file-label" for="main_image">{% if story.main_image %}{{ story.main_image.name }}{% else %}Choose file...{% endif %}</label>
           </div>
         </div>
         <hr class="my-4">
         <div class="form-row">
           <div class="col-md-12 text-right">
             <a href="{% url 'superadmin_wedding_stories' %}" class="btn btn-secondary mr-2">Cancel</a>
-            <button type="submit" class="btn btn-primary">Save Story</button>
+            <button type="submit" class="btn btn-primary">{% if story %}Update{% else %}Save{% endif %} Story</button>
           </div>
         </div>
       </form>
