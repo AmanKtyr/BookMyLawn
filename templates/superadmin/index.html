@@ -90,6 +90,33 @@
       </div>
       <!-- / Widgets -->
 
+      <!-- Graphs Section -->
+      <div class="row mb-4">
+        <div class="col-md-8">
+          <div class="card shadow border-0">
+            <div class="card-header border-0 bg-transparent">
+              <strong class="card-title">Inquiry & Lead Trends</strong>
+              <p class="small text-muted mb-0">Daily traffic and customer inquiries over the last 7 days.</p>
+            </div>
+            <div class="card-body">
+              <div id="lineChart" style="min-height: 350px;"></div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="card shadow border-0">
+            <div class="card-header border-0 bg-transparent">
+              <strong class="card-title">Category Distribution</strong>
+              <p class="small text-muted mb-0">Vendors across different services.</p>
+            </div>
+            <div class="card-body">
+              <div id="donutChart" style="min-height: 350px;"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- / Graphs Section -->
+
       <!-- Recent Vendors Table -->
       <div class="row">
         <div class="col-md-12">
@@ -124,7 +151,7 @@
                       {% endif %}
                     </td>
                     <td>
-                      <a href="/admin/website/vendor/{{ vendor.id }}/change/" class="btn btn-sm btn-outline-primary">Edit</a>
+                      <a href="{% url 'superadmin_vendor_edit' vendor.id %}" class="btn btn-sm btn-outline-primary">Edit</a>
                     </td>
                   </tr>
                   {% empty %}
@@ -143,4 +170,80 @@
     </div>
   </div>
 </div>
+
+<!-- ApexCharts Script -->
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    // Line Chart for Inquiries
+    var lineOptions = {
+      series: [{
+        name: 'Inquiries',
+        data: [31, 40, 28, 51, 42, 109, 100]
+      }, {
+        name: 'New Leads',
+        data: [11, 32, 45, 32, 34, 52, 41]
+      }],
+      chart: {
+        height: 350,
+        type: 'area',
+        toolbar: { show: false },
+        fontFamily: 'Inter, sans-serif',
+        animations: { enabled: true }
+      },
+      colors: ['#e72e77', '#fd7e14'],
+      dataLabels: { enabled: false },
+      stroke: { curve: 'smooth' },
+      xaxis: {
+        type: 'datetime',
+        categories: ["2026-04-20T00:00:00.000Z", "2026-04-21T00:00:00.000Z", "2026-04-22T00:00:00.000Z", "2026-04-23T00:00:00.000Z", "2026-04-24T00:00:00.000Z", "2026-04-25T00:00:00.000Z", "2026-04-26T00:00:00.000Z"]
+      },
+      tooltip: { x: { format: 'dd/MM/yy HH:mm' } },
+      legend: { position: 'top', horizontalAlign: 'right' },
+      fill: {
+        type: 'gradient',
+        gradient: {
+          shadeIntensity: 1,
+          opacityFrom: 0.7,
+          opacityTo: 0.3,
+          stops: [0, 90, 100]
+        }
+      },
+    };
+    var lineChart = new ApexCharts(document.querySelector("#lineChart"), lineOptions);
+    lineChart.render();
+
+    // Donut Chart for Categories
+    var donutOptions = {
+      series: {{ cat_counts|safe }},
+      chart: {
+        type: 'donut',
+        height: 350,
+        fontFamily: 'Inter, sans-serif',
+        animations: { enabled: true }
+      },
+      labels: {{ cat_names|safe }},
+      colors: ['#e72e77', '#6f42c1', '#007bff', '#28a745', '#ffc107', '#17a2b8'],
+      legend: { position: 'bottom' },
+      plotOptions: {
+        pie: {
+          donut: {
+            size: '70%',
+            labels: {
+              show: true,
+              total: {
+                show: true,
+                label: 'Vendors',
+                formatter: function (w) {
+                  return {{ total_vendors }}
+                }
+              }
+            }
+          }
+        }
+      }
+    };
+    var donutChart = new ApexCharts(document.querySelector("#donutChart"), donutOptions);
+    donutChart.render();
+  });
+</script>
 {% endblock %}

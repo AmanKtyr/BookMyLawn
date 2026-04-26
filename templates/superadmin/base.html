@@ -27,6 +27,8 @@
     <link rel="stylesheet" href="{% static 'admin/css/app-dark.css' %}" id="darkTheme" disabled>
     <!-- SweetAlert2 -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <!-- ApexCharts -->
+    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
     <!-- White Labeling Custom Theme Color Override -->
     <style>
       :root {
@@ -100,8 +102,11 @@
         <nav class="vertnav navbar navbar-light">
           <!-- nav bar -->
           <div class="w-100 mb-4 d-flex">
-            <a class="navbar-brand mx-auto mt-2 flex-fill text-center" href="/">
-              BookMyLawn
+            <a class="navbar-brand mx-auto mt-2 flex-fill text-center" href="{% url 'superadmin_dashboard' %}">
+              <div class="d-flex align-items-center justify-content-center">
+                <img src="{% static 'website/img/logo/logo.png' %}" alt="Logo" style="height: 35px; margin-right: 10px; border-radius: 5px;">
+                <span class="h5 mb-0" style="color: #e72e77; font-weight: bold;">BookMyLawn</span>
+              </div>
             </a>
           </div>
           <ul class="navbar-nav flex-fill w-100 mb-2">
