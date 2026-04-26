@@ -14,4 +14,5 @@ urlpatterns = [
     path('add-to-wishlist/', views.add_to_wishlist, name='add_to_wishlist'),
     path('cart/', views.cart_view, name='cart'),
     path('checkout/', views.checkout_view, name='checkout'),
+    path('registration-success/', views.registration_success, name='registration_success'),
 ]

@@ -67,7 +67,40 @@ def register_view(request):
     return render(request, 'website/register.html')
 
 def vendor_register_view(request):
-    return render(request, 'website/vendor-register.html')
+    from .models import VendorRequest, Category
+    if request.method == 'POST':
+        business_name = request.POST.get('business_name')
+        category = request.POST.get('category')
+        owner_name = request.POST.get('owner_name')
+        email = request.POST.get('email')
+        phone = request.POST.get('phone')
+        city = request.POST.get('city')
+        price_starting = request.POST.get('price_starting', 0)
+        website_link = request.POST.get('website_link', '')
+        experience_years = request.POST.get('experience_years', 0)
+        description = request.POST.get('description', '')
+        business_image = request.FILES.get('business_image')
+
+        VendorRequest.objects.create(
+            business_name=business_name,
+            category=category,
+            owner_name=owner_name,
+            email=email,
+            phone=phone,
+            city=city,
+            price_starting=price_starting,
+            website_link=website_link,
+            experience_years=experience_years,
+            description=description,
+            business_image=business_image
+        )
+        return redirect('registration_success')
+
+    categories = Category.objects.all()
+    return render(request, 'website/vendor-register.html', {'categories': categories})
+
+def registration_success(request):
+    return render(request, 'website/registration-success.html')
 
 @login_required(login_url='/login/')
 def add_to_cart(request):

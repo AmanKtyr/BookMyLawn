@@ -91,7 +91,11 @@ def partner_approve(request, pk):
             name=req.business_name,
             category=cat,
             location=req.city,
-            description=f"Managed by {req.owner_name}. Contact: {req.phone}"
+            price_starting=req.price_starting,
+            website_link=req.website_link,
+            experience_years=req.experience_years,
+            description=req.description,
+            image=req.business_image # Transfer the uploaded image
         )
         req.status = 'approved'
         req.save()

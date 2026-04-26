@@ -1,0 +1,270 @@
+{% extends 'website/base.html' %}
+{% load static %}
+
+{% block content %}
+<style>
+    .success-container {
+        padding: 100px 0;
+        background: #f8f9fa;
+        min-height: 80vh;
+    }
+
+    .success-card {
+        background: white;
+        border-radius: 30px;
+        box-shadow: 0 40px 100px rgba(0, 0, 0, 0.08);
+        overflow: hidden;
+        border: 1px solid #f0f0f0;
+        animation: fadeInUp 0.8s ease-out;
+    }
+
+    @keyframes fadeInUp {
+        from {
+            opacity: 0;
+            transform: translateY(30px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .success-header {
+        background: linear-gradient(135deg, rgba(231, 46, 119, 0.95), rgba(194, 24, 91, 0.95)),
+            url("https://www.transparenttextures.com/patterns/cubes.png");
+        padding: 80px 40px;
+        color: white;
+        text-align: center;
+        position: relative;
+    }
+
+    .floating-plane {
+        animation: floatPlane 3s ease-in-out infinite;
+        display: inline-block;
+    }
+
+    @keyframes floatPlane {
+
+        0%,
+        100% {
+            transform: translateY(0) rotate(0deg);
+        }
+
+        50% {
+            transform: translateY(-20px) rotate(5deg);
+        }
+    }
+
+    .success-body {
+        padding: 60px;
+    }
+
+    .status-stepper {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 50px;
+        position: relative;
+    }
+
+    .status-stepper::before {
+        content: '';
+        position: absolute;
+        top: 25px;
+        left: 10%;
+        right: 10%;
+        height: 2px;
+        background: #eee;
+        z-index: 1;
+    }
+
+    .step {
+        position: relative;
+        z-index: 2;
+        text-align: center;
+        flex: 1;
+    }
+
+    .step-icon {
+        width: 50px;
+        height: 50px;
+        background: white;
+        border: 2px solid #eee;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 15px;
+        font-weight: 700;
+        transition: 0.3s;
+    }
+
+    .step.active .step-icon {
+        background: #e72e77;
+        color: white;
+        border-color: #e72e77;
+        box-shadow: 0 0 0 5px rgba(231, 46, 119, 0.2);
+    }
+
+    .step.completed .step-icon {
+        background: #28a745;
+        color: white;
+        border-color: #28a745;
+    }
+
+    .step-text {
+        font-size: 14px;
+        font-weight: 600;
+        color: #888;
+    }
+
+    .step.active .step-text {
+        color: #e72e77;
+    }
+
+    .info-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 30px;
+        margin-top: 40px;
+    }
+
+    .info-box {
+        background: #fafafa;
+        padding: 25px;
+        border-radius: 15px;
+        border: 1px solid #f0f0f0;
+        transition: 0.3s;
+    }
+
+    .info-box:hover {
+        background: white;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+        border-color: #e72e77;
+    }
+
+    .info-box i {
+        font-size: 24px;
+        color: #e72e77;
+        margin-bottom: 15px;
+        display: block;
+    }
+
+    .info-box h6 {
+        font-weight: 700;
+        margin-bottom: 10px;
+        color: #111;
+    }
+
+    .info-box p {
+        font-size: 14px;
+        color: #666;
+        margin-bottom: 0;
+        line-height: 1.6;
+    }
+
+    .btn-home {
+        background: #e72e77;
+        color: white;
+        padding: 15px 40px;
+        border-radius: 12px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        border: none;
+        transition: 0.3s;
+        box-shadow: 0 10px 20px rgba(231, 46, 119, 0.2);
+        text-decoration: none;
+        display: inline-block;
+    }
+
+    .btn-home:hover {
+        background: #c2185b;
+        transform: translateY(-2px);
+        color: white;
+    }
+</style>
+
+<div class="success-container">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-10">
+                <div class="success-card">
+                    <div class="success-header">
+                        <div class="mb-4 floating-plane">
+                            <i class="fa fa-paper-plane"
+                                style="font-size: 70px; text-shadow: 0 10px 20px rgba(0,0,0,0.2);"></i>
+                        </div>
+                        <h1 class="display-4 font-weight-bold"
+                            style="font-family: 'Playfair Display', serif; text-shadow: 0 2px 10px rgba(0,0,0,0.1);">
+                            Application Received!</h1>
+                        <p class="lead" style="opacity: 1.9;">We've received your business details and started the
+                            verification process.</p>
+                        <div class="badge badge-light px-4 py-3 mt-3"
+                            style="border-radius: 50px; font-weight: 700; color: #e72e77; box-shadow: 0 5px 15px rgba(0,0,0,0.1); font-size: 16px;">
+                            Reference ID: BML-{% now "Ymd-His" %}
+                        </div>
+                    </div>
+
+                    <div class="success-body">
+                        <!-- Progress Stepper -->
+                        <div class="status-stepper">
+                            <div class="step completed">
+                                <div class="step-icon"><i class="fa fa-check"></i></div>
+                                <div class="step-text">Form Submitted</div>
+                            </div>
+                            <div class="step active">
+                                <div class="step-icon">2</div>
+                                <div class="step-text">Admin Review</div>
+                            </div>
+                            <div class="step">
+                                <div class="step-icon">3</div>
+                                <div class="step-text">Verification</div>
+                            </div>
+                            <div class="step">
+                                <div class="step-icon">4</div>
+                                <div class="step-text">Go Live</div>
+                            </div>
+                        </div>
+
+                        <div class="text-center mb-5">
+                            <h3 style="font-family: 'Playfair Display', serif; font-weight: 700;">What to expect now?
+                            </h3>
+                            <p class="text-muted">Our expert team is manually reviewing your profile to ensure the
+                                highest quality for our couples.</p>
+                        </div>
+
+                        <div class="info-grid">
+                            <div class="info-box">
+                                <i class="fa fa-clock-o"></i>
+                                <h6>Estimated Time</h6>
+                                <p>Approval typically takes 24 to 48 business hours depending on the category.</p>
+                            </div>
+                            <div class="info-box">
+                                <i class="fa fa-envelope-open-o"></i>
+                                <h6>Email Notification</h6>
+                                <p>You will receive an automated email as soon as your account is activated.</p>
+                            </div>
+                            <div class="info-box">
+                                <i class="fa fa-search"></i>
+                                <h6>Quality Audit</h6>
+                                <p>We check image resolution and description clarity to help you get more leads.</p>
+                            </div>
+                            <div class="info-box">
+                                <i class="fa fa-headphones"></i>
+                                <h6>Support Ready</h6>
+                                <p>Need help? Contact our vendor support team at partners@bookmylawn.com</p>
+                            </div>
+                        </div>
+
+                        <div class="text-center mt-5 pt-4 border-top">
+                            <a href="/" class="btn-home">Explore Platform</a>
+                            <p class="mt-4 text-muted small">© 2026 BookMyLawn India. All rights reserved.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

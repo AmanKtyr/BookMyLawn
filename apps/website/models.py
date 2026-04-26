@@ -22,6 +22,8 @@ class Vendor(models.Model):
     is_verified = models.BooleanField(default=False)
     is_premium = models.BooleanField(default=False)
     image = models.ImageField(upload_to='vendors/', null=True, blank=True)
+    website_link = models.URLField(blank=True, null=True)
+    experience_years = models.IntegerField(default=0)
     created_at = models.DateTimeField(auto_now_add=True)
     
     def __str__(self):
@@ -39,6 +41,10 @@ class VendorRequest(models.Model):
     email = models.EmailField()
     phone = models.CharField(max_length=20)
     city = models.CharField(max_length=100)
+    price_starting = models.DecimalField(max_digits=10, decimal_places=2, default=0.0)
+    website_link = models.URLField(blank=True, null=True)
+    experience_years = models.IntegerField(default=0)
+    business_image = models.ImageField(upload_to='vendor_requests/', null=True, blank=True)
     description = models.TextField(blank=True)
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='pending')
     created_at = models.DateTimeField(auto_now_add=True)
