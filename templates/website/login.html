@@ -35,9 +35,12 @@
                 </div>
             </div>
 
-            <!-- Role Cards -->
+            <!-- Role Selection or Login Form -->
             <div class="row justify-content-center">
 
+                {% if not user_type %}
+                <!-- ── ROLE SELECTION ── -->
+                
                 <!-- ── USER CARD ── -->
                 <div class="col-lg-5 col-md-6 col-sm-10 mb-4">
                     <div class="portal-card">
@@ -61,11 +64,11 @@
                             </li>
                         </ul>
                         <a href="{% url 'login' %}?type=user" class="btn-theme btn-block mb-3">
-                            <i class="fa fa-sign-in" style="margin-right: 6px;"></i> Sign In as User
+                            <i class="fa fa-sign-in" style="margin-right: 6px;"></i> SIGN IN AS USER
                         </a>
                         <div class="divider-or">or</div>
                         <a href="{% url 'register' %}" class="btn-outline-theme btn-block mt-2">
-                            <i class="fa fa-user-plus" style="margin-right: 6px;"></i> Create User Account
+                            <i class="fa fa-user-plus" style="margin-right: 6px;"></i> CREATE USER ACCOUNT
                         </a>
                     </div>
                 </div>
@@ -93,14 +96,62 @@
                             </li>
                         </ul>
                         <a href="{% url 'login' %}?type=vendor" class="btn-theme btn-block mb-3">
-                            <i class="fa fa-sign-in" style="margin-right: 6px;"></i> Sign In as Vendor
+                            <i class="fa fa-sign-in" style="margin-right: 6px;"></i> SIGN IN AS VENDOR
                         </a>
                         <div class="divider-or">or</div>
                         <a href="{% url 'vendor_register' %}" class="btn-outline-theme btn-block mt-2">
-                            <i class="fa fa-plus-circle" style="margin-right: 6px;"></i> List My Business
+                            <i class="fa fa-plus-circle" style="margin-right: 6px;"></i> LIST MY BUSINESS
                         </a>
                     </div>
                 </div>
+
+                {% else %}
+                <!-- ── LOGIN FORM ── -->
+                <div class="col-lg-5 col-md-8 col-sm-10">
+                    <div class="portal-card">
+                        <div class="text-center mb-4">
+                            <div class="role-icon mx-auto">
+                                <i class="fa {% if user_type == 'user' %}fa-heart{% else %}fa-building{% endif %}"></i>
+                            </div>
+                            <h4 style="color: var(--color-dark); font-weight: 700; margin-bottom: 10px;">Sign In as {{ user_type|title }}</h4>
+                            <p>Please enter your credentials to continue</p>
+                        </div>
+                        
+                        <form action="#" method="POST">
+                            {% csrf_token %}
+                            <div class="form-group mb-3">
+                                <label style="font-weight: 600; font-size: 14px; color: var(--color-dark); margin-bottom: 8px; display: block;">Email Address</label>
+                                <input type="email" name="email" class="form-control" placeholder="example@mail.com" required 
+                                    style="border-radius: 8px; padding: 12px; border: 1px solid var(--color-border);">
+                            </div>
+                            <div class="form-group mb-4">
+                                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                                    <label style="font-weight: 600; font-size: 14px; color: var(--color-dark); margin-bottom: 0;">Password</label>
+                                    <a href="#" style="font-size: 13px; color: var(--theme-color);">Forgot?</a>
+                                </div>
+                                <input type="password" name="password" class="form-control" placeholder="••••••••" required 
+                                    style="border-radius: 8px; padding: 12px; border: 1px solid var(--color-border);">
+                            </div>
+                            
+                            <button type="submit" class="btn-theme btn-block mb-4">
+                                LOGIN TO ACCOUNT
+                            </button>
+                        </form>
+
+                        <div class="text-center mt-2">
+                            <p style="font-size: 14px; color: var(--color-text);">
+                                Don't have an account? 
+                                <a href="{% if user_type == 'user' %}{% url 'register' %}{% else %}{% url 'vendor_register' %}{% endif %}" 
+                                   style="color: var(--theme-color); font-weight: 600;">Sign up here</a>
+                            </p>
+                            <hr style="margin: 20px 0;">
+                            <a href="{% url 'login' %}" style="color: var(--color-text-light); font-size: 13px; text-decoration: none;">
+                                <i class="fa fa-arrow-left" style="margin-right: 5px;"></i> Back to role selection
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
 
             </div>
 

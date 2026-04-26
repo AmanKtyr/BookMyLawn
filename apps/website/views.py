@@ -60,7 +60,8 @@ def real_weddings(request):
     return render(request, 'website/real-weddings.html', {'weddings': weddings})
 
 def login_view(request):
-    return render(request, 'website/login.html')
+    user_type = request.GET.get('type')
+    return render(request, 'website/login.html', {'user_type': user_type})
 
 def register_view(request):
     return render(request, 'website/register.html')
