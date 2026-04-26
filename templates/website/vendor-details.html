@@ -5,173 +5,7 @@
 {% block meta_description %}Looking for a {{ vendor.category.name }} in {{ vendor.location }}? Check out {{ vendor.name }}, read verified reviews, and view starting prices on BookMyLawn.{% endblock %}
 
 {% block content %}
-<style>
-    /* Premium Detail Styles */
-    .vendor-main-image {
-        border-radius: 16px;
-        box-shadow: 0 10px 40px rgba(0,0,0,0.08);
-        transition: transform 0.3s ease;
-    }
-    .vendor-main-image:hover {
-        transform: scale(1.02);
-    }
-    
-    .vendor-info-card {
-        background: #fff;
-        padding: 40px;
-        border-radius: 16px;
-        box-shadow: 0 5px 25px rgba(0,0,0,0.04);
-        border: 1px solid #f5f5f5;
-    }
-    
-    .vendor-title {
-        font-family: 'Playfair Display', serif;
-        font-weight: 700;
-        font-size: 36px;
-        color: #111;
-        margin-bottom: 10px;
-    }
-    
-    .price-badge {
-        display: inline-block;
-        background: #fdfdfd;
-        border: 1px solid #eee;
-        padding: 10px 20px;
-        border-radius: 30px;
-        font-weight: 600;
-        color: #e72e77;
-        font-size: 18px;
-        margin-bottom: 20px;
-    }
-    
-    .btn-primary-custom {
-        background: #e72e77;
-        color: white;
-        padding: 12px 30px;
-        border-radius: 30px;
-        font-weight: 600;
-        text-transform: uppercase;
-        font-size: 14px;
-        box-shadow: 0 4px 15px rgba(231, 46, 119, 0.3);
-        transition: 0.3s;
-        border: none;
-        display: inline-block;
-        text-decoration: none;
-    }
-    .btn-primary-custom:hover {
-        background: #c2185b;
-        transform: translateY(-2px);
-        color: white;
-        box-shadow: 0 6px 20px rgba(231, 46, 119, 0.4);
-    }
-    
-    .btn-secondary-custom {
-        background: #fff;
-        color: #111;
-        border: 2px solid #111;
-        padding: 10px 30px;
-        border-radius: 30px;
-        font-weight: 600;
-        text-transform: uppercase;
-        font-size: 14px;
-        transition: 0.3s;
-        display: inline-block;
-        margin-left: 10px;
-        text-decoration: none;
-    }
-    .btn-secondary-custom:hover {
-        background: #111;
-        color: white;
-    }
-    
-    .feature-chip {
-        background: #f8f9fa;
-        padding: 6px 15px;
-        border-radius: 20px;
-        font-size: 13px;
-        color: #555;
-        display: inline-block;
-        margin-right: 5px;
-        margin-bottom: 8px;
-        border: 1px solid #eaeaea;
-    }
-    
-    /* Tabs Styling */
-    .nav-tabs {
-        border-bottom: 2px solid #eee;
-    }
-    .nav-tabs .nav-link {
-        border: none;
-        color: #666;
-        font-weight: 600;
-        padding: 15px 30px;
-        background: transparent;
-        position: relative;
-    }
-    .nav-tabs .nav-link.active {
-        color: #e72e77 !important;
-        background: transparent;
-        border: none;
-    }
-    .nav-tabs .nav-link.active::after {
-        content: '';
-        position: absolute;
-        bottom: -2px;
-        left: 0;
-        width: 100%;
-        height: 2px;
-        background: #e72e77;
-    }
-    
-    /* Product Card Styles */
-    .product__item {
-        border-radius: 12px;
-        overflow: hidden;
-        box-shadow: 0 5px 20px rgba(0,0,0,0.05);
-        transition: all 0.3s ease;
-        background: #fff;
-        margin-bottom: 30px;
-        border: 1px solid #f0f0f0;
-    }
-    .product__item:hover {
-        transform: translateY(-8px);
-        box-shadow: 0 15px 35px rgba(231, 46, 119, 0.15);
-        border-color: #fbe6ee;
-    }
-    .product__item__pic {
-        height: 260px;
-        position: relative;
-        background-size: cover;
-        background-position: center;
-    }
-    .product__item__text {
-        padding: 20px;
-    }
-    .product__item__text h6 {
-        margin-bottom: 10px;
-    }
-    .product__item__text h6 a {
-        font-family: 'Playfair Display', serif;
-        font-size: 18px;
-        font-weight: 700;
-        color: #111;
-        transition: 0.3s;
-    }
-    .product__item__text h6 a:hover {
-        color: #e72e77;
-    }
-    .product__price {
-        font-size: 14px;
-        font-weight: 500;
-        color: #666;
-        background: #fcfcfc;
-        padding: 8px 15px;
-        border-radius: 20px;
-        display: inline-block;
-        margin-top: 15px;
-        border: 1px solid #eee;
-    }
-</style>
+
     <!-- Breadcrumb Begin -->
     <div class="breadcrumb-option">
         <div class="container">
@@ -194,26 +28,33 @@
             <div class="row">
                 <div class="col-lg-6">
                     <div class="product__details__pic">
-                        <div class="product__details__slider__content" style="margin-left: 0;">
-                            <img src="{% if vendor.image %}{{ vendor.image.url }}{% else %}{% static 'website/img/product/product-1.jpg' %}?v=2{% endif %}" alt="Vendor Gallery" class="vendor-main-image" style="width: 100%;">
+                        <div class="product__details__slider__content">
+                            <img src="{% if vendor.image %}{{ vendor.image.url }}{% else %}{% static 'website/img/product/product-1.jpg' %}?v=2{% endif %}"
+                                 alt="Vendor Gallery"
+                                 class="vendor-main-image">
                         </div>
                     </div>
                 </div>
                 <div class="col-lg-6">
                     <div class="vendor-info-card">
-                        <h3 class="vendor-title">{{ vendor.name }} {% if vendor.is_verified %}<i class="fa fa-check-circle text-success" style="font-size: 22px;" title="Verified"></i>{% endif %}</h3>
-                        <p style="color: #666; margin-bottom: 15px; font-size: 16px;"><i class="fa fa-map-marker" style="color: #e72e77;"></i> {{ vendor.location }}</p>
+                        <h3 class="vendor-title">
+                            {{ vendor.name }}
+                            {% if vendor.is_verified %}
+                            <i class="fa fa-check-circle text-success" style="font-size: 22px;" title="Verified"></i>
+                            {% endif %}
+                        </h3>
+                        <p class="vendor-location"><i class="fa fa-map-marker"></i> {{ vendor.location }}</p>
                         <div class="rating mb-4">
                             <i class="fa fa-star text-warning"></i>
                             <i class="fa fa-star text-warning"></i>
                             <i class="fa fa-star text-warning"></i>
                             <i class="fa fa-star text-warning"></i>
                             <i class="fa fa-star text-warning"></i>
-                            <span class="ml-2 text-muted" style="font-size: 14px;">( {{ vendor.reviews.count }} verified reviews )</span>
+                            <span class="ml-2 text-muted">( {{ vendor.reviews.count }} verified reviews )</span>
                         </div>
-                        <div class="price-badge">₹{{ vendor.price_starting }} <span style="font-size: 14px; color: #666; font-weight: normal;">/ per day</span></div>
-                        <p style="line-height: 1.8; color: #555;">{{ vendor.description|default:"Contact the vendor to learn more about their exceptional services and customize a package for your special day." }}</p>
-                        
+                        <div class="price-badge">₹{{ vendor.price_starting }} <span>/ per day</span></div>
+                        <p>{{ vendor.description|default:"Contact the vendor to learn more about their exceptional services and customize a package for your special day." }}</p>
+
                         <div class="product__details__widget mt-4 mb-4">
                             <h6 style="font-weight: 700; margin-bottom: 15px;">Key Details</h6>
                             <div class="mb-3">
@@ -236,14 +77,16 @@
                         </div>
                     </div>
                 </div>
+
+                <!-- Tabs -->
                 <div class="col-lg-12 mt-5">
                     <div class="product__details__tab">
                         <ul class="nav nav-tabs" role="tablist">
                             <li class="nav-item">
-                                <a class="nav-link active" data-toggle="tab" href="#tabs-1" role="tab" style="color: #111; font-weight: bold;">About the Vendor</a>
+                                <a class="nav-link active" data-toggle="tab" href="#tabs-1" role="tab">About the Vendor</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" data-toggle="tab" href="#tabs-2" role="tab" style="color: #111; font-weight: bold;">Reviews ( {{ vendor.reviews.count }} )</a>
+                                <a class="nav-link" data-toggle="tab" href="#tabs-2" role="tab">Reviews ( {{ vendor.reviews.count }} )</a>
                             </li>
                         </ul>
                         <div class="tab-content mt-4">
@@ -254,8 +97,8 @@
                             <div class="tab-pane" id="tabs-2" role="tabpanel">
                                 <h6>Recent Reviews</h6>
                                 {% for review in vendor.reviews.all %}
-                                <div style="border-bottom: 1px solid #ddd; padding-bottom: 15px; margin-bottom: 15px;">
-                                    <strong>{{ review.reviewer_name }}</strong> 
+                                <div class="review-item">
+                                    <strong>{{ review.reviewer_name }}</strong>
                                     <span class="text-warning">
                                         {% for i in "12345"|make_list %}
                                             {% if forloop.counter <= review.rating %}
@@ -276,7 +119,8 @@
                     </div>
                 </div>
             </div>
-            
+
+            <!-- Similar Venues -->
             <div class="row mt-5">
                 <div class="col-lg-12 text-center">
                     <div class="related__title">
@@ -285,8 +129,7 @@
                 </div>
                 <div class="col-lg-4 col-md-6">
                     <div class="product__item">
-                        <div class="product__item__pic set-bg" data-setbg="{% static 'website/img/product/product-2.jpg' %}">
-                        </div>
+                        <div class="product__item__pic set-bg" data-setbg="{% static 'website/img/product/product-2.jpg' %}"></div>
                         <div class="product__item__text text-center">
                             <h6><a href="#">Royal Palace Gardens</a></h6>
                             <div class="rating">
@@ -296,14 +139,13 @@
                                 <i class="fa fa-star text-warning"></i>
                                 <i class="fa fa-star text-warning"></i>
                             </div>
-                            <div class="product__price mt-2"><i class="fa fa-map-marker mr-1" style="color: #e72e77;"></i> Mumbai &nbsp;•&nbsp; ₹2,00,000/day</div>
+                            <div class="product__price mt-2"><i class="fa fa-map-marker mr-1 icon-theme"></i> Mumbai &nbsp;•&nbsp; ₹2,00,000/day</div>
                         </div>
                     </div>
                 </div>
                 <div class="col-lg-4 col-md-6">
                     <div class="product__item">
-                        <div class="product__item__pic set-bg" data-setbg="{% static 'website/img/product/product-3.jpg' %}">
-                        </div>
+                        <div class="product__item__pic set-bg" data-setbg="{% static 'website/img/product/product-3.jpg' %}"></div>
                         <div class="product__item__text text-center">
                             <h6><a href="#">Sea View Banquets</a></h6>
                             <div class="rating">
@@ -313,14 +155,13 @@
                                 <i class="fa fa-star text-warning"></i>
                                 <i class="fa fa-star-half-o text-warning"></i>
                             </div>
-                            <div class="product__price mt-2"><i class="fa fa-map-marker mr-1" style="color: #e72e77;"></i> Mumbai &nbsp;•&nbsp; ₹1,20,000/day</div>
+                            <div class="product__price mt-2"><i class="fa fa-map-marker mr-1 icon-theme"></i> Mumbai &nbsp;•&nbsp; ₹1,20,000/day</div>
                         </div>
                     </div>
                 </div>
                 <div class="col-lg-4 col-md-6">
                     <div class="product__item">
-                        <div class="product__item__pic set-bg" data-setbg="{% static 'website/img/product/product-4.jpg' %}">
-                        </div>
+                        <div class="product__item__pic set-bg" data-setbg="{% static 'website/img/product/product-4.jpg' %}"></div>
                         <div class="product__item__text text-center">
                             <h6><a href="#">Luxe Event Space</a></h6>
                             <div class="rating">
@@ -330,7 +171,7 @@
                                 <i class="fa fa-star text-warning"></i>
                                 <i class="fa fa-star-o text-warning"></i>
                             </div>
-                            <div class="product__price mt-2"><i class="fa fa-map-marker mr-1" style="color: #e72e77;"></i> Mumbai &nbsp;•&nbsp; ₹90,000/day</div>
+                            <div class="product__price mt-2"><i class="fa fa-map-marker mr-1 icon-theme"></i> Mumbai &nbsp;•&nbsp; ₹90,000/day</div>
                         </div>
                     </div>
                 </div>

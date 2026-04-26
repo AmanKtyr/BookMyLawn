@@ -1,179 +1,122 @@
 {% extends 'website/base.html' %}
 {% load static %}
 
+{% block title %}Login | BookMyLawn{% endblock %}
+{% block meta_description %}Login to BookMyLawn as a user or vendor. Access your account or register for the first time.{% endblock %}
+
 {% block content %}
-<style>
-    .login-section {
-        min-height: 80vh;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        background: #f8f9fa;
-        padding: 50px 0;
-    }
-    .login-container {
-        display: flex;
-        width: 1000px;
-        background: white;
-        border-radius: 20px;
-        overflow: hidden;
-        box-shadow: 0 15px 50px rgba(0,0,0,0.1);
-    }
-    .login-image {
-        flex: 1;
-        background-size: cover;
-        background-position: center;
-        position: relative;
-    }
-    .login-image::before {
-        content: '';
-        position: absolute;
-        top: 0; left: 0; right: 0; bottom: 0;
-        background: rgba(0, 0, 0, 0.4);
-    }
-    .login-form-side {
-        flex: 1;
-        padding: 60px;
-    }
-    .login-form-side h3 {
-        font-family: 'Playfair Display', serif;
-        font-weight: 700;
-        font-size: 32px;
-        margin-bottom: 10px;
-    }
-    .login-form-side p {
-        color: #666;
-        margin-bottom: 30px;
-    }
-    .form-group {
-        margin-bottom: 20px;
-    }
-    .form-group label {
-        display: block;
-        font-weight: 600;
-        font-size: 14px;
-        margin-bottom: 8px;
-        color: #333;
-    }
-    .form-group input {
-        width: 100%;
-        padding: 12px 15px;
-        border: 1px solid #ddd;
-        border-radius: 8px;
-        transition: 0.3s;
-    }
-    .form-group input:focus {
-        border-color: #e72e77;
-        box-shadow: 0 0 0 4px rgba(231, 46, 119, 0.1);
-        outline: none;
-    }
-    .btn-login {
-        background: #e72e77;
-        color: white;
-        width: 100%;
-        padding: 14px;
-        border: none;
-        border-radius: 8px;
-        font-weight: 600;
-        font-size: 16px;
-        cursor: pointer;
-        transition: 0.3s;
-        margin-top: 10px;
-    }
-    .btn-login:hover {
-        background: #c2185b;
-        transform: translateY(-2px);
-        box-shadow: 0 5px 15px rgba(231, 46, 119, 0.3);
-    }
-    .social-login {
-        display: flex;
-        gap: 15px;
-        margin-top: 30px;
-    }
-    .social-btn {
-        flex: 1;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 10px;
-        padding: 10px;
-        border: 1px solid #ddd;
-        border-radius: 8px;
-        font-size: 14px;
-        font-weight: 500;
-        transition: 0.3s;
-        text-decoration: none;
-        color: #333;
-    }
-    .social-btn:hover {
-        background: #f8f9fa;
-        border-color: #ccc;
-    }
-    .divider {
-        display: flex;
-        align-items: center;
-        text-align: center;
-        margin: 30px 0;
-        color: #999;
-    }
-    .divider::before, .divider::after {
-        content: '';
-        flex: 1;
-        border-bottom: 1px solid #eee;
-    }
-    .divider:not(:empty)::before { margin-right: 1em; }
-    .divider:not(:empty)::after { margin-left: 1em; }
 
-    @media (max-width: 991px) {
-        .login-image { display: none; }
-        .login-container { width: 100%; max-width: 500px; }
-    }
-</style>
-
-<div class="login-section">
-    <div class="login-container">
-        <div class="login-image" style="background-image: url('{% static 'website/img/banner/banner-1.jpg' %}?v=2');">
-            <div style="position: absolute; bottom: 40px; left: 40px; color: white;">
-                <h2 style="font-family: 'Playfair Display', serif; font-weight: 700; color: white;">Find Your Dream Venue</h2>
-                <p style="color: white; opacity: 0.9;">Join the community of happy couples and top-tier vendors.</p>
+    <!-- Breadcrumb Begin -->
+    <div class="breadcrumb-option">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="breadcrumb__links">
+                        <a href="{% url 'index' %}"><i class="fa fa-home"></i> Home</a>
+                        <span>Login</span>
+                    </div>
+                </div>
             </div>
-        </div>
-        <div class="login-form-side">
-            <h3>{% if request.GET.type == 'vendor' %}Vendor Login{% else %}Welcome Back!{% endif %}</h3>
-            <p>{% if request.GET.type == 'vendor' %}Manage your profile and leads on BookMyLawn.{% else %}Please enter your details to sign in.{% endif %}</p>
-            
-            <form action="#">
-                <div class="form-group">
-                    <label>Email Address</label>
-                    <input type="email" placeholder="name@example.com" required>
-                </div>
-                <div class="form-group">
-                    <label>Password</label>
-                    <input type="password" placeholder="••••••••" required>
-                </div>
-                <div style="display: flex; justify-content: space-between; margin-bottom: 20px; font-size: 14px;">
-                    <label style="font-weight: normal; cursor: pointer; display: flex; align-items: center; gap: 5px;">
-                        <input type="checkbox" style="width: auto; margin: 0;"> Remember me
-                    </label>
-                    <a href="#" style="color: #e72e77; font-weight: 600; text-decoration: none;">Forgot Password?</a>
-                </div>
-                <button type="submit" class="btn-login">Sign In</button>
-            </form>
-
-            <div class="divider">or sign in with</div>
-
-            <div class="social-login">
-                <a href="#" class="social-btn"><i class="fa fa-google text-danger"></i> Google</a>
-                <a href="#" class="social-btn"><i class="fa fa-facebook text-primary"></i> Facebook</a>
-            </div>
-
-            <p style="margin-top: 30px; text-align: center; font-size: 14px;">
-                Don't have an account? <a href="{% url 'register' %}" style="color: #e72e77; font-weight: 600; text-decoration: none;">Sign Up</a>
-            </p>
-            <p style="text-align: center; font-size: 14px; margin-top: 10px;">
-                Are you a vendor? <a href="{% url 'vendor_register' %}" style="color: #111; font-weight: 600; text-decoration: underline;">List your business</a>
-            </p>
         </div>
     </div>
-</div>
+    <!-- Breadcrumb End -->
+
+    <!-- Login Portal Section Begin -->
+    <section class="spad" style="background: var(--color-bg);">
+        <div class="container">
+
+            <!-- Section Title -->
+            <div class="row">
+                <div class="col-lg-12 text-center">
+                    <div class="section-title">
+                        <h4>Welcome to BookMyLawn</h4>
+                        <p class="section-subtitle">Select how you'd like to continue</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Role Cards -->
+            <div class="row justify-content-center">
+
+                <!-- ── USER CARD ── -->
+                <div class="col-lg-5 col-md-6 col-sm-10 mb-4">
+                    <div class="portal-card">
+                        <div class="role-icon">
+                            <i class="fa fa-heart"></i>
+                        </div>
+                        <span class="role-badge">Couple / Guest</span>
+                        <h5 style="color: var(--color-dark); font-weight: 600; margin-bottom: 8px;">I'm looking for a Venue</h5>
+                        <p style="margin-bottom: 22px;">
+                            Browse and book wedding venues, photographers, decorators and more for your special day.
+                        </p>
+                        <ul style="list-style: none; padding: 0; margin: 0 0 28px 0;">
+                            <li style="margin-bottom: 8px; display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--color-text);">
+                                <i class="fa fa-check-circle icon-theme"></i> Browse &amp; compare venues
+                            </li>
+                            <li style="margin-bottom: 8px; display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--color-text);">
+                                <i class="fa fa-check-circle icon-theme"></i> Save your favourites
+                            </li>
+                            <li style="display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--color-text);">
+                                <i class="fa fa-check-circle icon-theme"></i> Track bookings &amp; inquiries
+                            </li>
+                        </ul>
+                        <a href="{% url 'login' %}?type=user" class="btn-theme btn-block mb-3">
+                            <i class="fa fa-sign-in" style="margin-right: 6px;"></i> Sign In as User
+                        </a>
+                        <div class="divider-or">or</div>
+                        <a href="{% url 'register' %}" class="btn-outline-theme btn-block mt-2">
+                            <i class="fa fa-user-plus" style="margin-right: 6px;"></i> Create User Account
+                        </a>
+                    </div>
+                </div>
+
+                <!-- ── VENDOR CARD ── -->
+                <div class="col-lg-5 col-md-6 col-sm-10 mb-4">
+                    <div class="portal-card">
+                        <div class="role-icon">
+                            <i class="fa fa-building"></i>
+                        </div>
+                        <span class="role-badge">Business Owner</span>
+                        <h5 style="color: var(--color-dark); font-weight: 600; margin-bottom: 8px;">I'm a Vendor / Business</h5>
+                        <p style="margin-bottom: 22px;">
+                            Manage your business profile, showcase your work, and receive booking leads from couples.
+                        </p>
+                        <ul style="list-style: none; padding: 0; margin: 0 0 28px 0;">
+                            <li style="margin-bottom: 8px; display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--color-text);">
+                                <i class="fa fa-check-circle icon-theme"></i> Manage your business profile
+                            </li>
+                            <li style="margin-bottom: 8px; display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--color-text);">
+                                <i class="fa fa-check-circle icon-theme"></i> Receive inquiries &amp; leads
+                            </li>
+                            <li style="display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--color-text);">
+                                <i class="fa fa-check-circle icon-theme"></i> Showcase photos &amp; pricing
+                            </li>
+                        </ul>
+                        <a href="{% url 'login' %}?type=vendor" class="btn-theme btn-block mb-3">
+                            <i class="fa fa-sign-in" style="margin-right: 6px;"></i> Sign In as Vendor
+                        </a>
+                        <div class="divider-or">or</div>
+                        <a href="{% url 'vendor_register' %}" class="btn-outline-theme btn-block mt-2">
+                            <i class="fa fa-plus-circle" style="margin-right: 6px;"></i> List My Business
+                        </a>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Footer note -->
+            <div class="row">
+                <div class="col-lg-12 text-center mt-2">
+                    <p style="color: var(--color-text-light); font-size: 13px;">
+                        By continuing, you agree to our
+                        <a href="#" class="wedding-venue-link" style="font-weight: 600;">Terms of Service</a> and
+                        <a href="#" class="wedding-venue-link" style="font-weight: 600;">Privacy Policy</a>.
+                    </p>
+                </div>
+            </div>
+
+        </div>
+    </section>
+    <!-- Login Portal Section End -->
+
 {% endblock %}

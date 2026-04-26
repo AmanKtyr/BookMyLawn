@@ -3,9 +3,9 @@
 
 {% block content %}
 
-
     <!-- Hero Section Begin -->
-    <section class="hero set-bg" data-setbg="{% static 'website/img/banner/banner-1.jpg' %}?v=2" style="background-image: url('{% static 'website/img/banner/banner-1.jpg' %}?v=2'); padding: 150px 0; background-size: cover; background-position: center;">
+    <section class="hero set-bg" data-setbg="{% static 'website/img/banner/banner-1.jpg' %}?v=2"
+             style="background-image: url('{% static 'website/img/banner/banner-1.jpg' %}?v=2'); padding: 150px 0; background-size: cover; background-position: center;">
         <div class="container">
             <div class="row">
                 <div class="col-lg-8 m-auto text-center">
@@ -89,12 +89,12 @@
                 {% for vendor in featured_vendors %}
                 <div class="col-lg-4 col-md-6">
                     <div class="product__item">
-                        <div class="product__item__pic set-bg" 
+                        <div class="product__item__pic set-bg"
                              {% if vendor.image %}data-setbg="{{ vendor.image.url }}"{% else %}data-setbg="{% static 'website/img/product/product-1.jpg' %}?v=2"{% endif %}>
                             {% if vendor.is_premium %}
-                            <div class="label new" style="background: #e72e77;">Premium</div>
+                            <div class="label new">Premium</div>
                             {% elif vendor.is_verified %}
-                            <div class="label" style="background: #28a745;">Verified</div>
+                            <div class="label">Verified</div>
                             {% endif %}
                         </div>
                         <div class="product__item__text text-center">
@@ -107,7 +107,7 @@
                                 <i class="fa fa-star text-warning"></i>
                                 <span class="text-muted ml-1">({{ vendor.reviews.count }} Reviews)</span>
                             </div>
-                            <div class="product__price mt-2" style="font-size: 14px; font-weight: 500; color: #666;">
+                            <div class="product__price mt-2">
                                 {{ vendor.category.name }}, {{ vendor.location }}
                             </div>
                         </div>
@@ -121,7 +121,7 @@
             </div>
             <div class="row">
                 <div class="col-lg-12 text-center mt-4">
-                    <a href="{% url 'vendors' %}" class="site-btn" style="background: #e72e77; color: white; padding: 15px 40px; border-radius: 30px; font-weight: bold; text-transform: uppercase;">View All Vendors</a>
+                    <a href="{% url 'vendors' %}" class="btn-theme">View All Vendors</a>
                 </div>
             </div>
         </div>
@@ -129,48 +129,48 @@
     <!-- Featured Vendors Section End -->
 
     <!-- Real Weddings Inspiration Begin -->
-    <section class="real-weddings spad" style="padding: 80px 0;">
+    <section class="real-weddings spad">
         <div class="container">
             <div class="row">
                 <div class="col-lg-12 text-center">
                     <div class="section-title">
-                        <h2>Real Weddings & Inspiration</h2>
-                        <p class="text-muted mt-2">Get inspired by beautiful couples and stunning setups</p>
+                        <h2>Real Weddings &amp; Inspiration</h2>
+                        <p class="section-subtitle">Get inspired by beautiful couples and stunning setups</p>
                     </div>
                 </div>
             </div>
             <div class="row mt-4">
                 <div class="col-lg-4 col-md-6 mb-4">
-                    <div class="wedding-card" style="border-radius: 10px; overflow: hidden; box-shadow: 0 5px 15px rgba(0,0,0,0.1);">
-                        <img src="{% static 'website/img/product/product-2.jpg' %}?v=2" alt="Real Wedding" style="width: 100%; height: 250px; object-fit: cover;">
-                        <div style="padding: 20px; background: white;">
-                            <h5 style="font-family: 'Playfair Display', serif; font-weight: 700; margin-bottom: 5px;">A Royal Affair in Udaipur</h5>
-                            <p style="color: #666; font-size: 14px; margin: 0;">Ankit & Priya's Grand Celebration</p>
+                    <div class="wedding-card">
+                        <img src="{% static 'website/img/product/product-2.jpg' %}?v=2" alt="Real Wedding" class="wedding-image" style="width:100%; object-fit:cover;">
+                        <div class="wedding-content">
+                            <h5 class="wedding-title">A Royal Affair in Udaipur</h5>
+                            <p class="wedding-description">Ankit &amp; Priya's Grand Celebration</p>
                         </div>
                     </div>
                 </div>
                 <div class="col-lg-4 col-md-6 mb-4">
-                    <div class="wedding-card" style="border-radius: 10px; overflow: hidden; box-shadow: 0 5px 15px rgba(0,0,0,0.1);">
-                        <img src="{% static 'website/img/product/product-3.jpg' %}?v=2" alt="Real Wedding" style="width: 100%; height: 250px; object-fit: cover;">
-                        <div style="padding: 20px; background: white;">
-                            <h5 style="font-family: 'Playfair Display', serif; font-weight: 700; margin-bottom: 5px;">Modern Minimalist Delhi Wedding</h5>
-                            <p style="color: #666; font-size: 14px; margin: 0;">Rohan & Sneha's Intimate Vows</p>
+                    <div class="wedding-card">
+                        <img src="{% static 'website/img/product/product-3.jpg' %}?v=2" alt="Real Wedding" class="wedding-image" style="width:100%; object-fit:cover;">
+                        <div class="wedding-content">
+                            <h5 class="wedding-title">Modern Minimalist Delhi Wedding</h5>
+                            <p class="wedding-description">Rohan &amp; Sneha's Intimate Vows</p>
                         </div>
                     </div>
                 </div>
                 <div class="col-lg-4 col-md-6 mb-4">
-                    <div class="wedding-card" style="border-radius: 10px; overflow: hidden; box-shadow: 0 5px 15px rgba(0,0,0,0.1);">
-                        <img src="{% static 'website/img/product/product-1.jpg' %}?v=2" alt="Real Wedding" style="width: 100%; height: 250px; object-fit: cover;">
-                        <div style="padding: 20px; background: white;">
-                            <h5 style="font-family: 'Playfair Display', serif; font-weight: 700; margin-bottom: 5px;">Beachside Bliss in Goa</h5>
-                            <p style="color: #666; font-size: 14px; margin: 0;">Kabir & Meera's Sunset Reception</p>
+                    <div class="wedding-card">
+                        <img src="{% static 'website/img/product/product-1.jpg' %}?v=2" alt="Real Wedding" class="wedding-image" style="width:100%; object-fit:cover;">
+                        <div class="wedding-content">
+                            <h5 class="wedding-title">Beachside Bliss in Goa</h5>
+                            <p class="wedding-description">Kabir &amp; Meera's Sunset Reception</p>
                         </div>
                     </div>
                 </div>
             </div>
             <div class="row">
                 <div class="col-lg-12 text-center mt-3">
-                    <a href="#" class="site-btn" style="background: white; color: #e72e77; border: 2px solid #e72e77; padding: 12px 35px; border-radius: 30px; font-weight: bold; text-transform: uppercase;">View Gallery</a>
+                    <a href="#" class="btn-outline-theme">View Gallery</a>
                 </div>
             </div>
         </div>
@@ -178,51 +178,43 @@
     <!-- Real Weddings Inspiration End -->
 
     <!-- How it Works Section Begin -->
-    <section class="how-it-works spad" style="background-color: #fffafb; padding: 80px 0;">
+    <section class="how-it-works spad" style="background-color: #fffafb;">
         <div class="container">
             <div class="row">
                 <div class="col-lg-12 text-center">
                     <div class="section-title">
                         <h2>How It Works</h2>
-                        <p class="text-muted mt-2">Plan your dream wedding in 4 simple steps</p>
+                        <p class="section-subtitle">Plan your dream wedding in 4 simple steps</p>
                     </div>
                 </div>
             </div>
             <div class="row text-center mt-4">
                 <div class="col-lg-3 col-md-6 mb-4">
-                    <div class="step-card" style="padding: 20px;">
-                        <div class="icon" style="width: 80px; height: 80px; margin: 0 auto 20px; background: #ffe4ef; border-radius: 50%; line-height: 80px; color: #e72e77; font-size: 30px;">
-                            <i class="fa fa-search"></i>
-                        </div>
-                        <h5 style="font-weight: 700; font-family: 'Playfair Display', serif;">1. Discover</h5>
-                        <p style="color: #666; font-size: 14px; mt-2">Search for venues and vendors in your preferred city.</p>
+                    <div class="step-card">
+                        <div class="step-icon"><i class="fa fa-search"></i></div>
+                        <h5 style="font-weight: 700; font-family: var(--font-heading);">1. Discover</h5>
+                        <p>Search for venues and vendors in your preferred city.</p>
                     </div>
                 </div>
                 <div class="col-lg-3 col-md-6 mb-4">
-                    <div class="step-card" style="padding: 20px;">
-                        <div class="icon" style="width: 80px; height: 80px; margin: 0 auto 20px; background: #ffe4ef; border-radius: 50%; line-height: 80px; color: #e72e77; font-size: 30px;">
-                            <i class="fa fa-sliders"></i>
-                        </div>
-                        <h5 style="font-weight: 700; font-family: 'Playfair Display', serif;">2. Compare</h5>
-                        <p style="color: #666; font-size: 14px; mt-2">Filter by prices, ratings, and read verified reviews.</p>
+                    <div class="step-card">
+                        <div class="step-icon"><i class="fa fa-sliders"></i></div>
+                        <h5 style="font-weight: 700; font-family: var(--font-heading);">2. Compare</h5>
+                        <p>Filter by prices, ratings, and read verified reviews.</p>
                     </div>
                 </div>
                 <div class="col-lg-3 col-md-6 mb-4">
-                    <div class="step-card" style="padding: 20px;">
-                        <div class="icon" style="width: 80px; height: 80px; margin: 0 auto 20px; background: #ffe4ef; border-radius: 50%; line-height: 80px; color: #e72e77; font-size: 30px;">
-                            <i class="fa fa-envelope-o"></i>
-                        </div>
-                        <h5 style="font-weight: 700; font-family: 'Playfair Display', serif;">3. Contact</h5>
-                        <p style="color: #666; font-size: 14px; mt-2">Chat directly with vendors to get personalized quotes.</p>
+                    <div class="step-card">
+                        <div class="step-icon"><i class="fa fa-envelope-o"></i></div>
+                        <h5 style="font-weight: 700; font-family: var(--font-heading);">3. Contact</h5>
+                        <p>Chat directly with vendors to get personalized quotes.</p>
                     </div>
                 </div>
                 <div class="col-lg-3 col-md-6 mb-4">
-                    <div class="step-card" style="padding: 20px;">
-                        <div class="icon" style="width: 80px; height: 80px; margin: 0 auto 20px; background: #ffe4ef; border-radius: 50%; line-height: 80px; color: #e72e77; font-size: 30px;">
-                            <i class="fa fa-calendar-check-o"></i>
-                        </div>
-                        <h5 style="font-weight: 700; font-family: 'Playfair Display', serif;">4. Book</h5>
-                        <p style="color: #666; font-size: 14px; mt-2">Confirm your bookings and relax while we handle the rest.</p>
+                    <div class="step-card">
+                        <div class="step-icon"><i class="fa fa-calendar-check-o"></i></div>
+                        <h5 style="font-weight: 700; font-family: var(--font-heading);">4. Book</h5>
+                        <p>Confirm your bookings and relax while we handle the rest.</p>
                     </div>
                 </div>
             </div>
@@ -231,71 +223,17 @@
     <!-- How it Works Section End -->
 
     <!-- Top Cities Section Begin -->
-    <style>
-        .city-card {
-            transition: all 0.4s ease;
-            position: relative;
-            overflow: hidden;
-            display: block;
-            height: 200px;
-            border-radius: 15px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
-        }
-        .city-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 15px 35px rgba(231, 46, 119, 0.2);
-        }
-        .city-card img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            transition: transform 0.6s ease;
-        }
-        .city-card:hover img {
-            transform: scale(1.1);
-        }
-        .city-overlay {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(to top, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.2) 60%, transparent 100%);
-            display: flex;
-            flex-direction: column;
-            justify-content: flex-end;
-            padding: 25px;
-            color: white;
-            transition: background 0.4s ease;
-        }
-        .city-card:hover .city-overlay {
-            background: linear-gradient(to top, rgba(231, 46, 119, 0.9) 0%, rgba(0,0,0,0.3) 70%, transparent 100%);
-        }
-        .city-name {
-            font-family: 'Playfair Display', serif;
-            font-weight: 700;
-            font-size: 24px;
-            margin-bottom: 5px;
-        }
-        .venue-count {
-            font-size: 14px;
-            opacity: 0.9;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-    </style>
-    <section class="top-cities spad" style="padding: 80px 0; background: #fcfcfc;">
+    <section class="top-cities spad" style="background: #fcfcfc;">
         <div class="container">
             <div class="row">
                 <div class="col-lg-12 text-center">
                     <div class="section-title">
                         <h2>Popular Venues by City</h2>
-                        <p class="text-muted mt-2">Handpicked destinations for your perfect wedding</p>
+                        <p class="section-subtitle">Handpicked destinations for your perfect wedding</p>
                     </div>
                 </div>
             </div>
             <div class="row mt-4">
-                <!-- Mumbai -->
                 <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
                     <a href="{% url 'vendors' %}?city=Mumbai" class="city-card">
                         <img src="{% static 'website/img/cities/mumbai.jpg' %}" alt="Mumbai">
@@ -305,7 +243,6 @@
                         </div>
                     </a>
                 </div>
-                <!-- Delhi -->
                 <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
                     <a href="{% url 'vendors' %}?city=Delhi" class="city-card">
                         <img src="{% static 'website/img/cities/delhi.jpg' %}" alt="Delhi">
@@ -315,7 +252,6 @@
                         </div>
                     </a>
                 </div>
-                <!-- Bangalore -->
                 <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
                     <a href="{% url 'vendors' %}?city=Bangalore" class="city-card">
                         <img src="{% static 'website/img/cities/bangalore.jpg' %}" alt="Bangalore">
@@ -325,7 +261,6 @@
                         </div>
                     </a>
                 </div>
-                <!-- Udaipur -->
                 <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
                     <a href="{% url 'vendors' %}?city=Udaipur" class="city-card">
                         <img src="{% static 'website/img/cities/udaipur.jpg' %}" alt="Udaipur">
@@ -335,7 +270,6 @@
                         </div>
                     </a>
                 </div>
-                <!-- Lucknow -->
                 <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
                     <a href="{% url 'vendors' %}?city=Lucknow" class="city-card">
                         <img src="{% static 'website/img/cities/lucknow.jpg' %}?v=3" alt="Lucknow">
@@ -345,7 +279,6 @@
                         </div>
                     </a>
                 </div>
-                <!-- Jaipur -->
                 <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
                     <a href="{% url 'vendors' %}?city=Jaipur" class="city-card">
                         <img src="{% static 'website/img/cities/jaipur.jpg' %}" alt="Jaipur">
@@ -355,7 +288,6 @@
                         </div>
                     </a>
                 </div>
-                <!-- Goa -->
                 <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
                     <a href="{% url 'vendors' %}?city=Goa" class="city-card">
                         <img src="{% static 'website/img/cities/goa.jpg' %}" alt="Goa">
@@ -365,7 +297,6 @@
                         </div>
                     </a>
                 </div>
-                <!-- Chandigarh -->
                 <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
                     <a href="{% url 'vendors' %}?city=Chandigarh" class="city-card">
                         <img src="{% static 'website/img/cities/chandigarh.jpg' %}?v=3" alt="Chandigarh">
@@ -385,30 +316,29 @@
         <div class="container">
             <div class="row text-center">
                 <div class="col-lg-4 col-md-6 mb-4">
-                    <div class="services__item" style="padding: 30px; background: white; border-radius: 10px; box-shadow: 0 5px 20px rgba(0,0,0,0.05);">
-                        <i class="fa fa-check-circle" style="font-size: 50px; color: #e72e77; margin-bottom: 20px;"></i>
-                        <h6 style="font-weight: 700; font-family: 'Playfair Display', serif; font-size: 20px;">Verified Vendors</h6>
-                        <p style="color: #777;">Thousands of trusted professionals evaluated for excellence.</p>
+                    <div class="trust-card">
+                        <i class="fa fa-check-circle trust-icon"></i>
+                        <h6 style="font-weight: 700; font-family: var(--font-heading); font-size: 20px;">Verified Vendors</h6>
+                        <p>Thousands of trusted professionals evaluated for excellence.</p>
                     </div>
                 </div>
                 <div class="col-lg-4 col-md-6 mb-4">
-                    <div class="services__item" style="padding: 30px; background: white; border-radius: 10px; box-shadow: 0 5px 20px rgba(0,0,0,0.05);">
-                        <i class="fa fa-star" style="font-size: 50px; color: #e72e77; margin-bottom: 20px;"></i>
-                        <h6 style="font-weight: 700; font-family: 'Playfair Display', serif; font-size: 20px;">Real Reviews</h6>
-                        <p style="color: #777;">Read honest experiences and ratings from actual couples.</p>
+                    <div class="trust-card">
+                        <i class="fa fa-star trust-icon"></i>
+                        <h6 style="font-weight: 700; font-family: var(--font-heading); font-size: 20px;">Real Reviews</h6>
+                        <p>Read honest experiences and ratings from actual couples.</p>
                     </div>
                 </div>
                 <div class="col-lg-4 col-md-6 mb-4">
-                    <div class="services__item" style="padding: 30px; background: white; border-radius: 10px; box-shadow: 0 5px 20px rgba(0,0,0,0.05);">
-                        <i class="fa fa-heart" style="font-size: 50px; color: #e72e77; margin-bottom: 20px;"></i>
-                        <h6 style="font-weight: 700; font-family: 'Playfair Display', serif; font-size: 20px;">Easy Planning</h6>
-                        <p style="color: #777;">Book securely and coordinate your entire event seamlessly.</p>
+                    <div class="trust-card">
+                        <i class="fa fa-heart trust-icon"></i>
+                        <h6 style="font-weight: 700; font-family: var(--font-heading); font-size: 20px;">Easy Planning</h6>
+                        <p>Book securely and coordinate your entire event seamlessly.</p>
                     </div>
                 </div>
             </div>
         </div>
     </section>
     <!-- Trust Section End -->
-
 
 {% endblock %}

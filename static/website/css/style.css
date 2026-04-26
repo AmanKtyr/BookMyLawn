@@ -26,7 +26,872 @@
 10.  Footer Style
 -------------------------------------------------------------------*/
 
-/*----------------------------------------*/
+/*========================================================
+  BOOKMYLAWN — DESIGN SYSTEM
+  ► Change ONE variable here = changes the entire website.
+  ► Theme Color, Font, Card, Button — all in one place.
+=========================================================*/
+
+:root {
+    /* ── Core Brand Colors ── */
+    --theme-color:        #e72e77;
+    --theme-color-dark:   #c2185b;
+    --theme-color-light:  #fef0f6;
+    --theme-color-border: #f5c6de;
+    --theme-shadow:       rgba(231, 46, 119, 0.15);
+    --theme-shadow-deep:  rgba(231, 46, 119, 0.35);
+    --theme-glow:         rgba(231, 46, 119, 0.1);
+
+    /* ── Neutral Colors ── */
+    --color-dark:         #111111;
+    --color-text:         #666666;
+    --color-text-light:   #999999;
+    --color-muted:        #555555;
+    --color-border:       #e1e1e1;
+    --color-border-light: #f0f0f0;
+    --color-bg:           #f8f9fa;
+    --color-bg-card:      #ffffff;
+    --color-bg-subtle:    #fdfdfd;
+    --color-bg-hover:     #fcfcfc;
+
+    /* ── Typography ── */
+    --font-body:    'Montserrat', sans-serif;
+    --font-heading: 'Playfair Display', serif;
+    --font-size-sm: 13px;
+    --font-size-md: 14px;
+    --font-size-lg: 16px;
+
+    /* ── Spacing ── */
+    --section-padding:    100px;
+    --card-padding:       30px;
+    --card-padding-lg:    40px;
+
+    /* ── Borders & Radius ── */
+    --radius-sm:   4px;
+    --radius-md:   12px;
+    --radius-lg:   15px;
+    --radius-xl:   20px;
+    --radius-pill: 50px;
+
+    /* ── Shadows ── */
+    --shadow-sm:   0 5px 20px rgba(0,0,0,0.05);
+    --shadow-md:   0 10px 40px rgba(0,0,0,0.06);
+    --shadow-lg:   0 15px 50px rgba(0,0,0,0.10);
+    --shadow-card-hover: 0 15px 35px var(--theme-shadow);
+
+    /* ── Transitions ── */
+    --transition:  all 0.3s ease;
+    --transition-transform: transform 0.3s ease;
+}
+
+/*========================================================
+  COMPONENT LIBRARY
+  All reusable classes — used site-wide.
+=========================================================*/
+
+/* ── Buttons ─────────────────────────────────────────── */
+
+/* Primary filled button — theme color */
+.btn-theme {
+    display: inline-block;
+    background: var(--theme-color);
+    color: #fff;
+    font-size: var(--font-size-md);
+    font-weight: 600;
+    text-transform: uppercase;
+    padding: 12px 30px;
+    border-radius: var(--radius-pill);
+    border: none;
+    cursor: pointer;
+    text-decoration: none;
+    transition: var(--transition);
+    box-shadow: 0 4px 15px var(--theme-shadow);
+}
+.btn-theme:hover {
+    background: var(--theme-color-dark);
+    color: #fff;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px var(--theme-shadow-deep);
+}
+.btn-theme.btn-block {
+    display: block;
+    text-align: center;
+}
+
+/* Outline button — theme color */
+.btn-outline-theme {
+    display: inline-block;
+    background: transparent;
+    color: var(--theme-color);
+    font-size: var(--font-size-md);
+    font-weight: 600;
+    text-transform: uppercase;
+    padding: 11px 30px;
+    border-radius: var(--radius-pill);
+    border: 2px solid var(--theme-color);
+    text-decoration: none;
+    transition: var(--transition);
+}
+.btn-outline-theme:hover {
+    background: var(--theme-color);
+    color: #fff;
+    transform: translateY(-2px);
+}
+.btn-outline-theme.btn-block {
+    display: block;
+    text-align: center;
+}
+
+/* ── Cards ─────────────────────────────────────────── */
+
+.card-base {
+    background: var(--color-bg-card);
+    border: 1px solid var(--color-border-light);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-sm);
+    transition: var(--transition);
+    overflow: hidden;
+}
+.card-base:hover {
+    transform: translateY(-8px);
+    box-shadow: var(--shadow-card-hover);
+    border-color: var(--theme-color-border);
+}
+
+/* Portal (login role) card */
+.portal-card {
+    background: var(--color-bg-card);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-sm);
+    padding: var(--card-padding-lg) 35px;
+    height: 100%;
+    transition: var(--transition);
+    box-shadow: var(--shadow-sm);
+}
+.portal-card:hover {
+    box-shadow: 0 10px 40px var(--theme-shadow);
+    border-color: var(--theme-color);
+}
+
+/* Role badge chip */
+.role-badge {
+    display: inline-block;
+    background: var(--theme-color-light);
+    color: var(--theme-color);
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    padding: 4px 12px;
+    border-radius: var(--radius-pill);
+    margin-bottom: 14px;
+    border: 1px solid var(--theme-color-border);
+}
+
+/* Role icon circle */
+.role-icon {
+    width: 64px;
+    height: 64px;
+    background: var(--theme-color-light);
+    border: 2px solid var(--theme-color-border);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 20px;
+    font-size: 26px;
+    color: var(--theme-color);
+}
+
+/* ── Hero Sections ────────────────────────────────── */
+
+.page-hero {
+    background-size: cover;
+    background-position: center;
+    padding: 120px 0;
+    position: relative;
+    border-radius: 0 0 30px 30px;
+    margin-bottom: 60px;
+}
+.page-hero::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(0, 0, 0, 0.62);
+    border-radius: 0 0 30px 30px;
+}
+.page-hero-content {
+    position: relative;
+    z-index: 1;
+    text-align: center;
+    color: #fff;
+}
+.page-hero-content h2 {
+    font-family: var(--font-heading);
+    font-size: 52px;
+    font-weight: 700;
+    color: #fff;
+    margin-bottom: 15px;
+    text-shadow: 0 2px 15px rgba(0,0,0,0.4);
+}
+.page-hero-content p {
+    font-size: 18px;
+    color: #fff;
+    opacity: 0.92;
+    max-width: 750px;
+    margin: 0 auto;
+}
+
+/* ── Section Subtitle ─────────────────────────────── */
+
+.section-subtitle {
+    font-size: 16px;
+    color: var(--color-text);
+    margin-top: 10px;
+    margin-bottom: 0;
+}
+
+/* ── Vendor / Product Card ────────────────────────── */
+
+.product__item {
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    box-shadow: var(--shadow-sm);
+    transition: var(--transition);
+    background: var(--color-bg-card);
+    margin-bottom: 30px;
+    border: 1px solid var(--color-border-light);
+}
+.product__item:hover {
+    transform: translateY(-8px);
+    box-shadow: var(--shadow-card-hover);
+    border-color: var(--theme-color-border);
+}
+.product__item__text h6 a {
+    font-family: var(--font-heading);
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--color-dark);
+    transition: var(--transition);
+}
+.product__item__text h6 a:hover {
+    color: var(--theme-color);
+}
+
+.product__price {
+    font-size: var(--font-size-md);
+    font-weight: 500;
+    color: var(--color-text);
+    background: var(--color-bg-hover);
+    padding: 8px 15px;
+    border-radius: 20px;
+    display: inline-block;
+    margin-top: 15px;
+    border: 1px solid var(--color-border-light);
+}
+
+/* Map marker icon color in product cards */
+.icon-theme {
+    color: var(--theme-color);
+}
+
+/* ── Premium Labels (badges on cards) ────────────── */
+
+.product__item__pic .label.new {
+    background: var(--theme-color) !important;
+    border-radius: var(--radius-sm);
+    padding: 4px 10px;
+    font-size: 12px;
+    font-weight: 600;
+    top: 15px;
+    left: 15px;
+    position: absolute;
+    color: #fff;
+    box-shadow: 0 4px 10px var(--theme-shadow);
+}
+.product__item__pic .label {
+    background: #28a745 !important;
+    border-radius: var(--radius-sm);
+    padding: 4px 10px;
+    font-size: 12px;
+    font-weight: 600;
+    top: 15px;
+    left: 15px;
+    position: absolute;
+    color: #fff;
+}
+
+/* ── Vendor Details ───────────────────────────────── */
+
+.vendor-main-image {
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-md);
+    transition: var(--transition-transform);
+    width: 100%;
+}
+.vendor-main-image:hover {
+    transform: scale(1.02);
+}
+
+.vendor-info-card {
+    background: var(--color-bg-card);
+    padding: var(--card-padding-lg);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-sm);
+    border: 1px solid var(--color-border-light);
+}
+
+.vendor-title {
+    font-family: var(--font-heading);
+    font-weight: 700;
+    font-size: 36px;
+    color: var(--color-dark);
+    margin-bottom: 10px;
+}
+
+.vendor-location {
+    color: var(--color-text);
+    margin-bottom: 15px;
+    font-size: var(--font-size-lg);
+}
+.vendor-location i {
+    color: var(--theme-color);
+}
+
+.price-badge {
+    display: inline-block;
+    background: var(--color-bg-subtle);
+    border: 1px solid var(--color-border-light);
+    padding: 10px 20px;
+    border-radius: var(--radius-pill);
+    font-weight: 600;
+    color: var(--theme-color);
+    font-size: 18px;
+    margin-bottom: 20px;
+}
+.price-badge span {
+    font-size: var(--font-size-md);
+    color: var(--color-text);
+    font-weight: normal;
+}
+
+.feature-chip {
+    background: var(--color-bg);
+    padding: 6px 15px;
+    border-radius: 20px;
+    font-size: var(--font-size-sm);
+    color: var(--color-muted);
+    display: inline-block;
+    margin-right: 5px;
+    margin-bottom: 8px;
+    border: 1px solid #eaeaea;
+}
+
+/* ── Tabs (vendor details) ────────────────────────── */
+
+.nav-tabs {
+    border-bottom: 2px solid var(--color-border-light);
+}
+.nav-tabs .nav-link {
+    border: none;
+    color: var(--color-text);
+    font-weight: 600;
+    padding: 15px 30px;
+    background: transparent;
+    position: relative;
+    transition: var(--transition);
+}
+.nav-tabs .nav-link:hover {
+    color: var(--theme-color);
+}
+.nav-tabs .nav-link.active {
+    color: var(--theme-color) !important;
+    background: transparent;
+    border: none;
+}
+.nav-tabs .nav-link.active::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background: var(--theme-color);
+}
+
+/* Review item */
+.review-item {
+    border-bottom: 1px solid var(--color-border);
+    padding-bottom: 15px;
+    margin-bottom: 15px;
+}
+
+/* ── Wedding Cards ────────────────────────────────── */
+
+.wedding-card {
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    background: var(--color-bg-card);
+    box-shadow: var(--shadow-sm);
+    transition: var(--transition);
+    margin-bottom: 30px;
+    border: 1px solid var(--color-border-light);
+}
+.wedding-card:hover {
+    transform: translateY(-10px);
+    box-shadow: var(--shadow-card-hover);
+    border-color: var(--theme-color-border);
+}
+
+.wedding-image {
+    height: 300px;
+    background-size: cover;
+    background-position: center;
+}
+
+.wedding-content {
+    padding: 25px;
+}
+
+.wedding-title {
+    font-family: var(--font-heading);
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--color-dark);
+    margin-bottom: 10px;
+}
+
+.wedding-meta {
+    font-size: var(--font-size-md);
+    color: var(--color-text);
+    margin-bottom: 15px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+.wedding-meta span i {
+    color: var(--theme-color);
+    margin-right: 5px;
+}
+
+.wedding-description {
+    font-size: 15px;
+    color: var(--color-muted);
+    line-height: 1.6;
+    margin-bottom: 20px;
+}
+
+.wedding-venue-link {
+    color: var(--theme-color);
+}
+
+.read-story-btn {
+    display: inline-block;
+    color: var(--theme-color);
+    font-weight: 600;
+    font-size: var(--font-size-md);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    transition: var(--transition);
+}
+.read-story-btn:hover {
+    color: var(--theme-color-dark);
+    letter-spacing: 2px;
+}
+
+/* ── Contact Page ─────────────────────────────────── */
+
+.contact-info-card {
+    background: var(--color-bg-card);
+    border-radius: var(--radius-lg);
+    padding: var(--card-padding);
+    box-shadow: var(--shadow-sm);
+    margin-bottom: 25px;
+    display: flex;
+    align-items: flex-start;
+    border: 1px solid var(--color-border-light);
+    transition: var(--transition);
+}
+.contact-info-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 30px var(--theme-shadow);
+    border-color: var(--theme-color-border);
+}
+
+.contact-info-icon {
+    width: 60px;
+    height: 60px;
+    background: var(--theme-color-light);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--theme-color);
+    font-size: 24px;
+    margin-right: 20px;
+    flex-shrink: 0;
+}
+
+.contact-info-text h6 {
+    font-family: var(--font-heading);
+    font-size: 20px;
+    font-weight: 700;
+    margin-bottom: 8px;
+}
+.contact-info-text p {
+    color: var(--color-text);
+    margin: 0;
+    font-size: 15px;
+    line-height: 1.6;
+}
+
+.premium-form {
+    background: var(--color-bg-card);
+    padding: var(--card-padding-lg);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-md);
+}
+.premium-form h3 {
+    font-family: var(--font-heading);
+    font-size: 28px;
+    font-weight: 700;
+    margin-bottom: 30px;
+    color: var(--color-dark);
+}
+.premium-form input,
+.premium-form textarea {
+    width: 100%;
+    padding: 15px 20px;
+    border: 1px solid var(--color-border-light);
+    border-radius: 8px;
+    font-size: 15px;
+    background: var(--color-bg-subtle);
+    transition: var(--transition);
+    font-family: var(--font-body);
+}
+.premium-form input:focus,
+.premium-form textarea:focus {
+    border-color: var(--theme-color);
+    background: var(--color-bg-card);
+    box-shadow: 0 0 0 4px var(--theme-glow);
+    outline: none;
+}
+.premium-form textarea {
+    height: 150px;
+    resize: none;
+}
+
+.btn-submit {
+    background: var(--theme-color);
+    color: #fff;
+    padding: 15px 40px;
+    border: none;
+    border-radius: var(--radius-pill);
+    font-weight: 600;
+    font-size: var(--font-size-lg);
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: var(--transition);
+    box-shadow: 0 5px 15px var(--theme-shadow);
+    width: 100%;
+    font-family: var(--font-body);
+}
+.btn-submit:hover {
+    background: var(--theme-color-dark);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px var(--theme-shadow-deep);
+}
+
+.map-container {
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    box-shadow: var(--shadow-md);
+    height: 100%;
+    min-height: 400px;
+}
+
+/* ── Sidebar (Vendors Page) ───────────────────────── */
+
+.shop__sidebar .section-title h4 {
+    font-family: var(--font-heading);
+    font-weight: 700;
+    font-size: 20px;
+    margin-bottom: 20px;
+    position: relative;
+    padding-bottom: 10px;
+}
+.shop__sidebar .section-title h4::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 40px;
+    height: 2px;
+    background: var(--theme-color);
+}
+.sidebar__categories ul {
+    list-style: none;
+    padding-left: 0;
+}
+.sidebar__categories ul li {
+    margin-bottom: 15px;
+}
+.sidebar__categories ul li a {
+    display: block;
+    padding: 8px 0;
+    color: #444;
+    font-weight: 500;
+    transition: var(--transition);
+}
+.sidebar__categories ul li a:hover {
+    color: var(--theme-color);
+    padding-left: 5px;
+}
+
+.filter-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+    cursor: pointer;
+    font-size: 15px;
+    color: var(--color-muted);
+    transition: var(--transition);
+}
+.filter-item:hover {
+    color: var(--theme-color);
+}
+.filter-item input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    margin-right: 12px;
+    accent-color: var(--theme-color);
+    cursor: pointer;
+}
+
+/* ── City Cards (index page) ──────────────────────── */
+
+.city-card {
+    transition: var(--transition);
+    position: relative;
+    overflow: hidden;
+    display: block;
+    height: 200px;
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-lg);
+}
+.city-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 15px 35px var(--theme-shadow);
+}
+.city-card img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.6s ease;
+}
+.city-card:hover img {
+    transform: scale(1.1);
+}
+.city-overlay {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: linear-gradient(to top, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.2) 60%, transparent 100%);
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: 25px;
+    color: #fff;
+    transition: background 0.4s ease;
+}
+.city-card:hover .city-overlay {
+    background: linear-gradient(to top, rgba(231,46,119,0.9) 0%, rgba(0,0,0,0.3) 70%, transparent 100%);
+}
+.city-name {
+    font-family: var(--font-heading);
+    font-weight: 700;
+    font-size: 24px;
+    margin-bottom: 5px;
+}
+.venue-count {
+    font-size: var(--font-size-md);
+    opacity: 0.9;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+/* ── Step / How-It-Works Cards ────────────────────── */
+
+.step-icon {
+    width: 80px;
+    height: 80px;
+    margin: 0 auto 20px;
+    background: var(--theme-color-light);
+    border-radius: 50%;
+    line-height: 80px;
+    color: var(--theme-color);
+    font-size: 30px;
+    text-align: center;
+}
+
+/* ── Services / Trust Cards ───────────────────────── */
+
+.trust-card {
+    padding: 30px;
+    background: var(--color-bg-card);
+    border-radius: 10px;
+    box-shadow: var(--shadow-sm);
+    text-align: center;
+}
+.trust-icon {
+    font-size: 50px;
+    color: var(--theme-color);
+    margin-bottom: 20px;
+    display: block;
+}
+
+/* ── Vendor Category Cards (index) ────────────────── */
+
+.vendor-category {
+    text-align: center;
+    margin-bottom: 30px;
+    transition: var(--transition);
+    cursor: pointer;
+}
+.vendor-category img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    border-radius: var(--radius-md);
+    margin-bottom: 15px;
+    transition: var(--transition-transform);
+}
+.vendor-category:hover img {
+    transform: scale(1.03);
+}
+.vendor-category h4 {
+    font-family: var(--font-heading);
+    font-weight: 700;
+    font-size: 20px;
+    margin-bottom: 5px;
+}
+.vendor-category p {
+    color: var(--color-text);
+    margin: 0;
+}
+
+/* ── Vendor Detail Buttons ────────────────────────── */
+
+.btn-primary-custom {
+    background: var(--theme-color);
+    color: #fff;
+    padding: 12px 30px;
+    border-radius: var(--radius-pill);
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: var(--font-size-md);
+    box-shadow: 0 4px 15px var(--theme-shadow);
+    transition: var(--transition);
+    border: none;
+    display: inline-block;
+    text-decoration: none;
+}
+.btn-primary-custom:hover {
+    background: var(--theme-color-dark);
+    transform: translateY(-2px);
+    color: #fff;
+    box-shadow: 0 6px 20px var(--theme-shadow-deep);
+}
+
+.btn-secondary-custom {
+    background: var(--color-bg-card);
+    color: var(--color-dark);
+    border: 2px solid var(--color-dark);
+    padding: 10px 30px;
+    border-radius: var(--radius-pill);
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: var(--font-size-md);
+    transition: var(--transition);
+    display: inline-block;
+    margin-left: 10px;
+    text-decoration: none;
+}
+.btn-secondary-custom:hover {
+    background: var(--color-dark);
+    color: #fff;
+}
+
+/* ── Empty State ──────────────────────────────────── */
+
+.empty-icon {
+    font-size: 60px;
+    color: var(--theme-color);
+    opacity: 0.3;
+    margin-bottom: 20px;
+    display: block;
+}
+
+/* ── Section accent underline (section-title) ─────── */
+
+.section-title h4:after,
+.section-title h2:after {
+    background: var(--theme-color);
+}
+
+/* ── Header: Single Login Button ─────────────────── */
+
+.btn-login-single {
+    background: var(--theme-color);
+    color: #fff !important;
+    padding: 10px 26px;
+    border-radius: var(--radius-pill);
+    font-weight: 600;
+    font-size: var(--font-size-md);
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    box-shadow: 0 4px 15px var(--theme-shadow);
+    transition: var(--transition);
+}
+.btn-login-single:hover {
+    background: var(--theme-color-dark);
+    color: #fff !important;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px var(--theme-shadow-deep);
+}
+
+/* ── Divider (login portal 'or') ─────────────────── */
+
+.divider-or {
+    text-align: center;
+    margin: 10px 0;
+    color: var(--color-border);
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+/* ── Footer: Admin Shield Link ───────────────────── */
+
+.admin-login-link a {
+    font-size: 18px;
+    color: var(--color-text);
+    text-decoration: none;
+    transition: var(--transition);
+    opacity: 0.6;
+}
+.admin-login-link a:hover {
+    color: var(--theme-color);
+    opacity: 1;
+    transform: scale(1.2);
+}
+
+/*========================================================
+  END DESIGN SYSTEM
+=========================================================*/
+
 
 /* Template default CSS
 /*----------------------------------------*/
@@ -178,6 +1043,12 @@ ol {
 	display: inline-block;
 	padding: 12px 30px;
 	border-radius: 50px;
+	transition: all 0.3s;
+}
+
+.site-btn:hover {
+	color: #ffffff;
+	opacity: 0.9;
 }
 
 /* Preloder */

@@ -3,161 +3,12 @@
 
 {% block content %}
 
-
-<style>
-    /* Premium Contact Us Styles */
-    .contact-hero {
-        background-size: cover;
-        background-position: center;
-        padding: 120px 0;
-        position: relative;
-        border-radius: 0 0 30px 30px;
-        margin-bottom: 60px;
-    }
-    .contact-hero::before {
-        content: '';
-        position: absolute;
-        top: 0; left: 0; right: 0; bottom: 0;
-        background: rgba(0, 0, 0, 0.6);
-        border-radius: 0 0 30px 30px;
-    }
-    .contact-hero-content {
-        position: relative;
-        z-index: 1;
-        text-align: center;
-        color: white;
-    }
-    .contact-hero-content h2 {
-        font-family: 'Playfair Display', serif;
-        font-size: 50px;
-        font-weight: 700;
-        color: white;
-        margin-bottom: 15px;
-    }
-    .contact-hero-content p {
-        font-size: 18px;
-        opacity: 0.9;
-    }
-    
-    /* Contact Cards */
-    .contact-info-card {
-        background: #fff;
-        border-radius: 15px;
-        padding: 30px;
-        box-shadow: 0 5px 20px rgba(0,0,0,0.05);
-        margin-bottom: 25px;
-        display: flex;
-        align-items: flex-start;
-        border: 1px solid #f0f0f0;
-        transition: 0.3s;
-    }
-    .contact-info-card:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 15px 30px rgba(231, 46, 119, 0.1);
-        border-color: #fbe6ee;
-    }
-    .contact-info-icon {
-        width: 60px;
-        height: 60px;
-        background: #ffe4ef;
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        color: #e72e77;
-        font-size: 24px;
-        margin-right: 20px;
-        flex-shrink: 0;
-    }
-    .contact-info-text h6 {
-        font-family: 'Playfair Display', serif;
-        font-size: 20px;
-        font-weight: 700;
-        margin-bottom: 8px;
-    }
-    .contact-info-text p {
-        color: #666;
-        margin: 0;
-        font-size: 15px;
-        line-height: 1.6;
-    }
-
-    /* Form Styles */
-    .premium-form {
-        background: #fff;
-        padding: 40px;
-        border-radius: 15px;
-        box-shadow: 0 10px 40px rgba(0,0,0,0.06);
-    }
-    .premium-form h3 {
-        font-family: 'Playfair Display', serif;
-        font-size: 28px;
-        font-weight: 700;
-        margin-bottom: 30px;
-        color: #111;
-    }
-    .form-group {
-        margin-bottom: 25px;
-    }
-    .premium-form input, .premium-form textarea {
-        width: 100%;
-        padding: 15px 20px;
-        border: 1px solid #eee;
-        border-radius: 8px;
-        font-size: 15px;
-        background: #fdfdfd;
-        transition: 0.3s;
-    }
-    .premium-form input:focus, .premium-form textarea:focus {
-        border-color: #e72e77;
-        background: #fff;
-        box-shadow: 0 0 0 4px rgba(231, 46, 119, 0.1);
-        outline: none;
-    }
-    .premium-form textarea {
-        height: 150px;
-        resize: none;
-    }
-    .btn-submit {
-        background: #e72e77;
-        color: white;
-        padding: 15px 40px;
-        border: none;
-        border-radius: 30px;
-        font-weight: 600;
-        font-size: 16px;
-        text-transform: uppercase;
-        cursor: pointer;
-        transition: 0.3s;
-        box-shadow: 0 5px 15px rgba(231, 46, 119, 0.3);
-        width: 100%;
-    }
-    .btn-submit:hover {
-        background: #c2185b;
-        transform: translateY(-2px);
-        box-shadow: 0 8px 25px rgba(231, 46, 119, 0.4);
-    }
-    
-    /* Map */
-    .map-container {
-        border-radius: 15px;
-        overflow: hidden;
-        box-shadow: 0 10px 40px rgba(0,0,0,0.06);
-        height: 100%;
-        min-height: 400px;
-    }
-</style>
-
     <!-- Contact Hero Begin -->
-    <section class="contact-hero" style="background-image: url({% static 'website/img/banner/contact-banner.jpg' %});">
+    <section class="contact-hero page-hero set-bg" data-setbg="{% static 'website/img/banner/contact-banner.jpg' %}?v=1" style="background-image: url('{% static 'website/img/banner/contact-banner.jpg' %}?v=1');">
         <div class="container">
-            <div class="row">
-                <div class="col-lg-12">
-                    <div class="contact-hero-content">
-                        <h2>Get in Touch</h2>
-                        <p>We're here to help you plan the perfect wedding. Reach out to us anytime!</p>
-                    </div>
-                </div>
+            <div class="page-hero-content">
+                <h2>Get in Touch</h2>
+                <p>We're here to help you plan the perfect wedding. Reach out to us anytime!</p>
             </div>
         </div>
     </section>
@@ -217,11 +68,10 @@
                     </div>
                 </div>
             </div>
-            
+
             <div class="row mt-5">
                 <div class="col-lg-12">
                     <div class="map-container">
-                        <!-- Mumbai Maps Embed -->
                         <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d241317.11609995167!2d72.74109995!3d19.08219785!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3be7c6306644edc1%3A0x5da4ed8f8d648c69!2sMumbai%2C%20Maharashtra!5e0!3m2!1sen!2sin!4v1650000000000!5m2!1sen!2sin" width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
                     </div>
                 </div>
@@ -229,6 +79,5 @@
         </div>
     </section>
     <!-- Contact Section End -->
-
 
 {% endblock %}
