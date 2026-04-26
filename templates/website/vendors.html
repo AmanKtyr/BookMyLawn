@@ -75,10 +75,25 @@
                     </div>
                 </div>
                 <div class="col-lg-9 col-md-9">
+                    <div class="row mb-4">
+                        <div class="col-lg-12">
+                            <form method="GET" action="{% url 'vendors' %}" class="d-flex p-3 rounded" style="gap: 10px; align-items: center; background-color: #fffafb; border: 1px solid #ffccdc;">
+                                <strong style="color: var(--theme-color); font-family: var(--font-heading);">Check Availability:</strong>
+                                <input type="text" name="city" class="form-control" placeholder="City or Location" value="{{ selected_city|default:'' }}" required style="max-width: 200px;">
+                                <input type="date" name="date" class="form-control" value="{{ selected_date|default:'' }}" required style="max-width: 200px;">
+                                {% if view_type %}<input type="hidden" name="type" value="{{ view_type }}">{% endif %}
+                                {% if request.GET.category %}<input type="hidden" name="category" value="{{ request.GET.category }}">{% endif %}
+                                <button type="submit" class="btn btn-theme px-4" style="border-radius: 5px;">Filter</button>
+                                {% if selected_city and selected_date %}
+                                    <span class="ml-2 text-success"><i class="fa fa-check-circle"></i> Showing availability</span>
+                                {% endif %}
+                            </form>
+                        </div>
+                    </div>
                     <div class="row">
                         {% for vendor in vendors %}
                         <div class="col-lg-4 col-md-6">
-                            <div class="product__item">
+                            <div class="product__item vendor-card-link" data-url="{% url 'vendor_details' vendor.id %}" style="cursor: pointer; transition: transform 0.2s;" onmouseover="this.style.transform='translateY(-5px)'; this.style.boxShadow='0 10px 20px rgba(0,0,0,0.1)';" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='none';">
                                 <div class="product__item__pic set-bg"
                                      {% if vendor.image %}style="background-image: url({{ vendor.image.url }});" data-setbg="{{ vendor.image.url }}"{% else %}style="background-image: url({% static 'website/img/product/product-1.jpg' %});" data-setbg="{% static 'website/img/product/product-1.jpg' %}"{% endif %}>
                                     {% if vendor.is_premium %}
@@ -86,6 +101,14 @@
                                     {% elif vendor.is_verified %}
                                     <div class="label">Verified</div>
                                     {% endif %}
+                                    
+                                    <!-- Professional Wishlist Heart Overlay -->
+                                    <div style="position: absolute; top: 15px; right: 15px; z-index: 5;">
+                                        <a href="#" class="add-to-wishlist" data-id="{{ vendor.id }}" 
+                                           style="background: white; color: var(--theme-color); width: 40px; height: 40px; line-height: 40px; border-radius: 50%; display: inline-block; text-align: center; box-shadow: 0 4px 12px rgba(0,0,0,0.12); transition: all 0.3s ease; border: none;">
+                                            <i class="fa fa-heart-o" style="font-size: 18px; vertical-align: middle;"></i>
+                                        </a>
+                                    </div>
                                 </div>
                                 <div class="product__item__text text-center">
                                     <h6><a href="{% url 'vendor_details' vendor.id %}">{{ vendor.name }}</a></h6>
@@ -125,4 +148,85 @@
     </section>
     <!-- Vendors Section End -->
 
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    const csrfToken = '{{ csrf_token }}';
+    const selectedDate = '{{ selected_date|default:"" }}';
+    const selectedCity = '{{ selected_city|default:"" }}';
+
+    $('.vendor-card-link').click(function(e) {
+        // Prevent navigating if the click was on a button (like add to cart/wishlist) or a link
+        if (!$(e.target).closest('button').length && !$(e.target).closest('a').length) {
+            window.location.href = $(this).data('url');
+        }
+    });
+
+    $('.add-to-cart').click(function(e) {
+        e.preventDefault();
+        if (!selectedDate || !selectedCity) {
+            alert('Please select a Date and Location from the top filter to check availability before adding to cart.');
+            return;
+        }
+        
+        let vendorId = $(this).data('id');
+        let btn = $(this);
+        let originalText = btn.html();
+        btn.html('<i class="fa fa-spinner fa-spin"></i> Adding...');
+        
+        $.ajax({
+            url: "{% url 'add_to_cart' %}",
+            type: "POST",
+            data: {
+                'vendor_id': vendorId,
+                'event_date': selectedDate,
+                'location': selectedCity,
+                'csrfmiddlewaretoken': csrfToken
+            },
+            success: function(response) {
+                if (response.status === 'success') {
+                    btn.html('<i class="fa fa-check"></i> Added').removeClass('btn-theme').addClass('btn-success').css('color', 'white');
+                } else if (response.status === 'info') {
+                    alert(response.message);
+                    btn.html('<i class="fa fa-check"></i> Added').removeClass('btn-theme').addClass('btn-success').css('color', 'white');
+                } else {
+                    alert(response.message);
+                    btn.html(originalText);
+                }
+            },
+            error: function() {
+                alert('You must be logged in to add items to the cart.');
+                window.location.href = "{% url 'login' %}";
+            }
+        });
+    });
+
+    $('.add-to-wishlist').click(function(e) {
+        e.preventDefault();
+        let vendorId = $(this).data('id');
+        let btn = $(this);
+        
+        $.ajax({
+            url: "{% url 'add_to_wishlist' %}",
+            type: "POST",
+            data: {
+                'vendor_id': vendorId,
+                'csrfmiddlewaretoken': csrfToken
+            },
+            success: function(response) {
+                if (response.status === 'success' || response.status === 'info') {
+                    btn.removeClass('btn-outline-danger').addClass('btn-danger');
+                    btn.find('i').removeClass('fa-heart-o').addClass('fa-heart');
+                } else {
+                    alert(response.message);
+                }
+            },
+            error: function() {
+                alert('You must be logged in to add items to wishlist.');
+                window.location.href = "{% url 'login' %}";
+            }
+        });
+    });
+</script>
 {% endblock %}

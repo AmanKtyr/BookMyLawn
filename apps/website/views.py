@@ -1,6 +1,8 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from django.db.models import Q
-from .models import Vendor, Category, RealWedding
+from django.http import JsonResponse
+from django.contrib.auth.decorators import login_required
+from .models import Vendor, Category, RealWedding, Cart, CartItem, Wishlist, WishlistItem, Order, OrderItem
 
 def index(request):
     # Fetch some premium vendors for the homepage
@@ -17,6 +19,8 @@ def vendors(request):
     category_slug = request.GET.get('category')
     view_type = request.GET.get('type')
     
+    date = request.GET.get('date')
+
     if view_type == 'venues':
         all_vendors = all_vendors.filter(category__slug='venues')
     elif view_type == 'vendors':
@@ -35,7 +39,14 @@ def vendors(request):
     if category_slug:
         all_vendors = all_vendors.filter(category__slug=category_slug)
         
-    return render(request, 'website/vendors.html', {'vendors': all_vendors, 'categories': categories, 'view_type': view_type})
+    context = {
+        'vendors': all_vendors, 
+        'categories': categories, 
+        'view_type': view_type,
+        'selected_city': city,
+        'selected_date': date,
+    }
+    return render(request, 'website/vendors.html', context)
 
 def vendor_details(request, id):
     vendor = get_object_or_404(Vendor, id=id)
@@ -56,3 +67,84 @@ def register_view(request):
 
 def vendor_register_view(request):
     return render(request, 'website/vendor-register.html')
+
+@login_required(login_url='/login/')
+def add_to_cart(request):
+    if request.method == 'POST':
+        vendor_id = request.POST.get('vendor_id')
+        event_date = request.POST.get('event_date')
+        location = request.POST.get('location')
+        
+        if not event_date or not location:
+            return JsonResponse({'status': 'error', 'message': 'Please select date and location first.'})
+            
+        vendor = get_object_or_404(Vendor, id=vendor_id)
+        cart, created = Cart.objects.get_or_create(user=request.user)
+        
+        # Check if already in cart
+        if CartItem.objects.filter(cart=cart, vendor=vendor).exists():
+            return JsonResponse({'status': 'info', 'message': 'Vendor already in cart.'})
+            
+        CartItem.objects.create(
+            cart=cart,
+            vendor=vendor,
+            event_date=event_date,
+            location=location
+        )
+        
+        cart_count = cart.items.count()
+        return JsonResponse({'status': 'success', 'message': 'Added to cart.', 'cart_count': cart_count})
+        
+    return JsonResponse({'status': 'error', 'message': 'Invalid request.'})
+
+@login_required(login_url='/login/')
+def add_to_wishlist(request):
+    if request.method == 'POST':
+        vendor_id = request.POST.get('vendor_id')
+        vendor = get_object_or_404(Vendor, id=vendor_id)
+        wishlist, created = Wishlist.objects.get_or_create(user=request.user)
+        
+        # Check if already in wishlist
+        if WishlistItem.objects.filter(wishlist=wishlist, vendor=vendor).exists():
+            return JsonResponse({'status': 'info', 'message': 'Vendor already in wishlist.'})
+            
+        WishlistItem.objects.create(wishlist=wishlist, vendor=vendor)
+        return JsonResponse({'status': 'success', 'message': 'Added to wishlist.'})
+        
+    return JsonResponse({'status': 'error', 'message': 'Invalid request.'})
+
+@login_required(login_url='/login/')
+def cart_view(request):
+    cart, created = Cart.objects.get_or_create(user=request.user)
+    items = cart.items.all()
+    total = sum(item.vendor.price_starting for item in items)
+    return render(request, 'website/shop-cart.html', {'cart_items': items, 'total': total})
+
+@login_required(login_url='/login/')
+def checkout_view(request):
+    cart, created = Cart.objects.get_or_create(user=request.user)
+    items = cart.items.all()
+    
+    if request.method == 'POST':
+        if not items.exists():
+            return redirect('cart')
+            
+        total = sum(item.vendor.price_starting for item in items)
+        order = Order.objects.create(user=request.user, total_amount=total, is_paid=True)
+        
+        for item in items:
+            OrderItem.objects.create(
+                order=order,
+                vendor=item.vendor,
+                event_date=item.event_date,
+                location=item.location,
+                price=item.vendor.price_starting
+            )
+            
+        # Clear cart
+        items.delete()
+        
+        return render(request, 'website/order-success.html', {'order': order})
+        
+    total = sum(item.vendor.price_starting for item in items)
+    return render(request, 'website/checkout.html', {'cart_items': items, 'total': total})

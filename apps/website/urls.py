@@ -10,4 +10,8 @@ urlpatterns = [
     path('login/', views.login_view, name='login'),
     path('register/', views.register_view, name='register'),
     path('vendor-register/', views.vendor_register_view, name='vendor_register'),
+    path('add-to-cart/', views.add_to_cart, name='add_to_cart'),
+    path('add-to-wishlist/', views.add_to_wishlist, name='add_to_wishlist'),
+    path('cart/', views.cart_view, name='cart'),
+    path('checkout/', views.checkout_view, name='checkout'),
 ]

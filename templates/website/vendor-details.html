@@ -71,9 +71,29 @@
                             </div>
                         </div>
 
-                        <div class="product__details__button mt-5">
-                            <a href="#" class="btn-primary-custom"><span class="icon_calendar"></span> Book Now</a>
-                            <a href="#" class="btn-secondary-custom"><span class="icon_mail_alt"></span> Contact Vendor</a>
+                        <div class="product__details__widget mt-5 mb-4" style="background: var(--theme-color-light); padding: 30px; border-radius: var(--radius-lg); border: 1px solid var(--theme-color-border);">
+                            <h5 style="font-family: var(--font-heading); font-weight: 700; margin-bottom: 20px; color: var(--theme-color);">Plan Your Event</h5>
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label style="font-size: 14px; font-weight: 600; color: var(--color-dark); display: block; margin-bottom: 8px;">Where is your event?</label>
+                                    <input type="text" id="detail_city" class="form-control" placeholder="City or Location" value="{{ request.GET.city|default:vendor.location }}" style="border-radius: 8px; padding: 12px; border: 1px solid #ddd;">
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label style="font-size: 14px; font-weight: 600; color: var(--color-dark); display: block; margin-bottom: 8px;">When is your event?</label>
+                                    <input type="date" id="detail_date" class="form-control" value="{{ request.GET.date|default:'' }}" style="border-radius: 8px; padding: 12px; border: 1px solid #ddd;">
+                                </div>
+                            </div>
+                            <div class="mt-4">
+                                <button class="btn-theme add-to-cart" data-id="{{ vendor.id }}" style="width: 100%; margin-bottom: 15px; padding: 15px; border-radius: var(--radius-pill);">
+                                    <i class="fa fa-shopping-bag mr-2"></i> Add to Cart & Reserve
+                                </button>
+                                <button class="btn-outline-theme add-to-wishlist" data-id="{{ vendor.id }}" style="width: 100%; padding: 15px; border-radius: var(--radius-pill);">
+                                    <i class="fa fa-heart-o mr-2"></i> Add to Wishlist
+                                </button>
+                            </div>
+                            <p class="text-center mt-3 mb-0" style="font-size: 13px; color: #888;">
+                                <i class="fa fa-info-circle mr-1"></i> No immediate payment required. We will contact you to confirm details.
+                            </p>
                         </div>
                     </div>
                 </div>
@@ -180,4 +200,79 @@
     </section>
     <!-- Vendor Details Section End -->
 
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    const csrfToken = '{{ csrf_token }}';
+
+    $('.add-to-cart').click(function(e) {
+        e.preventDefault();
+        const selectedDate = $('#detail_date').val();
+        const selectedCity = $('#detail_city').val();
+
+        if (!selectedDate || !selectedCity) {
+            alert('Please select a Date and Location to check availability before adding to cart.');
+            return;
+        }
+        
+        let vendorId = $(this).data('id');
+        let btn = $(this);
+        let originalText = btn.html();
+        btn.html('<i class="fa fa-spinner fa-spin"></i> Adding to Cart...');
+        
+        $.ajax({
+            url: "{% url 'add_to_cart' %}",
+            type: "POST",
+            data: {
+                'vendor_id': vendorId,
+                'event_date': selectedDate,
+                'location': selectedCity,
+                'csrfmiddlewaretoken': csrfToken
+            },
+            success: function(response) {
+                if (response.status === 'success') {
+                    btn.html('<i class="fa fa-check"></i> Added to Cart').addClass('btn-success').removeClass('btn-theme').css('background', '#28a745');
+                } else if (response.status === 'info') {
+                    alert(response.message);
+                    btn.html('<i class="fa fa-check"></i> Already in Cart').addClass('btn-success').removeClass('btn-theme').css('background', '#28a745');
+                } else {
+                    alert(response.message);
+                    btn.html(originalText);
+                }
+            },
+            error: function() {
+                alert('You must be logged in to add items to the cart.');
+                window.location.href = "{% url 'login' %}";
+            }
+        });
+    });
+
+    $('.add-to-wishlist').click(function(e) {
+        e.preventDefault();
+        let vendorId = $(this).data('id');
+        let btn = $(this);
+        let originalText = btn.html();
+        
+        $.ajax({
+            url: "{% url 'add_to_wishlist' %}",
+            type: "POST",
+            data: {
+                'vendor_id': vendorId,
+                'csrfmiddlewaretoken': csrfToken
+            },
+            success: function(response) {
+                if (response.status === 'success' || response.status === 'info') {
+                    btn.html('<i class="fa fa-heart"></i> In Wishlist').addClass('btn-danger').removeClass('btn-outline-theme').css('color', 'white');
+                } else {
+                    alert(response.message);
+                }
+            },
+            error: function() {
+                alert('You must be logged in to add items to wishlist.');
+                window.location.href = "{% url 'login' %}";
+            }
+        });
+    });
+</script>
 {% endblock %}
