@@ -24,5 +24,6 @@ urlpatterns = [
     path('reviews/', views.reviews_list, name='superadmin_reviews'),
     path('reviews/delete/<int:pk>/', views.review_delete, name='superadmin_review_delete'),
     path('inquiries/', views.inquiries_list, name='superadmin_inquiries'),
+    path('settings/', views.advanced_settings, name='superadmin_advanced_settings'),
     path('logout/', views.superadmin_logout, name='superadmin_logout'),
 ]

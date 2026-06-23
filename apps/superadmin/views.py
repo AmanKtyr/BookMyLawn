@@ -316,3 +316,22 @@ def inquiries_list(request):
     inquiries = Inquiry.objects.all().order_by('-created_at')
     return render(request, 'superadmin/inquiries.html', {'inquiries': inquiries})
 
+@user_passes_test(is_superadmin, login_url='superadmin_login')
+def advanced_settings(request):
+    from apps.website.models import SiteSetting
+    setting, created = SiteSetting.objects.get_or_create(id=1)
+    
+    if request.method == 'POST':
+        setting.site_title = request.POST.get('site_title', setting.site_title)
+        setting.contact_email = request.POST.get('contact_email', setting.contact_email)
+        setting.contact_phone = request.POST.get('contact_phone', setting.contact_phone)
+        setting.address = request.POST.get('address', setting.address)
+        setting.facebook_link = request.POST.get('facebook_link', setting.facebook_link)
+        setting.instagram_link = request.POST.get('instagram_link', setting.instagram_link)
+        setting.twitter_link = request.POST.get('twitter_link', setting.twitter_link)
+        setting.maintenance_mode = 'maintenance_mode' in request.POST
+        setting.save()
+        messages.success(request, 'Advanced settings updated successfully.')
+        return redirect('superadmin_advanced_settings')
+        
+    return render(request, 'superadmin/advanced_settings.html', {'setting': setting})

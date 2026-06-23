@@ -1,0 +1,97 @@
+{% extends 'superadmin/base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="row mb-4 align-items-center">
+    <div class="col-md-6">
+        <h2 class="h3 mb-0 text-gray-800">Advanced Site Settings</h2>
+        <p class="text-muted mb-0">Manage global configurations for the BookMyLawn platform.</p>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-xl-8 col-lg-10">
+        <div class="card shadow mb-4">
+            <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                <h6 class="m-0 font-weight-bold text-primary"><i class="fas fa-cogs mr-2"></i> Global Configurations</h6>
+            </div>
+            <div class="card-body">
+                <form method="POST" action="{% url 'superadmin_advanced_settings' %}">
+                    {% csrf_token %}
+                    
+                    <h5 class="text-gray-800 mb-3 border-bottom pb-2">1. General Information</h5>
+                    <div class="form-group row">
+                        <label class="col-sm-3 col-form-label font-weight-bold">Site Title</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" name="site_title" value="{{ setting.site_title }}" required>
+                            <small class="text-muted">The main brand name displayed across the site.</small>
+                        </div>
+                    </div>
+                    
+                    <h5 class="text-gray-800 mt-4 mb-3 border-bottom pb-2">2. Contact Details</h5>
+                    <div class="form-group row">
+                        <label class="col-sm-3 col-form-label font-weight-bold">Contact Email</label>
+                        <div class="col-sm-9">
+                            <input type="email" class="form-control" name="contact_email" value="{{ setting.contact_email }}" required>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-3 col-form-label font-weight-bold">Phone Number</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" name="contact_phone" value="{{ setting.contact_phone }}" required>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-3 col-form-label font-weight-bold">Headquarters Address</label>
+                        <div class="col-sm-9">
+                            <textarea class="form-control" name="address" rows="3">{{ setting.address }}</textarea>
+                        </div>
+                    </div>
+
+                    <h5 class="text-gray-800 mt-4 mb-3 border-bottom pb-2">3. Social Media Links</h5>
+                    <div class="form-group row">
+                        <label class="col-sm-3 col-form-label font-weight-bold"><i class="fab fa-facebook text-primary"></i> Facebook</label>
+                        <div class="col-sm-9">
+                            <input type="url" class="form-control" name="facebook_link" value="{{ setting.facebook_link|default:'' }}" placeholder="https://facebook.com/...">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-3 col-form-label font-weight-bold"><i class="fab fa-instagram text-danger"></i> Instagram</label>
+                        <div class="col-sm-9">
+                            <input type="url" class="form-control" name="instagram_link" value="{{ setting.instagram_link|default:'' }}" placeholder="https://instagram.com/...">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-3 col-form-label font-weight-bold"><i class="fab fa-twitter text-info"></i> Twitter</label>
+                        <div class="col-sm-9">
+                            <input type="url" class="form-control" name="twitter_link" value="{{ setting.twitter_link|default:'' }}" placeholder="https://twitter.com/...">
+                        </div>
+                    </div>
+
+                    <h5 class="text-gray-800 mt-4 mb-3 border-bottom pb-2">4. System Controls</h5>
+                    <div class="form-group row">
+                        <label class="col-sm-3 col-form-label font-weight-bold">Maintenance Mode</label>
+                        <div class="col-sm-9 d-flex align-items-center">
+                            <div class="custom-control custom-switch">
+                                <input type="checkbox" class="custom-control-input" id="maintenanceMode" name="maintenance_mode" {% if setting.maintenance_mode %}checked{% endif %}>
+                                <label class="custom-control-label" for="maintenanceMode">Enable (Shows "Site under maintenance" to users)</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group row mt-5">
+                        <div class="col-sm-9 offset-sm-3">
+                            <button type="submit" class="btn btn-primary btn-icon-split btn-lg">
+                                <span class="icon text-white-50">
+                                    <i class="fas fa-save"></i>
+                                </span>
+                                <span class="text">Save Global Settings</span>
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

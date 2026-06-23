@@ -195,3 +195,17 @@ class BlogPost(models.Model):
     def __str__(self):
         return self.title
 
+class SiteSetting(models.Model):
+    site_title = models.CharField(max_length=200, default='BookMyLawn')
+    contact_email = models.EmailField(default='support@bookmylawn.com')
+    contact_phone = models.CharField(max_length=20, default='+91 00000 00000')
+    address = models.TextField(blank=True)
+    maintenance_mode = models.BooleanField(default=False)
+    facebook_link = models.URLField(blank=True, null=True)
+    instagram_link = models.URLField(blank=True, null=True)
+    twitter_link = models.URLField(blank=True, null=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return "Global Site Settings"
+
