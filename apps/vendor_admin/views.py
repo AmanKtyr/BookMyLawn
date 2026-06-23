@@ -150,3 +150,16 @@ def vendor_reviews(request):
     vendor = request.user.vendor_profile
     reviews = Review.objects.filter(vendor=vendor).order_by('-created_at')
     return render(request, 'vendor_admin/reviews.html', {'reviews': reviews})
+
+@user_passes_test(is_vendor, login_url='vendor_login')
+def vendor_subscription(request):
+    vendor = request.user.vendor_profile
+    return render(request, 'vendor_admin/subscription.html', {'vendor': vendor})
+
+@user_passes_test(is_vendor, login_url='vendor_login')
+def vendor_support(request):
+    vendor = request.user.vendor_profile
+    if request.method == 'POST':
+        messages.success(request, "Your support ticket has been raised. Our team will contact you shortly.")
+        return redirect('vendor_support')
+    return render(request, 'vendor_admin/support.html', {'vendor': vendor})

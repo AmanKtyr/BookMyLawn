@@ -2,82 +2,122 @@
 {% load static %}
 
 {% block content %}
+<style>
+    .vendor-hero {
+        background: linear-gradient(135deg, rgba(231, 46, 119, 0.95), rgba(194, 24, 91, 0.95)), url('https://images.unsplash.com/photo-1511795409834-ef04bbd61622?auto=format&fit=crop&w=1200&q=80') center/cover;
+        padding: 40px 30px;
+        border-radius: 15px;
+        color: white;
+        margin-bottom: 30px;
+        box-shadow: 0 10px 20px rgba(231, 46, 119, 0.15);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+    .vendor-hero h2 {
+        font-family: 'Playfair Display', serif;
+        font-weight: 700;
+        margin-bottom: 5px;
+        color: white;
+    }
+    .vendor-hero p {
+        font-size: 16px;
+        opacity: 0.9;
+        margin-bottom: 0;
+    }
+    .stat-card {
+        border-radius: 16px;
+        transition: 0.3s;
+        border: none;
+        overflow: hidden;
+    }
+    .stat-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 15px 30px rgba(0,0,0,0.08) !important;
+    }
+    .stat-card .circle-sm {
+        width: 50px;
+        height: 50px;
+        font-size: 20px;
+    }
+</style>
+
 <div class="row justify-content-center">
   <div class="col-12">
-    <div class="row align-items-center mb-4">
-      <div class="col">
-        <h2 class="h5 page-title">Welcome back, {{ vendor.name }}!</h2>
-        <p class="text-muted">Here is what's happening with your business today.</p>
+    <div class="vendor-hero">
+      <div>
+        <h2>Welcome back, {{ vendor.name }}!</h2>
+        <p><i class="fe fe-map-pin mr-1"></i> {{ vendor.location }} &nbsp; | &nbsp; <i class="fe fe-tag mr-1"></i> {{ vendor.category.name }}</p>
       </div>
-      <div class="col-auto">
-        <a href="{% url 'vendor_profile' %}" class="btn btn-primary">Edit Profile</a>
+      <div>
+        <a href="{% url 'vendor_profile' %}" class="btn btn-light text-primary" style="font-weight:600; border-radius:8px; padding: 10px 20px;"><i class="fe fe-edit-2 mr-2"></i> Edit Profile</a>
       </div>
     </div>
     
     <div class="row">
       <div class="col-md-6 col-xl-3 mb-4">
-        <div class="card shadow border-0">
+        <div class="card shadow-sm stat-card">
           <div class="card-body">
             <div class="row align-items-center">
-              <div class="col-3 text-center">
-                <span class="circle circle-sm bg-primary">
-                  <i class="fe fe-inbox fe-24 text-white"></i>
+              <div class="col-auto">
+                <span class="circle circle-sm bg-primary-light text-primary" style="background:#fbe6ee;">
+                  <i class="fe fe-inbox"></i>
                 </span>
               </div>
-              <div class="col">
-                <p class="small text-muted mb-0">Total Inquiries</p>
-                <span class="h3 mb-0">{{ total_inquiries }}</span>
+              <div class="col pr-0">
+                <p class="small text-muted mb-0 font-weight-bold text-uppercase">Total Inquiries</p>
+                <span class="h3 mb-0" style="font-weight:800; color:#2d3748;">{{ total_inquiries }}</span>
               </div>
             </div>
           </div>
         </div>
       </div>
       <div class="col-md-6 col-xl-3 mb-4">
-        <div class="card shadow border-0">
+        <div class="card shadow-sm stat-card">
           <div class="card-body">
             <div class="row align-items-center">
-              <div class="col-3 text-center">
-                <span class="circle circle-sm bg-success">
-                  <i class="fe fe-mail fe-24 text-white"></i>
+              <div class="col-auto">
+                <span class="circle circle-sm bg-success-light text-success" style="background:#d4edda;">
+                  <i class="fe fe-mail"></i>
                 </span>
               </div>
-              <div class="col">
-                <p class="small text-muted mb-0">New Inquiries</p>
-                <span class="h3 mb-0">{{ new_inquiries }}</span>
+              <div class="col pr-0">
+                <p class="small text-muted mb-0 font-weight-bold text-uppercase">New Inquiries</p>
+                <span class="h3 mb-0" style="font-weight:800; color:#2d3748;">{{ new_inquiries }}</span>
               </div>
             </div>
           </div>
         </div>
       </div>
       <div class="col-md-6 col-xl-3 mb-4">
-        <div class="card shadow border-0">
+        <div class="card shadow-sm stat-card">
           <div class="card-body">
             <div class="row align-items-center">
-              <div class="col-3 text-center">
-                <span class="circle circle-sm bg-success">
-                  <i class="fe fe-dollar-sign fe-24 text-white"></i>
+              <div class="col-auto">
+                <span class="circle circle-sm bg-warning-light text-warning" style="background:#fff3cd;">
+                  <i class="fe fe-dollar-sign"></i>
                 </span>
               </div>
-              <div class="col">
-                <p class="small text-muted mb-0">Potential Revenue</p>
-                <span class="h3 mb-0">₹{{ potential_revenue|floatformat:0 }}</span>
+              <div class="col pr-0">
+                <p class="small text-muted mb-0 font-weight-bold text-uppercase">Potential Revenue</p>
+                <span class="h3 mb-0" style="font-weight:800; color:#2d3748;">₹{{ potential_revenue|floatformat:0 }}</span>
               </div>
             </div>
           </div>
         </div>
       </div>
       <div class="col-md-6 col-xl-3 mb-4">
-        <div class="card shadow border-0">
+        <div class="card shadow-sm stat-card" style="border-left: 4px solid {% if vendor.is_verified %}#28a745{% else %}#ffc107{% endif %};">
           <div class="card-body">
             <div class="row align-items-center">
-              <div class="col-3 text-center">
-                <span class="circle circle-sm bg-info">
-                  <i class="fe fe-check-circle fe-24 text-white"></i>
+              <div class="col-auto">
+                <span class="circle circle-sm {% if vendor.is_verified %}bg-success-light text-success{% else %}bg-warning-light text-warning{% endif %}" style="background:{% if vendor.is_verified %}#d4edda{% else %}#fff3cd{% endif %};">
+                  <i class="fe fe-check-circle"></i>
                 </span>
               </div>
-              <div class="col">
-                <p class="small text-muted mb-0">Profile Status</p>
-                <span class="h4 mb-0">{% if vendor.is_verified %}Verified{% else %}Pending{% endif %}</span>
+              <div class="col pr-0">
+                <p class="small text-muted mb-0 font-weight-bold text-uppercase">Profile Status</p>
+                <span class="h4 mb-0" style="font-weight:800; color:#2d3748;">{% if vendor.is_verified %}Verified{% else %}Pending{% endif %}</span>
               </div>
             </div>
           </div>

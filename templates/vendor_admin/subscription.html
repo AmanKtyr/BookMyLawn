@@ -1,0 +1,140 @@
+{% extends 'vendor_admin/base.html' %}
+
+{% block content %}
+<style>
+    .pricing-card {
+        border-radius: 15px;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        border: 2px solid transparent;
+        overflow: hidden;
+    }
+    .pricing-card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+    }
+    .pricing-card.popular {
+        border-color: var(--theme-color);
+        box-shadow: 0 15px 30px rgba(231, 46, 119, 0.15);
+    }
+    .pricing-card .badge-popular {
+        background: var(--theme-color);
+        color: white;
+        padding: 5px 20px;
+        position: absolute;
+        top: 15px;
+        right: -30px;
+        transform: rotate(45deg);
+        font-size: 12px;
+        font-weight: bold;
+        letter-spacing: 1px;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        width: 120px;
+        text-align: center;
+    }
+    .feature-list {
+        list-style: none;
+        padding: 0;
+        margin: 30px 0;
+    }
+    .feature-list li {
+        margin-bottom: 15px;
+        display: flex;
+        align-items: center;
+    }
+    .feature-list li i {
+        color: #28a745;
+        margin-right: 10px;
+        font-size: 18px;
+    }
+    .feature-list li.disabled {
+        opacity: 0.5;
+    }
+    .feature-list li.disabled i {
+        color: #dc3545;
+    }
+</style>
+
+<div class="row justify-content-center">
+  <div class="col-12 col-xl-10">
+    <div class="text-center mb-5 mt-3">
+        <h2 class="h3 page-title font-weight-bold">Membership & Billing</h2>
+        <p class="text-muted">Upgrade your plan to get more leads and stand out to couples.</p>
+    </div>
+
+    <div class="row align-items-center">
+        <!-- Basic Plan -->
+        <div class="col-md-6 col-lg-5 mb-4 mx-auto">
+            <div class="card pricing-card shadow-sm {% if not vendor.is_premium %}border-primary{% endif %}">
+                <div class="card-body p-5">
+                    <h4 class="font-weight-bold text-center mb-1">Basic Plan</h4>
+                    <p class="text-center text-muted small">For new businesses</p>
+                    <div class="text-center my-4">
+                        <span class="h1 font-weight-bold">Free</span>
+                    </div>
+                    <ul class="feature-list">
+                        <li><i class="fe fe-check-circle"></i> Standard Directory Listing</li>
+                        <li><i class="fe fe-check-circle"></i> Basic Profile & Gallery</li>
+                        <li><i class="fe fe-check-circle"></i> Receive Customer Leads</li>
+                        <li class="disabled"><i class="fe fe-x-circle"></i> Top Search Placement</li>
+                        <li class="disabled"><i class="fe fe-x-circle"></i> Verification Badge</li>
+                        <li class="disabled"><i class="fe fe-x-circle"></i> Direct WhatsApp Lead Access</li>
+                    </ul>
+                    <div class="text-center mt-4">
+                        {% if not vendor.is_premium %}
+                        <button class="btn btn-light btn-block btn-lg disabled" style="border-radius: 10px;">Current Plan</button>
+                        {% else %}
+                        <button class="btn btn-outline-primary btn-block btn-lg" style="border-radius: 10px;">Downgrade</button>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Premium Plan -->
+        <div class="col-md-6 col-lg-5 mb-4 mx-auto">
+            <div class="card pricing-card popular bg-white position-relative">
+                <div class="badge-popular">POPULAR</div>
+                <div class="card-body p-5">
+                    <h4 class="font-weight-bold text-center mb-1 text-primary">Premium Plan</h4>
+                    <p class="text-center text-muted small">Max visibility & verified trust</p>
+                    <div class="text-center my-4">
+                        <span class="h1 font-weight-bold text-dark">₹4,999</span>
+                        <span class="text-muted">/year</span>
+                    </div>
+                    <ul class="feature-list">
+                        <li><i class="fe fe-check-circle"></i> <strong>Everything in Basic</strong></li>
+                        <li><i class="fe fe-check-circle text-primary"></i> <strong>Top Search Placement</strong></li>
+                        <li><i class="fe fe-check-circle text-primary"></i> <strong>Verified Business Badge</strong></li>
+                        <li><i class="fe fe-check-circle text-primary"></i> Direct WhatsApp Lead Access</li>
+                        <li><i class="fe fe-check-circle text-primary"></i> Premium Customer Support</li>
+                        <li><i class="fe fe-check-circle text-primary"></i> Analytics Dashboard</li>
+                    </ul>
+                    <div class="text-center mt-4">
+                        {% if vendor.is_premium %}
+                        <button class="btn btn-success btn-block btn-lg disabled" style="border-radius: 10px;"><i class="fa fa-check mr-2"></i> Active Plan</button>
+                        {% else %}
+                        <button class="btn btn-primary btn-block btn-lg font-weight-bold" style="border-radius: 10px;" onclick="upgradePlan()">Upgrade Now</button>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="text-center mt-4 text-muted">
+        <p class="small"><i class="fe fe-lock mr-1"></i> Secure checkout provided by Razorpay.</p>
+    </div>
+  </div>
+</div>
+
+<script>
+    function upgradePlan() {
+        Swal.fire({
+            title: 'Contact Support to Upgrade',
+            text: 'Premium upgrades are currently handled by our executive team. We will call you shortly!',
+            icon: 'info',
+            confirmButtonColor: '#e72e77'
+        });
+    }
+</script>
+{% endblock %}
