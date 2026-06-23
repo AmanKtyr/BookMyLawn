@@ -20,8 +20,10 @@
                 <thead class="thead-dark">
                   <tr>
                     <th>ID</th>
-                    <th>Username</th>
-                    <th>Email</th>
+                    <th>Username/Name</th>
+                    <th>Email & Phone</th>
+                    <th>Wedding Date</th>
+                    <th>Budget</th>
                     <th>Date Joined</th>
                     <th>Status</th>
                     <th>Actions</th>
@@ -31,9 +33,33 @@
                   {% for user in users %}
                   <tr>
                     <td>{{ user.id }}</td>
-                    <td><strong>{{ user.username }}</strong></td>
-                    <td>{{ user.email }}</td>
-                    <td>{{ user.date_joined|date:"M d, Y" }}</td>
+                    <td>
+                      <strong>{{ user.username }}</strong>
+                      {% if user.first_name %}<br><small class="text-muted">{{ user.first_name }}</small>{% endif %}
+                    </td>
+                    <td>
+                      <i class="fe fe-mail mr-1"></i> {{ user.email }}<br>
+                      {% if user.userprofile.phone %}
+                      <small class="text-muted"><i class="fe fe-phone mr-1"></i> {{ user.userprofile.phone }}</small>
+                      {% else %}
+                      <small class="text-muted"><i class="fe fe-phone mr-1"></i> N/A</small>
+                      {% endif %}
+                    </td>
+                    <td>
+                      {% if user.userprofile.wedding_date %}
+                      <span class="badge badge-light border"><i class="fe fe-calendar mr-1"></i> {{ user.userprofile.wedding_date|date:"M d, Y" }}</span>
+                      {% else %}
+                      <span class="text-muted small">Not set</span>
+                      {% endif %}
+                    </td>
+                    <td>
+                      {% if user.userprofile.estimated_budget %}
+                      ₹{{ user.userprofile.estimated_budget }}
+                      {% else %}
+                      <span class="text-muted small">Not set</span>
+                      {% endif %}
+                    </td>
+                    <td><small>{{ user.date_joined|date:"M d, Y" }}</small></td>
                     <td>
                       {% if user.is_active %}
                       <span class="badge badge-pill badge-success">Active</span>
@@ -43,7 +69,7 @@
                     </td>
                     <td>
                       <a href="javascript:void(0)" class="btn btn-sm btn-outline-warning" onclick="confirmAction('{% url 'superadmin_user_toggle' user.id %}', 'Are you sure?', 'You want to change the active status of this customer?')">
-                        {% if user.is_active %}Suspend{% else %}Activate{% endif %}
+                        {% if user.is_active %}<i class="fe fe-user-x mr-1"></i>Suspend{% else %}<i class="fe fe-user-check mr-1"></i>Activate{% endif %}
                       </a>
                     </td>
                   </tr>

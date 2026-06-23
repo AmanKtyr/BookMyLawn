@@ -51,7 +51,29 @@
                     </td>
                     <td>{{ inquiry.created_at|date:"M d, Y H:i" }}</td>
                     <td>
-                      <button class="btn btn-sm btn-outline-secondary">View Message</button>
+                      <button class="btn btn-sm btn-outline-secondary" data-toggle="modal" data-target="#msgModal{{ inquiry.id }}">View Message</button>
+
+                      <!-- Message Modal -->
+                      <div class="modal fade" id="msgModal{{ inquiry.id }}" tabindex="-1" role="dialog" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                          <div class="modal-content">
+                            <div class="modal-header">
+                              <h5 class="modal-title">Message from {{ inquiry.customer_name }}</h5>
+                              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                              </button>
+                            </div>
+                            <div class="modal-body text-left">
+                              <div class="p-3 bg-light rounded" style="font-size: 14px; color: #333; line-height: 1.6;">
+                                {{ inquiry.message|default:"No specific message provided. Just an inquiry."|linebreaks }}
+                              </div>
+                            </div>
+                            <div class="modal-footer">
+                              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
                     </td>
                   </tr>
                   {% empty %}
