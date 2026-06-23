@@ -1,0 +1,193 @@
+{% extends 'website/base.html' %}
+{% load static %}
+
+{% block title %}My Wedding Dashboard | BookMyLawn{% endblock %}
+
+{% block content %}
+<div class="breadcrumb-option">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="breadcrumb__links">
+                    <a href="{% url 'index' %}"><i class="fa fa-home"></i> Home</a>
+                    <span>My Dashboard</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<section class="spad" style="background: var(--color-bg);">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-3 mb-4">
+                <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+                  <a class="nav-link active" style="margin-bottom:10px; border-radius:8px; font-weight:600;" id="v-pills-profile-tab" data-toggle="pill" href="#v-pills-profile" role="tab" aria-controls="v-pills-profile" aria-selected="true"><i class="fa fa-user mr-2"></i> Profile Details</a>
+                  <a class="nav-link" style="margin-bottom:10px; border-radius:8px; font-weight:600;" id="v-pills-checklist-tab" data-toggle="pill" href="#v-pills-checklist" role="tab" aria-controls="v-pills-checklist" aria-selected="false"><i class="fa fa-list mr-2"></i> Wedding Checklist</a>
+                  <a class="nav-link" style="margin-bottom:10px; border-radius:8px; font-weight:600;" id="v-pills-wishlist-tab" data-toggle="pill" href="#v-pills-wishlist" role="tab" aria-controls="v-pills-wishlist" aria-selected="false"><i class="fa fa-heart mr-2"></i> My Shortlist</a>
+                  <a class="nav-link" style="margin-bottom:10px; border-radius:8px; font-weight:600;" id="v-pills-inquiries-tab" data-toggle="pill" href="#v-pills-inquiries" role="tab" aria-controls="v-pills-inquiries" aria-selected="false"><i class="fa fa-envelope mr-2"></i> My Inquiries</a>
+                </div>
+            </div>
+            <div class="col-lg-9">
+                <div class="tab-content" id="v-pills-tabContent">
+                  <!-- Profile Tab -->
+                  <div class="tab-pane fade show active" id="v-pills-profile" role="tabpanel" aria-labelledby="v-pills-profile-tab">
+                      <div class="portal-card" style="border-radius:12px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); padding: 30px;">
+                          <h4 style="font-weight:700; margin-bottom:20px; color:var(--color-dark);">Couple Profile</h4>
+                          <form method="POST">
+                              {% csrf_token %}
+                              <input type="hidden" name="action" value="update_profile">
+                              <div class="row">
+                                  <div class="col-md-6">
+                                      <div class="form-group mb-3">
+                                          <label style="font-weight:600;">Your Partner's Name</label>
+                                          <input type="text" class="form-control" name="partner_name" value="{{ profile.partner_name }}" style="border-radius:8px;">
+                                      </div>
+                                  </div>
+                                  <div class="col-md-6">
+                                      <div class="form-group mb-3">
+                                          <label style="font-weight:600;">Wedding Date</label>
+                                          <input type="date" class="form-control" name="wedding_date" value="{{ profile.wedding_date|date:'Y-m-d' }}" style="border-radius:8px;">
+                                      </div>
+                                  </div>
+                                  <div class="col-md-6">
+                                      <div class="form-group mb-3">
+                                          <label style="font-weight:600;">Phone Number</label>
+                                          <input type="text" class="form-control" name="phone" value="{{ profile.phone }}" style="border-radius:8px;">
+                                      </div>
+                                  </div>
+                                  <div class="col-md-6">
+                                      <div class="form-group mb-3">
+                                          <label style="font-weight:600;">Estimated Budget (₹)</label>
+                                          <input type="number" class="form-control" name="budget" value="{{ profile.budget }}" style="border-radius:8px;">
+                                      </div>
+                                  </div>
+                              </div>
+                              <button type="submit" class="btn-theme mt-3" style="border-radius:8px;"><i class="fa fa-save"></i> Save Profile</button>
+                          </form>
+                      </div>
+                  </div>
+                  
+                  <!-- Checklist Tab -->
+                  <div class="tab-pane fade" id="v-pills-checklist" role="tabpanel" aria-labelledby="v-pills-checklist-tab">
+                      <div class="portal-card" style="border-radius:12px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); padding: 30px;">
+                          <h4 style="font-weight:700; margin-bottom:20px; color:var(--color-dark);">Wedding Checklist</h4>
+                          <form method="POST" class="mb-4 d-flex align-items-center">
+                              {% csrf_token %}
+                              <input type="hidden" name="action" value="add_task">
+                              <input type="text" class="form-control mr-2" name="task_name" placeholder="New Task (e.g. Book Caterer)" required style="border-radius:8px;">
+                              <input type="date" class="form-control mr-2" name="due_date" style="border-radius:8px; width: 180px;">
+                              <button type="submit" class="btn-theme" style="border-radius:8px; padding: 10px 20px;">Add</button>
+                          </form>
+                          <ul class="list-group">
+                              {% for item in checklist_items %}
+                              <li class="list-group-item d-flex justify-content-between align-items-center" style="border-radius:8px; margin-bottom:10px; border:1px solid #eee;">
+                                  <div>
+                                      <input type="checkbox" {% if item.is_completed %}checked{% endif %} onclick="toggleTask({{ item.id }})" style="cursor:pointer; transform:scale(1.2);">
+                                      <span style="{% if item.is_completed %}text-decoration: line-through; color: #888;{% endif %} margin-left: 10px; font-weight:500;">{{ item.task_name }}</span>
+                                  </div>
+                                  {% if item.due_date %}
+                                  <span class="badge badge-light badge-pill p-2" style="font-size:12px; background:#f4f4f4;"><i class="fa fa-calendar"></i> {{ item.due_date|date:"d M Y" }}</span>
+                                  {% endif %}
+                              </li>
+                              {% empty %}
+                              <li class="list-group-item text-center text-muted" style="border-radius:8px;">No tasks added yet. Start planning!</li>
+                              {% endfor %}
+                          </ul>
+                      </div>
+                  </div>
+                  
+                  <!-- Wishlist Tab -->
+                  <div class="tab-pane fade" id="v-pills-wishlist" role="tabpanel" aria-labelledby="v-pills-wishlist-tab">
+                      <div class="portal-card" style="border-radius:12px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); padding: 30px;">
+                          <h4 style="font-weight:700; margin-bottom:20px; color:var(--color-dark);">My Shortlisted Vendors</h4>
+                          <div class="row">
+                              {% for item in wishlist_items %}
+                              <div class="col-md-6 mb-3">
+                                  <div class="card" style="border-radius:12px; border:none; box-shadow: 0 2px 10px rgba(0,0,0,0.05);">
+                                      <div class="card-body">
+                                          <h5 class="card-title" style="font-weight:700;">{{ item.vendor.name }}</h5>
+                                          <p class="card-text text-muted mb-3"><i class="fa fa-tag"></i> {{ item.vendor.category.name }} &nbsp; <i class="fa fa-map-marker"></i> {{ item.vendor.location }}</p>
+                                          <a href="{% url 'vendor_details' item.vendor.id %}" class="btn-outline-theme btn-sm" style="border-radius:6px;">View Profile</a>
+                                      </div>
+                                  </div>
+                              </div>
+                              {% empty %}
+                              <div class="col-12 text-center text-muted py-4">
+                                  <i class="fa fa-heart-o" style="font-size:40px; margin-bottom:10px;"></i>
+                                  <p>No vendors shortlisted yet. Browse vendors and click the heart icon to add them here.</p>
+                                  <a href="{% url 'vendors' %}" class="btn-theme mt-2" style="border-radius:8px;">Browse Vendors</a>
+                              </div>
+                              {% endfor %}
+                          </div>
+                      </div>
+                  </div>
+
+                  <!-- Inquiries Tab -->
+                  <div class="tab-pane fade" id="v-pills-inquiries" role="tabpanel" aria-labelledby="v-pills-inquiries-tab">
+                      <div class="portal-card" style="border-radius:12px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); padding: 30px;">
+                          <h4 style="font-weight:700; margin-bottom:20px; color:var(--color-dark);">My Sent Inquiries</h4>
+                          <div class="table-responsive">
+                              <table class="table table-hover">
+                                  <thead style="background:#f8f9fa;">
+                                      <tr>
+                                          <th style="border-top:none; border-bottom:none; border-radius:8px 0 0 8px;">Vendor</th>
+                                          <th style="border-top:none; border-bottom:none;">Date Sent</th>
+                                          <th style="border-top:none; border-bottom:none; border-radius:0 8px 8px 0;">Status</th>
+                                      </tr>
+                                  </thead>
+                                  <tbody>
+                                      {% for inq in inquiries %}
+                                      <tr>
+                                          <td style="font-weight:600;"><a href="{% url 'vendor_details' inq.vendor.id %}" style="color:inherit;">{{ inq.vendor.name }}</a></td>
+                                          <td>{{ inq.created_at|date:"d M Y" }}</td>
+                                          <td>
+                                              {% if inq.status == 'new' %}
+                                              <span class="badge badge-warning p-2" style="color:#fff;">Pending</span>
+                                              {% elif inq.status == 'contacted' %}
+                                              <span class="badge badge-success p-2">Contacted</span>
+                                              {% else %}
+                                              <span class="badge badge-secondary p-2">Closed</span>
+                                              {% endif %}
+                                          </td>
+                                      </tr>
+                                      {% empty %}
+                                      <tr><td colspan="3" class="text-center text-muted py-4">No inquiries sent yet.</td></tr>
+                                      {% endfor %}
+                                  </tbody>
+                              </table>
+                          </div>
+                      </div>
+                  </div>
+                  
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<style>
+    .nav-pills .nav-link.active, .nav-pills .show > .nav-link {
+        color: #fff;
+        background-color: var(--theme-color);
+    }
+    .nav-pills .nav-link {
+        color: var(--color-dark);
+        background: #fff;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.03);
+    }
+</style>
+
+<script>
+function toggleTask(taskId) {
+    fetch('{% url "user_dashboard" %}', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+            'X-CSRFToken': '{{ csrf_token }}'
+        },
+        body: 'action=toggle_task&task_id=' + taskId
+    }).then(() => window.location.reload());
+}
+</script>
+{% endblock %}

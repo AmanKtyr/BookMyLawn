@@ -2,7 +2,7 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.db.models import Q
 from django.http import JsonResponse
 from django.contrib.auth.decorators import login_required
-from .models import Vendor, Category, RealWedding, Cart, CartItem, Wishlist, WishlistItem, Order, OrderItem
+from .models import Vendor, Category, RealWedding, Cart, CartItem, Wishlist, WishlistItem, Order, OrderItem, UserProfile, WeddingChecklist, BlogPost
 
 def index(request):
     # Fetch some premium vendors for the homepage
@@ -101,6 +101,12 @@ def login_view(request):
                 messages.error(request, "Invalid email or password.")
             
     return render(request, 'website/login.html', {'user_type': user_type})
+
+def logout_view(request):
+    from django.contrib.auth import logout
+    logout(request)
+    return redirect('index')
+
 
 def register_view(request):
     return render(request, 'website/register.html')
@@ -288,3 +294,71 @@ def submit_review(request):
         return JsonResponse({'status': 'success', 'message': 'Your review has been published successfully!'})
         
     return JsonResponse({'status': 'error', 'message': 'Invalid request.'})
+
+def about_us(request):
+    return render(request, 'website/about.html')
+
+def blog(request):
+    posts = BlogPost.objects.filter(is_published=True).order_by('-created_at')
+    return render(request, 'website/blog.html', {'posts': posts})
+
+def blog_details(request, slug):
+    post = get_object_or_404(BlogPost, slug=slug, is_published=True)
+    recent_posts = BlogPost.objects.filter(is_published=True).exclude(id=post.id).order_by('-created_at')[:3]
+    return render(request, 'website/blog-details.html', {'post': post, 'recent_posts': recent_posts})
+
+@login_required(login_url='/login/')
+def user_dashboard(request):
+    # Ensure UserProfile exists
+    profile, created = UserProfile.objects.get_or_create(user=request.user)
+    
+    # Handle profile updates
+    if request.method == 'POST':
+        action = request.POST.get('action')
+        if action == 'update_profile':
+            profile.partner_name = request.POST.get('partner_name', profile.partner_name)
+            profile.phone = request.POST.get('phone', profile.phone)
+            wedding_date = request.POST.get('wedding_date')
+            if wedding_date:
+                profile.wedding_date = wedding_date
+            profile.budget = request.POST.get('budget', profile.budget)
+            profile.save()
+            return redirect('user_dashboard')
+            
+        elif action == 'add_task':
+            task_name = request.POST.get('task_name')
+            due_date = request.POST.get('due_date')
+            if task_name:
+                WeddingChecklist.objects.create(
+                    user=request.user,
+                    task_name=task_name,
+                    due_date=due_date if due_date else None
+                )
+            return redirect('user_dashboard')
+            
+        elif action == 'toggle_task':
+            task_id = request.POST.get('task_id')
+            task = get_object_or_404(WeddingChecklist, id=task_id, user=request.user)
+            task.is_completed = not task.is_completed
+            task.save()
+            return JsonResponse({'status': 'success', 'is_completed': task.is_completed})
+
+    # Fetch dashboard data
+    checklist_items = WeddingChecklist.objects.filter(user=request.user).order_by('due_date', 'id')
+    wishlist = Wishlist.objects.filter(user=request.user).first()
+    wishlist_items = wishlist.items.all() if wishlist else []
+    
+    from .models import Inquiry
+    inquiries = Inquiry.objects.filter(user=request.user).order_by('-created_at')
+    
+    cart = Cart.objects.filter(user=request.user).first()
+    cart_items = cart.items.all() if cart else []
+    
+    context = {
+        'profile': profile,
+        'checklist_items': checklist_items,
+        'wishlist_items': wishlist_items,
+        'inquiries': inquiries,
+        'cart_items': cart_items,
+    }
+    return render(request, 'website/user-dashboard.html', context)
