@@ -4,119 +4,337 @@
 {% block title %}My Wedding Dashboard | BookMyLawn{% endblock %}
 
 {% block content %}
-<div class="breadcrumb-option">
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-12">
-                <div class="breadcrumb__links">
-                    <a href="{% url 'index' %}"><i class="fa fa-home"></i> Home</a>
-                    <span>My Dashboard</span>
-                </div>
+<style>
+    :root {
+        --dash-bg: #f8f9fa;
+        --card-bg: #ffffff;
+        --primary: #e72e77;
+        --primary-light: #fbe6ee;
+        --text-dark: #2d3748;
+        --text-muted: #718096;
+    }
+
+    body {
+        background-color: var(--dash-bg);
+    }
+
+    /* Welcome Banner */
+    .dashboard-hero {
+        background: linear-gradient(135deg, rgba(231, 46, 119, 0.9), rgba(194, 24, 91, 0.9)), url('https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=1200&q=80') center/cover;
+        padding: 60px 0 80px;
+        color: white;
+        border-radius: 0 0 40px 40px;
+        margin-bottom: -50px;
+        box-shadow: 0 10px 30px rgba(231, 46, 119, 0.2);
+    }
+    
+    .countdown-box {
+        background: rgba(255, 255, 255, 0.15);
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255,255,255,0.2);
+        padding: 20px;
+        border-radius: 16px;
+        display: inline-block;
+        margin-top: 15px;
+    }
+    .countdown-item {
+        display: inline-block;
+        text-align: center;
+        margin: 0 15px;
+    }
+    .countdown-item h3 {
+        font-size: 32px;
+        font-weight: 700;
+        margin-bottom: 0;
+        color: white;
+    }
+    .countdown-item span {
+        font-size: 12px;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        opacity: 0.8;
+    }
+
+    /* Sidebar Navigation */
+    .nav-pills .nav-link {
+        color: var(--text-dark);
+        background: var(--card-bg);
+        border-radius: 12px;
+        padding: 15px 20px;
+        margin-bottom: 12px;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        border: 1px solid transparent;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.02);
+    }
+    .nav-pills .nav-link i {
+        width: 24px;
+        color: var(--text-muted);
+        transition: 0.3s;
+    }
+    .nav-pills .nav-link:hover {
+        transform: translateX(5px);
+        color: var(--primary);
+    }
+    .nav-pills .nav-link:hover i {
+        color: var(--primary);
+    }
+    .nav-pills .nav-link.active, .nav-pills .show > .nav-link {
+        color: var(--primary);
+        background-color: var(--primary-light);
+        border: 1px solid rgba(231, 46, 119, 0.2);
+        box-shadow: 0 5px 15px rgba(231, 46, 119, 0.1);
+    }
+    .nav-pills .nav-link.active i {
+        color: var(--primary);
+    }
+
+    /* Dashboard Cards */
+    .portal-card {
+        background: var(--card-bg);
+        border-radius: 20px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.04);
+        padding: 40px;
+        border: 1px solid rgba(0,0,0,0.02);
+        animation: fadeIn 0.5s ease;
+    }
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(10px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+    .portal-card h4 {
+        font-family: 'Playfair Display', serif;
+        font-weight: 700;
+        color: var(--text-dark);
+        margin-bottom: 30px;
+        font-size: 28px;
+    }
+
+    /* Custom Inputs */
+    .form-control {
+        border-radius: 10px;
+        padding: 12px 15px;
+        border: 1px solid #e2e8f0;
+        background: #f8fafc;
+        transition: 0.3s;
+    }
+    .form-control:focus {
+        background: #fff;
+        border-color: var(--primary);
+        box-shadow: 0 0 0 4px rgba(231, 46, 119, 0.1);
+    }
+
+    /* Checklist */
+    .checklist-group .list-group-item {
+        border-radius: 12px !important;
+        margin-bottom: 12px;
+        border: 1px solid #e2e8f0;
+        padding: 15px 20px;
+        transition: 0.3s;
+    }
+    .checklist-group .list-group-item:hover {
+        border-color: var(--primary);
+        box-shadow: 0 4px 12px rgba(231, 46, 119, 0.05);
+    }
+    .custom-checkbox input {
+        display: none;
+    }
+    .custom-checkbox label {
+        display: flex;
+        align-items: center;
+        cursor: pointer;
+        margin: 0;
+        font-weight: 500;
+    }
+    .custom-checkbox label::before {
+        content: '\f00c';
+        font-family: 'FontAwesome';
+        display: inline-block;
+        width: 24px;
+        height: 24px;
+        border: 2px solid #cbd5e0;
+        border-radius: 6px;
+        margin-right: 15px;
+        text-align: center;
+        line-height: 22px;
+        color: transparent;
+        transition: 0.2s;
+        font-size: 14px;
+    }
+    .custom-checkbox input:checked + label::before {
+        background: var(--primary);
+        border-color: var(--primary);
+        color: white;
+    }
+    .custom-checkbox input:checked + label {
+        color: var(--text-muted);
+        text-decoration: line-through;
+    }
+
+    /* Wishlist Cards */
+    .vendor-card {
+        border-radius: 16px;
+        overflow: hidden;
+        border: 1px solid #eee;
+        transition: 0.3s;
+    }
+    .vendor-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 15px 30px rgba(0,0,0,0.08);
+    }
+</style>
+
+<!-- Hero Section -->
+<div class="dashboard-hero">
+    <div class="container text-center">
+        <h1 style="font-family: 'Playfair Display', serif; font-weight: 700; margin-bottom: 10px;">
+            Hello, {{ request.user.first_name|default:request.user.username }} 
+            {% if profile.partner_name %}&amp; {{ profile.partner_name }}{% endif %}!
+        </h1>
+        <p style="font-size: 18px; opacity: 0.9;">Welcome to your magical wedding planner.</p>
+        
+        {% if profile.wedding_date %}
+        <div class="countdown-box" id="weddingCountdown">
+            <input type="hidden" id="targetDate" value="{{ profile.wedding_date|date:'Y-m-d' }}">
+            <div class="countdown-item">
+                <h3 id="cd-days">00</h3>
+                <span>Days</span>
+            </div>
+            <div class="countdown-item">
+                <h3 id="cd-hours">00</h3>
+                <span>Hours</span>
+            </div>
+            <div class="countdown-item">
+                <h3 id="cd-mins">00</h3>
+                <span>Mins</span>
             </div>
         </div>
+        {% else %}
+        <div class="countdown-box" style="padding: 15px 30px;">
+            <p class="mb-0 text-white"><i class="fa fa-calendar-plus-o mr-2"></i> Update your profile with your wedding date to see the countdown!</p>
+        </div>
+        {% endif %}
     </div>
 </div>
 
-<section class="spad" style="background: var(--color-bg);">
+<section class="spad">
     <div class="container">
         <div class="row">
-            <div class="col-lg-3 mb-4">
+            <!-- Sidebar -->
+            <div class="col-lg-3 mb-4 z-index-1" style="position: relative; z-index: 10;">
                 <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
-                  <a class="nav-link active" style="margin-bottom:10px; border-radius:8px; font-weight:600;" id="v-pills-profile-tab" data-toggle="pill" href="#v-pills-profile" role="tab" aria-controls="v-pills-profile" aria-selected="true"><i class="fa fa-user mr-2"></i> Profile Details</a>
-                  <a class="nav-link" style="margin-bottom:10px; border-radius:8px; font-weight:600;" id="v-pills-checklist-tab" data-toggle="pill" href="#v-pills-checklist" role="tab" aria-controls="v-pills-checklist" aria-selected="false"><i class="fa fa-list mr-2"></i> Wedding Checklist</a>
-                  <a class="nav-link" style="margin-bottom:10px; border-radius:8px; font-weight:600;" id="v-pills-wishlist-tab" data-toggle="pill" href="#v-pills-wishlist" role="tab" aria-controls="v-pills-wishlist" aria-selected="false"><i class="fa fa-heart mr-2"></i> My Shortlist</a>
-                  <a class="nav-link" style="margin-bottom:10px; border-radius:8px; font-weight:600;" id="v-pills-inquiries-tab" data-toggle="pill" href="#v-pills-inquiries" role="tab" aria-controls="v-pills-inquiries" aria-selected="false"><i class="fa fa-envelope mr-2"></i> My Inquiries</a>
+                  <a class="nav-link active" id="v-pills-profile-tab" data-toggle="pill" href="#v-pills-profile" role="tab">
+                      <i class="fa fa-user"></i> Profile Details
+                  </a>
+                  <a class="nav-link" id="v-pills-checklist-tab" data-toggle="pill" href="#v-pills-checklist" role="tab">
+                      <i class="fa fa-list-check"></i> Wedding Checklist
+                  </a>
+                  <a class="nav-link" id="v-pills-wishlist-tab" data-toggle="pill" href="#v-pills-wishlist" role="tab">
+                      <i class="fa fa-heart"></i> My Shortlist
+                  </a>
+                  <a class="nav-link" id="v-pills-inquiries-tab" data-toggle="pill" href="#v-pills-inquiries" role="tab">
+                      <i class="fa fa-envelope"></i> My Inquiries
+                  </a>
                 </div>
             </div>
-            <div class="col-lg-9">
+            
+            <!-- Content -->
+            <div class="col-lg-9 z-index-1" style="position: relative; z-index: 10;">
                 <div class="tab-content" id="v-pills-tabContent">
+                  
                   <!-- Profile Tab -->
-                  <div class="tab-pane fade show active" id="v-pills-profile" role="tabpanel" aria-labelledby="v-pills-profile-tab">
-                      <div class="portal-card" style="border-radius:12px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); padding: 30px;">
-                          <h4 style="font-weight:700; margin-bottom:20px; color:var(--color-dark);">Couple Profile</h4>
+                  <div class="tab-pane fade show active" id="v-pills-profile" role="tabpanel">
+                      <div class="portal-card">
+                          <h4>Couple Profile</h4>
                           <form method="POST">
                               {% csrf_token %}
                               <input type="hidden" name="action" value="update_profile">
                               <div class="row">
                                   <div class="col-md-6">
-                                      <div class="form-group mb-3">
-                                          <label style="font-weight:600;">Your Partner's Name</label>
-                                          <input type="text" class="form-control" name="partner_name" value="{{ profile.partner_name }}" style="border-radius:8px;">
+                                      <div class="form-group mb-4">
+                                          <label class="text-muted font-weight-bold">Your Partner's Name</label>
+                                          <input type="text" class="form-control" name="partner_name" value="{{ profile.partner_name }}">
                                       </div>
                                   </div>
                                   <div class="col-md-6">
-                                      <div class="form-group mb-3">
-                                          <label style="font-weight:600;">Wedding Date</label>
-                                          <input type="date" class="form-control" name="wedding_date" value="{{ profile.wedding_date|date:'Y-m-d' }}" style="border-radius:8px;">
+                                      <div class="form-group mb-4">
+                                          <label class="text-muted font-weight-bold">Wedding Date</label>
+                                          <input type="date" class="form-control" name="wedding_date" value="{{ profile.wedding_date|date:'Y-m-d' }}">
                                       </div>
                                   </div>
                                   <div class="col-md-6">
-                                      <div class="form-group mb-3">
-                                          <label style="font-weight:600;">Phone Number</label>
-                                          <input type="text" class="form-control" name="phone" value="{{ profile.phone }}" style="border-radius:8px;">
+                                      <div class="form-group mb-4">
+                                          <label class="text-muted font-weight-bold">Phone Number</label>
+                                          <input type="text" class="form-control" name="phone" value="{{ profile.phone }}">
                                       </div>
                                   </div>
                                   <div class="col-md-6">
-                                      <div class="form-group mb-3">
-                                          <label style="font-weight:600;">Estimated Budget (₹)</label>
-                                          <input type="number" class="form-control" name="budget" value="{{ profile.budget }}" style="border-radius:8px;">
+                                      <div class="form-group mb-4">
+                                          <label class="text-muted font-weight-bold">Estimated Budget (₹)</label>
+                                          <input type="number" class="form-control" name="budget" value="{{ profile.budget }}">
                                       </div>
                                   </div>
                               </div>
-                              <button type="submit" class="btn-theme mt-3" style="border-radius:8px;"><i class="fa fa-save"></i> Save Profile</button>
+                              <hr class="my-4">
+                              <button type="submit" class="btn-theme" style="border-radius:10px; padding: 12px 30px; font-weight:600;"><i class="fa fa-save mr-2"></i> Save Changes</button>
                           </form>
                       </div>
                   </div>
                   
                   <!-- Checklist Tab -->
-                  <div class="tab-pane fade" id="v-pills-checklist" role="tabpanel" aria-labelledby="v-pills-checklist-tab">
-                      <div class="portal-card" style="border-radius:12px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); padding: 30px;">
-                          <h4 style="font-weight:700; margin-bottom:20px; color:var(--color-dark);">Wedding Checklist</h4>
+                  <div class="tab-pane fade" id="v-pills-checklist" role="tabpanel">
+                      <div class="portal-card">
+                          <h4>Wedding Checklist</h4>
                           <form method="POST" class="mb-4 d-flex align-items-center">
                               {% csrf_token %}
                               <input type="hidden" name="action" value="add_task">
-                              <input type="text" class="form-control mr-2" name="task_name" placeholder="New Task (e.g. Book Caterer)" required style="border-radius:8px;">
-                              <input type="date" class="form-control mr-2" name="due_date" style="border-radius:8px; width: 180px;">
-                              <button type="submit" class="btn-theme" style="border-radius:8px; padding: 10px 20px;">Add</button>
+                              <input type="text" class="form-control mr-3" name="task_name" placeholder="E.g. Finalize wedding venue..." required>
+                              <input type="date" class="form-control mr-3" name="due_date" style="width: 200px;">
+                              <button type="submit" class="btn-theme" style="border-radius:10px; padding: 12px 25px;"><i class="fa fa-plus"></i></button>
                           </form>
-                          <ul class="list-group">
+                          
+                          <div class="list-group checklist-group">
                               {% for item in checklist_items %}
-                              <li class="list-group-item d-flex justify-content-between align-items-center" style="border-radius:8px; margin-bottom:10px; border:1px solid #eee;">
-                                  <div>
-                                      <input type="checkbox" {% if item.is_completed %}checked{% endif %} onclick="toggleTask({{ item.id }})" style="cursor:pointer; transform:scale(1.2);">
-                                      <span style="{% if item.is_completed %}text-decoration: line-through; color: #888;{% endif %} margin-left: 10px; font-weight:500;">{{ item.task_name }}</span>
+                              <div class="list-group-item d-flex justify-content-between align-items-center">
+                                  <div class="custom-checkbox">
+                                      <input type="checkbox" id="task{{ item.id }}" {% if item.is_completed %}checked{% endif %} onclick="toggleTask({{ item.id }})">
+                                      <label for="task{{ item.id }}">{{ item.task_name }}</label>
                                   </div>
                                   {% if item.due_date %}
-                                  <span class="badge badge-light badge-pill p-2" style="font-size:12px; background:#f4f4f4;"><i class="fa fa-calendar"></i> {{ item.due_date|date:"d M Y" }}</span>
+                                  <span class="badge badge-light p-2" style="font-size:12px; color: var(--text-muted);"><i class="fa fa-calendar-alt mr-1"></i> {{ item.due_date|date:"d M Y" }}</span>
                                   {% endif %}
-                              </li>
+                              </div>
                               {% empty %}
-                              <li class="list-group-item text-center text-muted" style="border-radius:8px;">No tasks added yet. Start planning!</li>
+                              <div class="text-center py-5">
+                                  <img src="https://cdn-icons-png.flaticon.com/512/3208/3208726.png" style="width: 80px; opacity: 0.3; margin-bottom: 15px;">
+                                  <h5 class="text-muted">No tasks added yet.</h5>
+                                  <p class="text-muted small">Stay organized by adding your wedding tasks here.</p>
+                              </div>
                               {% endfor %}
-                          </ul>
+                          </div>
                       </div>
                   </div>
                   
                   <!-- Wishlist Tab -->
-                  <div class="tab-pane fade" id="v-pills-wishlist" role="tabpanel" aria-labelledby="v-pills-wishlist-tab">
-                      <div class="portal-card" style="border-radius:12px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); padding: 30px;">
-                          <h4 style="font-weight:700; margin-bottom:20px; color:var(--color-dark);">My Shortlisted Vendors</h4>
+                  <div class="tab-pane fade" id="v-pills-wishlist" role="tabpanel">
+                      <div class="portal-card">
+                          <h4>My Shortlisted Vendors</h4>
                           <div class="row">
                               {% for item in wishlist_items %}
-                              <div class="col-md-6 mb-3">
-                                  <div class="card" style="border-radius:12px; border:none; box-shadow: 0 2px 10px rgba(0,0,0,0.05);">
-                                      <div class="card-body">
-                                          <h5 class="card-title" style="font-weight:700;">{{ item.vendor.name }}</h5>
-                                          <p class="card-text text-muted mb-3"><i class="fa fa-tag"></i> {{ item.vendor.category.name }} &nbsp; <i class="fa fa-map-marker"></i> {{ item.vendor.location }}</p>
-                                          <a href="{% url 'vendor_details' item.vendor.id %}" class="btn-outline-theme btn-sm" style="border-radius:6px;">View Profile</a>
-                                      </div>
+                              <div class="col-md-6 mb-4">
+                                  <div class="vendor-card bg-white p-4 text-center">
+                                      <h5 style="font-weight:700; color:var(--text-dark); margin-bottom: 5px;">{{ item.vendor.name }}</h5>
+                                      <p style="font-size: 13px; color: var(--primary); font-weight: 600; margin-bottom: 15px;">{{ item.vendor.category.name }}</p>
+                                      <p class="text-muted small mb-3"><i class="fa fa-map-marker text-danger"></i> {{ item.vendor.location }}</p>
+                                      <a href="{% url 'vendor_details' item.vendor.id %}" class="btn-outline-theme btn-sm" style="border-radius:8px; display:inline-block; padding: 8px 20px;">View Profile</a>
                                   </div>
                               </div>
                               {% empty %}
-                              <div class="col-12 text-center text-muted py-4">
-                                  <i class="fa fa-heart-o" style="font-size:40px; margin-bottom:10px;"></i>
-                                  <p>No vendors shortlisted yet. Browse vendors and click the heart icon to add them here.</p>
-                                  <a href="{% url 'vendors' %}" class="btn-theme mt-2" style="border-radius:8px;">Browse Vendors</a>
+                              <div class="col-12 text-center py-5">
+                                  <i class="fa fa-heart" style="font-size:60px; color: var(--primary-light); margin-bottom:15px;"></i>
+                                  <h5 class="text-muted">Your shortlist is empty</h5>
+                                  <p class="text-muted small">Browse vendors and click the heart icon to add them here.</p>
+                                  <a href="{% url 'vendors' %}" class="btn-theme mt-3" style="border-radius:10px; padding: 10px 25px;">Explore Vendors</a>
                               </div>
                               {% endfor %}
                           </div>
@@ -124,35 +342,35 @@
                   </div>
 
                   <!-- Inquiries Tab -->
-                  <div class="tab-pane fade" id="v-pills-inquiries" role="tabpanel" aria-labelledby="v-pills-inquiries-tab">
-                      <div class="portal-card" style="border-radius:12px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); padding: 30px;">
-                          <h4 style="font-weight:700; margin-bottom:20px; color:var(--color-dark);">My Sent Inquiries</h4>
+                  <div class="tab-pane fade" id="v-pills-inquiries" role="tabpanel">
+                      <div class="portal-card">
+                          <h4>My Sent Inquiries</h4>
                           <div class="table-responsive">
-                              <table class="table table-hover">
-                                  <thead style="background:#f8f9fa;">
+                              <table class="table table-borderless">
+                                  <thead style="background:var(--dash-bg); border-radius:10px;">
                                       <tr>
-                                          <th style="border-top:none; border-bottom:none; border-radius:8px 0 0 8px;">Vendor</th>
-                                          <th style="border-top:none; border-bottom:none;">Date Sent</th>
-                                          <th style="border-top:none; border-bottom:none; border-radius:0 8px 8px 0;">Status</th>
+                                          <th style="border-radius:10px 0 0 10px; padding: 15px;">Vendor</th>
+                                          <th style="padding: 15px;">Date Sent</th>
+                                          <th style="border-radius:0 10px 10px 0; padding: 15px;">Status</th>
                                       </tr>
                                   </thead>
                                   <tbody>
                                       {% for inq in inquiries %}
-                                      <tr>
-                                          <td style="font-weight:600;"><a href="{% url 'vendor_details' inq.vendor.id %}" style="color:inherit;">{{ inq.vendor.name }}</a></td>
-                                          <td>{{ inq.created_at|date:"d M Y" }}</td>
-                                          <td>
+                                      <tr style="border-bottom: 1px solid #f1f5f9;">
+                                          <td style="padding: 20px 15px; font-weight:600;"><a href="{% url 'vendor_details' inq.vendor.id %}" style="color:var(--text-dark);">{{ inq.vendor.name }}</a></td>
+                                          <td style="padding: 20px 15px; color: var(--text-muted);">{{ inq.created_at|date:"d M Y" }}</td>
+                                          <td style="padding: 20px 15px;">
                                               {% if inq.status == 'new' %}
-                                              <span class="badge badge-warning p-2" style="color:#fff;">Pending</span>
+                                              <span class="badge" style="background:#fff3cd; color:#856404; padding:8px 12px; border-radius:6px;">Pending</span>
                                               {% elif inq.status == 'contacted' %}
-                                              <span class="badge badge-success p-2">Contacted</span>
+                                              <span class="badge" style="background:#d4edda; color:#155724; padding:8px 12px; border-radius:6px;">Contacted</span>
                                               {% else %}
-                                              <span class="badge badge-secondary p-2">Closed</span>
+                                              <span class="badge" style="background:#e2e3e5; color:#383d41; padding:8px 12px; border-radius:6px;">Closed</span>
                                               {% endif %}
                                           </td>
                                       </tr>
                                       {% empty %}
-                                      <tr><td colspan="3" class="text-center text-muted py-4">No inquiries sent yet.</td></tr>
+                                      <tr><td colspan="3" class="text-center text-muted py-5">You haven't sent any inquiries yet.</td></tr>
                                       {% endfor %}
                                   </tbody>
                               </table>
@@ -166,19 +384,8 @@
     </div>
 </section>
 
-<style>
-    .nav-pills .nav-link.active, .nav-pills .show > .nav-link {
-        color: #fff;
-        background-color: var(--theme-color);
-    }
-    .nav-pills .nav-link {
-        color: var(--color-dark);
-        background: #fff;
-        box-shadow: 0 2px 5px rgba(0,0,0,0.03);
-    }
-</style>
-
 <script>
+// Toggle Checklist Task
 function toggleTask(taskId) {
     fetch('{% url "user_dashboard" %}', {
         method: 'POST',
@@ -187,7 +394,34 @@ function toggleTask(taskId) {
             'X-CSRFToken': '{{ csrf_token }}'
         },
         body: 'action=toggle_task&task_id=' + taskId
-    }).then(() => window.location.reload());
+    });
 }
+
+// Wedding Countdown Logic
+document.addEventListener('DOMContentLoaded', function() {
+    const targetInput = document.getElementById('targetDate');
+    if(targetInput) {
+        const targetDate = new Date(targetInput.value).getTime();
+        
+        const timer = setInterval(function() {
+            const now = new Date().getTime();
+            const distance = targetDate - now;
+            
+            if (distance < 0) {
+                clearInterval(timer);
+                document.getElementById("weddingCountdown").innerHTML = "<h4 class='text-white mb-0'>Happy Married Life!</h4>";
+                return;
+            }
+            
+            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            
+            document.getElementById("cd-days").innerText = days.toString().padStart(2, '0');
+            document.getElementById("cd-hours").innerText = hours.toString().padStart(2, '0');
+            document.getElementById("cd-mins").innerText = minutes.toString().padStart(2, '0');
+        }, 1000);
+    }
+});
 </script>
 {% endblock %}
