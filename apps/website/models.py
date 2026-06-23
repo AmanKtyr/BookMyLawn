@@ -69,6 +69,7 @@ class VendorRequest(models.Model):
     email = models.EmailField()
     phone = models.CharField(max_length=20)
     city = models.CharField(max_length=100)
+    address = models.TextField(blank=True)
     price_starting = models.DecimalField(max_digits=10, decimal_places=2, default=0.0)
     website_link = models.URLField(blank=True, null=True)
     experience_years = models.IntegerField(default=0)

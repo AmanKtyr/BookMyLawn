@@ -94,42 +94,93 @@
 
 <div class="login-section">
     <div class="login-container">
-        <div class="login-image" style="background-image: url('{% static 'website/img/banner/banner-2.jpg' %}?v=2');">
-            <div style="position: absolute; bottom: 40px; left: 40px; color: white;">
+        <div class="login-image" style="background-image: url('https://images.unsplash.com/photo-1519225421980-715cb0215aed?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80');">
+            <div style="position: absolute; bottom: 40px; left: 40px; color: white; z-index: 2;">
                 <h2 style="font-family: 'Playfair Display', serif; font-weight: 700; color: white;">Join BookMyLawn</h2>
                 <p style="color: white; opacity: 0.9;">Start planning your magical celebration today.</p>
             </div>
         </div>
         <div class="login-form-side">
             <h3>Create Account</h3>
-            <p>Sign up to start booking the best wedding venues and vendors.</p>
+            <p>Sign up to start saving the best wedding venues and vendors.</p>
             
-            <form action="#">
+            {% if messages %}
+            <div class="messages mb-3">
+                {% for message in messages %}
+                <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert" style="font-size: 14px; border-radius: 8px;">
+                    {{ message }}
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                {% endfor %}
+            </div>
+            {% endif %}
+
+            <form action="{% url 'register' %}" method="POST" id="userRegForm">
+                {% csrf_token %}
                 <div class="form-group">
-                    <label>Full Name</label>
-                    <input type="text" placeholder="John Doe" required>
+                    <label>Full Name <span style="color:red;">*</span></label>
+                    <input type="text" name="name" placeholder="E.g. Priya Sharma" required>
                 </div>
                 <div class="form-group">
-                    <label>Email Address</label>
-                    <input type="email" placeholder="name@example.com" required>
+                    <label>Email Address <span style="color:red;">*</span></label>
+                    <input type="email" name="email" placeholder="priya@example.com" required>
                 </div>
                 <div class="form-group">
-                    <label>Password</label>
-                    <input type="password" placeholder="••••••••" required>
+                    <label>Phone Number</label>
+                    <input type="tel" name="phone" placeholder="+91 00000 00000">
                 </div>
-                <div class="form-group">
-                    <label>I am a:</label>
-                    <select class="form-control" style="width: 100%; border-radius: 8px; height: 45px; border: 1px solid #ddd; padding-left: 10px;">
-                        <option value="user">Couple / Individual</option>
-                        <option value="vendor">Wedding Vendor / Venue Owner</option>
-                    </select>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>Password <span style="color:red;">*</span></label>
+                            <input type="password" name="password" id="user_password" placeholder="••••••••" required>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>Confirm Password <span style="color:red;">*</span></label>
+                            <input type="password" name="confirm_password" id="user_confirm_password" placeholder="••••••••" required>
+                        </div>
+                    </div>
                 </div>
-                <button type="submit" class="btn-login">Create Account</button>
+                <div id="userPasswordError" style="color: #e72e77; font-size: 13px; margin-top: -10px; margin-bottom: 15px; display: none;">
+                    <i class="fa fa-exclamation-circle"></i> Passwords do not match!
+                </div>
+                
+                <button type="submit" class="btn-login" id="userSubmitBtn">Create Free Account</button>
             </form>
 
-            <p style="margin-top: 30px; text-align: center; font-size: 14px;">
-                Already have an account? <a href="{% url 'login' %}" style="color: #e72e77; font-weight: 600; text-decoration: none;">Sign In</a>
-            </p>
+            <script>
+                const uPassword = document.getElementById('user_password');
+                const uConfirm = document.getElementById('user_confirm_password');
+                const uError = document.getElementById('userPasswordError');
+                const uSubmit = document.getElementById('userSubmitBtn');
+
+                function validateUserPasswords() {
+                    if (uConfirm.value && uPassword.value !== uConfirm.value) {
+                        uError.style.display = 'block';
+                        uSubmit.disabled = true;
+                        uSubmit.style.opacity = '0.5';
+                    } else {
+                        uError.style.display = 'none';
+                        uSubmit.disabled = false;
+                        uSubmit.style.opacity = '1';
+                    }
+                }
+                uPassword.addEventListener('keyup', validateUserPasswords);
+                uConfirm.addEventListener('keyup', validateUserPasswords);
+            </script>
+
+            <div style="margin-top: 25px; text-align: center; border-top: 1px solid #eee; padding-top: 20px;">
+                <p style="font-size: 14px; margin-bottom: 5px;">
+                    Already have an account? <a href="{% url 'login' %}?type=user" style="color: #e72e77; font-weight: 600; text-decoration: none;">Sign In</a>
+                </p>
+                <p style="font-size: 13px; color: #777;">
+                    Are you a Wedding Vendor? <a href="{% url 'vendor_register' %}" style="color: #333; font-weight: 600; text-decoration: underline;">Register Business</a>
+                </p>
+            </div>
         </div>
     </div>
 </div>

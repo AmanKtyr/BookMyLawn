@@ -109,6 +109,42 @@ def logout_view(request):
 
 
 def register_view(request):
+    if request.method == 'POST':
+        from django.contrib.auth.models import User
+        from django.contrib import messages
+        from django.contrib.auth import login
+        from .models import UserProfile
+        
+        name = request.POST.get('name')
+        email = request.POST.get('email')
+        phone = request.POST.get('phone', '')
+        password = request.POST.get('password')
+        confirm_password = request.POST.get('confirm_password')
+
+        if password != confirm_password:
+            messages.error(request, "Passwords do not match.")
+            return render(request, 'website/register.html')
+            
+        if User.objects.filter(username=email).exists() or User.objects.filter(email=email).exists():
+            messages.error(request, "Account with this email already exists.")
+            return render(request, 'website/register.html')
+            
+        try:
+            # Create user
+            user = User.objects.create_user(username=email, email=email, password=password)
+            user.first_name = name
+            user.save()
+            
+            # Create user profile
+            UserProfile.objects.create(user=user, phone=phone)
+            
+            # Auto login
+            login(request, user)
+            messages.success(request, "Account created successfully! Welcome to BookMyLawn.")
+            return redirect('user_dashboard')
+        except Exception as e:
+            messages.error(request, f"An error occurred: {str(e)}")
+            
     return render(request, 'website/register.html')
 
 def vendor_register_view(request):
@@ -120,6 +156,7 @@ def vendor_register_view(request):
         email = request.POST.get('email')
         phone = request.POST.get('phone')
         city = request.POST.get('city')
+        address = request.POST.get('address', '')
         price_starting = request.POST.get('price_starting', 0)
         website_link = request.POST.get('website_link', '')
         experience_years = request.POST.get('experience_years', 0)
@@ -141,6 +178,7 @@ def vendor_register_view(request):
             email=email,
             phone=phone,
             city=city,
+            address=address,
             price_starting=price_starting,
             website_link=website_link,
             experience_years=experience_years,
