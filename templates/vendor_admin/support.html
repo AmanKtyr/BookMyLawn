@@ -3,22 +3,24 @@
 {% block content %}
 <div class="row justify-content-center">
   <div class="col-12 col-xl-10">
-    <div class="text-center mb-5 mt-3">
-        <h2 class="h3 page-title font-weight-bold">Help & Support</h2>
-        <p class="text-muted">Need assistance? Our support team is here to help you grow your business.</p>
+    <div class="d-flex justify-content-between align-items-center mb-4 mt-3">
+        <div>
+            <h2 class="h3 page-title font-weight-bold mb-1">Help & Support</h2>
+            <p class="text-muted mb-0">Need assistance? Our support team is here to help you grow your business.</p>
+        </div>
     </div>
 
     <div class="row">
         <!-- Contact Form -->
         <div class="col-md-7 mb-4">
-            <div class="card shadow-sm border-0" style="border-radius: 15px;">
-                <div class="card-body p-4 p-md-5">
+            <div class="card shadow-sm border-0 h-100">
+                <div class="card-body p-5">
                     <h5 class="mb-4 font-weight-bold text-dark"><i class="fe fe-headphones mr-2 text-primary"></i> Raise a Ticket</h5>
                     <form method="POST">
                         {% csrf_token %}
                         <div class="form-group mb-4">
-                            <label class="font-weight-bold small text-muted text-uppercase">Subject</label>
-                            <select name="subject" class="form-control form-control-lg bg-light" style="border-radius: 10px; border: 1px solid #eee;" required>
+                            <label class="font-weight-bold small text-muted text-uppercase" style="letter-spacing: 0.5px;">Subject</label>
+                            <select name="subject" class="form-control form-control-lg bg-light border-0 shadow-none rounded" required>
                                 <option value="">Select an issue...</option>
                                 <option value="profile">Profile Update Issue</option>
                                 <option value="billing">Billing / Premium Subscription</option>
@@ -28,10 +30,10 @@
                             </select>
                         </div>
                         <div class="form-group mb-4">
-                            <label class="font-weight-bold small text-muted text-uppercase">Description</label>
-                            <textarea name="message" class="form-control form-control-lg bg-light" rows="5" placeholder="Please describe your issue in detail..." style="border-radius: 10px; border: 1px solid #eee;" required></textarea>
+                            <label class="font-weight-bold small text-muted text-uppercase" style="letter-spacing: 0.5px;">Description</label>
+                            <textarea name="message" class="form-control form-control-lg bg-light border-0 shadow-none rounded" rows="6" placeholder="Please describe your issue in detail..." required></textarea>
                         </div>
-                        <button type="submit" class="btn btn-primary btn-lg px-5 font-weight-bold" style="border-radius: 10px;">Submit Ticket</button>
+                        <button type="submit" class="btn btn-primary btn-lg px-5 font-weight-bold shadow-sm rounded">Submit Ticket</button>
                     </form>
                 </div>
             </div>
@@ -39,29 +41,39 @@
 
         <!-- FAQs & Direct Contact -->
         <div class="col-md-5 mb-4">
-            <div class="card shadow-sm border-0 mb-4 bg-primary text-white" style="border-radius: 15px; background: linear-gradient(135deg, #e72e77, #ff6b6b) !important;">
-                <div class="card-body p-4">
-                    <h5 class="font-weight-bold mb-3"><i class="fe fe-phone-call mr-2"></i> Direct Contact</h5>
-                    <p class="mb-2"><i class="fe fe-mail mr-2"></i> support@bookmylawn.com</p>
-                    <p class="mb-2"><i class="fe fe-phone mr-2"></i> +91 98765 43210</p>
-                    <p class="mb-0 small opacity-75">Monday to Saturday, 10:00 AM - 7:00 PM</p>
+            <div class="card shadow-sm border-0 mb-4 bg-primary text-white">
+                <div class="card-body p-5">
+                    <h5 class="font-weight-bold mb-4 text-white"><i class="fe fe-phone-call mr-2"></i> Direct Contact</h5>
+                    <div class="d-flex align-items-center mb-3">
+                        <div class="bg-white text-primary rounded-circle d-flex align-items-center justify-content-center mr-3" style="width: 40px; height: 40px;">
+                            <i class="fe fe-mail"></i>
+                        </div>
+                        <span class="font-weight-bold">support@bookmylawn.com</span>
+                    </div>
+                    <div class="d-flex align-items-center mb-4">
+                        <div class="bg-white text-primary rounded-circle d-flex align-items-center justify-content-center mr-3" style="width: 40px; height: 40px;">
+                            <i class="fe fe-phone"></i>
+                        </div>
+                        <span class="font-weight-bold">+91 98765 43210</span>
+                    </div>
+                    <p class="mb-0 small opacity-75 border-top border-light pt-3">Support Hours: Monday to Saturday, 10:00 AM - 7:00 PM</p>
                 </div>
             </div>
 
-            <div class="card shadow-sm border-0" style="border-radius: 15px;">
+            <div class="card shadow-sm border-0">
                 <div class="card-body p-4">
-                    <h5 class="font-weight-bold text-dark mb-4"><i class="fe fe-help-circle mr-2 text-primary"></i> Frequently Asked Questions</h5>
+                    <h5 class="font-weight-bold text-dark mb-4"><i class="fe fe-help-circle mr-2 text-primary"></i> Quick FAQs</h5>
                     
                     <div class="mb-3">
-                        <h6 class="font-weight-bold text-dark mb-1" style="font-size: 15px;">How do I get a Verified Badge?</h6>
+                        <h6 class="font-weight-bold text-dark mb-1">How do I get a Verified Badge?</h6>
                         <p class="text-muted small mb-0">Verified badges are given to vendors who submit their business registration proofs and upgrade to a Premium plan.</p>
                     </div>
                     <div class="mb-3 border-top pt-3">
-                        <h6 class="font-weight-bold text-dark mb-1" style="font-size: 15px;">Why am I not getting leads?</h6>
+                        <h6 class="font-weight-bold text-dark mb-1">Why am I not getting leads?</h6>
                         <p class="text-muted small mb-0">Ensure your profile is 100% complete with a high-quality portfolio. Premium vendors get 10x more visibility.</p>
                     </div>
                     <div class="mb-0 border-top pt-3">
-                        <h6 class="font-weight-bold text-dark mb-1" style="font-size: 15px;">Can I delete a bad review?</h6>
+                        <h6 class="font-weight-bold text-dark mb-1">Can I delete a bad review?</h6>
                         <p class="text-muted small mb-0">We do not delete reviews to maintain transparency. However, you can raise a dispute if the review is fake/abusive.</p>
                     </div>
                 </div>

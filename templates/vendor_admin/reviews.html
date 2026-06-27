@@ -1,49 +1,60 @@
 {% extends 'vendor_admin/base.html' %}
 
 {% block content %}
+<style>
+    .review-card {
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    .review-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 15px 35px rgba(0,0,0,0.1) !important;
+    }
+</style>
 <div class="row justify-content-center">
-  <div class="col-12">
-    <h2 class="h3 mb-4 page-title">Customer Reviews</h2>
-    <div class="card shadow">
-      <div class="card-body">
-        <div class="row">
-            {% for review in reviews %}
-            <div class="col-md-6 mb-4">
-                <div class="card shadow-sm border-0 h-100" style="border-radius: 15px; transition: 0.3s;" onmouseover="this.style.transform='translateY(-5px)'; this.style.boxShadow='0 10px 20px rgba(0,0,0,0.05)';" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 .125rem .25rem rgba(0,0,0,.075)';">
-                    <div class="card-body p-4">
-                        <div class="d-flex align-items-start mb-3">
-                            <div class="avatar avatar-md bg-light text-primary font-weight-bold rounded-circle d-flex align-items-center justify-content-center mr-3" style="width: 50px; height: 50px; font-size: 20px;">
-                                {{ review.reviewer_name|first|upper }}
-                            </div>
-                            <div class="flex-grow-1">
-                                <h6 class="mb-0 font-weight-bold">{{ review.reviewer_name }}</h6>
-                                <p class="text-muted small mb-0">{{ review.created_at|date:"F d, Y" }}</p>
-                            </div>
-                            <div class="text-warning">
-                                {% for i in "12345" %}
-                                    {% if forloop.counter <= review.rating %}
-                                        <i class="fa fa-star"></i>
-                                    {% else %}
-                                        <i class="fa fa-star-o"></i>
-                                    {% endif %}
-                                {% endfor %}
-                            </div>
+  <div class="col-12 col-xl-11">
+    <div class="d-flex justify-content-between align-items-center mb-4 mt-3">
+        <h2 class="h3 page-title font-weight-bold mb-0">Customer Reviews</h2>
+        <span class="badge badge-primary px-3 py-2 rounded-pill shadow-sm">Total Reviews: {{ reviews|length }}</span>
+    </div>
+    
+    <div class="row">
+        {% for review in reviews %}
+        <div class="col-md-6 mb-4">
+            <div class="card shadow-sm border-0 h-100 review-card">
+                <div class="card-body p-4">
+                    <div class="d-flex align-items-start mb-4">
+                        <div class="avatar avatar-md bg-primary text-white font-weight-bold rounded-circle d-flex align-items-center justify-content-center mr-3 shadow-sm" style="width: 50px; height: 50px; font-size: 20px;">
+                            {{ review.reviewer_name|first|upper }}
                         </div>
-                        <div class="p-3 bg-light rounded" style="border-left: 4px solid #f6c23e;">
-                            <p class="mb-0 font-italic text-dark" style="font-size: 14px;">"{{ review.comment }}"</p>
+                        <div class="flex-grow-1">
+                            <h6 class="mb-0 font-weight-bold text-dark">{{ review.reviewer_name }}</h6>
+                            <p class="text-muted small mb-0">{{ review.created_at|date:"F d, Y" }}</p>
                         </div>
+                        <div class="text-warning bg-light px-2 py-1 rounded shadow-sm">
+                            <span class="font-weight-bold text-dark mr-1">{{ review.rating }}.0</span>
+                            <i class="fe fe-star fill"></i>
+                        </div>
+                    </div>
+                    <div class="p-4 bg-light rounded shadow-sm border-0 position-relative">
+                        <i class="fe fe-message-square text-muted opacity-25 position-absolute" style="top: 15px; right: 15px; font-size: 24px;"></i>
+                        <p class="mb-0 font-italic text-dark font-weight-500" style="font-size: 15px; line-height: 1.6;">"{{ review.comment }}"</p>
                     </div>
                 </div>
             </div>
-            {% empty %}
-            <div class="col-12 text-center py-5">
-                <i class="fa fa-star-o fa-3x text-muted mb-3 d-block" style="opacity: 0.5;"></i>
-                <h5 class="text-muted">No reviews yet</h5>
-                <p class="text-muted small">When customers leave a review for your business, it will appear here.</p>
-            </div>
-            {% endfor %}
         </div>
-      </div>
+        {% empty %}
+        <div class="col-12">
+            <div class="card shadow-sm border-0">
+                <div class="card-body text-center py-5">
+                    <div class="circle circle-lg bg-light text-muted mx-auto mb-4" style="width: 80px; height: 80px; font-size: 30px;">
+                        <i class="fe fe-star"></i>
+                    </div>
+                    <h5 class="text-dark font-weight-bold">No reviews yet</h5>
+                    <p class="text-muted mb-0">When customers leave a review for your business, it will appear here.</p>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
     </div>
   </div>
 </div>

@@ -56,34 +56,36 @@
 
 <div class="row justify-content-center">
   <div class="col-12 col-xl-10">
-    <div class="text-center mb-5 mt-3">
-        <h2 class="h3 page-title font-weight-bold">Membership & Billing</h2>
+    <div class="text-center mb-5 mt-4">
+        <h2 class="h3 page-title font-weight-bold mb-2">Membership & Billing</h2>
         <p class="text-muted">Upgrade your plan to get more leads and stand out to couples.</p>
     </div>
 
     <div class="row align-items-center">
         <!-- Basic Plan -->
         <div class="col-md-6 col-lg-5 mb-4 mx-auto">
-            <div class="card pricing-card shadow-sm {% if not vendor.is_premium %}border-primary{% endif %}">
-                <div class="card-body p-5">
-                    <h4 class="font-weight-bold text-center mb-1">Basic Plan</h4>
-                    <p class="text-center text-muted small">For new businesses</p>
-                    <div class="text-center my-4">
-                        <span class="h1 font-weight-bold">Free</span>
+            <div class="card pricing-card shadow-sm border-0 {% if not vendor.is_premium %}border-top border-primary{% endif %} h-100">
+                <div class="card-body p-5 d-flex flex-column">
+                    <div class="text-center mb-4">
+                        <h4 class="font-weight-bold mb-1">Basic Plan</h4>
+                        <p class="text-muted small mb-0">For new businesses</p>
                     </div>
-                    <ul class="feature-list">
+                    <div class="text-center my-4">
+                        <span class="display-4 font-weight-bold text-dark">Free</span>
+                    </div>
+                    <ul class="feature-list flex-grow-1">
                         <li><i class="fe fe-check-circle"></i> Standard Directory Listing</li>
                         <li><i class="fe fe-check-circle"></i> Basic Profile & Gallery</li>
                         <li><i class="fe fe-check-circle"></i> Receive Customer Leads</li>
-                        <li class="disabled"><i class="fe fe-x-circle"></i> Top Search Placement</li>
-                        <li class="disabled"><i class="fe fe-x-circle"></i> Verification Badge</li>
-                        <li class="disabled"><i class="fe fe-x-circle"></i> Direct WhatsApp Lead Access</li>
+                        <li class="text-muted opacity-50"><i class="fe fe-x text-danger"></i> Top Search Placement</li>
+                        <li class="text-muted opacity-50"><i class="fe fe-x text-danger"></i> Verification Badge</li>
+                        <li class="text-muted opacity-50"><i class="fe fe-x text-danger"></i> Direct WhatsApp Access</li>
                     </ul>
                     <div class="text-center mt-4">
                         {% if not vendor.is_premium %}
-                        <button class="btn btn-light btn-block btn-lg disabled" style="border-radius: 10px;">Current Plan</button>
+                        <button class="btn btn-light btn-block btn-lg disabled font-weight-bold shadow-sm rounded text-muted">Current Plan</button>
                         {% else %}
-                        <button class="btn btn-outline-primary btn-block btn-lg" style="border-radius: 10px;">Downgrade</button>
+                        <button class="btn btn-outline-primary btn-block btn-lg font-weight-bold shadow-sm rounded">Downgrade</button>
                         {% endif %}
                     </div>
                 </div>
@@ -92,28 +94,30 @@
 
         <!-- Premium Plan -->
         <div class="col-md-6 col-lg-5 mb-4 mx-auto">
-            <div class="card pricing-card popular bg-white position-relative">
+            <div class="card pricing-card popular shadow border-0 bg-white position-relative h-100" style="transform: scale(1.03);">
                 <div class="badge-popular">POPULAR</div>
-                <div class="card-body p-5">
-                    <h4 class="font-weight-bold text-center mb-1 text-primary">Premium Plan</h4>
-                    <p class="text-center text-muted small">Max visibility & verified trust</p>
+                <div class="card-body p-5 d-flex flex-column">
+                    <div class="text-center mb-4">
+                        <h4 class="font-weight-bold mb-1 text-primary">Premium Plan</h4>
+                        <p class="text-muted small mb-0">Max visibility & verified trust</p>
+                    </div>
                     <div class="text-center my-4">
-                        <span class="h1 font-weight-bold text-dark">₹4,999</span>
+                        <span class="display-4 font-weight-bold text-dark">₹4,999</span>
                         <span class="text-muted">/year</span>
                     </div>
-                    <ul class="feature-list">
-                        <li><i class="fe fe-check-circle"></i> <strong>Everything in Basic</strong></li>
-                        <li><i class="fe fe-check-circle text-primary"></i> <strong>Top Search Placement</strong></li>
-                        <li><i class="fe fe-check-circle text-primary"></i> <strong>Verified Business Badge</strong></li>
-                        <li><i class="fe fe-check-circle text-primary"></i> Direct WhatsApp Lead Access</li>
-                        <li><i class="fe fe-check-circle text-primary"></i> Premium Customer Support</li>
+                    <ul class="feature-list flex-grow-1">
+                        <li><i class="fe fe-check-circle text-primary"></i> <strong class="text-dark">Everything in Basic</strong></li>
+                        <li><i class="fe fe-check-circle text-primary"></i> <strong class="text-dark">Top Search Placement</strong></li>
+                        <li><i class="fe fe-check-circle text-primary"></i> <strong class="text-dark">Verified Business Badge</strong></li>
+                        <li><i class="fe fe-check-circle text-primary"></i> Direct WhatsApp Access</li>
+                        <li><i class="fe fe-check-circle text-primary"></i> Premium Support</li>
                         <li><i class="fe fe-check-circle text-primary"></i> Analytics Dashboard</li>
                     </ul>
                     <div class="text-center mt-4">
                         {% if vendor.is_premium %}
-                        <button class="btn btn-success btn-block btn-lg disabled" style="border-radius: 10px;"><i class="fa fa-check mr-2"></i> Active Plan</button>
+                        <button class="btn btn-success btn-block btn-lg disabled font-weight-bold shadow-sm rounded"><i class="fe fe-check mr-2"></i> Active Plan</button>
                         {% else %}
-                        <button class="btn btn-primary btn-block btn-lg font-weight-bold" style="border-radius: 10px;" onclick="upgradePlan()">Upgrade Now</button>
+                        <button class="btn btn-primary btn-block btn-lg font-weight-bold shadow shadow-sm rounded" onclick="upgradePlan()">Upgrade Now</button>
                         {% endif %}
                     </div>
                 </div>
@@ -121,8 +125,8 @@
         </div>
     </div>
     
-    <div class="text-center mt-4 text-muted">
-        <p class="small"><i class="fe fe-lock mr-1"></i> Secure checkout provided by Razorpay.</p>
+    <div class="text-center mt-5 mb-4">
+        <p class="small text-muted font-weight-bold text-uppercase" style="letter-spacing: 0.5px;"><i class="fe fe-lock mr-1"></i> Secure checkout provided by Razorpay</p>
     </div>
   </div>
 </div>
