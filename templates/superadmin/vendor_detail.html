@@ -1,0 +1,254 @@
+{% extends 'superadmin/base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container-fluid">
+  <div class="row justify-content-center">
+    <div class="col-12">
+      <div class="row align-items-center mb-4">
+        <div class="col">
+          <h2 class="h3 mb-0 page-title">Vendor Details</h2>
+          <p class="text-muted">A to Z information about {{ vendor.name }}</p>
+        </div>
+        <div class="col-auto">
+          <a href="{% url 'superadmin_vendor_edit' vendor.id %}" class="btn btn-primary">Edit Vendor</a>
+          <a href="{% url 'superadmin_vendors' %}" class="btn btn-secondary">Back to List</a>
+        </div>
+      </div>
+      
+      <div class="row mt-4 align-items-center">
+        <div class="col-md-3 text-center mb-4">
+          <div class="avatar avatar-xl" style="width: 150px; height: 150px;">
+            {% if vendor.image %}
+            <img src="{{ vendor.image.url }}" alt="{{ vendor.name }}" class="avatar-img rounded-circle" style="width: 100%; height: 100%; object-fit: cover;">
+            {% else %}
+            <div class="avatar-img rounded-circle bg-light d-flex align-items-center justify-content-center" style="width: 100%; height: 100%;">
+              <i class="fe fe-user fe-32 text-muted"></i>
+            </div>
+            {% endif %}
+          </div>
+        </div>
+        <div class="col">
+          <div class="row align-items-center">
+            <div class="col-md-7">
+              <h4 class="mb-1 h2">{{ vendor.name }}</h4>
+              <p class="small mb-3">
+                <span class="badge badge-dark">{{ vendor.category.name }}</span>
+                {% if vendor.is_verified %}
+                <span class="badge badge-success ml-1"><i class="fe fe-check-circle"></i> Verified</span>
+                {% endif %}
+                {% if vendor.is_premium %}
+                <span class="badge badge-primary ml-1"><i class="fe fe-star"></i> Premium</span>
+                {% endif %}
+              </p>
+            </div>
+          </div>
+          <div class="row mb-4">
+            <div class="col-md-7">
+              <p class="text-muted">{{ vendor.description|default:"No description provided." }}</p>
+            </div>
+            <div class="col">
+              <p class="small mb-1 text-muted"><i class="fe fe-map-pin mr-2"></i>{{ vendor.location }}</p>
+              <p class="small mb-1 text-muted"><i class="fe fe-home mr-2"></i>{{ vendor.address|default:"N/A" }}</p>
+              {% if vendor.website_link %}
+              <p class="small mb-0 text-muted"><i class="fe fe-globe mr-2"></i><a href="{{ vendor.website_link }}" target="_blank">{{ vendor.website_link }}</a></p>
+              {% endif %}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row my-4">
+        <!-- Business Details -->
+        <div class="col-md-6 mb-4">
+          <div class="card shadow h-100">
+            <div class="card-header">
+              <strong class="card-title mb-0">Business Information</strong>
+            </div>
+            <div class="card-body">
+              <table class="table table-borderless table-sm mb-0">
+                <tbody>
+                  <tr>
+                    <td class="text-muted w-50">Starting Price</td>
+                    <td class="text-right"><strong>₹{{ vendor.price_starting }}</strong></td>
+                  </tr>
+                  <tr>
+                    <td class="text-muted w-50">Years of Experience</td>
+                    <td class="text-right"><strong>{{ vendor.experience_years }} Years</strong></td>
+                  </tr>
+                  <tr>
+                    <td class="text-muted w-50">Joined On</td>
+                    <td class="text-right"><strong>{{ vendor.created_at|date:"M d, Y" }}</strong></td>
+                  </tr>
+                  {% if vendor.category.slug == 'venues' %}
+                  <tr>
+                    <td class="text-muted w-50">Veg Price / Plate</td>
+                    <td class="text-right"><strong>₹{{ vendor.veg_price }}</strong></td>
+                  </tr>
+                  <tr>
+                    <td class="text-muted w-50">Non-Veg Price / Plate</td>
+                    <td class="text-right"><strong>₹{{ vendor.non_veg_price }}</strong></td>
+                  </tr>
+                  <tr>
+                    <td class="text-muted w-50">Capacity</td>
+                    <td class="text-right"><strong>{{ vendor.capacity }} Pax</strong></td>
+                  </tr>
+                  <tr>
+                    <td class="text-muted w-50">Rooms Available</td>
+                    <td class="text-right"><strong>{{ vendor.rooms }}</strong></td>
+                  </tr>
+                  {% endif %}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Amenities & Links -->
+        <div class="col-md-6 mb-4">
+          <div class="card shadow h-100">
+            <div class="card-header">
+              <strong class="card-title mb-0">Amenities & Additional Details</strong>
+            </div>
+            <div class="card-body">
+              <h6 class="mb-3">Provided Amenities:</h6>
+              {% if vendor.amenities_list %}
+                <div class="d-flex flex-wrap mb-4">
+                  {% for amenity in vendor.amenities_list %}
+                    <span class="badge badge-pill badge-light text-secondary mr-2 mb-2 p-2 border" style="font-size: 0.85rem;">
+                      {{ amenity }}
+                    </span>
+                  {% endfor %}
+                </div>
+              {% else %}
+                <p class="text-muted small">No amenities specified.</p>
+              {% endif %}
+              
+              <h6 class="mb-3">Map & Directions:</h6>
+              {% if vendor.map_link %}
+                <a href="{{ vendor.map_link }}" target="_blank" class="btn btn-sm btn-outline-info">
+                  <i class="fe fe-map mr-2"></i> View on Map
+                </a>
+              {% else %}
+                <p class="text-muted small">Map link not available.</p>
+              {% endif %}
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Gallery Section -->
+      <div class="row mb-4">
+        <div class="col-12">
+          <div class="card shadow">
+            <div class="card-header">
+              <strong class="card-title mb-0">Gallery Images ({{ gallery.count }})</strong>
+            </div>
+            <div class="card-body">
+              {% if gallery %}
+              <div class="row">
+                {% for img in gallery %}
+                <div class="col-md-3 mb-3">
+                  <div class="card h-100 border-0 shadow-sm">
+                    <img src="{{ img.image.url }}" class="card-img-top rounded" alt="{{ img.caption }}" style="height: 150px; object-fit: cover;">
+                    {% if img.caption %}
+                    <div class="card-footer px-2 py-1 bg-white border-top-0">
+                      <small class="text-muted">{{ img.caption }}</small>
+                    </div>
+                    {% endif %}
+                  </div>
+                </div>
+                {% endfor %}
+              </div>
+              {% else %}
+              <p class="text-muted text-center py-4 mb-0">No images in gallery.</p>
+              {% endif %}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Inquiries and Reviews Section -->
+      <div class="row mb-4">
+        <!-- Inquiries Section -->
+        <div class="col-md-6 mb-4">
+          <div class="card shadow h-100">
+            <div class="card-header d-flex justify-content-between align-items-center">
+              <strong class="card-title mb-0">Recent Inquiries ({{ inquiries.count }})</strong>
+            </div>
+            <div class="card-body p-0">
+              {% if inquiries %}
+              <div class="list-group list-group-flush" style="max-height: 400px; overflow-y: auto;">
+                {% for inquiry in inquiries %}
+                <div class="list-group-item py-3">
+                  <div class="d-flex justify-content-between align-items-center mb-1">
+                    <h6 class="mb-0">{{ inquiry.customer_name }}</h6>
+                    <small class="text-muted">{{ inquiry.created_at|date:"M d, Y" }}</small>
+                  </div>
+                  <div class="mb-1 small">
+                    <span class="text-muted"><i class="fe fe-mail mr-1"></i>{{ inquiry.customer_email }}</span> &nbsp;
+                    <span class="text-muted"><i class="fe fe-phone mr-1"></i>{{ inquiry.customer_phone }}</span>
+                  </div>
+                  {% if inquiry.event_date %}
+                  <div class="mb-1 small text-primary"><i class="fe fe-calendar mr-1"></i> Event: {{ inquiry.event_date|date:"M d, Y" }}</div>
+                  {% endif %}
+                  <p class="mb-2 text-muted small">{{ inquiry.message|truncatewords:20 }}</p>
+                  <div>
+                    {% if inquiry.status == 'new' %}
+                    <span class="badge badge-pill badge-danger">New</span>
+                    {% elif inquiry.status == 'contacted' %}
+                    <span class="badge badge-pill badge-warning">Contacted</span>
+                    {% else %}
+                    <span class="badge badge-pill badge-success">Closed</span>
+                    {% endif %}
+                  </div>
+                </div>
+                {% endfor %}
+              </div>
+              {% else %}
+              <p class="text-muted text-center py-4 mb-0">No inquiries yet.</p>
+              {% endif %}
+            </div>
+          </div>
+        </div>
+
+        <!-- Reviews Section -->
+        <div class="col-md-6 mb-4">
+          <div class="card shadow h-100">
+            <div class="card-header">
+              <strong class="card-title mb-0">Customer Reviews ({{ reviews.count }})</strong>
+            </div>
+            <div class="card-body p-0">
+              {% if reviews %}
+              <ul class="list-group list-group-flush" style="max-height: 400px; overflow-y: auto;">
+                {% for review in reviews %}
+                <li class="list-group-item py-3">
+                  <div class="d-flex justify-content-between align-items-center mb-1">
+                    <h6 class="mb-0">{{ review.reviewer_name }}</h6>
+                    <small class="text-muted">{{ review.created_at|date:"M d, Y" }}</small>
+                  </div>
+                  <div class="mb-2 text-warning">
+                    {% for i in "12345" %}
+                      {% if forloop.counter <= review.rating %}
+                      <i class="fe fe-star text-warning" style="fill: currentColor;"></i>
+                      {% else %}
+                      <i class="fe fe-star text-muted"></i>
+                      {% endif %}
+                    {% endfor %}
+                  </div>
+                  <p class="mb-0 text-muted small">{{ review.comment }}</p>
+                </li>
+                {% endfor %}
+              </ul>
+              {% else %}
+              <p class="text-muted text-center py-4 mb-0">No reviews yet.</p>
+              {% endif %}
+            </div>
+          </div>
+        </div>
+      </div>
+      
+    </div>
+  </div>
+</div>
+{% endblock %}

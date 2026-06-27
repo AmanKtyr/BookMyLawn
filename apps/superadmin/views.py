@@ -215,6 +215,15 @@ def vendor_edit(request, pk):
     return render(request, 'superadmin/vendor_form.html', {'vendor': vendor, 'categories': categories})
 
 @user_passes_test(is_superadmin, login_url='superadmin_login')
+def vendor_view(request, pk):
+    from apps.website.models import Vendor, VendorImage, Review, Inquiry
+    vendor = Vendor.objects.get(pk=pk)
+    gallery = VendorImage.objects.filter(vendor=vendor)
+    reviews = Review.objects.filter(vendor=vendor)
+    inquiries = Inquiry.objects.filter(vendor=vendor).order_by('-created_at')
+    return render(request, 'superadmin/vendor_detail.html', {'vendor': vendor, 'gallery': gallery, 'reviews': reviews, 'inquiries': inquiries})
+
+@user_passes_test(is_superadmin, login_url='superadmin_login')
 def vendor_delete(request, pk):
     from apps.website.models import Vendor
     vendor = Vendor.objects.get(pk=pk)

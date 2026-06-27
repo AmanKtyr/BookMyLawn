@@ -11,6 +11,7 @@ urlpatterns = [
     path('vendors/', views.vendors_list, name='superadmin_vendors'),
     path('vendors/add/', views.vendor_add, name='superadmin_vendor_add'),
     path('vendors/edit/<int:pk>/', views.vendor_edit, name='superadmin_vendor_edit'),
+    path('vendors/view/<int:pk>/', views.vendor_view, name='superadmin_vendor_view'),
     path('vendors/delete/<int:pk>/', views.vendor_delete, name='superadmin_vendor_delete'),
     path('wedding-stories/', views.wedding_stories_list, name='superadmin_wedding_stories'),
     path('wedding-stories/add/', views.wedding_story_add, name='superadmin_wedding_story_add'),
