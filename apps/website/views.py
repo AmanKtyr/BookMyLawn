@@ -367,11 +367,19 @@ def user_dashboard(request):
             task_name = request.POST.get('task_name')
             due_date = request.POST.get('due_date')
             if task_name:
-                WeddingChecklist.objects.create(
+                task = WeddingChecklist.objects.create(
                     user=request.user,
                     task_name=task_name,
                     due_date=due_date if due_date else None
                 )
+                if request.headers.get('x-requested-with') == 'XMLHttpRequest' or request.POST.get('is_ajax') == 'true':
+                    due_date_str = task.due_date.strftime('%d %b %Y') if task.due_date else None
+                    return JsonResponse({
+                        'status': 'success', 
+                        'task_id': task.id, 
+                        'task_name': task.task_name, 
+                        'due_date': due_date_str
+                    })
             return redirect('user_dashboard')
             
         elif action == 'toggle_task':
@@ -380,9 +388,34 @@ def user_dashboard(request):
             task.is_completed = not task.is_completed
             task.save()
             return JsonResponse({'status': 'success', 'is_completed': task.is_completed})
+            
+        elif action == 'add_guest':
+            from .models import Guest
+            name = request.POST.get('guest_name')
+            group = request.POST.get('group', 'family')
+            rsvp = request.POST.get('rsvp', 'pending')
+            meal = request.POST.get('meal', 'any')
+            if name:
+                Guest.objects.create(
+                    user=request.user,
+                    name=name,
+                    group=group,
+                    rsvp_status=rsvp,
+                    meal_preference=meal
+                )
+            return redirect('user_dashboard')
+            
+        elif action == 'delete_guest':
+            from .models import Guest
+            guest_id = request.POST.get('guest_id')
+            guest = get_object_or_404(Guest, id=guest_id, user=request.user)
+            guest.delete()
+            return redirect('user_dashboard')
 
     # Fetch dashboard data
     checklist_items = WeddingChecklist.objects.filter(user=request.user).order_by('due_date', 'id')
+    from .models import Guest
+    guests = Guest.objects.filter(user=request.user).order_by('-created_at')
     wishlist = Wishlist.objects.filter(user=request.user).first()
     wishlist_items = wishlist.items.all() if wishlist else []
     
@@ -398,5 +431,6 @@ def user_dashboard(request):
         'wishlist_items': wishlist_items,
         'inquiries': inquiries,
         'cart_items': cart_items,
+        'guests': guests,
     }
     return render(request, 'website/user-dashboard.html', context)

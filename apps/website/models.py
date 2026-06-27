@@ -217,3 +217,15 @@ class SiteSetting(models.Model):
     def __str__(self):
         return "Global Site Settings"
 
+class Guest(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='guest_list')
+    name = models.CharField(max_length=150)
+    email = models.EmailField(blank=True, null=True)
+    phone = models.CharField(max_length=20, blank=True)
+    group = models.CharField(max_length=50, choices=[('family', 'Family'), ('friends', 'Friends'), ('coworkers', 'Coworkers'), ('other', 'Other')], default='family')
+    rsvp_status = models.CharField(max_length=20, choices=[('pending', 'Pending'), ('attending', 'Attending'), ('declined', 'Declined')], default='pending')
+    meal_preference = models.CharField(max_length=50, choices=[('veg', 'Vegetarian'), ('non-veg', 'Non-Vegetarian'), ('vegan', 'Vegan'), ('any', 'Any')], default='any')
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.name} ({self.rsvp_status})"
