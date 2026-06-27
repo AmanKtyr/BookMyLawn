@@ -90,7 +90,7 @@ def login_view(request):
             elif user.is_superuser:
                 return redirect('superadmin_dashboard')
             else:
-                return redirect('index')
+                return redirect('user_dashboard')
         else:
             from django.contrib import messages
             # Check if this email has a pending vendor request
