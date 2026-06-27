@@ -3,7 +3,43 @@
 {% block content %}
 <div class="row justify-content-center">
   <div class="col-12">
-    <h2 class="h3 mb-4 page-title">Inquiries & Leads</h2>
+    <div class="d-flex justify-content-between align-items-center mb-4">
+      <h2 class="h3 mb-0 page-title">Inquiries & Leads</h2>
+    </div>
+
+    <!-- Filter Section -->
+    <div class="card shadow-sm border-0 mb-4">
+      <div class="card-body p-4">
+        <form method="GET" action="{% url 'vendor_inquiries' %}" class="row align-items-end">
+          <div class="col-md-5 mb-3 mb-md-0">
+            <label for="search" class="font-weight-bold text-muted small text-uppercase" style="letter-spacing: 0.5px;">Search Leads</label>
+            <div class="input-group shadow-sm">
+              <div class="input-group-prepend">
+                <span class="input-group-text bg-white border-right-0"><i class="fe fe-search text-muted"></i></span>
+              </div>
+              <input type="text" class="form-control border-left-0 pl-0" id="search" name="search" placeholder="Customer name, email, or phone..." value="{{ current_search }}">
+            </div>
+          </div>
+          <div class="col-md-4 mb-3 mb-md-0">
+            <label for="status" class="font-weight-bold text-muted small text-uppercase" style="letter-spacing: 0.5px;">Lead Status</label>
+            <select class="form-control custom-select shadow-sm" id="status" name="status">
+              <option value="">All Statuses</option>
+              <option value="new" {% if current_status == 'new' %}selected{% endif %}>New Leads</option>
+              <option value="contacted" {% if current_status == 'contacted' %}selected{% endif %}>Contacted</option>
+              <option value="closed" {% if current_status == 'closed' %}selected{% endif %}>Closed</option>
+            </select>
+          </div>
+          <div class="col-md-3">
+            <div class="d-flex">
+                <button type="submit" class="btn btn-primary font-weight-bold shadow-sm w-100 rounded"><i class="fe fe-filter mr-2"></i> Apply</button>
+                {% if current_search or current_status %}
+                <a href="{% url 'vendor_inquiries' %}" class="btn btn-light shadow-sm ml-2 rounded" title="Clear Filters"><i class="fe fe-x text-muted"></i></a>
+                {% endif %}
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
     <div class="card shadow">
       <div class="card-body">
         <!-- Table -->

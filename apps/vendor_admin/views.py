@@ -151,7 +151,28 @@ def vendor_profile(request):
 def vendor_inquiries(request):
     vendor = request.user.vendor_profile
     inquiries = Inquiry.objects.filter(vendor=vendor).order_by('-created_at')
-    return render(request, 'vendor_admin/inquiries.html', {'inquiries': inquiries})
+    
+    # Filter by Status
+    status_filter = request.GET.get('status', '')
+    if status_filter:
+        inquiries = inquiries.filter(status=status_filter)
+        
+    # Search by Name, Email, or Phone
+    search_query = request.GET.get('search', '')
+    if search_query:
+        from django.db.models import Q
+        inquiries = inquiries.filter(
+            Q(customer_name__icontains=search_query) |
+            Q(customer_email__icontains=search_query) |
+            Q(customer_phone__icontains=search_query)
+        )
+        
+    context = {
+        'inquiries': inquiries,
+        'current_status': status_filter,
+        'current_search': search_query
+    }
+    return render(request, 'vendor_admin/inquiries.html', context)
 
 @user_passes_test(is_vendor, login_url='vendor_login')
 def vendor_reviews(request):
