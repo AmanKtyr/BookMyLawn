@@ -178,16 +178,28 @@ def vendor_add(request):
         name = request.POST.get('name')
         category_id = request.POST.get('category')
         location = request.POST.get('location')
+        address = request.POST.get('address', '')
         price_starting = request.POST.get('price_starting', 0)
+        veg_price = request.POST.get('veg_price', 0)
+        non_veg_price = request.POST.get('non_veg_price', 0)
+        capacity = request.POST.get('capacity', 0)
+        rooms = request.POST.get('rooms', 0)
         description = request.POST.get('description', '')
+        amenities = request.POST.get('amenities', '')
+        map_link = request.POST.get('map_link', '')
+        website_link = request.POST.get('website_link', '')
+        experience_years = request.POST.get('experience_years', 0)
         is_verified = request.POST.get('is_verified') == 'on'
         is_premium = request.POST.get('is_premium') == 'on'
         image = request.FILES.get('image')
         
         category = Category.objects.get(id=category_id)
         Vendor.objects.create(
-            name=name, category=category, location=location, price_starting=price_starting,
-            description=description, is_verified=is_verified, is_premium=is_premium, image=image
+            name=name, category=category, location=location, address=address,
+            price_starting=price_starting, veg_price=veg_price, non_veg_price=non_veg_price,
+            capacity=capacity, rooms=rooms, description=description, amenities=amenities,
+            map_link=map_link, website_link=website_link, experience_years=experience_years,
+            is_verified=is_verified, is_premium=is_premium, image=image
         )
         messages.success(request, 'Vendor added successfully.')
         return redirect('superadmin_vendors')
@@ -203,8 +215,17 @@ def vendor_edit(request, pk):
         category_id = request.POST.get('category')
         vendor.category = Category.objects.get(id=category_id)
         vendor.location = request.POST.get('location')
+        vendor.address = request.POST.get('address', '')
         vendor.price_starting = request.POST.get('price_starting', 0)
+        vendor.veg_price = request.POST.get('veg_price', 0)
+        vendor.non_veg_price = request.POST.get('non_veg_price', 0)
+        vendor.capacity = request.POST.get('capacity', 0)
+        vendor.rooms = request.POST.get('rooms', 0)
         vendor.description = request.POST.get('description', '')
+        vendor.amenities = request.POST.get('amenities', '')
+        vendor.map_link = request.POST.get('map_link', '')
+        vendor.website_link = request.POST.get('website_link', '')
+        vendor.experience_years = request.POST.get('experience_years', 0)
         vendor.is_verified = request.POST.get('is_verified') == 'on'
         vendor.is_premium = request.POST.get('is_premium') == 'on'
         if request.FILES.get('image'):
