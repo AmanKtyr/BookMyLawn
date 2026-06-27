@@ -36,7 +36,15 @@ class Vendor(models.Model):
     is_premium = models.BooleanField(default=False)
     image = models.ImageField(upload_to='vendors/', null=True, blank=True)
     website_link = models.URLField(blank=True, null=True)
+    instagram_link = models.URLField(blank=True, null=True)
+    facebook_link = models.URLField(blank=True, null=True)
     experience_years = models.IntegerField(default=0)
+    
+    # Business Policies
+    cancellation_policy = models.TextField(blank=True)
+    payment_terms = models.TextField(blank=True)
+    travel_policy = models.TextField(blank=True)
+    
     created_at = models.DateTimeField(auto_now_add=True)
     
     @property

@@ -117,10 +117,18 @@ def vendor_profile(request):
         vendor.rooms = request.POST.get('rooms', 0)
         
         # Details
-        vendor.description = request.POST.get('description')
-        vendor.amenities = request.POST.get('amenities')
-        vendor.map_link = request.POST.get('map_link')
+        vendor.description = request.POST.get('description', '')
+        vendor.amenities = request.POST.get('amenities', '')
+        vendor.map_link = request.POST.get('map_link', '')
+        vendor.website_link = request.POST.get('website_link', '')
+        vendor.facebook_link = request.POST.get('facebook_link', '')
+        vendor.instagram_link = request.POST.get('instagram_link', '')
         vendor.experience_years = request.POST.get('experience_years', 0)
+        
+        # Business Policies
+        vendor.cancellation_policy = request.POST.get('cancellation_policy', '')
+        vendor.payment_terms = request.POST.get('payment_terms', '')
+        vendor.travel_policy = request.POST.get('travel_policy', '')
         
         if request.FILES.get('image'):
             vendor.image = request.FILES.get('image')

@@ -2,160 +2,301 @@
 {% load static %}
 
 {% block content %}
-<div class="row justify-content-center">
-  <div class="col-12 col-lg-10 col-xl-8">
-    <h2 class="h3 mb-4 page-title">Profile Settings</h2>
-    <div class="my-4">
-      <form method="POST" enctype="multipart/form-data">
-        {% csrf_token %}
-        
-        <!-- Profile Header Card -->
-        <div class="card shadow-sm border-0 mb-4" style="border-radius: 15px; overflow: hidden;">
-            <div class="card-body p-0">
-                <div class="bg-primary w-100" style="height: 120px; background: linear-gradient(135deg, #e72e77, #ff6b6b) !important;"></div>
-                <div class="px-4 pb-4 d-flex align-items-end" style="margin-top: -60px;">
-                    <div class="position-relative">
-                        {% if vendor.image %}
-                        <img src="{{ vendor.image.url }}" alt="Profile" class="avatar-img rounded-circle border border-white shadow-sm" style="width: 120px; height: 120px; object-fit: cover; border-width: 4px !important;">
-                        {% else %}
-                        <img src="{% static 'admin/assets/avatars/face-1.jpg' %}" alt="Profile" class="avatar-img rounded-circle border border-white shadow-sm" style="width: 120px; height: 120px; object-fit: cover; border-width: 4px !important;">
-                        {% endif %}
-                        <button type="button" class="btn btn-sm btn-light position-absolute shadow-sm" style="bottom: 0; right: 0; border-radius: 50%; width: 35px; height: 35px; padding: 0;" onclick="document.getElementById('profileImage').click()" title="Change Photo">
-                            <i class="fa fa-camera text-primary"></i>
-                        </button>
-                        <input type="file" name="image" id="profileImage" class="d-none" onchange="previewImage(this, 'imagePreview')">
-                    </div>
-                    <div class="ml-4 mb-2">
-                        <h3 class="font-weight-bold mb-1">{{ vendor.name }}</h3>
-                        <span class="badge badge-primary px-3 py-1" style="border-radius: 20px;">{{ vendor.category.name }}</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Business Information Card -->
-        <div class="card shadow-sm border-0 mb-4" style="border-radius: 15px;">
-            <div class="card-body p-4 p-md-5">
-                <h5 class="mb-4 font-weight-bold text-dark"><i class="fa fa-briefcase mr-2 text-primary"></i> Business Information</h5>
-                <div class="form-row">
-                  <div class="form-group col-md-6 mb-4">
-                    <label for="firstname" class="font-weight-bold small text-muted text-uppercase">Business Name</label>
-                    <input type="text" id="firstname" name="name" class="form-control form-control-lg bg-light" value="{{ vendor.name }}" style="border-radius: 10px; border: 1px solid #eee;">
-                  </div>
-                  <div class="form-group col-md-6 mb-4">
-                    <label for="location" class="font-weight-bold small text-muted text-uppercase">Location (City)</label>
-                    <input type="text" id="location" name="location" class="form-control form-control-lg bg-light" value="{{ vendor.location }}" style="border-radius: 10px; border: 1px solid #eee;">
-                  </div>
-                </div>
-                <div class="form-group mb-0">
-                  <label for="address" class="font-weight-bold small text-muted text-uppercase">Full Address</label>
-                  <textarea id="address" name="address" class="form-control form-control-lg bg-light" rows="2" style="border-radius: 10px; border: 1px solid #eee;">{{ vendor.address }}</textarea>
-                </div>
-            </div>
-        </div>
-        
-        <!-- Pricing & Service Card -->
-        <div class="card shadow-sm border-0 mb-4" style="border-radius: 15px;">
-            <div class="card-body p-4 p-md-5">
-                <h5 class="mb-4 font-weight-bold text-dark"><i class="fa fa-tags mr-2 text-primary"></i> Pricing & Service Details</h5>
-                <div class="form-row">
-                    <div class="form-group col-md-4 mb-4">
-                      <label for="price" class="font-weight-bold small text-muted text-uppercase">Starting Price (₹)</label>
-                      <input type="number" id="price" name="price_starting" class="form-control form-control-lg bg-light" value="{{ vendor.price_starting }}" style="border-radius: 10px; border: 1px solid #eee;">
-                    </div>
-                    {% if 'venue' in vendor.category.slug or 'lawn' in vendor.category.slug or 'banquet' in vendor.category.slug %}
-                        <div class="form-group col-md-4 mb-4">
-                            <label for="veg_price" class="font-weight-bold small text-muted text-uppercase">Veg Plate (₹)</label>
-                            <input type="number" id="veg_price" name="veg_price" class="form-control form-control-lg bg-light" value="{{ vendor.veg_price }}" style="border-radius: 10px; border: 1px solid #eee;">
+<div class="container-fluid py-4">
+    <div class="row">
+        <div class="col-12">
+            <!-- Header Section with Cover and Avatar -->
+            <form method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="card shadow-sm border-0 mb-4" style="border-radius: 16px; overflow: hidden;">
+                    <div class="card-body p-0">
+                        <div class="w-100 position-relative" style="height: 180px; background: linear-gradient(135deg, #e72e77 0%, #ff7b93 100%) !important;">
+                            <div class="position-absolute text-white" style="bottom: 15px; right: 20px;">
+                                <h5 class="mb-0 text-white font-weight-bold text-right">Partner Storefront</h5>
+                                <small class="text-white-50">Manage how couples see you</small>
+                            </div>
                         </div>
-                        <div class="form-group col-md-4 mb-4">
-                            <label for="non_veg_price" class="font-weight-bold small text-muted text-uppercase">Non-Veg Plate (₹)</label>
-                            <input type="number" id="non_veg_price" name="non_veg_price" class="form-control form-control-lg bg-light" value="{{ vendor.non_veg_price }}" style="border-radius: 10px; border: 1px solid #eee;">
+                        <div class="px-4 pb-4 d-flex align-items-end" style="margin-top: -75px;">
+                            <div class="position-relative">
+                                {% if vendor.image %}
+                                <img src="{{ vendor.image.url }}" alt="Profile" class="avatar-img rounded-circle border shadow-sm" style="width: 150px; height: 150px; object-fit: cover; border-width: 5px !important; border-color: #fff !important; background: white;">
+                                {% else %}
+                                <div class="avatar-img rounded-circle border shadow-sm bg-light d-flex align-items-center justify-content-center" style="width: 150px; height: 150px; border-width: 5px !important; border-color: #fff !important;">
+                                    <i class="fe fe-camera fe-32 text-muted"></i>
+                                </div>
+                                {% endif %}
+                                <button type="button" class="btn btn-primary btn-sm position-absolute shadow-sm d-flex align-items-center justify-content-center" style="bottom: 5px; right: 5px; border-radius: 50%; width: 40px; height: 40px; padding: 0;" onclick="document.getElementById('profileImage').click()" title="Change Photo">
+                                    <i class="fe fe-edit-2"></i>
+                                </button>
+                                <input type="file" name="image" id="profileImage" class="d-none" onchange="previewImage(this)">
+                            </div>
+                            <div class="ml-4 mb-3">
+                                <h2 class="font-weight-bold mb-1 text-dark" style="letter-spacing: -0.5px;">{{ vendor.name }}</h2>
+                                <div class="d-flex align-items-center mt-2">
+                                    <span class="badge badge-primary px-3 py-2 mr-2" style="border-radius: 20px; font-weight: 500; font-size: 0.85rem;">
+                                        <i class="fe fe-tag mr-1"></i> {{ vendor.category.name }}
+                                    </span>
+                                    {% if vendor.is_verified %}
+                                    <span class="badge badge-success px-3 py-2" style="border-radius: 20px; font-weight: 500; font-size: 0.85rem;">
+                                        <i class="fe fe-check-circle mr-1"></i> Verified Partner
+                                    </span>
+                                    {% endif %}
+                                </div>
+                            </div>
                         </div>
-                    {% else %}
-                        <div class="form-group col-md-4 mb-4">
-                            <label for="experience_years" class="font-weight-bold small text-muted text-uppercase">Experience (Years)</label>
-                            <input type="number" id="experience_years" name="experience_years" class="form-control form-control-lg bg-light" value="{{ vendor.experience_years|default:0 }}" style="border-radius: 10px; border: 1px solid #eee;">
-                        </div>
-                    {% endif %}
-                </div>
-                
-                {% if 'venue' in vendor.category.slug or 'lawn' in vendor.category.slug or 'banquet' in vendor.category.slug %}
-                <div class="form-row">
-                    <div class="form-group col-md-6 mb-0">
-                      <label for="capacity" class="font-weight-bold small text-muted text-uppercase">Total Capacity (Pax)</label>
-                      <input type="number" id="capacity" name="capacity" class="form-control form-control-lg bg-light" value="{{ vendor.capacity }}" style="border-radius: 10px; border: 1px solid #eee;">
-                    </div>
-                    <div class="form-group col-md-6 mb-0">
-                        <label for="rooms" class="font-weight-bold small text-muted text-uppercase">Available Rooms</label>
-                        <input type="number" id="rooms" name="rooms" class="form-control form-control-lg bg-light" value="{{ vendor.rooms }}" style="border-radius: 10px; border: 1px solid #eee;">
                     </div>
                 </div>
-                {% endif %}
-            </div>
-        </div>
 
-        <!-- Additional Details Card -->
-        <div class="card shadow-sm border-0 mb-4" style="border-radius: 15px;">
-            <div class="card-body p-4 p-md-5">
-                <h5 class="mb-4 font-weight-bold text-dark"><i class="fa fa-info-circle mr-2 text-primary"></i> Additional Details</h5>
-                <div class="form-group mb-4">
-                  <label for="description" class="font-weight-bold small text-muted text-uppercase">Business Description</label>
-                  <textarea class="form-control form-control-lg bg-light" id="description" name="description" rows="4" style="border-radius: 10px; border: 1px solid #eee;">{{ vendor.description }}</textarea>
-                </div>
-                <div class="form-group mb-4">
-                  <label for="amenities" class="font-weight-bold small text-muted text-uppercase">Amenities (Comma separated)</label>
-                  <input type="text" id="amenities" name="amenities" class="form-control form-control-lg bg-light" value="{{ vendor.amenities }}" placeholder="AC, Parking, Power Backup, Wifi" style="border-radius: 10px; border: 1px solid #eee;">
-                  <small class="form-text text-muted mt-2"><i class="fa fa-lightbulb-o text-warning"></i> E.g. Drone Shoot, Albums, Cinematic Video (for photographers)</small>
-                </div>
-                <div class="form-group mb-0">
-                  <label for="map_link" class="font-weight-bold small text-muted text-uppercase">Google Maps Embed Link</label>
-                  <input type="url" id="map_link" name="map_link" class="form-control form-control-lg bg-light" value="{{ vendor.map_link }}" placeholder="https://google.com/maps/embed/..." style="border-radius: 10px; border: 1px solid #eee;">
-                </div>
-            </div>
-        </div>
-
-        <!-- Photo Gallery Card -->
-        <div class="card shadow-sm border-0 mb-5" style="border-radius: 15px;">
-            <div class="card-body p-4 p-md-5">
-                <h5 class="mb-4 font-weight-bold text-dark"><i class="fa fa-image mr-2 text-primary"></i> Photo Gallery</h5>
-                <div class="form-group">
-                    <label class="font-weight-bold small text-muted text-uppercase">Upload Portfolio Photos</label>
-                    <div class="custom-file mb-2">
-                        <input type="file" name="gallery_images" class="custom-file-input" id="galleryFiles" multiple accept="image/*">
-                        <label class="custom-file-label form-control-lg d-flex align-items-center bg-light" for="galleryFiles" style="border-radius: 10px; border: 1px solid #eee;">Choose multiple files...</label>
-                    </div>
-                    <div id="preview-container" class="mt-3 d-flex flex-wrap gap-2"></div>
-                </div>
-                
-                {% if gallery %}
-                <h6 class="font-weight-bold small text-muted mt-4 mb-3">Current Gallery</h6>
                 <div class="row">
-                    {% for img in gallery %}
-                    <div class="col-6 col-md-3 mb-3">
-                        <div class="card border-0 shadow-sm" style="border-radius: 10px; overflow: hidden;">
-                            <img src="{{ img.image.url }}" class="card-img-top" style="height: 120px; object-fit: cover;">
-                            <button type="button" class="btn btn-sm btn-danger position-absolute shadow" style="top: 8px; right: 8px; border-radius: 50%; width: 32px; height: 32px; padding: 0;"><i class="fa fa-trash"></i></button>
+                    <!-- Navigation Tabs -->
+                    <div class="col-md-3 mb-4">
+                        <div class="card shadow-sm border-0" style="border-radius: 16px;">
+                            <div class="card-body p-3">
+                                <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+                                    <a class="nav-link active rounded-lg py-3 mb-2 font-weight-bold" id="v-pills-basic-tab" data-toggle="pill" href="#v-pills-basic" role="tab" aria-controls="v-pills-basic" aria-selected="true" style="transition: all 0.2s;">
+                                        <i class="fe fe-info mr-2"></i> Business Profile
+                                    </a>
+                                    <a class="nav-link rounded-lg py-3 mb-2 font-weight-bold" id="v-pills-pricing-tab" data-toggle="pill" href="#v-pills-pricing" role="tab" aria-controls="v-pills-pricing" aria-selected="false" style="transition: all 0.2s;">
+                                        <i class="fe fe-dollar-sign mr-2"></i> Pricing & Services
+                                    </a>
+                                    <a class="nav-link rounded-lg py-3 mb-2 font-weight-bold" id="v-pills-policies-tab" data-toggle="pill" href="#v-pills-policies" role="tab" aria-controls="v-pills-policies" aria-selected="false" style="transition: all 0.2s;">
+                                        <i class="fe fe-shield mr-2"></i> Business Policies
+                                    </a>
+                                    <a class="nav-link rounded-lg py-3 mb-2 font-weight-bold" id="v-pills-web-tab" data-toggle="pill" href="#v-pills-web" role="tab" aria-controls="v-pills-web" aria-selected="false" style="transition: all 0.2s;">
+                                        <i class="fe fe-globe mr-2"></i> Web & Social
+                                    </a>
+                                    <a class="nav-link rounded-lg py-3 font-weight-bold" id="v-pills-portfolio-tab" data-toggle="pill" href="#v-pills-portfolio" role="tab" aria-controls="v-pills-portfolio" aria-selected="false" style="transition: all 0.2s;">
+                                        <i class="fe fe-image mr-2"></i> Portfolio Gallery
+                                    </a>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                    {% endfor %}
-                </div>
-                {% endif %}
-            </div>
-        </div>
 
-        <!-- Sticky Bottom Save Bar -->
-        <div class="position-sticky bg-white p-3 shadow-sm border-top" style="bottom: 0; z-index: 1000; border-radius: 15px 15px 0 0; margin-left: -15px; margin-right: -15px;">
-            <div class="d-flex justify-content-between align-items-center px-3">
-                <span class="text-muted d-none d-md-inline"><i class="fa fa-check-circle text-success"></i> Changes are saved securely.</span>
-                <button type="submit" class="btn btn-primary btn-lg px-5 font-weight-bold shadow-sm" style="border-radius: 10px;">
-                    <i class="fa fa-save mr-2"></i> Save Profile
-                </button>
-            </div>
+                    <!-- Tab Content -->
+                    <div class="col-md-9">
+                        <div class="tab-content" id="v-pills-tabContent">
+                            
+                            <!-- Basic Info -->
+                            <div class="tab-pane fade show active" id="v-pills-basic" role="tabpanel" aria-labelledby="v-pills-basic-tab">
+                                <div class="card shadow-sm border-0 mb-4" style="border-radius: 16px;">
+                                    <div class="card-header bg-white border-0 pt-4 pb-0 px-4 px-md-5">
+                                        <h4 class="font-weight-bold text-dark mb-0">Business Profile</h4>
+                                        <p class="text-muted small">Update your storefront's core information visible to couples.</p>
+                                    </div>
+                                    <div class="card-body p-4 p-md-5">
+                                        <div class="form-row">
+                                            <div class="form-group col-md-6 mb-4">
+                                                <label for="name" class="font-weight-bold text-dark small text-uppercase">Business Name</label>
+                                                <input type="text" id="name" name="name" class="form-control form-control-lg bg-light border-0" value="{{ vendor.name }}" style="border-radius: 10px;">
+                                            </div>
+                                            <div class="form-group col-md-6 mb-4">
+                                                <label for="experience_years" class="font-weight-bold text-dark small text-uppercase">Years in Business</label>
+                                                <input type="number" id="experience_years" name="experience_years" class="form-control form-control-lg bg-light border-0" value="{{ vendor.experience_years|default:0 }}" style="border-radius: 10px;">
+                                            </div>
+                                        </div>
+                                        <div class="form-row">
+                                            <div class="form-group col-md-6 mb-4">
+                                                <label for="location" class="font-weight-bold text-dark small text-uppercase">City</label>
+                                                <input type="text" id="location" name="location" class="form-control form-control-lg bg-light border-0" value="{{ vendor.location }}" style="border-radius: 10px;">
+                                            </div>
+                                            <div class="form-group col-md-6 mb-4">
+                                                <label for="address" class="font-weight-bold text-dark small text-uppercase">Full Address</label>
+                                                <input type="text" id="address" name="address" class="form-control form-control-lg bg-light border-0" value="{{ vendor.address }}" style="border-radius: 10px;">
+                                            </div>
+                                        </div>
+                                        <div class="form-group mb-0">
+                                            <label for="description" class="font-weight-bold text-dark small text-uppercase">About Your Business</label>
+                                            <textarea class="form-control form-control-lg bg-light border-0" id="description" name="description" rows="5" style="border-radius: 10px;" placeholder="Tell couples what makes your services unique...">{{ vendor.description }}</textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Pricing -->
+                            <div class="tab-pane fade" id="v-pills-pricing" role="tabpanel" aria-labelledby="v-pills-pricing-tab">
+                                <div class="card shadow-sm border-0 mb-4" style="border-radius: 16px;">
+                                    <div class="card-header bg-white border-0 pt-4 pb-0 px-4 px-md-5">
+                                        <h4 class="font-weight-bold text-dark mb-0">Pricing & Services</h4>
+                                        <p class="text-muted small">Help couples understand your packages and capacities.</p>
+                                    </div>
+                                    <div class="card-body p-4 p-md-5">
+                                        <div class="form-group mb-4">
+                                            <label for="price_starting" class="font-weight-bold text-dark small text-uppercase">Starting Package Price</label>
+                                            <div class="input-group input-group-lg">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text bg-light border-0 font-weight-bold text-muted">₹</span>
+                                                </div>
+                                                <input type="number" id="price_starting" name="price_starting" class="form-control bg-light border-0" value="{{ vendor.price_starting }}" style="border-radius: 0 10px 10px 0;">
+                                            </div>
+                                        </div>
+
+                                        {% if 'venue' in vendor.category.slug or 'lawn' in vendor.category.slug or 'banquet' in vendor.category.slug %}
+                                        <hr class="my-4 border-light">
+                                        <h6 class="font-weight-bold text-primary mb-3">Venue Specifics</h6>
+                                        <div class="form-row">
+                                            <div class="form-group col-md-6 mb-4">
+                                                <label for="veg_price" class="font-weight-bold text-dark small text-uppercase">Veg Plate Price (₹)</label>
+                                                <input type="number" id="veg_price" name="veg_price" class="form-control form-control-lg bg-light border-0" value="{{ vendor.veg_price }}" style="border-radius: 10px;">
+                                            </div>
+                                            <div class="form-group col-md-6 mb-4">
+                                                <label for="non_veg_price" class="font-weight-bold text-dark small text-uppercase">Non-Veg Plate Price (₹)</label>
+                                                <input type="number" id="non_veg_price" name="non_veg_price" class="form-control form-control-lg bg-light border-0" value="{{ vendor.non_veg_price }}" style="border-radius: 10px;">
+                                            </div>
+                                        </div>
+                                        <div class="form-row">
+                                            <div class="form-group col-md-6 mb-4">
+                                                <label for="capacity" class="font-weight-bold text-dark small text-uppercase">Total Capacity (Pax)</label>
+                                                <input type="number" id="capacity" name="capacity" class="form-control form-control-lg bg-light border-0" value="{{ vendor.capacity }}" style="border-radius: 10px;">
+                                            </div>
+                                            <div class="form-group col-md-6 mb-4">
+                                                <label for="rooms" class="font-weight-bold text-dark small text-uppercase">Available Rooms</label>
+                                                <input type="number" id="rooms" name="rooms" class="form-control form-control-lg bg-light border-0" value="{{ vendor.rooms }}" style="border-radius: 10px;">
+                                            </div>
+                                        </div>
+                                        {% endif %}
+
+                                        <hr class="my-4 border-light">
+                                        <div class="form-group mb-0">
+                                            <label for="amenities" class="font-weight-bold text-dark small text-uppercase">Provided Amenities & Offerings</label>
+                                            <input type="text" id="amenities" name="amenities" class="form-control form-control-lg bg-light border-0" value="{{ vendor.amenities }}" placeholder="E.g., Drone Shoot, Cinematic Video OR AC, Parking, DJ" style="border-radius: 10px;">
+                                            <small class="form-text text-muted mt-2"><i class="fe fe-info text-primary"></i> Separate items with commas.</small>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Policies -->
+                            <div class="tab-pane fade" id="v-pills-policies" role="tabpanel" aria-labelledby="v-pills-policies-tab">
+                                <div class="card shadow-sm border-0 mb-4" style="border-radius: 16px;">
+                                    <div class="card-header bg-white border-0 pt-4 pb-0 px-4 px-md-5">
+                                        <h4 class="font-weight-bold text-dark mb-0">Business Policies</h4>
+                                        <p class="text-muted small">Transparency helps build trust with couples before they even contact you.</p>
+                                    </div>
+                                    <div class="card-body p-4 p-md-5">
+                                        <div class="form-group mb-4">
+                                            <label for="payment_terms" class="font-weight-bold text-dark small text-uppercase">Payment Terms</label>
+                                            <textarea class="form-control form-control-lg bg-light border-0" id="payment_terms" name="payment_terms" rows="3" style="border-radius: 10px;" placeholder="E.g., 50% advance to book, 50% on the day of the event.">{{ vendor.payment_terms }}</textarea>
+                                        </div>
+                                        <div class="form-group mb-4">
+                                            <label for="cancellation_policy" class="font-weight-bold text-dark small text-uppercase">Cancellation Policy</label>
+                                            <textarea class="form-control form-control-lg bg-light border-0" id="cancellation_policy" name="cancellation_policy" rows="3" style="border-radius: 10px;" placeholder="E.g., Non-refundable advance. Or, 100% refund if cancelled 30 days prior.">{{ vendor.cancellation_policy }}</textarea>
+                                        </div>
+                                        <div class="form-group mb-0">
+                                            <label for="travel_policy" class="font-weight-bold text-dark small text-uppercase">Travel & Outstation Policy</label>
+                                            <textarea class="form-control form-control-lg bg-light border-0" id="travel_policy" name="travel_policy" rows="3" style="border-radius: 10px;" placeholder="E.g., Client bears travel and accommodation charges for outstation weddings.">{{ vendor.travel_policy }}</textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Web & Social -->
+                            <div class="tab-pane fade" id="v-pills-web" role="tabpanel" aria-labelledby="v-pills-web-tab">
+                                <div class="card shadow-sm border-0 mb-4" style="border-radius: 16px;">
+                                    <div class="card-header bg-white border-0 pt-4 pb-0 px-4 px-md-5">
+                                        <h4 class="font-weight-bold text-dark mb-0">Web & Social Presence</h4>
+                                        <p class="text-muted small">Connect your external platforms to drive more traffic.</p>
+                                    </div>
+                                    <div class="card-body p-4 p-md-5">
+                                        <div class="form-group mb-4">
+                                            <label for="website_link" class="font-weight-bold text-dark small text-uppercase">Website URL</label>
+                                            <div class="input-group input-group-lg">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text bg-light border-0 text-muted"><i class="fe fe-globe"></i></span>
+                                                </div>
+                                                <input type="url" id="website_link" name="website_link" class="form-control bg-light border-0" value="{{ vendor.website_link|default:'' }}" placeholder="https://..." style="border-radius: 0 10px 10px 0;">
+                                            </div>
+                                        </div>
+                                        <div class="form-row">
+                                            <div class="form-group col-md-6 mb-4">
+                                                <label for="instagram_link" class="font-weight-bold text-dark small text-uppercase">Instagram URL</label>
+                                                <div class="input-group input-group-lg">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text bg-light border-0 text-danger"><i class="fe fe-instagram"></i></span>
+                                                    </div>
+                                                    <input type="url" id="instagram_link" name="instagram_link" class="form-control bg-light border-0" value="{{ vendor.instagram_link|default:'' }}" placeholder="https://instagram.com/..." style="border-radius: 0 10px 10px 0;">
+                                                </div>
+                                            </div>
+                                            <div class="form-group col-md-6 mb-4">
+                                                <label for="facebook_link" class="font-weight-bold text-dark small text-uppercase">Facebook URL</label>
+                                                <div class="input-group input-group-lg">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text bg-light border-0 text-primary"><i class="fe fe-facebook"></i></span>
+                                                    </div>
+                                                    <input type="url" id="facebook_link" name="facebook_link" class="form-control bg-light border-0" value="{{ vendor.facebook_link|default:'' }}" placeholder="https://facebook.com/..." style="border-radius: 0 10px 10px 0;">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group mb-0">
+                                            <label for="map_link" class="font-weight-bold text-dark small text-uppercase">Google Maps Embed URL</label>
+                                            <div class="input-group input-group-lg">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text bg-light border-0 text-muted"><i class="fe fe-map-pin"></i></span>
+                                                </div>
+                                                <input type="url" id="map_link" name="map_link" class="form-control bg-light border-0" value="{{ vendor.map_link }}" placeholder="https://google.com/maps/embed/..." style="border-radius: 0 10px 10px 0;">
+                                            </div>
+                                            <small class="form-text text-muted mt-2"><i class="fe fe-info text-primary"></i> Paste the "Embed a map" URL from Google Maps to show your location on your profile.</small>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Portfolio -->
+                            <div class="tab-pane fade" id="v-pills-portfolio" role="tabpanel" aria-labelledby="v-pills-portfolio-tab">
+                                <div class="card shadow-sm border-0 mb-4" style="border-radius: 16px;">
+                                    <div class="card-header bg-white border-0 pt-4 pb-0 px-4 px-md-5">
+                                        <h4 class="font-weight-bold text-dark mb-0">Portfolio Gallery</h4>
+                                        <p class="text-muted small">High-quality photos increase bookings by up to 60%.</p>
+                                    </div>
+                                    <div class="card-body p-4 p-md-5">
+                                        <div class="upload-area p-5 text-center bg-light mb-4" style="border: 2px dashed #ccc; border-radius: 16px; cursor: pointer; transition: all 0.3s;" onmouseover="this.style.borderColor='#e72e77'; this.style.backgroundColor='#fdf1f5'" onmouseout="this.style.borderColor='#ccc'; this.style.backgroundColor='#f8f9fa'" onclick="document.getElementById('galleryFiles').click()">
+                                            <i class="fe fe-upload-cloud fe-32 text-primary mb-3"></i>
+                                            <h5 class="text-dark font-weight-bold">Click to upload photos</h5>
+                                            <p class="text-muted small mb-0">Supports JPG, PNG (Max 5MB each)</p>
+                                            <input type="file" name="gallery_images" class="d-none" id="galleryFiles" multiple accept="image/*">
+                                        </div>
+                                        
+                                        <div id="preview-container" class="d-flex flex-wrap mb-4" style="gap: 10px;"></div>
+                                        
+                                        {% if gallery %}
+                                        <hr class="my-4 border-light">
+                                        <h6 class="font-weight-bold text-dark mb-3">Live Portfolio ({{ gallery.count }} photos)</h6>
+                                        <div class="row">
+                                            {% for img in gallery %}
+                                            <div class="col-6 col-md-4 col-lg-3 mb-4">
+                                                <div class="position-relative shadow-sm" style="border-radius: 12px; overflow: hidden; border: 1px solid #eee;">
+                                                    <img src="{{ img.image.url }}" class="w-100" style="height: 140px; object-fit: cover;">
+                                                    <button type="button" class="btn btn-sm btn-danger position-absolute" style="top: 8px; right: 8px; border-radius: 8px; opacity: 0.9;" title="Delete Image">
+                                                        <i class="fe fe-trash-2"></i>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                            {% endfor %}
+                                        </div>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Sticky Save Button -->
+                        <div class="card shadow-sm border-0" style="border-radius: 16px; position: sticky; bottom: 20px; z-index: 100;">
+                            <div class="card-body d-flex flex-column flex-md-row justify-content-between align-items-center p-4">
+                                <div class="mb-3 mb-md-0">
+                                    <h6 class="mb-0 text-dark font-weight-bold">Ready to update your storefront?</h6>
+                                    <small class="text-muted">Changes will be visible to couples immediately.</small>
+                                </div>
+                                <button type="submit" class="btn btn-primary btn-lg px-5 shadow-sm" style="border-radius: 10px; font-weight: 600;">
+                                    <i class="fe fe-save mr-2"></i> Save Profile
+                                </button>
+                            </div>
+                        </div>
+                        
+                    </div>
+                </div>
+            </form>
         </div>
-      </form>
     </div>
-  </div>
 </div>
 
 {% endblock %}
@@ -178,7 +319,12 @@
         if (input.files && input.files[0]) {
             var reader = new FileReader();
             reader.onload = function(e) {
-                document.querySelector('.avatar-img').src = e.target.result;
+                var img = document.querySelector('.avatar-img');
+                if (img.tagName.toLowerCase() === 'img') {
+                    img.src = e.target.result;
+                } else {
+                    img.outerHTML = '<img src="' + e.target.result + '" alt="Profile" class="avatar-img rounded-circle border shadow-sm" style="width: 150px; height: 150px; object-fit: cover; border-width: 5px !important; border-color: #fff !important; background: white;">';
+                }
             }
             reader.readAsDataURL(input.files[0]);
         }
@@ -187,14 +333,6 @@
     // Gallery Live Preview
     $('#galleryFiles').on('change', function() {
         let files = $(this)[0].files;
-        if (files.length > 1) {
-            $(this).next('.custom-file-label').html(files.length + ' photos selected');
-        } else if (files.length == 1) {
-            $(this).next('.custom-file-label').html(files[0].name);
-        } else {
-            $(this).next('.custom-file-label').html('Choose multiple files...');
-        }
-
         let previewContainer = $('#preview-container');
         previewContainer.empty();
         
@@ -202,16 +340,32 @@
             $.each(files, function(index, file) {
                 let reader = new FileReader();
                 reader.onload = function(e) {
+                    let wrapper = $('<div/>', { class: 'position-relative shadow-sm', style: 'border-radius: 10px; overflow: hidden; width: 100px; height: 100px;' });
                     let img = $('<img/>', {
                         src: e.target.result,
-                        class: 'rounded shadow-sm',
-                        style: 'height: 80px; width: 80px; object-fit: cover; margin-right: 10px;'
+                        class: 'w-100 h-100',
+                        style: 'object-fit: cover;'
                     });
-                    previewContainer.append(img);
+                    wrapper.append(img);
+                    previewContainer.append(wrapper);
                 }
                 reader.readAsDataURL(file);
             });
         }
     });
 </script>
+<style>
+    .nav-pills .nav-link {
+        color: #495057;
+        background-color: transparent;
+    }
+    .nav-pills .nav-link.active, .nav-pills .show>.nav-link {
+        color: #fff;
+        background-color: #e72e77;
+    }
+    .form-control:focus {
+        border-color: #e72e77;
+        box-shadow: 0 0 0 0.2rem rgba(231, 46, 119, 0.25);
+    }
+</style>
 {% endblock %}
