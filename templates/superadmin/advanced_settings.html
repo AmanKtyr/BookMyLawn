@@ -2,96 +2,141 @@
 {% load static %}
 
 {% block content %}
-<div class="row mb-4 align-items-center">
-    <div class="col-md-6">
-        <h2 class="h3 mb-0 text-gray-800">Advanced Site Settings</h2>
-        <p class="text-muted mb-0">Manage global configurations for the BookMyLawn platform.</p>
-    </div>
-</div>
-
-<div class="row">
-    <div class="col-xl-8 col-lg-10">
-        <div class="card shadow mb-4">
-            <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                <h6 class="m-0 font-weight-bold text-primary"><i class="fas fa-cogs mr-2"></i> Global Configurations</h6>
-            </div>
-            <div class="card-body">
-                <form method="POST" action="{% url 'superadmin_advanced_settings' %}">
-                    {% csrf_token %}
-                    
-                    <h5 class="text-gray-800 mb-3 border-bottom pb-2">1. General Information</h5>
-                    <div class="form-group row">
-                        <label class="col-sm-3 col-form-label font-weight-bold">Site Title</label>
-                        <div class="col-sm-9">
-                            <input type="text" class="form-control" name="site_title" value="{{ setting.site_title }}" required>
-                            <small class="text-muted">The main brand name displayed across the site.</small>
-                        </div>
-                    </div>
-                    
-                    <h5 class="text-gray-800 mt-4 mb-3 border-bottom pb-2">2. Contact Details</h5>
-                    <div class="form-group row">
-                        <label class="col-sm-3 col-form-label font-weight-bold">Contact Email</label>
-                        <div class="col-sm-9">
-                            <input type="email" class="form-control" name="contact_email" value="{{ setting.contact_email }}" required>
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <label class="col-sm-3 col-form-label font-weight-bold">Phone Number</label>
-                        <div class="col-sm-9">
-                            <input type="text" class="form-control" name="contact_phone" value="{{ setting.contact_phone }}" required>
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <label class="col-sm-3 col-form-label font-weight-bold">Headquarters Address</label>
-                        <div class="col-sm-9">
-                            <textarea class="form-control" name="address" rows="3">{{ setting.address }}</textarea>
-                        </div>
-                    </div>
-
-                    <h5 class="text-gray-800 mt-4 mb-3 border-bottom pb-2">3. Social Media Links</h5>
-                    <div class="form-group row">
-                        <label class="col-sm-3 col-form-label font-weight-bold"><i class="fab fa-facebook text-primary"></i> Facebook</label>
-                        <div class="col-sm-9">
-                            <input type="url" class="form-control" name="facebook_link" value="{{ setting.facebook_link|default:'' }}" placeholder="https://facebook.com/...">
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <label class="col-sm-3 col-form-label font-weight-bold"><i class="fab fa-instagram text-danger"></i> Instagram</label>
-                        <div class="col-sm-9">
-                            <input type="url" class="form-control" name="instagram_link" value="{{ setting.instagram_link|default:'' }}" placeholder="https://instagram.com/...">
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <label class="col-sm-3 col-form-label font-weight-bold"><i class="fab fa-twitter text-info"></i> Twitter</label>
-                        <div class="col-sm-9">
-                            <input type="url" class="form-control" name="twitter_link" value="{{ setting.twitter_link|default:'' }}" placeholder="https://twitter.com/...">
-                        </div>
-                    </div>
-
-                    <h5 class="text-gray-800 mt-4 mb-3 border-bottom pb-2">4. System Controls</h5>
-                    <div class="form-group row">
-                        <label class="col-sm-3 col-form-label font-weight-bold">Maintenance Mode</label>
-                        <div class="col-sm-9 d-flex align-items-center">
-                            <div class="custom-control custom-switch">
-                                <input type="checkbox" class="custom-control-input" id="maintenanceMode" name="maintenance_mode" {% if setting.maintenance_mode %}checked{% endif %}>
-                                <label class="custom-control-label" for="maintenanceMode">Enable (Shows "Site under maintenance" to users)</label>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="form-group row mt-5">
-                        <div class="col-sm-9 offset-sm-3">
-                            <button type="submit" class="btn btn-primary btn-icon-split btn-lg">
-                                <span class="icon text-white-50">
-                                    <i class="fas fa-save"></i>
-                                </span>
-                                <span class="text">Save Global Settings</span>
-                            </button>
-                        </div>
-                    </div>
-                </form>
-            </div>
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-12">
+      <div class="row align-items-center mb-4">
+        <div class="col">
+          <h2 class="h3 mb-0 page-title">Global Settings</h2>
+          <p class="text-muted">Manage global configurations and preferences for BookMyLawn.</p>
         </div>
-    </div>
-</div>
+      </div>
+      
+      <div class="card shadow mb-4">
+        <div class="card-body p-5">
+          <form method="POST" action="{% url 'superadmin_advanced_settings' %}">
+            {% csrf_token %}
+            
+            <ul class="nav nav-pills nav-fill mb-5" id="settingsTab" role="tablist">
+              <li class="nav-item">
+                <a class="nav-link active" id="general-tab" data-toggle="tab" href="#general" role="tab" aria-controls="general" aria-selected="true"><i class="fe fe-globe mr-2"></i>General</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" id="contact-tab" data-toggle="tab" href="#contact" role="tab" aria-controls="contact" aria-selected="false"><i class="fe fe-phone-call mr-2"></i>Contact</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" id="social-tab" data-toggle="tab" href="#social" role="tab" aria-controls="social" aria-selected="false"><i class="fe fe-share-2 mr-2"></i>Social Media</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" id="system-tab" data-toggle="tab" href="#system" role="tab" aria-controls="system" aria-selected="false"><i class="fe fe-sliders mr-2"></i>System</a>
+              </li>
+            </ul>
+            
+            <div class="tab-content mb-4" id="settingsTabContent">
+              <!-- General Tab -->
+              <div class="tab-pane fade show active" id="general" role="tabpanel" aria-labelledby="general-tab">
+                <h5 class="mb-4 text-primary">Brand Information</h5>
+                <div class="form-group mb-3">
+                  <label for="site_title" class="font-weight-bold">Site Title</label>
+                  <input type="text" class="form-control form-control-lg" id="site_title" name="site_title" value="{{ setting.site_title }}" required>
+                  <small class="text-muted mt-2 d-block">The main brand name displayed across the site headers, footers, and SEO tags.</small>
+                </div>
+              </div>
+              
+              <!-- Contact Tab -->
+              <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">
+                <h5 class="mb-4 text-primary">Contact Information</h5>
+                <div class="form-row">
+                  <div class="form-group col-md-6 mb-4">
+                    <label for="contact_email" class="font-weight-bold">Support Email</label>
+                    <div class="input-group input-group-lg">
+                      <div class="input-group-prepend">
+                        <span class="input-group-text bg-white"><i class="fe fe-mail text-muted"></i></span>
+                      </div>
+                      <input type="email" class="form-control border-left-0" id="contact_email" name="contact_email" value="{{ setting.contact_email }}" required>
+                    </div>
+                  </div>
+                  <div class="form-group col-md-6 mb-4">
+                    <label for="contact_phone" class="font-weight-bold">Contact Phone</label>
+                    <div class="input-group input-group-lg">
+                      <div class="input-group-prepend">
+                        <span class="input-group-text bg-white"><i class="fe fe-phone text-muted"></i></span>
+                      </div>
+                      <input type="text" class="form-control border-left-0" id="contact_phone" name="contact_phone" value="{{ setting.contact_phone }}" required>
+                    </div>
+                  </div>
+                </div>
+                <div class="form-group mb-4">
+                  <label for="address" class="font-weight-bold">Headquarters Address</label>
+                  <textarea class="form-control" id="address" name="address" rows="3">{{ setting.address }}</textarea>
+                </div>
+              </div>
+              
+              <!-- Social Tab -->
+              <div class="tab-pane fade" id="social" role="tabpanel" aria-labelledby="social-tab">
+                <h5 class="mb-2 text-primary">Social Media Links</h5>
+                <p class="text-muted small mb-4">Connect your official social accounts. Leave blank to hide the icon from the footer.</p>
+                <div class="form-group mb-4">
+                  <label for="facebook_link" class="font-weight-bold">Facebook URL</label>
+                  <div class="input-group input-group-lg">
+                    <div class="input-group-prepend">
+                      <span class="input-group-text bg-white"><i class="fe fe-facebook text-primary"></i></span>
+                    </div>
+                    <input type="url" class="form-control border-left-0" id="facebook_link" name="facebook_link" value="{{ setting.facebook_link|default:'' }}" placeholder="https://facebook.com/...">
+                  </div>
+                </div>
+                <div class="form-group mb-4">
+                  <label for="instagram_link" class="font-weight-bold">Instagram URL</label>
+                  <div class="input-group input-group-lg">
+                    <div class="input-group-prepend">
+                      <span class="input-group-text bg-white"><i class="fe fe-instagram text-danger"></i></span>
+                    </div>
+                    <input type="url" class="form-control border-left-0" id="instagram_link" name="instagram_link" value="{{ setting.instagram_link|default:'' }}" placeholder="https://instagram.com/...">
+                  </div>
+                </div>
+                <div class="form-group mb-4">
+                  <label for="twitter_link" class="font-weight-bold">Twitter URL</label>
+                  <div class="input-group input-group-lg">
+                    <div class="input-group-prepend">
+                      <span class="input-group-text bg-white"><i class="fe fe-twitter text-info"></i></span>
+                    </div>
+                    <input type="url" class="form-control border-left-0" id="twitter_link" name="twitter_link" value="{{ setting.twitter_link|default:'' }}" placeholder="https://twitter.com/...">
+                  </div>
+                </div>
+              </div>
+              
+              <!-- System Controls Tab -->
+              <div class="tab-pane fade" id="system" role="tabpanel" aria-labelledby="system-tab">
+                <h5 class="mb-4 text-primary">Platform Maintenance</h5>
+                <div class="list-group list-group-flush mb-4 shadow-sm border rounded">
+                  <div class="list-group-item d-flex align-items-center py-4">
+                    <div class="mr-auto">
+                      <strong class="h6 mb-1 d-block">Maintenance Mode</strong>
+                      <p class="mb-0 text-muted small">Enable this when you are performing major updates. Users will see a beautiful maintenance page instead of the site.</p>
+                    </div>
+                    <div class="custom-control custom-switch custom-switch-lg ml-3">
+                      <input type="checkbox" class="custom-control-input" id="maintenanceMode" name="maintenance_mode" {% if setting.maintenance_mode %}checked{% endif %}>
+                      <label class="custom-control-label" for="maintenanceMode"></label>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <hr class="my-4">
+            <div class="row align-items-center">
+              <div class="col">
+                <small class="text-muted"><i class="fe fe-clock mr-1"></i> Last updated: {{ setting.updated_at|date:"M d, Y, h:i a" }}</small>
+              </div>
+              <div class="col-auto">
+                <button type="submit" class="btn btn-primary btn-lg px-5 shadow-sm">Save Changes</button>
+              </div>
+            </div>
+          </form>
+        </div> <!-- /.card-body -->
+      </div> <!-- /.card -->
+      
+    </div> <!-- /.col-12 -->
+  </div> <!-- /.row -->
+</div> <!-- /.container-fluid -->
 {% endblock %}
