@@ -6,20 +6,20 @@
 {% block content %}
 <style>
     .vendor-search-header {
-        background: linear-gradient(135deg, #fffafb 0%, #fdf1f5 100%);
+        background: linear-gradient(135deg, var(--theme-color-light) 0%, var(--color-bg-subtle) 100%);
         padding: 60px 0 40px;
-        border-bottom: 1px solid #ffccdc;
+        border-bottom: 1px solid var(--theme-color-border);
     }
     .vendor-search-header h1 {
-        font-family: 'Playfair Display', serif;
+        font-family: var(--font-heading);
         font-weight: 700;
-        color: #333;
+        color: var(--color-dark);
     }
     .search-bar-container {
-        background: white;
-        border-radius: 50px;
+        background: var(--color-bg-card);
+        border-radius: var(--radius-pill);
         padding: 10px;
-        box-shadow: 0 10px 30px rgba(231, 46, 119, 0.1);
+        box-shadow: var(--shadow-md);
         display: flex;
         align-items: center;
         margin-top: 30px;
@@ -29,13 +29,13 @@
         display: flex;
         align-items: center;
         padding: 0 20px;
-        border-right: 1px solid #eee;
+        border-right: 1px solid var(--color-border);
     }
     .search-input-group:last-of-type {
         border-right: none;
     }
     .search-input-group i {
-        color: #e72e77;
+        color: var(--theme-color);
         font-size: 20px;
         margin-right: 15px;
     }
@@ -45,30 +45,52 @@
         width: 100%;
         font-size: 16px;
         background: transparent;
-        color: #333;
+        color: var(--color-dark);
     }
     .btn-search-main {
-        background: #e72e77;
+        background: var(--theme-color);
         color: white;
-        border-radius: 40px;
+        border-radius: var(--radius-pill);
         padding: 15px 40px;
         font-weight: 700;
         font-size: 16px;
         border: none;
-        transition: 0.3s;
+        transition: var(--transition);
     }
     .btn-search-main:hover {
-        background: #c2185b;
+        background: var(--theme-color-dark);
         transform: translateY(-2px);
     }
     
     /* Sidebar styling */
     .filter-sidebar {
-        background: white;
-        border-radius: 15px;
+        background: var(--color-bg-card);
+        border-radius: var(--radius-lg);
         padding: 25px;
-        box-shadow: 0 5px 20px rgba(0,0,0,0.05);
-        border: 1px solid #f0f0f0;
+        box-shadow: var(--shadow-sm);
+        border: 1px solid var(--color-border-light);
+        height: max-content;
+        max-height: calc(100vh - 120px);
+        overflow-y: auto;
+    }
+    .sticky-filter-wrapper {
+        position: sticky;
+        top: 100px;
+        z-index: 99;
+    }
+    /* Custom thin scrollbar for the filter sidebar */
+    .filter-sidebar::-webkit-scrollbar {
+        width: 5px;
+    }
+    .filter-sidebar::-webkit-scrollbar-track {
+        background: transparent;
+    }
+    .filter-sidebar::-webkit-scrollbar-thumb {
+        background: var(--color-border);
+        border-radius: 10px;
+    }
+    .filter-sidebar::-webkit-scrollbar-thumb:hover {
+        background: var(--color-text-light);
     }
     .filter-group {
         margin-bottom: 25px;
@@ -77,30 +99,30 @@
         font-weight: 700;
         font-size: 16px;
         margin-bottom: 15px;
-        color: #333;
+        color: var(--color-dark);
         display: flex;
         justify-content: space-between;
         align-items: center;
     }
     .custom-control-label {
-        color: #555;
+        color: var(--color-muted);
         cursor: pointer;
     }
     
     /* Premium Vendor Card */
     .vendor-card {
-        background: white;
-        border-radius: 15px;
+        background: var(--color-bg-card);
+        border-radius: var(--radius-lg);
         overflow: hidden;
-        box-shadow: 0 5px 20px rgba(0,0,0,0.05);
-        border: 1px solid #f0f0f0;
-        transition: all 0.3s ease;
+        box-shadow: var(--shadow-sm);
+        border: 1px solid var(--color-border-light);
+        transition: var(--transition);
         margin-bottom: 30px;
         position: relative;
     }
     .vendor-card:hover {
         transform: translateY(-10px);
-        box-shadow: 0 15px 30px rgba(231, 46, 119, 0.15);
+        box-shadow: var(--shadow-card-hover);
     }
     .vendor-card-img {
         height: 220px;
@@ -121,12 +143,12 @@
         top: 15px;
         left: 15px;
         background: rgba(255, 255, 255, 0.95);
-        color: #333;
+        color: var(--color-dark);
         padding: 5px 12px;
-        border-radius: 20px;
+        border-radius: var(--radius-pill);
         font-size: 12px;
         font-weight: 700;
-        box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        box-shadow: var(--shadow-sm);
         z-index: 2;
     }
     .vendor-badge.premium {
@@ -144,15 +166,15 @@
         display: flex;
         align-items: center;
         justify-content: center;
-        color: #ccc;
+        color: var(--color-border);
         font-size: 18px;
-        box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        box-shadow: var(--shadow-sm);
         z-index: 2;
-        transition: 0.3s;
+        transition: var(--transition);
         border: none;
     }
     .wishlist-btn:hover, .wishlist-btn.active {
-        color: #e72e77;
+        color: var(--theme-color);
     }
     .vendor-card-body {
         padding: 20px;
@@ -160,16 +182,16 @@
     .vendor-title {
         font-weight: 700;
         font-size: 18px;
-        color: #333;
+        color: var(--color-dark);
         margin-bottom: 5px;
         text-decoration: none;
         display: block;
     }
     .vendor-title:hover {
-        color: #e72e77;
+        color: var(--theme-color);
     }
     .vendor-location {
-        color: #777;
+        color: var(--color-muted);
         font-size: 14px;
         margin-bottom: 10px;
     }
@@ -183,13 +205,13 @@
         background: #008000;
         color: white;
         padding: 3px 8px;
-        border-radius: 5px;
+        border-radius: var(--radius-sm);
         font-weight: 700;
         font-size: 12px;
     }
     .vendor-price-divider {
         height: 1px;
-        background: #eee;
+        background: var(--color-border-light);
         margin: 15px 0;
     }
     .vendor-price {
@@ -200,27 +222,27 @@
     .price-value {
         font-size: 18px;
         font-weight: 700;
-        color: #333;
+        color: var(--color-dark);
     }
     .btn-request {
-        border: 1px solid #e72e77;
-        color: #e72e77;
+        border: 1px solid var(--theme-color);
+        color: var(--theme-color);
         background: transparent;
         padding: 6px 15px;
-        border-radius: 5px;
+        border-radius: var(--radius-sm);
         font-size: 13px;
         font-weight: 600;
-        transition: 0.3s;
+        transition: var(--transition);
     }
     .btn-request:hover {
-        background: #e72e77;
+        background: var(--theme-color);
         color: white;
     }
 </style>
 
 <!-- Hero Search Section -->
 <section class="vendor-search-header">
-    <div class="container">
+    <div class="container-fluid px-lg-5">
         <div class="row justify-content-center">
             <div class="col-lg-10 text-center">
                 <h1>Find The Best Wedding Vendors</h1>
@@ -253,7 +275,7 @@
 
 <!-- Breadcrumb -->
 <div class="bg-light py-2">
-    <div class="container">
+    <div class="container-fluid px-lg-5">
         <div class="small text-muted">
             <a href="{% url 'index' %}" class="text-muted">Home</a> <i class="fa fa-angle-right mx-2"></i> 
             <span class="font-weight-bold">Vendors</span>
@@ -263,11 +285,11 @@
 </div>
 
 <section class="py-5">
-    <div class="container">
+    <div class="container-fluid px-lg-5">
         <div class="row">
             <!-- Sidebar Filters -->
             <div class="col-lg-3 mb-4">
-                <form id="filterForm" method="GET" action="{% url 'vendors' %}">
+                <form id="filterForm" method="GET" action="{% url 'vendors' %}" class="sticky-filter-wrapper">
                     <!-- Preserve existing search params -->
                     <input type="hidden" name="city" value="{{ selected_city|default:'' }}">
                     <input type="hidden" name="q" value="{{ request.GET.q|default:'' }}">
