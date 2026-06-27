@@ -1,207 +1,428 @@
 {% extends 'website/base.html' %}
 {% load static %}
 
-{% block content %}
+{% block title %}Search Wedding Vendors | BookMyLawn{% endblock %}
 
-    <!-- Breadcrumb Begin -->
-    <div class="breadcrumb-option">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-12">
-                    <div class="breadcrumb__links">
-                        <a href="/"><i class="fa fa-home"></i> Home</a>
-                        <span>Vendors</span>
+{% block content %}
+<style>
+    .vendor-search-header {
+        background: linear-gradient(135deg, #fffafb 0%, #fdf1f5 100%);
+        padding: 60px 0 40px;
+        border-bottom: 1px solid #ffccdc;
+    }
+    .vendor-search-header h1 {
+        font-family: 'Playfair Display', serif;
+        font-weight: 700;
+        color: #333;
+    }
+    .search-bar-container {
+        background: white;
+        border-radius: 50px;
+        padding: 10px;
+        box-shadow: 0 10px 30px rgba(231, 46, 119, 0.1);
+        display: flex;
+        align-items: center;
+        margin-top: 30px;
+    }
+    .search-input-group {
+        flex: 1;
+        display: flex;
+        align-items: center;
+        padding: 0 20px;
+        border-right: 1px solid #eee;
+    }
+    .search-input-group:last-of-type {
+        border-right: none;
+    }
+    .search-input-group i {
+        color: #e72e77;
+        font-size: 20px;
+        margin-right: 15px;
+    }
+    .search-input-group input, .search-input-group select {
+        border: none;
+        outline: none;
+        width: 100%;
+        font-size: 16px;
+        background: transparent;
+        color: #333;
+    }
+    .btn-search-main {
+        background: #e72e77;
+        color: white;
+        border-radius: 40px;
+        padding: 15px 40px;
+        font-weight: 700;
+        font-size: 16px;
+        border: none;
+        transition: 0.3s;
+    }
+    .btn-search-main:hover {
+        background: #c2185b;
+        transform: translateY(-2px);
+    }
+    
+    /* Sidebar styling */
+    .filter-sidebar {
+        background: white;
+        border-radius: 15px;
+        padding: 25px;
+        box-shadow: 0 5px 20px rgba(0,0,0,0.05);
+        border: 1px solid #f0f0f0;
+    }
+    .filter-group {
+        margin-bottom: 25px;
+    }
+    .filter-title {
+        font-weight: 700;
+        font-size: 16px;
+        margin-bottom: 15px;
+        color: #333;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+    .custom-control-label {
+        color: #555;
+        cursor: pointer;
+    }
+    
+    /* Premium Vendor Card */
+    .vendor-card {
+        background: white;
+        border-radius: 15px;
+        overflow: hidden;
+        box-shadow: 0 5px 20px rgba(0,0,0,0.05);
+        border: 1px solid #f0f0f0;
+        transition: all 0.3s ease;
+        margin-bottom: 30px;
+        position: relative;
+    }
+    .vendor-card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 15px 30px rgba(231, 46, 119, 0.15);
+    }
+    .vendor-card-img {
+        height: 220px;
+        position: relative;
+        overflow: hidden;
+    }
+    .vendor-card-img img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.5s ease;
+    }
+    .vendor-card:hover .vendor-card-img img {
+        transform: scale(1.05);
+    }
+    .vendor-badge {
+        position: absolute;
+        top: 15px;
+        left: 15px;
+        background: rgba(255, 255, 255, 0.95);
+        color: #333;
+        padding: 5px 12px;
+        border-radius: 20px;
+        font-size: 12px;
+        font-weight: 700;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        z-index: 2;
+    }
+    .vendor-badge.premium {
+        background: linear-gradient(135deg, #FFD700 0%, #FDB931 100%);
+        color: #000;
+    }
+    .wishlist-btn {
+        position: absolute;
+        top: 15px;
+        right: 15px;
+        background: white;
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #ccc;
+        font-size: 18px;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        z-index: 2;
+        transition: 0.3s;
+        border: none;
+    }
+    .wishlist-btn:hover, .wishlist-btn.active {
+        color: #e72e77;
+    }
+    .vendor-card-body {
+        padding: 20px;
+    }
+    .vendor-title {
+        font-weight: 700;
+        font-size: 18px;
+        color: #333;
+        margin-bottom: 5px;
+        text-decoration: none;
+        display: block;
+    }
+    .vendor-title:hover {
+        color: #e72e77;
+    }
+    .vendor-location {
+        color: #777;
+        font-size: 14px;
+        margin-bottom: 10px;
+    }
+    .vendor-rating {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin-bottom: 15px;
+    }
+    .rating-box {
+        background: #008000;
+        color: white;
+        padding: 3px 8px;
+        border-radius: 5px;
+        font-weight: 700;
+        font-size: 12px;
+    }
+    .vendor-price-divider {
+        height: 1px;
+        background: #eee;
+        margin: 15px 0;
+    }
+    .vendor-price {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+    .price-value {
+        font-size: 18px;
+        font-weight: 700;
+        color: #333;
+    }
+    .btn-request {
+        border: 1px solid #e72e77;
+        color: #e72e77;
+        background: transparent;
+        padding: 6px 15px;
+        border-radius: 5px;
+        font-size: 13px;
+        font-weight: 600;
+        transition: 0.3s;
+    }
+    .btn-request:hover {
+        background: #e72e77;
+        color: white;
+    }
+</style>
+
+<!-- Hero Search Section -->
+<section class="vendor-search-header">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-10 text-center">
+                <h1>Find The Best Wedding Vendors</h1>
+                <p class="text-muted mt-2 font-size-18">Browse through thousands of trusted wedding service providers</p>
+                
+                <form method="GET" action="{% url 'vendors' %}" class="search-bar-container">
+                    <div class="search-input-group">
+                        <i class="fa fa-map-marker"></i>
+                        <input type="text" name="city" placeholder="Select City" value="{{ selected_city|default:'' }}">
                     </div>
-                </div>
+                    <div class="search-input-group">
+                        <i class="fa fa-list"></i>
+                        <select name="category">
+                            <option value="">All Categories</option>
+                            {% for cat in categories %}
+                            <option value="{{ cat.slug }}" {% if request.GET.category == cat.slug %}selected{% endif %}>{{ cat.name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="search-input-group">
+                        <i class="fa fa-search"></i>
+                        <input type="text" name="q" placeholder="Search by name..." value="{{ request.GET.q|default:'' }}">
+                    </div>
+                    <button type="submit" class="btn-search-main">Search</button>
+                </form>
             </div>
         </div>
     </div>
-    <!-- Breadcrumb End -->
+</section>
 
-    <!-- Vendors Section Begin -->
-    <section class="shop spad">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-3 col-md-3">
-                    <div class="shop__sidebar">
-                        <div class="sidebar__categories">
-                            <div class="section-title">
-                                <h4>Categories</h4>
+<!-- Breadcrumb -->
+<div class="bg-light py-2">
+    <div class="container">
+        <div class="small text-muted">
+            <a href="{% url 'index' %}" class="text-muted">Home</a> <i class="fa fa-angle-right mx-2"></i> 
+            <span class="font-weight-bold">Vendors</span>
+            {% if selected_city %} <i class="fa fa-angle-right mx-2"></i> {{ selected_city }} {% endif %}
+        </div>
+    </div>
+</div>
+
+<section class="py-5">
+    <div class="container">
+        <div class="row">
+            <!-- Sidebar Filters -->
+            <div class="col-lg-3 mb-4">
+                <form id="filterForm" method="GET" action="{% url 'vendors' %}">
+                    <!-- Preserve existing search params -->
+                    <input type="hidden" name="city" value="{{ selected_city|default:'' }}">
+                    <input type="hidden" name="q" value="{{ request.GET.q|default:'' }}">
+                    
+                    <div class="filter-sidebar">
+                        <div class="d-flex justify-content-between align-items-center mb-4">
+                            <h5 class="font-weight-bold mb-0">Filters</h5>
+                            <a href="{% url 'vendors' %}" class="small text-danger">Clear All</a>
+                        </div>
+                        
+                        <div class="filter-group border-bottom pb-3">
+                            <div class="filter-title">Category</div>
+                            {% for cat in categories %}
+                            <div class="custom-control custom-radio mb-2">
+                                <input type="radio" id="cat_{{ cat.id }}" name="category" value="{{ cat.slug }}" class="custom-control-input filter-trigger" {% if request.GET.category == cat.slug %}checked{% endif %}>
+                                <label class="custom-control-label d-flex justify-content-between" for="cat_{{ cat.id }}">
+                                    <span>{{ cat.name }}</span>
+                                    <span class="text-muted small">({{ cat.vendors.count }})</span>
+                                </label>
                             </div>
-                            <div class="categories__accordion">
-                                <ul>
-                                    {% for cat in categories %}
-                                    <li>
-                                        <a href="{% url 'vendors' %}?category={{ cat.slug }}">{{ cat.name }} ({{ cat.vendors.count }})</a>
-                                    </li>
-                                    {% empty %}
-                                    <li>No categories found</li>
-                                    {% endfor %}
-                                </ul>
+                            {% endfor %}
+                        </div>
+
+                        <div class="filter-group border-bottom pb-3">
+                            <div class="filter-title">Pricing Range</div>
+                            <div class="custom-control custom-checkbox mb-2">
+                                <input type="checkbox" id="price1" class="custom-control-input filter-trigger">
+                                <label class="custom-control-label" for="price1">Under ₹50,000</label>
+                            </div>
+                            <div class="custom-control custom-checkbox mb-2">
+                                <input type="checkbox" id="price2" class="custom-control-input filter-trigger">
+                                <label class="custom-control-label" for="price2">₹50,000 - ₹1,00,000</label>
+                            </div>
+                            <div class="custom-control custom-checkbox mb-2">
+                                <input type="checkbox" id="price3" class="custom-control-input filter-trigger">
+                                <label class="custom-control-label" for="price3">₹1,00,000 - ₹3,00,000</label>
+                            </div>
+                            <div class="custom-control custom-checkbox">
+                                <input type="checkbox" id="price4" class="custom-control-input filter-trigger">
+                                <label class="custom-control-label" for="price4">Above ₹3,00,000</label>
                             </div>
                         </div>
-                        <div class="sidebar__filter mt-5">
-                            <div class="section-title">
-                                <h4>Filter by City</h4>
+                        
+                        <div class="filter-group mb-0">
+                            <div class="filter-title">Special Features</div>
+                            <div class="custom-control custom-checkbox mb-2">
+                                <input type="checkbox" id="feat1" class="custom-control-input filter-trigger">
+                                <label class="custom-control-label text-success font-weight-bold" for="feat1"><i class="fa fa-check-circle"></i> Verified Providers</label>
                             </div>
-                            <div class="filter-list">
-                                <label class="filter-item" for="mumbai">
-                                    <input type="checkbox" id="mumbai"> Mumbai
-                                </label>
-                                <label class="filter-item" for="delhi">
-                                    <input type="checkbox" id="delhi"> Delhi NCR
-                                </label>
-                                <label class="filter-item" for="bangalore">
-                                    <input type="checkbox" id="bangalore"> Bangalore
-                                </label>
-                            </div>
-                        </div>
-                        <div class="sidebar__filter mt-5">
-                            <div class="section-title">
-                                <h4>Pricing</h4>
-                            </div>
-                            <div class="filter-list">
-                                <label class="filter-item" for="budget">
-                                    <input type="checkbox" id="budget"> Budget (&lt; ₹50,000)
-                                </label>
-                                <label class="filter-item" for="premium">
-                                    <input type="checkbox" id="premium"> Premium (₹50k - ₹2L)
-                                </label>
-                                <label class="filter-item" for="luxury">
-                                    <input type="checkbox" id="luxury"> Luxury (&gt; ₹2L)
-                                </label>
+                            <div class="custom-control custom-checkbox mb-2">
+                                <input type="checkbox" id="feat2" class="custom-control-input filter-trigger">
+                                <label class="custom-control-label text-warning font-weight-bold" for="feat2"><i class="fa fa-star"></i> Premium Vendors</label>
                             </div>
                         </div>
                     </div>
+                </form>
+            </div>
+
+            <!-- Vendor Results -->
+            <div class="col-lg-9">
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <h5 class="mb-0 text-dark">Showing <strong>{{ vendors.count }}</strong> Vendors</h5>
+                    <div class="d-flex align-items-center">
+                        <span class="text-muted mr-2">Sort By:</span>
+                        <select class="form-control form-control-sm border-0 bg-light font-weight-bold" style="width: auto;">
+                            <option>Popularity</option>
+                            <option>Price: Low to High</option>
+                            <option>Price: High to Low</option>
+                            <option>Highest Rated</option>
+                        </select>
+                    </div>
                 </div>
-                <div class="col-lg-9 col-md-9">
-                    <div class="row mb-4">
-                        <div class="col-lg-12">
-                            <form method="GET" action="{% url 'vendors' %}" class="d-flex p-3 rounded" style="gap: 10px; align-items: center; background-color: #fffafb; border: 1px solid #ffccdc;">
-                                <strong style="color: var(--theme-color); font-family: var(--font-heading);">Check Availability:</strong>
-                                <input type="text" name="city" class="form-control" placeholder="City or Location" value="{{ selected_city|default:'' }}" required style="max-width: 200px;">
-                                <input type="date" name="date" class="form-control" value="{{ selected_date|default:'' }}" required style="max-width: 200px;">
-                                {% if view_type %}<input type="hidden" name="type" value="{{ view_type }}">{% endif %}
-                                {% if request.GET.category %}<input type="hidden" name="category" value="{{ request.GET.category }}">{% endif %}
-                                <button type="submit" class="btn btn-theme px-4" style="border-radius: 5px;">Filter</button>
-                                {% if selected_city and selected_date %}
-                                    <span class="ml-2 text-success"><i class="fa fa-check-circle"></i> Showing availability</span>
+
+                <div class="row">
+                    {% for vendor in vendors %}
+                    <div class="col-md-6">
+                        <div class="vendor-card">
+                            <div class="vendor-card-img">
+                                {% if vendor.is_premium %}
+                                <div class="vendor-badge premium"><i class="fa fa-crown mr-1"></i> Premium</div>
+                                {% elif vendor.is_verified %}
+                                <div class="vendor-badge"><i class="fa fa-check-circle text-success mr-1"></i> Verified</div>
                                 {% endif %}
-                            </form>
-                        </div>
-                    </div>
-                    <div class="row">
-                        {% for vendor in vendors %}
-                        <div class="col-lg-4 col-md-6">
-                            <div class="product__item vendor-card-link" data-url="{% url 'vendor_details' vendor.id %}" style="cursor: pointer; transition: transform 0.2s;" onmouseover="this.style.transform='translateY(-5px)'; this.style.boxShadow='0 10px 20px rgba(0,0,0,0.1)';" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='none';">
-                                <div class="product__item__pic set-bg"
-                                     {% if vendor.image %}style="background-image: url({{ vendor.image.url }});" data-setbg="{{ vendor.image.url }}"{% else %}style="background-image: url({% static 'website/img/product/product-1.jpg' %});" data-setbg="{% static 'website/img/product/product-1.jpg' %}"{% endif %}>
-                                    {% if vendor.is_premium %}
-                                    <div class="label new">Premium</div>
-                                    {% elif vendor.is_verified %}
-                                    <div class="label">Verified</div>
-                                    {% endif %}
-                                    
-                                    <!-- Professional Wishlist Heart Overlay -->
-                                    <div style="position: absolute; top: 15px; right: 15px; z-index: 5;">
-                                        <a href="#" class="add-to-wishlist" data-id="{{ vendor.id }}" 
-                                           style="background: white; color: var(--theme-color); width: 40px; height: 40px; line-height: 40px; border-radius: 50%; display: inline-block; text-align: center; box-shadow: 0 4px 12px rgba(0,0,0,0.12); transition: all 0.3s ease; border: none;">
-                                            <i class="fa fa-heart-o" style="font-size: 18px; vertical-align: middle;"></i>
-                                        </a>
+                                
+                                <button class="wishlist-btn add-to-wishlist" data-id="{{ vendor.id }}">
+                                    <i class="fa fa-heart"></i>
+                                </button>
+                                
+                                <a href="{% url 'vendor_details' vendor.id %}">
+                                    <img src="{% if vendor.image %}{{ vendor.image.url }}{% else %}https://images.pexels.com/photos/169190/pexels-photo-169190.jpeg?auto=compress&cs=tinysrgb&w=600{% endif %}" alt="{{ vendor.name }}">
+                                </a>
+                            </div>
+                            <div class="vendor-card-body">
+                                <div class="d-flex justify-content-between align-items-start">
+                                    <div>
+                                        <a href="{% url 'vendor_details' vendor.id %}" class="vendor-title">{{ vendor.name }}</a>
+                                        <div class="vendor-location"><i class="fa fa-map-marker text-muted mr-1"></i> {{ vendor.location }}</div>
+                                    </div>
+                                    <div class="vendor-rating">
+                                        <span class="rating-box"><i class="fa fa-star"></i> 4.8</span>
+                                        <span class="small text-muted">({{ vendor.reviews.count }})</span>
                                     </div>
                                 </div>
-                                <div class="product__item__text text-center">
-                                    <h6><a href="{% url 'vendor_details' vendor.id %}">{{ vendor.name }}</a></h6>
-                                    <div class="rating mt-2">
-                                        <i class="fa fa-star text-warning"></i>
-                                        <i class="fa fa-star text-warning"></i>
-                                        <i class="fa fa-star text-warning"></i>
-                                        <i class="fa fa-star text-warning"></i>
-                                        <i class="fa fa-star text-warning"></i>
-                                        <span class="text-muted ml-1">({{ vendor.reviews.count }} Reviews)</span>
+                                <div class="small text-muted mt-1"><i class="fa fa-tag mr-1"></i> {{ vendor.category.name }}</div>
+                                
+                                <div class="vendor-price-divider"></div>
+                                
+                                <div class="vendor-price">
+                                    <div>
+                                        <div class="small text-muted text-uppercase" style="font-size: 10px;">Starting Price</div>
+                                        <div class="price-value">₹{{ vendor.price_starting }}</div>
                                     </div>
-                                    <div class="product__price mt-2">
-                                        <i class="fa fa-map-marker mr-1 icon-theme"></i> {{ vendor.location }} &nbsp;•&nbsp; ₹{{ vendor.price_starting }}/day
-                                    </div>
+                                    <a href="{% url 'vendor_details' vendor.id %}" class="btn-request">View Details</a>
                                 </div>
                             </div>
                         </div>
-                        {% empty %}
-                        <div class="col-12 text-center">
-                            <p>No vendors found at the moment.</p>
-                        </div>
-                        {% endfor %}
                     </div>
-                    <div class="row">
-                        <div class="col-lg-12 text-center mt-4">
-                            <div class="pagination__option">
-                                <a href="#">1</a>
-                                <a href="#">2</a>
-                                <a href="#">3</a>
-                                <a href="#"><i class="fa fa-angle-right"></i></a>
-                            </div>
-                        </div>
+                    {% empty %}
+                    <div class="col-12 text-center py-5">
+                        <i class="fa fa-search fa-4x text-muted mb-3"></i>
+                        <h4>No vendors found</h4>
+                        <p class="text-muted">Try adjusting your filters or search criteria.</p>
+                        <a href="{% url 'vendors' %}" class="btn btn-outline-primary mt-2">Clear Filters</a>
                     </div>
+                    {% endfor %}
                 </div>
+                
+                {% if vendors.count > 0 %}
+                <!-- Pagination -->
+                <nav aria-label="Page navigation" class="mt-4">
+                    <ul class="pagination justify-content-center">
+                        <li class="page-item disabled"><a class="page-link border-0 text-dark font-weight-bold" href="#">Previous</a></li>
+                        <li class="page-item active"><a class="page-link" href="#" style="background: #e72e77; border-color: #e72e77;">1</a></li>
+                        <li class="page-item"><a class="page-link text-dark" href="#">2</a></li>
+                        <li class="page-item"><a class="page-link text-dark" href="#">3</a></li>
+                        <li class="page-item"><a class="page-link border-0 text-dark font-weight-bold" href="#">Next</a></li>
+                    </ul>
+                </nav>
+                {% endif %}
             </div>
         </div>
-    </section>
-    <!-- Vendors Section End -->
-
+    </div>
+</section>
 {% endblock %}
 
 {% block extra_js %}
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
+    // Auto-submit filter form when a radio button or checkbox changes
+    $('.filter-trigger').change(function() {
+        $('#filterForm').submit();
+    });
+
+    // Wishlist Logic
     const csrfToken = '{{ csrf_token }}';
-    const selectedDate = '{{ selected_date|default:"" }}';
-    const selectedCity = '{{ selected_city|default:"" }}';
-
-    $('.vendor-card-link').click(function(e) {
-        // Prevent navigating if the click was on a button (like add to cart/wishlist) or a link
-        if (!$(e.target).closest('button').length && !$(e.target).closest('a').length) {
-            window.location.href = $(this).data('url');
-        }
-    });
-
-    $('.add-to-cart').click(function(e) {
-        e.preventDefault();
-        if (!selectedDate || !selectedCity) {
-            alert('Please select a Date and Location from the top filter to check availability before adding to cart.');
-            return;
-        }
-        
-        let vendorId = $(this).data('id');
-        let btn = $(this);
-        let originalText = btn.html();
-        btn.html('<i class="fa fa-spinner fa-spin"></i> Adding...');
-        
-        $.ajax({
-            url: "{% url 'add_to_cart' %}",
-            type: "POST",
-            data: {
-                'vendor_id': vendorId,
-                'event_date': selectedDate,
-                'location': selectedCity,
-                'csrfmiddlewaretoken': csrfToken
-            },
-            success: function(response) {
-                if (response.status === 'success') {
-                    btn.html('<i class="fa fa-check"></i> Added').removeClass('btn-theme').addClass('btn-success').css('color', 'white');
-                } else if (response.status === 'info') {
-                    alert(response.message);
-                    btn.html('<i class="fa fa-check"></i> Added').removeClass('btn-theme').addClass('btn-success').css('color', 'white');
-                } else {
-                    alert(response.message);
-                    btn.html(originalText);
-                }
-            },
-            error: function() {
-                alert('You must be logged in to add items to the cart.');
-                window.location.href = "{% url 'login' %}";
-            }
-        });
-    });
-
     $('.add-to-wishlist').click(function(e) {
         e.preventDefault();
         let vendorId = $(this).data('id');
@@ -216,15 +437,20 @@
             },
             success: function(response) {
                 if (response.status === 'success' || response.status === 'info') {
-                    btn.removeClass('btn-outline-danger').addClass('btn-danger');
-                    btn.find('i').removeClass('fa-heart-o').addClass('fa-heart');
-                } else {
-                    alert(response.message);
+                    btn.addClass('active');
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Saved!',
+                        text: 'Vendor added to your wishlist.',
+                        toast: true,
+                        position: 'top-end',
+                        showConfirmButton: false,
+                        timer: 3000
+                    });
                 }
             },
             error: function() {
-                alert('You must be logged in to add items to wishlist.');
-                window.location.href = "{% url 'login' %}";
+                window.location.href = "{% url 'login' %}?next={{ request.path }}";
             }
         });
     });
