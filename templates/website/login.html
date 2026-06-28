@@ -5,182 +5,234 @@
 {% block meta_description %}Login to BookMyLawn as a user or vendor. Access your account or register for the first time.{% endblock %}
 
 {% block content %}
+<style>
+    /* Split Screen Login Design */
+    .auth-section {
+        background: #fff;
+    }
+    .auth-image-side {
+        background-image: url('https://images.unsplash.com/photo-1511285560929-80b456fea0bc?auto=format&fit=crop&w=1920&q=80');
+        background-size: cover;
+        background-position: center;
+        min-height: 85vh;
+        position: relative;
+        display: flex;
+        align-items: flex-end;
+        padding: 60px;
+    }
+    .auth-image-overlay {
+        position: absolute;
+        top: 0; left: 0; right: 0; bottom: 0;
+        background: linear-gradient(to top, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0) 100%);
+    }
+    .auth-image-content {
+        position: relative;
+        z-index: 2;
+        color: white;
+    }
+    .auth-image-content h2 {
+        font-family: var(--font-heading);
+        font-weight: 700;
+        color: #fff;
+        margin-bottom: 15px;
+        font-size: 3rem;
+    }
+    .auth-image-content p {
+        font-size: 18px;
+        opacity: 0.9;
+        max-width: 80%;
+    }
+    
+    .auth-form-side {
+        padding: 60px 8%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        min-height: 85vh;
+    }
+    .auth-form-wrapper {
+        max-width: 450px;
+        margin: 0 auto;
+        width: 100%;
+    }
+    .auth-title {
+        font-family: var(--font-heading);
+        font-weight: 700;
+        color: var(--color-dark);
+        margin-bottom: 5px;
+    }
+    .auth-subtitle {
+        color: var(--color-text);
+        margin-bottom: 40px;
+    }
+    .role-cards-container {
+        display: flex;
+        gap: 20px;
+        margin-bottom: 30px;
+    }
+    .role-card {
+        flex: 1;
+        border: 2px solid var(--color-border-light);
+        border-radius: var(--radius-lg);
+        padding: 30px 20px;
+        text-align: center;
+        cursor: pointer;
+        transition: var(--transition);
+        text-decoration: none !important;
+        background: #fff;
+    }
+    .role-card:hover {
+        border-color: var(--theme-color);
+        box-shadow: var(--shadow-sm);
+        transform: translateY(-5px);
+    }
+    .role-card i {
+        font-size: 36px;
+        color: var(--theme-color);
+        margin-bottom: 15px;
+        display: block;
+        transition: var(--transition);
+    }
+    .role-card:hover i {
+        transform: scale(1.1);
+    }
+    .role-card span {
+        font-weight: 700;
+        color: var(--color-dark);
+        display: block;
+        font-size: 16px;
+    }
+    
+    .auth-input {
+        border-radius: var(--radius-sm);
+        padding: 12px 16px;
+        border: 1px solid var(--color-border);
+        background: var(--color-bg-subtle);
+        height: 50px;
+        font-size: 15px;
+        transition: var(--transition);
+    }
+    .auth-input:focus {
+        border-color: var(--theme-color);
+        box-shadow: 0 0 0 3px var(--theme-glow);
+        background: #fff;
+    }
+    .auth-label {
+        font-weight: 700;
+        font-size: 12px;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        color: var(--color-dark);
+        margin-bottom: 8px;
+    }
+    .btn-auth {
+        height: 50px;
+        border-radius: var(--radius-sm);
+        font-size: 15px;
+        font-weight: 700;
+        letter-spacing: 0.5px;
+    }
+    
+    /* Override Bootstrap Gutters for this section */
+    .row.no-gutters {
+        margin-right: 0;
+        margin-left: 0;
+    }
+    .row.no-gutters > [class^="col-"],
+    .row.no-gutters > [class*=" col-"] {
+        padding-right: 0;
+        padding-left: 0;
+    }
+</style>
 
-    <!-- Breadcrumb Begin -->
-    <div class="breadcrumb-option">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-12">
-                    <div class="breadcrumb__links">
-                        <a href="{% url 'index' %}"><i class="fa fa-home"></i> Home</a>
-                        <span>Login</span>
+<section class="auth-section">
+    <div class="container-fluid p-0">
+        <div class="row no-gutters">
+            <!-- Image Side -->
+            <div class="col-lg-6 d-none d-lg-flex auth-image-side" {% if user_type == 'vendor' %}style="background-image: url('https://images.unsplash.com/photo-1520854221256-17451cc331bf?auto=format&fit=crop&w=1920&q=80');"{% endif %}>
+                <div class="auth-image-overlay"></div>
+                <div class="auth-image-content">
+                    {% if user_type == 'vendor' %}
+                    <h2>Grow Your Wedding Business</h2>
+                    <p>Join thousands of trusted vendors and reach couples planning their perfect day. Manage leads, reviews, and bookings all in one place.</p>
+                    {% else %}
+                    <h2>Plan Your Dream Wedding</h2>
+                    <p>Discover the best venues and vendors, manage your guest list, and keep track of your tasks to bring your vision to life seamlessly.</p>
+                    {% endif %}
+                </div>
+            </div>
+            
+            <!-- Form Side -->
+            <div class="col-lg-6 auth-form-side">
+                <div class="auth-form-wrapper">
+                    {% if not user_type %}
+                    <!-- Role Selection -->
+                    <div class="text-center mb-5">
+                        <h3 class="auth-title">Welcome to BookMyLawn</h3>
+                        <p class="auth-subtitle">To get started, please tell us how you'll be using our platform.</p>
                     </div>
+                    
+                    <div class="role-cards-container flex-column flex-sm-row">
+                        <a href="{% url 'login' %}?type=user" class="role-card">
+                            <i class="fa fa-heart-o"></i>
+                            <span>I'm a Customer</span>
+                            <small class="text-muted mt-2 d-block">Planning a wedding or event</small>
+                        </a>
+                        <a href="{% url 'login' %}?type=vendor" class="role-card">
+                            <i class="fa fa-building-o"></i>
+                            <span>I'm a Business</span>
+                            <small class="text-muted mt-2 d-block">Vendor, Venue, or Planner</small>
+                        </a>
+                    </div>
+                    {% else %}
+                    <!-- Login Form -->
+                    <div class="text-left mb-4">
+                        <a href="{% url 'login' %}" class="text-muted small mb-3 d-inline-block hover-primary"><i class="fa fa-arrow-left mr-1"></i> Change Role</a>
+                        <h3 class="auth-title">Sign In as {% if user_type == 'vendor' %}Business{% else %}Customer{% endif %}</h3>
+                        <p class="auth-subtitle">Welcome back! Please enter your credentials below.</p>
+                        
+                        {% if messages %}
+                        <div class="messages mb-4">
+                            {% for message in messages %}
+                            <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert" style="font-size: 14px; border-radius: var(--radius-sm); border-left: 4px solid var(--theme-color);">
+                                {{ message }}
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            {% endfor %}
+                        </div>
+                        {% endif %}
+                    </div>
+                    
+                    <form action="#" method="POST">
+                        {% csrf_token %}
+                        <div class="form-group mb-4">
+                            <label class="auth-label">Email or Username</label>
+                            <input type="text" name="email" class="form-control auth-input" placeholder="Enter your email" required>
+                        </div>
+                        <div class="form-group mb-4">
+                            <div class="d-flex justify-content-between align-items-center mb-2">
+                                <label class="auth-label mb-0">Password</label>
+                                <a href="#" class="small font-weight-bold" style="color: var(--theme-color);">Forgot Password?</a>
+                            </div>
+                            <input type="password" name="password" class="form-control auth-input" placeholder="••••••••" required>
+                        </div>
+                        
+                        <button type="submit" class="btn-theme btn-block btn-auth mb-4">Sign In Securely</button>
+                    </form>
+                    
+                    <div class="text-center mt-5">
+                        <p class="text-muted small">
+                            Don't have an account yet? 
+                            <br>
+                            <a href="{% if user_type == 'user' %}{% url 'register' %}{% else %}{% url 'vendor_register' %}{% endif %}" style="color: var(--theme-color); font-weight: 700; font-size: 14px; display: inline-block; margin-top: 5px;">Create an account for free</a>
+                        </p>
+                    </div>
+                    {% endif %}
                 </div>
             </div>
         </div>
     </div>
-    <!-- Breadcrumb End -->
-
-    <!-- Login Portal Section Begin -->
-    <section class="spad" style="background: var(--color-bg);">
-        <div class="container">
-
-            <!-- Section Title -->
-            <div class="row">
-                <div class="col-lg-12 text-center">
-                    <div class="section-title">
-                        <h4>Welcome to BookMyLawn</h4>
-                        <p class="section-subtitle">Select how you'd like to continue</p>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Role Selection or Login Form -->
-            <div class="row justify-content-center">
-
-                {% if not user_type %}
-                <!-- ── ROLE SELECTION ── -->
-                
-                <!-- ── USER CARD ── -->
-                <div class="col-lg-5 col-md-6 col-sm-10 mb-4">
-                    <div class="portal-card">
-                        <div class="role-icon">
-                            <i class="fa fa-heart"></i>
-                        </div>
-                        <span class="role-badge">Customer</span>
-                        <h5 style="color: var(--color-dark); font-weight: 600; margin-bottom: 8px;">I'm looking for a Venue</h5>
-                        <p style="margin-bottom: 22px;">
-                            Browse and book wedding venues, photographers, decorators and more for your special day.
-                        </p>
-                        <ul style="list-style: none; padding: 0; margin: 0 0 28px 0;">
-                            <li style="margin-bottom: 8px; display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--color-text);">
-                                <i class="fa fa-check-circle icon-theme"></i> Browse &amp; compare venues
-                            </li>
-                            <li style="margin-bottom: 8px; display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--color-text);">
-                                <i class="fa fa-check-circle icon-theme"></i> Save your favourites
-                            </li>
-                            <li style="display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--color-text);">
-                                <i class="fa fa-check-circle icon-theme"></i> Track bookings &amp; inquiries
-                            </li>
-                        </ul>
-                        <a href="{% url 'login' %}?type=user" class="btn-theme btn-block mb-3">
-                            <i class="fa fa-sign-in" style="margin-right: 6px;"></i> SIGN IN AS CUSTOMER
-                        </a>
-                        <div class="divider-or">or</div>
-                        <a href="{% url 'register' %}" class="btn-outline-theme btn-block mt-2">
-                            <i class="fa fa-user-plus" style="margin-right: 6px;"></i> CREATE CUSTOMER ACCOUNT
-                        </a>
-                    </div>
-                </div>
-
-                <!-- ── VENDOR CARD ── -->
-                <div class="col-lg-5 col-md-6 col-sm-10 mb-4">
-                    <div class="portal-card">
-                        <div class="role-icon">
-                            <i class="fa fa-building"></i>
-                        </div>
-                        <span class="role-badge">Business Owner</span>
-                        <h5 style="color: var(--color-dark); font-weight: 600; margin-bottom: 8px;">I'm a Vendor / Business</h5>
-                        <p style="margin-bottom: 22px;">
-                            Manage your business profile, showcase your work, and receive booking leads from customers.
-                        </p>
-                        <ul style="list-style: none; padding: 0; margin: 0 0 28px 0;">
-                            <li style="margin-bottom: 8px; display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--color-text);">
-                                <i class="fa fa-check-circle icon-theme"></i> Manage your business profile
-                            </li>
-                            <li style="margin-bottom: 8px; display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--color-text);">
-                                <i class="fa fa-check-circle icon-theme"></i> Receive inquiries &amp; leads
-                            </li>
-                            <li style="display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--color-text);">
-                                <i class="fa fa-check-circle icon-theme"></i> Showcase photos &amp; pricing
-                            </li>
-                        </ul>
-                        <a href="{% url 'login' %}?type=vendor" class="btn-theme btn-block mb-3">
-                            <i class="fa fa-sign-in" style="margin-right: 6px;"></i> SIGN IN AS VENDOR
-                        </a>
-                        <div class="divider-or">or</div>
-                        <a href="{% url 'vendor_register' %}" class="btn-outline-theme btn-block mt-2">
-                            <i class="fa fa-plus-circle" style="margin-right: 6px;"></i> LIST MY BUSINESS
-                        </a>
-                    </div>
-                </div>
-
-                {% else %}
-                <!-- ── LOGIN FORM ── -->
-                <div class="col-lg-5 col-md-8 col-sm-10">
-                    <div class="portal-card">
-                        <div class="text-center mb-4">
-                            <div class="role-icon mx-auto">
-                                <i class="fa {% if user_type == 'user' %}fa-heart{% else %}fa-building{% endif %}"></i>
-                            </div>
-                            <h4 style="color: var(--color-dark); font-weight: 700; margin-bottom: 10px;">Sign In as {{ user_type|title }}</h4>
-                            <p>Please enter your credentials to continue</p>
-                            
-                            {% if messages %}
-                            <div class="messages mb-3">
-                                {% for message in messages %}
-                                <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert" style="font-size: 14px; border-radius: 8px;">
-                                    {{ message }}
-                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                        <span aria-hidden="true">&times;</span>
-                                    </button>
-                                </div>
-                                {% endfor %}
-                            </div>
-                            {% endif %}
-                        </div>
-                        
-                        <form action="#" method="POST">
-                            {% csrf_token %}
-                            <div class="form-group mb-3">
-                                <label style="font-weight: 600; font-size: 14px; color: var(--color-dark); margin-bottom: 8px; display: block;">Email or Username</label>
-                                <input type="text" name="email" class="form-control" placeholder="Enter email or username" required 
-                                    style="border-radius: 8px; padding: 12px; border: 1px solid var(--color-border);">
-                            </div>
-                            <div class="form-group mb-4">
-                                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
-                                    <label style="font-weight: 600; font-size: 14px; color: var(--color-dark); margin-bottom: 0;">Password</label>
-                                    <a href="#" style="font-size: 13px; color: var(--theme-color);">Forgot?</a>
-                                </div>
-                                <input type="password" name="password" class="form-control" placeholder="••••••••" required 
-                                    style="border-radius: 8px; padding: 12px; border: 1px solid var(--color-border);">
-                            </div>
-                            
-                            <button type="submit" class="btn-theme btn-block mb-4">
-                                LOGIN TO ACCOUNT
-                            </button>
-                        </form>
-
-                        <div class="text-center mt-2">
-                            <p style="font-size: 14px; color: var(--color-text);">
-                                Don't have an account? 
-                                <a href="{% if user_type == 'user' %}{% url 'register' %}{% else %}{% url 'vendor_register' %}{% endif %}" 
-                                   style="color: var(--theme-color); font-weight: 600;">Sign up here</a>
-                            </p>
-                            <hr style="margin: 20px 0;">
-                            <a href="{% url 'login' %}" style="color: var(--color-text-light); font-size: 13px; text-decoration: none;">
-                                <i class="fa fa-arrow-left" style="margin-right: 5px;"></i> Back to role selection
-                            </a>
-                        </div>
-                    </div>
-                </div>
-                {% endif %}
-
-            </div>
-
-            <!-- Footer note -->
-            <div class="row">
-                <div class="col-lg-12 text-center mt-2">
-                    <p style="color: var(--color-text-light); font-size: 13px;">
-                        By continuing, you agree to our
-                        <a href="#" class="wedding-venue-link" style="font-weight: 600;">Terms of Service</a> and
-                        <a href="#" class="wedding-venue-link" style="font-weight: 600;">Privacy Policy</a>.
-                    </p>
-                </div>
-            </div>
-
-        </div>
-    </section>
-    <!-- Login Portal Section End -->
-
+</section>
 {% endblock %}
