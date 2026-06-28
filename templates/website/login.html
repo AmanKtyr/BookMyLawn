@@ -2,8 +2,7 @@
 {% load static %}
 
 {% block title %}Login | BookMyLawn{% endblock %}
-{% block meta_description %}Login to BookMyLawn as a user or vendor. Access your account or register for the first
-time.{% endblock %}
+{% block meta_description %}Login to BookMyLawn as a user or vendor. Access your account or register for the first time.{% endblock %}
 
 {% block content %}
 <style>
@@ -171,8 +170,7 @@ time.{% endblock %}
     <div class="container-fluid p-0">
         <div class="row no-gutters">
             <!-- Image Side -->
-            <div class="col-lg-6 d-none d-lg-flex auth-image-side" {% if user_type=='vendor'
-                %}style="background-image: url('https://images.unsplash.com/photo-1520854221256-17451cc331bf?auto=format&fit=crop&w=1920&q=80');"
+            <div class="col-lg-6 d-none d-lg-flex auth-image-side" {% if user_type == 'vendor' %} style="background-image: url('https://images.unsplash.com/photo-1520854221256-17451cc331bf?auto=format&fit=crop&w=1920&q=80');"
                 {% endif %}>
                 <div class="auth-image-overlay"></div>
                 <div class="auth-image-content">
@@ -215,8 +213,7 @@ time.{% endblock %}
                     <div class="text-left mb-4">
                         <a href="{% url 'login' %}" class="text-muted small mb-3 d-inline-block hover-primary"><i
                                 class="fa fa-arrow-left mr-1"></i> Change Role</a>
-                        <h3 class="auth-title">Sign In as {% if user_type == 'vendor' %}Business{% else %}Customer{%
-                            endif %}</h3>
+                        <h3 class="auth-title">Sign In as {% if user_type == 'vendor' %}Business{% else %}Customer{% endif %}</h3>
                         <p class="auth-subtitle">Welcome back! Please enter your credentials below.</p>
 
                         {% if messages %}
