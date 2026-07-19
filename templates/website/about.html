@@ -5,100 +5,181 @@
 {% block meta_description %}Learn more about BookMyLawn, India's leading wedding planning platform connecting you with top vendors.{% endblock %}
 
 {% block content %}
-<!-- Breadcrumb Begin -->
-<div class="breadcrumb-option">
+<!-- Page Header -->
+<section style="background: linear-gradient(135deg, rgba(231,46,119,0.03) 0%, rgba(231,46,119,0.08) 100%); padding: 70px 0 50px; text-align: center; border-bottom: 1px solid rgba(231,46,119,0.1);">
     <div class="container">
-        <div class="row">
-            <div class="col-lg-12">
-                <div class="breadcrumb__links">
-                    <a href="{% url 'index' %}"><i class="fa fa-home"></i> Home</a>
-                    <span>About Us</span>
-                </div>
-            </div>
+        <h1 style="font-weight: 800; color: #111; font-size: 42px; margin-bottom: 15px; letter-spacing: -1px;">About BookMyLawn</h1>
+        <div class="breadcrumb__links" style="display: flex; justify-content: center; gap: 10px; align-items: center; font-size: 14px;">
+            <a href="{% url 'index' %}" style="color: #555; font-weight: 600; text-decoration: none;"><i class="fa fa-home"></i> Home</a>
+            <span style="color: #ccc;">/</span>
+            <span style="color: #e72e77; font-weight: 700;">About Us</span>
         </div>
     </div>
-</div>
-<!-- Breadcrumb End -->
+</section>
 
-<!-- About Section Begin -->
-<section class="about-section spad">
+<!-- Our Story Section -->
+<section class="about-section" style="padding: 100px 0; overflow: hidden;">
     <div class="container">
         <div class="row align-items-center">
-            <div class="col-lg-6 mb-4 mb-lg-0">
-                <div class="about-img" style="position:relative; border-radius:15px; overflow:hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.1);">
-                    <img src="{% static 'img/about-us.jpg' %}" alt="About BookMyLawn" style="width:100%; display:block;" onerror="this.src='https://images.unsplash.com/photo-1519741497674-611481863552?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80';">
+            <div class="col-lg-6 mb-5 mb-lg-0 pr-lg-5">
+                <div style="position: relative;">
+                    <div style="position: absolute; top: -20px; left: -20px; width: 100%; height: 100%; border: 2px solid #e72e77; border-radius: 20px; z-index: 0;"></div>
+                    <img src="{% static 'img/about-us.jpg' %}" alt="Our Story" style="width: 100%; border-radius: 20px; position: relative; z-index: 1; box-shadow: 0 20px 40px rgba(0,0,0,0.1);" onerror="this.src='https://images.unsplash.com/photo-1511285560929-80b456fea0bc?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80';">
+                    
+                    <div style="position: absolute; bottom: -30px; right: -20px; background: white; padding: 25px 35px; border-radius: 15px; box-shadow: 0 15px 35px rgba(0,0,0,0.1); z-index: 2; text-align: center; border-bottom: 4px solid #e72e77;">
+                        <h3 style="color: #e72e77; font-weight: 800; font-size: 36px; margin: 0; line-height: 1;">#1</h3>
+                        <p style="margin: 5px 0 0; font-size: 13px; font-weight: 700; color: #444; text-transform: uppercase; letter-spacing: 1px;">Wedding Platform</p>
+                    </div>
                 </div>
             </div>
             <div class="col-lg-6 pl-lg-5">
-                <div class="about-content">
-                    <h5 style="color:var(--theme-color); font-weight:700; margin-bottom:10px; text-transform:uppercase; letter-spacing:1px;">Our Story</h5>
-                    <h2 style="font-size:40px; font-weight:700; color:var(--color-dark); margin-bottom:20px; line-height:1.2;">Your Personal Wedding Planner</h2>
-                    <p style="font-size:16px; color:#555; margin-bottom:20px; line-height:1.8;">
-                        BookMyLawn is India's most loved Wedding Planning platform! Whether you are looking for the perfect venue, top-rated photographers, stunning decorators, or breathtaking bridal wear, we connect you with trusted vendors to make your dream wedding a reality.
-                    </p>
-                    <p style="font-size:16px; color:#555; margin-bottom:30px; line-height:1.8;">
-                        Our mission is to take the stress out of wedding planning. With our easy-to-use tools like the Wedding Checklist, personalized vendor recommendations, and curated inspiration galleries, you can plan your big day exactly the way you imagined it, right from your phone.
-                    </p>
-                    <div class="row text-center mt-4">
-                        <div class="col-sm-4 mb-3">
-                            <h3 style="font-weight:700; color:var(--theme-color);">5000+</h3>
-                            <p style="font-size:14px; font-weight:600; color:#777;">Verified Vendors</p>
-                        </div>
-                        <div class="col-sm-4 mb-3">
-                            <h3 style="font-weight:700; color:var(--theme-color);">10k+</h3>
-                            <p style="font-size:14px; font-weight:600; color:#777;">Weddings Planned</p>
-                        </div>
-                        <div class="col-sm-4 mb-3">
-                            <h3 style="font-weight:700; color:var(--theme-color);">24/7</h3>
-                            <p style="font-size:14px; font-weight:600; color:#777;">Support</p>
-                        </div>
+                <span style="color:#e72e77; font-weight:700; text-transform:uppercase; letter-spacing:2px; font-size: 13px; display: block; margin-bottom: 15px;">Our Story</span>
+                <h2 style="font-weight:800; color:#111; font-size: 40px; margin-bottom: 25px; line-height: 1.2; letter-spacing: -0.5px;">Reimagining How You Plan Your <span style="color: #e72e77;">Dream Wedding</span></h2>
+                <p style="font-size: 16px; color: #555; line-height: 1.8; margin-bottom: 20px;">
+                    Planning a wedding should be as joyful as the celebration itself. BookMyLawn was born out of the desire to eliminate the stress, endless phone calls, and uncertainty from wedding planning in India.
+                </p>
+                <p style="font-size: 16px; color: #555; line-height: 1.8; margin-bottom: 35px;">
+                    We bring together the finest venues, most talented photographers, and creative decorators onto one seamless platform. With trusted reviews, transparent pricing, and intuitive planning tools, we put you in complete control of your big day.
+                </p>
+                
+                <div style="display: flex; gap: 20px; align-items: center; padding-top: 20px; border-top: 1px solid #eee;">
+                    <div style="width: 55px; height: 55px; background: rgba(231,46,119,0.1); border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                        <i class="fa fa-heart" style="color: #e72e77; font-size: 22px;"></i>
+                    </div>
+                    <div>
+                        <h5 style="margin: 0 0 5px 0; font-weight: 800; color: #111; font-size: 18px;">Trusted by Thousands</h5>
+                        <p style="margin: 0; font-size: 15px; color: #666;">Over 10,000 successful weddings planned with us.</p>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 </section>
-<!-- About Section End -->
 
-<!-- Features Section -->
-<section class="features-section spad" style="background-color:#f9f9f9;">
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-12 text-center mb-5">
-                <h2 style="font-weight:700; color:var(--color-dark);">Why Choose Us?</h2>
-                <p class="text-muted mt-2">We provide end-to-end solutions for a seamless wedding experience.</p>
+<!-- Stats Section -->
+<section style="background: #111; padding: 70px 0; position: relative;">
+    <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: url('https://images.unsplash.com/photo-1519741497674-611481863552?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80') center/cover; opacity: 0.1;"></div>
+    <div class="container" style="position: relative; z-index: 1;">
+        <div class="row text-center">
+            <div class="col-md-3 col-6 mb-4 mb-md-0">
+                <h2 style="color: #e72e77; font-weight: 800; font-size: 46px; margin-bottom: 10px;">5K+</h2>
+                <p style="color: white; font-weight: 600; font-size: 14px; text-transform: uppercase; letter-spacing: 1px; margin: 0;">Verified Vendors</p>
+            </div>
+            <div class="col-md-3 col-6 mb-4 mb-md-0">
+                <h2 style="color: #e72e77; font-weight: 800; font-size: 46px; margin-bottom: 10px;">10K+</h2>
+                <p style="color: white; font-weight: 600; font-size: 14px; text-transform: uppercase; letter-spacing: 1px; margin: 0;">Happy Couples</p>
+            </div>
+            <div class="col-md-3 col-6">
+                <h2 style="color: #e72e77; font-weight: 800; font-size: 46px; margin-bottom: 10px;">50+</h2>
+                <p style="color: white; font-weight: 600; font-size: 14px; text-transform: uppercase; letter-spacing: 1px; margin: 0;">Cities Covered</p>
+            </div>
+            <div class="col-md-3 col-6">
+                <h2 style="color: #e72e77; font-weight: 800; font-size: 46px; margin-bottom: 10px;">4.9</h2>
+                <p style="color: white; font-weight: 600; font-size: 14px; text-transform: uppercase; letter-spacing: 1px; margin: 0;">Average Rating</p>
             </div>
         </div>
+    </div>
+</section>
+
+<!-- Values Section -->
+<section style="padding: 100px 0; background: #fff;">
+    <div class="container">
+        <div class="row justify-content-center text-center mb-5">
+            <div class="col-lg-8">
+                <span style="color:#e72e77; font-weight:700; text-transform:uppercase; letter-spacing:2px; font-size: 13px; display: block; margin-bottom: 15px;">Our Core</span>
+                <h2 style="font-weight:800; color:#111; font-size: 40px; margin-bottom: 20px; letter-spacing: -0.5px;">Mission & Vision</h2>
+                <p style="color: #555; font-size: 16px; line-height: 1.8;">We are driven by a singular purpose: to make every celebration extraordinary.</p>
+            </div>
+        </div>
+        
         <div class="row">
-            <div class="col-lg-4 col-md-6 mb-4">
-                <div class="feature-card text-center" style="background:#fff; padding:40px 30px; border-radius:12px; box-shadow:0 5px 20px rgba(0,0,0,0.05); transition:transform 0.3s;">
-                    <i class="fa fa-search" style="font-size:40px; color:var(--theme-color); margin-bottom:20px;"></i>
-                    <h5 style="font-weight:700; margin-bottom:15px;">Discover Vendors</h5>
-                    <p style="color:#666;">Browse through a wide range of verified wedding vendors with reviews and pricing to fit your budget.</p>
+            <div class="col-md-6 mb-4 mb-md-0">
+                <div style="background: #fcf4f8; padding: 50px 40px; border-radius: 20px; height: 100%; border-left: 5px solid #e72e77; transition: transform 0.3s;" onmouseover="this.style.transform='translateY(-5px)'" onmouseout="this.style.transform='translateY(0)'">
+                    <i class="fa fa-rocket" style="font-size: 36px; color: #e72e77; margin-bottom: 25px; display: block;"></i>
+                    <h3 style="font-weight: 800; color: #111; font-size: 26px; margin-bottom: 20px;">Our Mission</h3>
+                    <p style="color: #555; font-size: 16px; line-height: 1.8; margin: 0;">To empower couples to plan their perfect wedding with confidence and ease. We aim to democratize access to the best wedding vendors, providing transparent pricing, authentic reviews, and powerful planning tools in one seamless platform.</p>
                 </div>
             </div>
-            <div class="col-lg-4 col-md-6 mb-4">
-                <div class="feature-card text-center" style="background:#fff; padding:40px 30px; border-radius:12px; box-shadow:0 5px 20px rgba(0,0,0,0.05); transition:transform 0.3s;">
-                    <i class="fa fa-list-alt" style="font-size:40px; color:var(--theme-color); margin-bottom:20px;"></i>
-                    <h5 style="font-weight:700; margin-bottom:15px;">Smart Checklist</h5>
-                    <p style="color:#666;">Stay on top of your wedding tasks with our intuitive checklist designed specifically for Indian weddings.</p>
-                </div>
-            </div>
-            <div class="col-lg-4 col-md-6 mb-4">
-                <div class="feature-card text-center" style="background:#fff; padding:40px 30px; border-radius:12px; box-shadow:0 5px 20px rgba(0,0,0,0.05); transition:transform 0.3s;">
-                    <i class="fa fa-star" style="font-size:40px; color:var(--theme-color); margin-bottom:20px;"></i>
-                    <h5 style="font-weight:700; margin-bottom:15px;">Trusted Reviews</h5>
-                    <p style="color:#666;">Read genuine reviews from real couples to make informed decisions before booking your vendors.</p>
+            <div class="col-md-6">
+                <div style="background: #f8f9fa; padding: 50px 40px; border-radius: 20px; height: 100%; border-left: 5px solid #111; transition: transform 0.3s;" onmouseover="this.style.transform='translateY(-5px)'" onmouseout="this.style.transform='translateY(0)'">
+                    <i class="fa fa-eye" style="font-size: 36px; color: #111; margin-bottom: 25px; display: block;"></i>
+                    <h3 style="font-weight: 800; color: #111; font-size: 26px; margin-bottom: 20px;">Our Vision</h3>
+                    <p style="color: #555; font-size: 16px; line-height: 1.8; margin: 0;">To become the world's most trusted and comprehensive wedding planning destination. We envision a future where planning a wedding is entirely stress-free, allowing couples to focus purely on the joy of their impending union.</p>
                 </div>
             </div>
         </div>
     </div>
 </section>
-<!-- Features Section End -->
+
+<!-- Why Choose Us -->
+<section style="padding: 100px 0; background: #fafafa;">
+    <div class="container">
+        <div class="row mb-5 align-items-end">
+            <div class="col-lg-7 mb-4 mb-lg-0">
+                <span style="color:#e72e77; font-weight:700; text-transform:uppercase; letter-spacing:2px; font-size: 13px; display: block; margin-bottom: 15px;">Why BookMyLawn</span>
+                <h2 style="font-weight:800; color:#111; font-size: 40px; margin: 0; line-height: 1.2; letter-spacing: -0.5px;">Everything You Need <br>For Your Big Day</h2>
+            </div>
+            <div class="col-lg-5 text-lg-right">
+                <a href="{% url 'vendors' %}" style="display: inline-block; background: #111; color: white; font-weight: 600; padding: 14px 35px; border-radius: 30px; font-size: 15px; text-decoration: none; transition: 0.3s; box-shadow: 0 10px 20px rgba(0,0,0,0.1);" onmouseover="this.style.background='#e72e77'; this.style.transform='translateY(-2px)';" onmouseout="this.style.background='#111'; this.style.transform='translateY(0)';">Browse All Vendors <i class="fa fa-arrow-right ml-2"></i></a>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-lg-4 col-md-6 mb-4">
+                <div style="background: white; padding: 40px 30px; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.02); transition: 0.4s; height: 100%; border: 1px solid #eee;" class="feature-card-new">
+                    <div style="width: 65px; height: 65px; background: rgba(231,46,119,0.08); border-radius: 15px; display: flex; align-items: center; justify-content: center; margin-bottom: 25px; color: #e72e77; font-size: 26px; transition: 0.4s;" class="fc-icon">
+                        <i class="fa fa-check-circle"></i>
+                    </div>
+                    <h4 style="font-weight: 800; color: #111; font-size: 20px; margin-bottom: 15px;">Verified Vendors</h4>
+                    <p style="color: #666; font-size: 15px; line-height: 1.8; margin: 0;">Every vendor on our platform goes through a strict verification process to ensure reliability and quality for your special day.</p>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-6 mb-4">
+                <div style="background: white; padding: 40px 30px; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.02); transition: 0.4s; height: 100%; border: 1px solid #eee;" class="feature-card-new">
+                    <div style="width: 65px; height: 65px; background: rgba(231,46,119,0.08); border-radius: 15px; display: flex; align-items: center; justify-content: center; margin-bottom: 25px; color: #e72e77; font-size: 26px; transition: 0.4s;" class="fc-icon">
+                        <i class="fa fa-star"></i>
+                    </div>
+                    <h4 style="font-weight: 800; color: #111; font-size: 20px; margin-bottom: 15px;">Genuine Reviews</h4>
+                    <p style="color: #666; font-size: 15px; line-height: 1.8; margin: 0;">Read authentic reviews and experiences from real couples to make informed decisions before you book.</p>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-6 mb-4">
+                <div style="background: white; padding: 40px 30px; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.02); transition: 0.4s; height: 100%; border: 1px solid #eee;" class="feature-card-new">
+                    <div style="width: 65px; height: 65px; background: rgba(231,46,119,0.08); border-radius: 15px; display: flex; align-items: center; justify-content: center; margin-bottom: 25px; color: #e72e77; font-size: 26px; transition: 0.4s;" class="fc-icon">
+                        <i class="fa fa-list-alt"></i>
+                    </div>
+                    <h4 style="font-weight: 800; color: #111; font-size: 20px; margin-bottom: 15px;">Smart Tools</h4>
+                    <p style="color: #666; font-size: 15px; line-height: 1.8; margin: 0;">Utilize our intelligent checklists, budget calculators, and guest management tools to stay organized effortlessly.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- CTA Section -->
+<section style="background: url('https://images.unsplash.com/photo-1465495976277-4387d4b0b4c6?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80') center/cover; padding: 120px 0; position: relative; border-radius: 0;">
+    <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(135deg, rgba(231,46,119,0.92) 0%, rgba(17,17,17,0.85) 100%);"></div>
+    <div class="container" style="position: relative; z-index: 1;">
+        <div class="row justify-content-center text-center">
+            <div class="col-lg-8">
+                <h2 style="color: white; font-weight: 800; font-size: 42px; margin-bottom: 20px; letter-spacing: -1px;">Start Planning Your Perfect Wedding Today</h2>
+                <p style="color: rgba(255,255,255,0.9); font-size: 18px; margin-bottom: 40px; line-height: 1.8;">Join the thousands of couples who have trusted us to make their dream wedding a reality.</p>
+                <a href="{% url 'vendors' %}" style="display: inline-block; background: white; color: #e72e77; font-weight: 700; padding: 16px 45px; border-radius: 50px; font-size: 15px; text-transform: uppercase; letter-spacing: 1px; transition: 0.3s; box-shadow: 0 10px 20px rgba(0,0,0,0.2);" onmouseover="this.style.transform='translateY(-3px)'; this.style.boxShadow='0 15px 30px rgba(0,0,0,0.3)';" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 10px 20px rgba(0,0,0,0.2)';">Find Your Venue</a>
+            </div>
+        </div>
+    </div>
+</section>
 
 <style>
-    .feature-card:hover {
+    .feature-card-new:hover {
         transform: translateY(-10px);
+        box-shadow: 0 20px 40px rgba(0,0,0,0.06) !important;
+        border-color: rgba(231,46,119,0.1) !important;
+    }
+    .feature-card-new:hover .fc-icon {
+        background: #e72e77 !important;
+        color: white !important;
+        transform: scale(1.05);
     }
 </style>
 {% endblock %}
