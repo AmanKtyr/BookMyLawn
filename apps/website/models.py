@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+import uuid
 
 class Category(models.Model):
     name = models.CharField(max_length=100)
@@ -14,6 +15,7 @@ class Category(models.Model):
         return self.name
         
 class Vendor(models.Model):
+    uuid_field = models.UUIDField(default=uuid.uuid4, editable=False, unique=True)
     user = models.OneToOneField(User, on_delete=models.CASCADE, null=True, blank=True, related_name='vendor_profile')
     name = models.CharField(max_length=200)
     category = models.ForeignKey(Category, on_delete=models.CASCADE, related_name='vendors')

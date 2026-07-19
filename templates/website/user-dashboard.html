@@ -410,7 +410,7 @@
                                       <h6 class="font-weight-bold text-dark mb-1 text-truncate">{{ item.vendor.name }}</h6>
                                       <p style="font-size: 12px; color: var(--theme-color); font-weight: 700; margin-bottom: 10px;">{{ item.vendor.category.name }}</p>
                                       <p class="text-muted small mb-3"><i class="fa fa-map-marker text-muted mr-1"></i> {{ item.vendor.location }}</p>
-                                      <a href="{% url 'vendor_details' item.vendor.id %}" class="btn-outline-theme btn-block">View Profile</a>
+                                      <a href="{% url 'vendor_details' item.vendor.uuid_field %}" class="btn-outline-theme btn-block">View Profile</a>
                                   </div>
                               </div>
                               {% empty %}
@@ -445,7 +445,7 @@
                                       {% for inq in inquiries %}
                                       <tr style="border-bottom: 1px solid var(--border-color);">
                                           <td class="align-middle py-3">
-                                              <a href="{% url 'vendor_details' inq.vendor.id %}" class="font-weight-bold text-dark text-decoration-none hover-primary">{{ inq.vendor.name }}</a>
+                                              <a href="{% url 'vendor_details' inq.vendor.uuid_field %}" class="font-weight-bold text-dark text-decoration-none hover-primary">{{ inq.vendor.name }}</a>
                                           </td>
                                           <td class="align-middle py-3 text-muted" style="font-size: 14px;">{{ inq.created_at|date:"d M Y" }}</td>
                                           <td class="align-middle py-3">

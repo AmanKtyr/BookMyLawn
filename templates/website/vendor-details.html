@@ -130,6 +130,18 @@
         background: #c2185b;
         transform: translateY(-2px);
     }
+    .policy-icon-box {
+        width: 40px;
+        height: 40px;
+        background: #f8f9fa;
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #e72e77;
+        font-size: 18px;
+        flex-shrink: 0;
+    }
 </style>
 
 <style>
@@ -230,7 +242,7 @@
                         <span><i class="fa fa-building-o text-primary"></i> {{ vendor.category.name }}</span>
                     </div>
 
-                    {% if 'venue' in vendor.category.slug or 'lawn' in vendor.category.slug or 'banquet' in vendor.category.slug %}
+                    {% if vendor.category.slug == 'venues' %}
                         <!-- Venue Specific Details -->
                         <div class="row mb-4">
                             <div class="col-md-4">
@@ -320,7 +332,7 @@
                     <div class="info-card">
                         <h4 class="mb-4 font-weight-bold">About {{ vendor.name }}</h4>
                         <p style="line-height: 1.8; color: #555;">
-                            {{ vendor.description|default:"Located in the heart of the city, this venue offers a perfect blend of luxury and convenience. With state-of-the-art facilities and a dedicated staff, we ensure your special day is nothing short of magical." }}
+                            {{ vendor.description|default:"Located in the heart of the city, this vendor offers a perfect blend of luxury and convenience. With state-of-the-art facilities and a dedicated staff, we ensure your special day is nothing short of magical." }}
                         </p>
                     </div>
 
@@ -340,7 +352,7 @@
                     <div class="info-card">
                         <h4 class="mb-4 font-weight-bold">Business Policies</h4>
                         <div class="row">
-                            {% if 'venue' in vendor.category.slug or 'lawn' in vendor.category.slug or 'banquet' in vendor.category.slug %}
+                            {% if vendor.category.slug == 'venues' %}
                                 <!-- Venue Policies -->
                                 <div class="col-6 mb-4">
                                     <div class="d-flex align-items-start">
@@ -420,32 +432,17 @@
                         </div>
                     </div>
 
-<style>
-    .policy-icon-box {
-        width: 40px;
-        height: 40px;
-        background: #f8f9fa;
-        border-radius: 8px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        color: #e72e77;
-        font-size: 18px;
-        flex-shrink: 0;
-    }
-</style>
-
                     <!-- FAQ Section -->
                     <div class="info-card">
                         <h4 class="mb-4 font-weight-bold">Frequently Asked Questions</h4>
                         <div id="accordion">
                             <div class="mb-3">
                                 <button class="btn btn-link text-dark font-weight-bold p-0 w-100 text-left d-flex justify-content-between align-items-center" data-toggle="collapse" data-target="#faq1">
-                                    <span>Do you allow outside decorators?</span>
+                                    <span>What is the booking procedure?</span>
                                     <i class="fa fa-chevron-down"></i>
                                 </button>
                                 <div id="faq1" class="collapse show mt-2 small text-muted">
-                                    Yes, we allow outside decorators with a small royalty fee. However, our in-house team is highly recommended for the best experience.
+                                    You can send an inquiry using the booking form. Our team will contact you to confirm availability and proceed with the advance payment.
                                 </div>
                             </div>
                             <hr>
@@ -576,7 +573,7 @@
                     <div class="info-card p-0 overflow-hidden h-100">
                         <img src="{% if related.image %}{{ related.image.url }}{% else %}https://images.pexels.com/photos/169190/pexels-photo-169190.jpeg?auto=compress&cs=tinysrgb&w=300{% endif %}" class="w-100" style="height: 180px; object-fit: cover;">
                         <div class="p-3">
-                            <h6 class="font-weight-bold mb-1"><a href="{% url 'vendor_details' related.id %}" class="text-dark">{{ related.name }}</a></h6>
+                            <h6 class="font-weight-bold mb-1"><a href="{% url 'vendor_details' related.uuid_field %}" class="text-dark">{{ related.name }}</a></h6>
                             <p class="small text-muted mb-2"><i class="fa fa-map-marker"></i> {{ related.location }}</p>
                             <div class="d-flex justify-content-between align-items-center">
                                 <span class="text-primary font-weight-bold">₹{{ related.price_starting }}</span>

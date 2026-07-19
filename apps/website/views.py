@@ -48,9 +48,9 @@ def vendors(request):
     }
     return render(request, 'website/vendors.html', context)
 
-def vendor_details(request, id):
-    vendor = get_object_or_404(Vendor, id=id)
-    related_vendors = Vendor.objects.filter(category=vendor.category).exclude(id=id)[:4]
+def vendor_details(request, uuid):
+    vendor = get_object_or_404(Vendor, uuid_field=uuid)
+    related_vendors = Vendor.objects.filter(category=vendor.category).exclude(id=vendor.id)[:4]
     return render(request, 'website/vendor-details.html', {
         'vendor': vendor,
         'related_vendors': related_vendors
