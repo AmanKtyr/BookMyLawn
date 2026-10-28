@@ -106,8 +106,23 @@ def contact(request):
     return render(request, 'website/contact.html')
 
 def real_weddings(request):
+    city = request.GET.get('city', '').strip()
+    q = request.GET.get('q', '').strip()
     weddings = RealWedding.objects.all().order_by('-date')
-    return render(request, 'website/real-weddings.html', {'weddings': weddings})
+    if city and city.lower() != 'all':
+        weddings = weddings.filter(location__icontains=city)
+    if q:
+        weddings = weddings.filter(
+            Q(couple_name__icontains=q) |
+            Q(description__icontains=q) |
+            Q(location__icontains=q) |
+            Q(venue__name__icontains=q)
+        )
+    return render(request, 'website/real-weddings.html', {
+        'weddings': weddings,
+        'selected_city': city or 'all',
+        'query': q,
+    })
 
 def login_view(request):
     from django.contrib.auth import authenticate, login

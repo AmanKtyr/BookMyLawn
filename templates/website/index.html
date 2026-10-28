@@ -52,27 +52,43 @@
 
 <!-- Hero Section Begin -->
 <section class="hero set-bg" data-setbg="{% static 'website/img/banner/banner-1.jpg' %}?v=2"
-    style="background-image: url('{% static 'website/img/banner/banner-1.jpg' %}?v=2'); padding: 150px 0; background-size: cover; background-position: center;">
-    <div class="container">
+    style="background-image: url('{% static 'website/img/banner/banner-1.jpg' %}?v=2'); padding: 140px 0 100px; background-size: cover; background-position: center; position: relative;">
+    <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(180deg, rgba(15,17,21,0.55) 0%, rgba(15,17,21,0.7) 100%);"></div>
+    <div class="container" style="position: relative; z-index: 2;">
         <div class="row">
-            <div class="col-lg-8 m-auto text-center">
-                <h1
-                    style="color: white; font-size: 50px; text-shadow: 2px 2px 4px rgba(0,0,0,0.5); margin-bottom: 30px;">
-                    Find the Perfect Wedding Vendors</h1>
+            <div class="col-lg-10 m-auto text-center">
+                <span style="display: inline-block; background: rgba(231,46,119,0.25); border: 1px solid rgba(255,255,255,0.4); color: #ffffff; font-weight: 700; font-size: 13px; text-transform: uppercase; letter-spacing: 2px; padding: 6px 18px; border-radius: 30px; margin-bottom: 20px;">
+                    India's Premier Wedding Venue Discovery Platform
+                </span>
+                <h1 style="color: white; font-size: 46px; font-weight: 800; text-shadow: 2px 2px 8px rgba(0,0,0,0.6); margin-bottom: 18px; line-height: 1.25;">
+                    Find &amp; Book the Perfect Wedding Lawns &amp; Banquet Halls
+                </h1>
+                <p style="color: #f3f4f6; font-size: 18px; max-width: 720px; margin: 0 auto 30px; text-shadow: 1px 1px 4px rgba(0,0,0,0.5);">
+                    Explore 5,000+ verified marriage gardens, AC banquet halls, and wedding vendors across India with transparent pricing and direct venue contact.
+                </p>
                 <div class="hero-search">
                     <form action="{% url 'vendors' %}" method="GET">
                         <div class="row">
-                            <div class="col-md-4">
-                                <input type="text" name="q" placeholder="Search for vendors, venues...">
+                            <div class="col-md-5">
+                                <input type="text" name="q" placeholder="Search lawns, banquets, farmhouses...">
                             </div>
                             <div class="col-md-4">
-                                <input type="text" name="city" placeholder="City or Zip code">
+                                <input type="text" name="city" placeholder="City (e.g. Lucknow, Delhi)">
                             </div>
-                            <div class="col-md-4">
+                            <div class="col-md-3">
                                 <button type="submit">Search</button>
                             </div>
                         </div>
                     </form>
+                </div>
+                <!-- Popular Searches -->
+                <div class="mt-3 text-white-50 small d-none d-md-block" style="font-size: 13.5px;">
+                    <span class="text-white font-weight-bold mr-2">Popular Searches:</span>
+                    <a href="{% url 'vendors' %}?city=Lucknow" class="text-white mx-1" style="text-decoration: underline;">Lucknow Lawns</a> |
+                    <a href="{% url 'vendors' %}?city=Delhi" class="text-white mx-1" style="text-decoration: underline;">Delhi Farmhouses</a> |
+                    <a href="{% url 'vendors' %}?type=venues" class="text-white mx-1" style="text-decoration: underline;">AC Banquets</a> |
+                    <a href="{% url 'vendors' %}?category=photographers" class="text-white mx-1" style="text-decoration: underline;">Photographers</a> |
+                    <a href="{% url 'vendors' %}?category=decorators" class="text-white mx-1" style="text-decoration: underline;">Decorators</a>
                 </div>
             </div>
         </div>
@@ -80,44 +96,77 @@
 </section>
 <!-- Hero Section End -->
 
+<!-- Brand Trust Statistics Bar -->
+<div style="background: #ffffff; border-bottom: 1px solid #f1f5f9; padding: 25px 0; box-shadow: 0 4px 20px rgba(0,0,0,0.03);">
+    <div class="container">
+        <div class="row text-center align-items-center">
+            <div class="col-6 col-md-3 mb-3 mb-md-0 border-right">
+                <h3 style="font-weight: 800; color: #e72e77; font-size: 32px; margin-bottom: 4px;">5,000+</h3>
+                <p style="margin: 0; color: #6b7280; font-size: 13px; font-weight: 600; text-transform: uppercase;">Verified Venues &amp; Vendors</p>
+            </div>
+            <div class="col-6 col-md-3 mb-3 mb-md-0 border-right">
+                <h3 style="font-weight: 800; color: #111; font-size: 32px; margin-bottom: 4px;">15,000+</h3>
+                <p style="margin: 0; color: #6b7280; font-size: 13px; font-weight: 600; text-transform: uppercase;">Happy Couples Helped</p>
+            </div>
+            <div class="col-6 col-md-3 border-right">
+                <h3 style="font-weight: 800; color: #111; font-size: 32px; margin-bottom: 4px;">25+</h3>
+                <p style="margin: 0; color: #6b7280; font-size: 13px; font-weight: 600; text-transform: uppercase;">Major Indian Cities</p>
+            </div>
+            <div class="col-6 col-md-3">
+                <h3 style="font-weight: 800; color: #059669; font-size: 32px; margin-bottom: 4px;">100% Free</h3>
+                <p style="margin: 0; color: #6b7280; font-size: 13px; font-weight: 600; text-transform: uppercase;">No Booking Commission</p>
+            </div>
+        </div>
+    </div>
+</div>
+
 <!-- Categories Section Begin -->
-<section class="categories spad">
+<section class="categories spad" style="padding-top: 50px; padding-bottom: 25px;">
     <div class="container">
         <div class="row">
             <div class="col-lg-12 text-center">
-                <div class="section-title">
+                <div class="section-title" style="margin-bottom: 30px;">
                     <h2>Popular Categories</h2>
+                    <p class="section-subtitle">Discover the finest professionals to make your celebration unforgettable</p>
                 </div>
             </div>
         </div>
         <div class="row">
-            <div class="col-lg-3 col-md-6 col-sm-6">
-                <div class="vendor-category">
-                    <img src="{% static 'website/img/categories/category-1.jpg' %}?v=2" alt="Wedding Lawns and Luxury Banquet Halls in India - BookMyLawn" loading="lazy">
-                    <h4>Venues</h4>
-                    <p>Find the perfect location</p>
-                </div>
+            <div class="col-lg-3 col-md-6 col-sm-6 mb-4 mb-lg-0">
+                <a href="{% url 'vendors' %}?category=venues" style="text-decoration: none; color: inherit; display: block;">
+                    <div class="vendor-category" style="margin-bottom: 10px;">
+                        <img src="{% static 'website/img/categories/category-1.jpg' %}?v=2" alt="Wedding Lawns and Luxury Banquet Halls in India - BookMyLawn" loading="lazy">
+                        <h4>Wedding Lawns</h4>
+                        <p>Open Lawns, Banquets &amp; Resorts</p>
+                    </div>
+                </a>
             </div>
-            <div class="col-lg-3 col-md-6 col-sm-6">
-                <div class="vendor-category">
-                    <img src="{% static 'website/img/categories/category-2.jpg' %}?v=2" alt="Top Wedding Photographers and Candid Cinematography - BookMyLawn" loading="lazy">
-                    <h4>Photographers</h4>
-                    <p>Capture your moments</p>
-                </div>
+            <div class="col-lg-3 col-md-6 col-sm-6 mb-4 mb-lg-0">
+                <a href="{% url 'vendors' %}?category=photographers" style="text-decoration: none; color: inherit; display: block;">
+                    <div class="vendor-category" style="margin-bottom: 10px;">
+                        <img src="{% static 'website/img/categories/category-2.jpg' %}?v=2" alt="Top Wedding Photographers and Candid Cinematography - BookMyLawn" loading="lazy">
+                        <h4>Photographers</h4>
+                        <p>Candid, Pre-wedding &amp; Films</p>
+                    </div>
+                </a>
             </div>
-            <div class="col-lg-3 col-md-6 col-sm-6">
-                <div class="vendor-category">
-                    <img src="{% static 'website/img/categories/category-3.jpg' %}?v=2" alt="Wedding Stage and Mandap Decorators - BookMyLawn" loading="lazy">
-                    <h4>Decorators</h4>
-                    <p>Beautiful themes</p>
-                </div>
+            <div class="col-lg-3 col-md-6 col-sm-6 mb-4 mb-lg-0">
+                <a href="{% url 'vendors' %}?category=decorators" style="text-decoration: none; color: inherit; display: block;">
+                    <div class="vendor-category" style="margin-bottom: 10px;">
+                        <img src="{% static 'website/img/categories/category-3.jpg' %}?v=2" alt="Wedding Stage and Mandap Decorators - BookMyLawn" loading="lazy">
+                        <h4>Decorators</h4>
+                        <p>Mandaps, Lights &amp; Themes</p>
+                    </div>
+                </a>
             </div>
-            <div class="col-lg-3 col-md-6 col-sm-6">
-                <div class="vendor-category">
-                    <img src="{% static 'website/img/categories/category-4.jpg' %}?v=2" alt="Bridal Makeup Artists and Wedding Stylists - BookMyLawn" loading="lazy">
-                    <h4>Makeup Artists</h4>
-                    <p>Look your best</p>
-                </div>
+            <div class="col-lg-3 col-md-6 col-sm-6 mb-4 mb-lg-0">
+                <a href="{% url 'vendors' %}?category=makeup" style="text-decoration: none; color: inherit; display: block;">
+                    <div class="vendor-category" style="margin-bottom: 10px;">
+                        <img src="{% static 'website/img/categories/category-4.jpg' %}?v=2" alt="Bridal Makeup Artists and Wedding Stylists - BookMyLawn" loading="lazy">
+                        <h4>Bridal Makeup</h4>
+                        <p>Bridal Glamour &amp; Hairstyling</p>
+                    </div>
+                </a>
             </div>
         </div>
     </div>
@@ -125,18 +174,19 @@
 <!-- Categories Section End -->
 
 <!-- Featured Vendors Section Begin -->
-<section class="featured-vendors spad">
+<section class="featured-vendors spad" style="background: #fafafa; padding-top: 45px; padding-bottom: 55px;">
     <div class="container">
         <div class="row">
             <div class="col-lg-12 text-center">
-                <div class="section-title">
-                    <h2>Top Rated Vendors</h2>
+                <div class="section-title" style="margin-bottom: 35px;">
+                    <h2>Top Rated Venues &amp; Vendors</h2>
+                    <p class="section-subtitle">Handpicked, highly rated professionals evaluated for excellence</p>
                 </div>
             </div>
         </div>
         <div class="row">
             {% for vendor in featured_vendors %}
-            <div class="col-lg-4 col-md-6">
+            <div class="col-lg-4 col-md-6 mb-4">
                 <div class="product__item">
                     <div class="product__item__pic set-bg" {% if vendor.image %}data-setbg="{{ vendor.image.url }}" {%
                         else %}data-setbg="{% static 'website/img/product/product-1.jpg' %}?v=2" {% endif %}>
@@ -157,86 +207,151 @@
                             <span class="text-muted ml-1">({{ vendor.reviews.count }} Reviews)</span>
                         </div>
                         <div class="product__price mt-2">
-                            {{ vendor.category.name }}, {{ vendor.location }}
+                            {{ vendor.category.name }} &bull; {{ vendor.location }}
+                        </div>
+                        <div class="mt-3">
+                            <a href="{% url 'vendor_details' vendor.uuid_field %}" class="btn btn-sm btn-outline-danger" style="border-radius: 20px; font-weight: 600; padding: 5px 18px; font-size: 13px;">
+                                View Venue &amp; Pricing <i class="fa fa-angle-right ml-1"></i>
+                            </a>
                         </div>
                     </div>
                 </div>
             </div>
             {% empty %}
-            <div class="col-12 text-center">
+            <div class="col-12 text-center py-4">
                 <p>No featured vendors found at the moment.</p>
             </div>
             {% endfor %}
         </div>
         <div class="row">
-            <div class="col-lg-12 text-center mt-4">
-                <a href="{% url 'vendors' %}" class="btn-theme">View All Vendors</a>
+            <div class="col-lg-12 text-center mt-3">
+                <a href="{% url 'vendors' %}" class="btn-theme">Explore All 5,000+ Venues &amp; Vendors</a>
             </div>
         </div>
     </div>
 </section>
 <!-- Featured Vendors Section End -->
 
-<!-- Wedding Stories Inspiration Begin -->
-<section class="real-weddings spad">
+<!-- Free Wedding Planning Suite Assistance Section -->
+<section style="background: linear-gradient(135deg, rgba(231,46,119,0.06) 0%, rgba(231,46,119,0.14) 100%); padding: 75px 0; border-top: 1px solid rgba(231,46,119,0.12); border-bottom: 1px solid rgba(231,46,119,0.12);">
     <div class="container">
-        <div class="row">
-            <div class="col-lg-12 text-center">
-                <div class="section-title">
-                    <h2>Wedding Stories &amp; Inspiration</h2>
-                    <p class="section-subtitle">Get inspired by beautiful couples and stunning setups</p>
+        <div class="row align-items-center">
+            <div class="col-lg-6 mb-4 mb-lg-0">
+                <span style="color: #e72e77; font-weight: 700; text-transform: uppercase; letter-spacing: 2px; font-size: 13px; display: block; margin-bottom: 10px;">
+                    100% Free For Every Couple
+                </span>
+                <h2 style="font-weight: 800; font-size: 36px; color: #111; margin-bottom: 16px; line-height: 1.3;">
+                    Plan Your Dream Indian Wedding With Smart Free Tools
+                </h2>
+                <p style="color: #4b5563; font-size: 16px; line-height: 1.7; margin-bottom: 25px;">
+                    Eliminate wedding coordination stress. Calculate venue &amp; catering budgets per plate, manage your 12-month wedding checklist, and track guest RSVPs with BookMyLawn's planning suite.
+                </p>
+                <div class="d-flex flex-wrap" style="gap: 12px;">
+                    <a href="{% url 'wedding_tools' %}" class="btn btn-theme" style="padding: 12px 28px; border-radius: 25px; font-weight: 700; font-size: 14px;">
+                        <i class="fa fa-calculator mr-1"></i> Try Free Budget Calculator
+                    </a>
+                    <a href="{% url 'wedding_tools' %}" class="btn btn-outline-dark" style="padding: 12px 24px; border-radius: 25px; font-weight: 700; font-size: 14px;">
+                        <i class="fa fa-check-square-o mr-1"></i> View 12-Month Checklist
+                    </a>
                 </div>
             </div>
-        </div>
-        <div class="row mt-4">
-            <div class="col-lg-4 col-md-6 mb-4">
-                <div class="wedding-card">
-                    <img src="{% static 'website/img/product/product-2.jpg' %}?v=2" alt="Real Wedding"
-                        class="wedding-image" style="width:100%; object-fit:cover;">
-                    <div class="wedding-content">
-                        <h5 class="wedding-title">A Royal Affair in Udaipur</h5>
-                        <p class="wedding-description">Ankit &amp; Priya's Grand Celebration</p>
+            <div class="col-lg-6">
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <div style="background: #fff; padding: 25px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.04); height: 100%;">
+                            <i class="fa fa-calculator text-danger fa-2x mb-3"></i>
+                            <h5 style="font-weight: 700; font-size: 17px; margin-bottom: 8px;">Budget Estimator</h5>
+                            <p style="color: #6b7280; font-size: 13.5px; margin: 0; line-height: 1.6;">Automated 45-15-12 allocation for venue, food, decor, and photography.</p>
+                        </div>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <div style="background: #fff; padding: 25px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.04); height: 100%;">
+                            <i class="fa fa-list-ol text-danger fa-2x mb-3"></i>
+                            <h5 style="font-weight: 700; font-size: 17px; margin-bottom: 8px;">Master Checklist</h5>
+                            <p style="color: #6b7280; font-size: 13.5px; margin: 0; line-height: 1.6;">Month-by-month tasks from ring ceremony to bidaai without missing a beat.</p>
+                        </div>
+                    </div>
+                    <div class="col-md-6 mb-3 mb-md-0">
+                        <div style="background: #fff; padding: 25px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.04); height: 100%;">
+                            <i class="fa fa-users text-danger fa-2x mb-3"></i>
+                            <h5 style="font-weight: 700; font-size: 17px; margin-bottom: 8px;">Guest RSVP Manager</h5>
+                            <p style="color: #6b7280; font-size: 13.5px; margin: 0; line-height: 1.6;">Organize floating guests, room allotments, and dietary preferences.</p>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div style="background: #fff; padding: 25px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.04); height: 100%;">
+                            <i class="fa fa-comments-o text-danger fa-2x mb-3"></i>
+                            <h5 style="font-weight: 700; font-size: 17px; margin-bottom: 8px;">Free Concierge Help</h5>
+                            <p style="color: #6b7280; font-size: 13.5px; margin: 0; line-height: 1.6;">Direct phone and WhatsApp assistance to book free venue property visits.</p>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="col-lg-4 col-md-6 mb-4">
-                <div class="wedding-card">
-                    <img src="{% static 'website/img/product/product-3.jpg' %}?v=2" alt="Real Wedding"
-                        class="wedding-image" style="width:100%; object-fit:cover;">
-                    <div class="wedding-content">
-                        <h5 class="wedding-title">Modern Minimalist Delhi Wedding</h5>
-                        <p class="wedding-description">Rohan &amp; Sneha's Intimate Vows</p>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-4 col-md-6 mb-4">
-                <div class="wedding-card">
-                    <img src="{% static 'website/img/product/product-1.jpg' %}?v=2" alt="Real Wedding"
-                        class="wedding-image" style="width:100%; object-fit:cover;">
-                    <div class="wedding-content">
-                        <h5 class="wedding-title">Beachside Bliss in Goa</h5>
-                        <p class="wedding-description">Kabir &amp; Meera's Sunset Reception</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-lg-12 text-center mt-3">
-                <a href="#" class="btn-outline-theme">View Gallery</a>
             </div>
         </div>
     </div>
 </section>
-<!-- Wedding Stories Inspiration End -->
 
-<!-- How it Works Section Begin -->
-<section class="how-it-works spad" style="background-color: #fffafb;">
+<!-- Real Wedding Stories & Couple Inspiration -->
+<section class="real-weddings spad" style="padding-top: 55px; padding-bottom: 55px;">
     <div class="container">
         <div class="row">
             <div class="col-lg-12 text-center">
                 <div class="section-title">
-                    <h2>How It Works</h2>
-                    <p class="section-subtitle">Plan your dream wedding in 4 simple steps</p>
+                    <h2>Real Weddings &amp; Couple Stories</h2>
+                    <p class="section-subtitle">Real celebrations, royal lawns, and candid inspirations planned with BookMyLawn</p>
+                </div>
+            </div>
+        </div>
+        <div class="row mt-4">
+            {% for wedding in real_weddings %}
+            <div class="col-lg-4 col-md-6 mb-4">
+                <div class="wedding-card" style="border: 1px solid #f1f5f9; border-radius: 12px; overflow: hidden; background: #fff; height: 100%; box-shadow: 0 4px 15px rgba(0,0,0,0.04);">
+                    <div class="wedding-image"
+                        style="height: 240px; background-size: cover; background-position: center; background-image: url('{% if wedding.main_image %}{{ wedding.main_image.url }}{% else %}{% static 'website/img/banner/banner-1.jpg' %}{% endif %}');">
+                    </div>
+                    <div class="wedding-content" style="padding: 20px;">
+                        <h5 class="wedding-title" style="font-weight: 700; font-size: 18px; margin-bottom: 6px;">{{ wedding.couple_name }}</h5>
+                        <div class="wedding-meta text-muted mb-2" style="font-size: 13px;">
+                            <span><i class="fa fa-map-marker text-danger mr-1"></i> {{ wedding.location }}</span>
+                            <span class="ml-3"><i class="fa fa-calendar mr-1"></i> {{ wedding.date|date:"F Y" }}</span>
+                        </div>
+                        <p class="wedding-description" style="color: #6b7280; font-size: 13.5px; line-height: 1.6; margin-bottom: 12px;">
+                            {{ wedding.description|truncatewords:16 }}
+                        </p>
+                        {% if wedding.venue %}
+                        <div class="mb-3" style="font-size: 13px;">
+                            <strong>Venue:</strong> <a href="{% url 'vendor_details' wedding.venue.uuid_field %}" style="color: #e72e77; font-weight: 700; text-decoration: none;">{{ wedding.venue.name }}</a>
+                        </div>
+                        {% endif %}
+                        <a href="{% url 'real_weddings' %}" class="btn btn-sm btn-outline-danger font-weight-bold" style="border-radius: 20px; font-size: 12.5px;">
+                            Read Full Story <i class="fa fa-angle-right ml-1"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            {% empty %}
+            <div class="col-12 text-center py-3">
+                <p>Inspiring wedding stories coming soon.</p>
+            </div>
+            {% endfor %}
+        </div>
+        <div class="row">
+            <div class="col-lg-12 text-center mt-3">
+                <a href="{% url 'real_weddings' %}" class="btn-outline-theme">Browse All Wedding Stories</a>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Real Wedding Stories End -->
+
+<!-- How it Works Section Begin -->
+<section class="how-it-works spad" style="background-color: #fffafb; border-top: 1px solid #fdf2f7; border-bottom: 1px solid #fdf2f7; padding-top: 55px; padding-bottom: 55px;">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 text-center">
+                <div class="section-title">
+                    <h2>How BookMyLawn Works</h2>
+                    <p class="section-subtitle">Plan and book your wedding venue in 4 seamless steps</p>
                 </div>
             </div>
         </div>
@@ -245,28 +360,28 @@
                 <div class="step-card">
                     <div class="step-icon"><i class="fa fa-search"></i></div>
                     <h5 style="font-weight: 700; font-family: var(--font-heading);">1. Discover</h5>
-                    <p>Search for venues and vendors in your preferred city.</p>
+                    <p>Search 5,000+ verified wedding lawns and banquet halls by city, guest capacity, and price per plate.</p>
                 </div>
             </div>
             <div class="col-lg-3 col-md-6 mb-4">
                 <div class="step-card">
                     <div class="step-icon"><i class="fa fa-sliders"></i></div>
                     <h5 style="font-weight: 700; font-family: var(--font-heading);">2. Compare</h5>
-                    <p>Filter by prices, ratings, and read verified reviews.</p>
-                </div>
-            </div>
-            <div class="col-lg-3 col-md-6 mb-4">
-                <div class="step-card">
-                    <div class="step-icon"><i class="fa fa-envelope-o"></i></div>
-                    <h5 style="font-weight: 700; font-family: var(--font-heading);">3. Contact</h5>
-                    <p>Chat directly with vendors to get personalized quotes.</p>
+                    <p>Compare real photo galleries, guest capacity, AC rooms, parking, and reviews from real couples.</p>
                 </div>
             </div>
             <div class="col-lg-3 col-md-6 mb-4">
                 <div class="step-card">
                     <div class="step-icon"><i class="fa fa-calendar-check-o"></i></div>
-                    <h5 style="font-weight: 700; font-family: var(--font-heading);">4. Book</h5>
-                    <p>Confirm your bookings and relax while we handle the rest.</p>
+                    <h5 style="font-weight: 700; font-family: var(--font-heading);">3. Free Site Visit</h5>
+                    <p>Click Send Inquiry to receive direct quotes from venue managers and arrange an accompanied site visit.</p>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6 mb-4">
+                <div class="step-card">
+                    <div class="step-icon"><i class="fa fa-check-circle-o"></i></div>
+                    <h5 style="font-weight: 700; font-family: var(--font-heading);">4. Book Directly</h5>
+                    <p>Lock in your preferred wedding date with zero commission, zero middleman fees, and transparent contracts.</p>
                 </div>
             </div>
         </div>
@@ -274,24 +389,24 @@
 </section>
 <!-- How it Works Section End -->
 
-<!-- Top Cities Section Begin -->
-<section class="top-cities spad" style="background: #fcfcfc;">
+<!-- Popular Venues by City Section Begin -->
+<section class="top-cities spad" style="background: #ffffff; padding-top: 55px; padding-bottom: 55px;">
     <div class="container">
         <div class="row">
             <div class="col-lg-12 text-center">
                 <div class="section-title">
                     <h2>Popular Venues by City</h2>
-                    <p class="section-subtitle">Handpicked destinations for your perfect wedding</p>
+                    <p class="section-subtitle">Handpicked wedding lawns, banquet halls &amp; palaces in top wedding hubs</p>
                 </div>
             </div>
         </div>
         <div class="row mt-4">
             <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
-                <a href="{% url 'vendors' %}?city=Mumbai" class="city-card">
-                    <img src="{% static 'website/img/cities/mumbai.jpg' %}" alt="Wedding Lawns and Banquet Halls in Mumbai - BookMyLawn" loading="lazy">
+                <a href="{% url 'vendors' %}?city=Lucknow" class="city-card">
+                    <img src="{% static 'website/img/cities/lucknow.jpg' %}?v=3" alt="Wedding Lawns and Marriage Gardens in Lucknow - BookMyLawn" loading="lazy">
                     <div class="city-overlay">
-                        <div class="city-name">Mumbai</div>
-                        <div class="venue-count">120+ Venues</div>
+                        <div class="city-name">Lucknow</div>
+                        <div class="venue-count">120+ Wedding Lawns</div>
                     </div>
                 </a>
             </div>
@@ -300,34 +415,7 @@
                     <img src="{% static 'website/img/cities/delhi.jpg' %}" alt="Wedding Lawns, Farmhouses and AC Banquets in Delhi NCR - BookMyLawn" loading="lazy">
                     <div class="city-overlay">
                         <div class="city-name">Delhi NCR</div>
-                        <div class="venue-count">150+ Venues</div>
-                    </div>
-                </a>
-            </div>
-            <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
-                <a href="{% url 'vendors' %}?city=Bangalore" class="city-card">
-                    <img src="{% static 'website/img/cities/bangalore.jpg' %}" alt="Wedding Venues and Luxury Resorts in Bangalore - BookMyLawn" loading="lazy">
-                    <div class="city-overlay">
-                        <div class="city-name">Bangalore</div>
-                        <div class="venue-count">95+ Venues</div>
-                    </div>
-                </a>
-            </div>
-            <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
-                <a href="{% url 'vendors' %}?city=Udaipur" class="city-card">
-                    <img src="{% static 'website/img/cities/udaipur.jpg' %}" alt="Royal Destination Wedding Palaces and Lawns in Udaipur - BookMyLawn" loading="lazy">
-                    <div class="city-overlay">
-                        <div class="city-name">Udaipur</div>
-                        <div class="venue-count">45+ Venues</div>
-                    </div>
-                </a>
-            </div>
-            <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
-                <a href="{% url 'vendors' %}?city=Lucknow" class="city-card">
-                    <img src="{% static 'website/img/cities/lucknow.jpg' %}?v=3" alt="Wedding Lawns and Marriage Gardens in Lucknow - BookMyLawn" loading="lazy">
-                    <div class="city-overlay">
-                        <div class="city-name">Lucknow</div>
-                        <div class="venue-count">60+ Venues</div>
+                        <div class="venue-count">180+ Farmhouses &amp; Banquets</div>
                     </div>
                 </a>
             </div>
@@ -336,7 +424,34 @@
                     <img src="{% static 'website/img/cities/jaipur.jpg' %}" alt="Heritage Wedding Venues and Lawns in Jaipur - BookMyLawn" loading="lazy">
                     <div class="city-overlay">
                         <div class="city-name">Jaipur</div>
-                        <div class="venue-count">80+ Venues</div>
+                        <div class="venue-count">95+ Royal Venues</div>
+                    </div>
+                </a>
+            </div>
+            <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
+                <a href="{% url 'vendors' %}?city=Udaipur" class="city-card">
+                    <img src="{% static 'website/img/cities/udaipur.jpg' %}" alt="Royal Destination Wedding Palaces and Lawns in Udaipur - BookMyLawn" loading="lazy">
+                    <div class="city-overlay">
+                        <div class="city-name">Udaipur</div>
+                        <div class="venue-count">55+ Destination Palaces</div>
+                    </div>
+                </a>
+            </div>
+            <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
+                <a href="{% url 'vendors' %}?city=Mumbai" class="city-card">
+                    <img src="{% static 'website/img/cities/mumbai.jpg' %}" alt="Wedding Lawns and Banquet Halls in Mumbai - BookMyLawn" loading="lazy">
+                    <div class="city-overlay">
+                        <div class="city-name">Mumbai</div>
+                        <div class="venue-count">140+ Banquets &amp; Lawns</div>
+                    </div>
+                </a>
+            </div>
+            <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
+                <a href="{% url 'vendors' %}?city=Bangalore" class="city-card">
+                    <img src="{% static 'website/img/cities/bangalore.jpg' %}" alt="Wedding Venues and Luxury Resorts in Bangalore - BookMyLawn" loading="lazy">
+                    <div class="city-overlay">
+                        <div class="city-name">Bangalore</div>
+                        <div class="venue-count">110+ Garden Resorts</div>
                     </div>
                 </a>
             </div>
@@ -345,7 +460,7 @@
                     <img src="{% static 'website/img/cities/goa.jpg' %}" alt="Beach Wedding Lawns and Resorts in Goa - BookMyLawn" loading="lazy">
                     <div class="city-overlay">
                         <div class="city-name">Goa</div>
-                        <div class="venue-count">55+ Venues</div>
+                        <div class="venue-count">65+ Beachside Resorts</div>
                     </div>
                 </a>
             </div>
@@ -354,7 +469,7 @@
                     <img src="{% static 'website/img/cities/chandigarh.jpg' %}?v=3" alt="Wedding Lawns and Banquet Halls in Chandigarh - BookMyLawn" loading="lazy">
                     <div class="city-overlay">
                         <div class="city-name">Chandigarh</div>
-                        <div class="venue-count">40+ Venues</div>
+                        <div class="venue-count">50+ Marriage Palaces</div>
                     </div>
                 </a>
             </div>
@@ -363,30 +478,243 @@
 </section>
 <!-- Top Cities Section End -->
 
+<!-- Latest Wedding Planning Guides Section Begin (From Blog) -->
+<section class="spad" style="background: #fafafa; border-top: 1px solid #f1f5f9; padding-top: 55px; padding-bottom: 55px;">
+    <div class="container">
+        <div class="row align-items-center mb-4">
+            <div class="col-md-8">
+                <div class="section-title text-left mb-0">
+                    <span style="color: #e72e77; font-weight: 700; text-transform: uppercase; font-size: 13px; letter-spacing: 1.5px; display: block; margin-bottom: 6px;">Expert Advice</span>
+                    <h2 style="font-size: 32px; margin-bottom: 4px;">Latest Wedding Planning Guides</h2>
+                    <p style="color: #6b7280; font-size: 14.5px; margin: 0;">Practical checklists, catering costs, and venue advice to plan like a pro</p>
+                </div>
+            </div>
+            <div class="col-md-4 text-md-right mt-3 mt-md-0">
+                <a href="{% url 'blog' %}" class="btn btn-outline-danger font-weight-bold" style="border-radius: 25px; padding: 8px 22px; font-size: 13.5px;">
+                    View All Guides <i class="fa fa-arrow-right ml-1"></i>
+                </a>
+            </div>
+        </div>
+        <div class="row">
+            {% for blog in recent_blogs %}
+            <div class="col-lg-4 col-md-6 mb-4">
+                <div style="background: #fff; border-radius: 12px; overflow: hidden; border: 1px solid #eef2f6; box-shadow: 0 4px 15px rgba(0,0,0,0.04); height: 100%; display: flex; flex-direction: column;">
+                    <div style="height: 200px; background-size: cover; background-position: center; background-image: url('{% if blog.image %}{{ blog.image.url }}{% else %}{% static 'website/img/banner/banner-1.jpg' %}{% endif %}');"></div>
+                    <div style="padding: 22px; flex: 1; display: flex; flex-direction: column; justify-content: space-between;">
+                        <div>
+                            <span class="badge badge-light text-danger mb-2 font-weight-bold" style="font-size: 11.5px;">WEDDING GUIDE</span>
+                            <h5 style="font-size: 16.5px; font-weight: 700; line-height: 1.4; margin-bottom: 10px;">
+                                <a href="{% url 'blog_details' blog.slug %}" style="color: #111; text-decoration: none;">{{ blog.title|truncatechars:65 }}</a>
+                            </h5>
+                            <p style="color: #6b7280; font-size: 13.5px; line-height: 1.6; margin-bottom: 15px;">
+                                {{ blog.content|striptags|truncatewords:16 }}
+                            </p>
+                        </div>
+                        <div class="d-flex justify-content-between align-items-center pt-2 border-top">
+                            <span style="font-size: 12px; color: #9ca3af;"><i class="fa fa-calendar mr-1"></i> {{ blog.created_at|date:"M d, Y" }}</span>
+                            <a href="{% url 'blog_details' blog.slug %}" style="color: #e72e77; font-weight: 700; font-size: 13px; text-decoration: none;">
+                                Read Guide <i class="fa fa-angle-right ml-1"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+<!-- Latest Guides Section End -->
+
+<!-- Vendor Partnership Section (Seamless Theme Styling) -->
+<section style="background: linear-gradient(135deg, rgba(231,46,119,0.04) 0%, rgba(231,46,119,0.1) 100%); padding: 80px 0; border-top: 1px solid rgba(231,46,119,0.12); border-bottom: 1px solid rgba(231,46,119,0.12);">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-7 mb-4 mb-lg-0">
+                <span style="background: #fdf2f7; color: #e72e77; font-weight: 700; font-size: 12px; text-transform: uppercase; letter-spacing: 2px; padding: 6px 16px; border-radius: 20px; display: inline-block; margin-bottom: 15px; border: 1px solid #fbcfe8;">
+                    For Venue Owners &amp; Wedding Professionals
+                </span>
+                <h2 style="font-family: 'Playfair Display', serif; font-weight: 800; font-size: 38px; color: #111; margin-bottom: 16px; line-height: 1.25;">
+                    Grow Your Wedding Business with BookMyLawn
+                </h2>
+                <p style="color: #4b5563; font-size: 16px; line-height: 1.7; margin-bottom: 25px; max-width: 620px;">
+                    Join over 5,000+ venue owners, banquet hall managers, photographers, and decorators receiving direct booking inquiries from couples across India every day.
+                </p>
+                <div class="row mb-4">
+                    <div class="col-sm-6 mb-3">
+                        <div class="d-flex align-items-center" style="gap: 12px;">
+                            <div style="width: 30px; height: 30px; background: #ecfdf5; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                                <i class="fa fa-check text-success" style="font-size: 13px;"></i>
+                            </div>
+                            <span style="font-size: 14.5px; color: #1f2937; font-weight: 600;">Direct Inquiries from Couples</span>
+                        </div>
+                    </div>
+                    <div class="col-sm-6 mb-3">
+                        <div class="d-flex align-items-center" style="gap: 12px;">
+                            <div style="width: 30px; height: 30px; background: #ecfdf5; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                                <i class="fa fa-check text-success" style="font-size: 13px;"></i>
+                            </div>
+                            <span style="font-size: 14.5px; color: #1f2937; font-weight: 600;">Zero Middleman Commission</span>
+                        </div>
+                    </div>
+                    <div class="col-sm-6 mb-3">
+                        <div class="d-flex align-items-center" style="gap: 12px;">
+                            <div style="width: 30px; height: 30px; background: #ecfdf5; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                                <i class="fa fa-check text-success" style="font-size: 13px;"></i>
+                            </div>
+                            <span style="font-size: 14.5px; color: #1f2937; font-weight: 600;">Verified Business Badge</span>
+                        </div>
+                    </div>
+                    <div class="col-sm-6 mb-3">
+                        <div class="d-flex align-items-center" style="gap: 12px;">
+                            <div style="width: 30px; height: 30px; background: #ecfdf5; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                                <i class="fa fa-check text-success" style="font-size: 13px;"></i>
+                            </div>
+                            <span style="font-size: 14.5px; color: #1f2937; font-weight: 600;">Dedicated Vendor Dashboard</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="d-flex flex-wrap" style="gap: 12px;">
+                    <a href="{% url 'vendor_register' %}" class="btn btn-theme" style="padding: 12px 30px; border-radius: 25px; font-weight: 700; font-size: 14px;">
+                        <i class="fa fa-building-o mr-1"></i> List Your Business for Free
+                    </a>
+                    <a href="tel:+919876543210" class="btn btn-outline-dark" style="padding: 12px 24px; border-radius: 25px; font-weight: 700; font-size: 14px;">
+                        <i class="fa fa-phone mr-1"></i> Speak to Vendor Support
+                    </a>
+                </div>
+            </div>
+            <div class="col-lg-5 text-center">
+                <div style="background: #ffffff; border: 1.5px solid #fbcfe8; padding: 35px 30px; border-radius: 16px; box-shadow: 0 10px 30px rgba(231,46,119,0.08);">
+                    <div style="width: 65px; height: 65px; background: #fdf2f7; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; margin-bottom: 16px;">
+                        <i class="fa fa-line-chart fa-2x" style="color: #e72e77;"></i>
+                    </div>
+                    <h4 style="font-family: 'Playfair Display', serif; font-weight: 700; color: #111; font-size: 24px; margin-bottom: 10px;">
+                        10X Your Booking Leads
+                    </h4>
+                    <p style="color: #6b7280; font-size: 14px; line-height: 1.6; margin-bottom: 22px;">
+                        Couples are actively searching for wedding lawns, banquet halls, and wedding vendors in your city right now. Don't miss out on high-value wedding bookings.
+                    </p>
+                    <a href="{% url 'vendor_register' %}" class="btn btn-theme btn-block font-weight-bold py-3" style="border-radius: 25px; font-size: 14px;">
+                        Register in 2 Minutes <i class="fa fa-arrow-right ml-1"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Vendor Partnership Section End -->
+
+<!-- Frequently Asked Questions on Homepage -->
+<section style="padding: 70px 0; background: #ffffff;">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-8 text-center mb-4">
+                <div class="section-title mb-0">
+                    <span style="color: #e72e77; font-weight: 700; text-transform: uppercase; font-size: 13px; letter-spacing: 1.5px; display: block; margin-bottom: 6px;">Got Questions?</span>
+                    <h2 style="font-size: 32px; margin-bottom: 8px;">Frequently Asked Questions</h2>
+                    <p style="color: #6b7280; font-size: 15px;">Quick answers to help you choose the best wedding lawn and vendor services</p>
+                </div>
+            </div>
+        </div>
+        <div class="row justify-content-center">
+            <div class="col-lg-9">
+                <div class="accordion" id="homeFaq">
+                    <div class="card mb-3" style="border: 1px solid #e5e7eb; border-radius: 10px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.02);">
+                        <div class="card-header" id="headingHFaq1" style="background: #fafafa; padding: 16px 22px;">
+                            <h3 class="mb-0" style="font-size: 16px; font-family: 'Montserrat', sans-serif;">
+                                <button class="btn btn-link btn-block text-left font-weight-bold text-dark d-flex justify-content-between align-items-center" type="button" data-toggle="collapse" data-target="#collapseHFaq1" aria-expanded="true" style="text-decoration: none; padding: 0;">
+                                    <span><i class="fa fa-question-circle text-danger mr-2"></i> How do I choose the best wedding lawn or banquet hall on BookMyLawn?</span>
+                                    <i class="fa fa-chevron-down text-muted small"></i>
+                                </button>
+                            </h3>
+                        </div>
+                        <div id="collapseHFaq1" class="collapse show" data-parent="#homeFaq">
+                            <div class="card-body" style="padding: 18px 24px; color: #4b5563; font-size: 14.5px; line-height: 1.8;">
+                                Filter venues by city, guest capacity, price per plate (veg/non-veg), and amenities such as AC banquet halls, bridal changing rooms, and parking. Compare real couple ratings, view high-resolution photo galleries, and click 'Send Inquiry' to receive instant quotes directly from venue managers.
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card mb-3" style="border: 1px solid #e5e7eb; border-radius: 10px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.02);">
+                        <div class="card-header" id="headingHFaq2" style="background: #fafafa; padding: 16px 22px;">
+                            <h3 class="mb-0" style="font-size: 16px; font-family: 'Montserrat', sans-serif;">
+                                <button class="btn btn-link btn-block text-left font-weight-bold text-dark d-flex justify-content-between align-items-center collapsed" type="button" data-toggle="collapse" data-target="#collapseHFaq2" aria-expanded="false" style="text-decoration: none; padding: 0;">
+                                    <span><i class="fa fa-question-circle text-danger mr-2"></i> What is included when booking an open-air wedding lawn?</span>
+                                    <i class="fa fa-chevron-down text-muted small"></i>
+                                </button>
+                            </h3>
+                        </div>
+                        <div id="collapseHFaq2" class="collapse" data-parent="#homeFaq">
+                            <div class="card-body" style="padding: 18px 24px; color: #4b5563; font-size: 14.5px; line-height: 1.8;">
+                                Most wedding lawns provide the lush green ground space, stage foundation, power backup/generators, and dedicated valet parking. Many lawns also offer in-house catering (with per-plate packages) and stage decoration setups, while allowing external decorators and caterers upon request.
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card mb-3" style="border: 1px solid #e5e7eb; border-radius: 10px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.02);">
+                        <div class="card-header" id="headingHFaq3" style="background: #fafafa; padding: 16px 22px;">
+                            <h3 class="mb-0" style="font-size: 16px; font-family: 'Montserrat', sans-serif;">
+                                <button class="btn btn-link btn-block text-left font-weight-bold text-dark d-flex justify-content-between align-items-center collapsed" type="button" data-toggle="collapse" data-target="#collapseHFaq3" aria-expanded="false" style="text-decoration: none; padding: 0;">
+                                    <span><i class="fa fa-question-circle text-danger mr-2"></i> What is the average cost of booking a wedding lawn in India?</span>
+                                    <i class="fa fa-chevron-down text-muted small"></i>
+                                </button>
+                            </h3>
+                        </div>
+                        <div id="collapseHFaq3" class="collapse" data-parent="#homeFaq">
+                            <div class="card-body" style="padding: 18px 24px; color: #4b5563; font-size: 14.5px; line-height: 1.8;">
+                                Wedding lawn rental costs range from ₹50,000 for intimate gathering lawns up to ₹5,00,000+ for royal destination wedding lawns and farmhouses. Per-plate catering typically ranges from ₹1,000 to ₹3,500+ depending on the menu and city.
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card mb-3" style="border: 1px solid #e5e7eb; border-radius: 10px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.02);">
+                        <div class="card-header" id="headingHFaq4" style="background: #fafafa; padding: 16px 22px;">
+                            <h3 class="mb-0" style="font-size: 16px; font-family: 'Montserrat', sans-serif;">
+                                <button class="btn btn-link btn-block text-left font-weight-bold text-dark d-flex justify-content-between align-items-center collapsed" type="button" data-toggle="collapse" data-target="#collapseHFaq4" aria-expanded="false" style="text-decoration: none; padding: 0;">
+                                    <span><i class="fa fa-question-circle text-danger mr-2"></i> Can I book wedding photographers and decorators along with the lawn?</span>
+                                    <i class="fa fa-chevron-down text-muted small"></i>
+                                </button>
+                            </h3>
+                        </div>
+                        <div id="collapseHFaq4" class="collapse" data-parent="#homeFaq">
+                            <div class="card-body" style="padding: 18px 24px; color: #4b5563; font-size: 14.5px; line-height: 1.8;">
+                                Yes! BookMyLawn is an all-in-one wedding platform. Alongside wedding lawns, you can explore verified wedding photographers, bridal makeup artists, stage decorators, and catering vendors across India.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="text-center mt-4">
+                    <a href="{% url 'faq' %}" class="btn-theme" style="font-size: 13.5px; padding: 10px 26px;">
+                        View All 17+ Frequently Asked Questions <i class="fa fa-arrow-right ml-1"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
 <!-- Trust Section Begin -->
-<section class="services spad" style="background: #fdfdfd; border-top: 1px solid #f0f0f0;">
+<section class="services spad" style="background: #fdfdfd; border-top: 1px solid #f0f0f0; padding-top: 55px; padding-bottom: 55px;">
     <div class="container">
         <div class="row text-center">
             <div class="col-lg-4 col-md-6 mb-4">
                 <div class="trust-card">
                     <i class="fa fa-check-circle trust-icon"></i>
-                    <h6 style="font-weight: 700; font-family: var(--font-heading); font-size: 20px;">Verified Vendors
-                    </h6>
-                    <p>Thousands of trusted professionals evaluated for excellence.</p>
+                    <h6 style="font-weight: 700; font-family: var(--font-heading); font-size: 20px;">100% Verified Vendors</h6>
+                    <p>Every wedding lawn and vendor is verified for capacity, cleanliness, and authentic pricing.</p>
                 </div>
             </div>
             <div class="col-lg-4 col-md-6 mb-4">
                 <div class="trust-card">
                     <i class="fa fa-star trust-icon"></i>
-                    <h6 style="font-weight: 700; font-family: var(--font-heading); font-size: 20px;">Real Reviews</h6>
-                    <p>Read honest experiences and ratings from actual couples.</p>
+                    <h6 style="font-weight: 700; font-family: var(--font-heading); font-size: 20px;">Real Couple Reviews</h6>
+                    <p>Read transparent experiences and authentic reviews from couples who planned their wedding here.</p>
                 </div>
             </div>
             <div class="col-lg-4 col-md-6 mb-4">
                 <div class="trust-card">
                     <i class="fa fa-heart trust-icon"></i>
-                    <h6 style="font-weight: 700; font-family: var(--font-heading); font-size: 20px;">Easy Planning</h6>
-                    <p>Book securely and coordinate your entire event seamlessly.</p>
+                    <h6 style="font-weight: 700; font-family: var(--font-heading); font-size: 20px;">Zero Commission</h6>
+                    <p>Direct inquiries to venue managers with no middleman markups or hidden booking charges.</p>
                 </div>
             </div>
         </div>

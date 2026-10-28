@@ -1,29 +1,34 @@
 {% extends 'website/base.html' %}
 {% load static %}
 
-{% block title %}Real Indian Wedding Stories & Lawn Inspiration | BookMyLawn{% endblock %}
-{% block meta_description %}Browse real Indian wedding celebrations, royal lawn setups, banquet decor, and candid photography inspirations submitted by real couples at BookMyLawn.{% endblock %}
-{% block meta_keywords %}real weddings, wedding stories, Indian wedding pictures, wedding lawns photo gallery, banquet decoration ideas, BookMyLawn{% endblock %}
+{% block title %}Real Indian Wedding Stories & Venue Inspiration | BookMyLawn{% endblock %}
+{% block meta_description %}Explore authentic Indian wedding celebrations, royal open lawns, banquet decor, and candid photography inspirations submitted by real couples on BookMyLawn.{% endblock %}
+{% block meta_keywords %}real weddings, wedding stories, Indian wedding pictures, wedding lawns photo gallery, banquet decoration ideas, wedding inspirations, BookMyLawn{% endblock %}
 
 {% block structured_data %}
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
-  "@type": "BreadcrumbList",
-  "itemListElement": [
-    {
-      "@type": "ListItem",
-      "position": 1,
-      "name": "Home",
-      "item": "{{ request.scheme }}://{{ request.get_host }}/"
-    },
-    {
-      "@type": "ListItem",
-      "position": 2,
-      "name": "Real Weddings",
-      "item": "{{ request.build_absolute_uri }}"
-    }
-  ]
+  "@type": "CollectionPage",
+  "name": "Real Wedding Stories & Lawn Inspirations | BookMyLawn",
+  "description": "Explore authentic Indian wedding celebrations and venue setups.",
+  "breadcrumb": {
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "Home",
+        "item": "{{ request.scheme }}://{{ request.get_host }}/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": "Real Weddings",
+        "item": "{{ request.build_absolute_uri }}"
+      }
+    ]
+  }
 }
 </script>
 {% endblock %}
@@ -32,89 +37,202 @@
 
 <!-- Hero Begin -->
 <div class="page-hero set-bg" data-setbg="{% static 'website/img/banner/real-weddings-banner.jpg' %}?v=2"
-    style="background-image: url('{% static 'website/img/banner/real-weddings-banner.jpg' %}?v=2');">
-    <div class="container">
-        <div class="page-hero-content">
-            <h2>Wedding Stories</h2>
-            <p>Inspiration from the most beautiful celebrations planned with BookMyLawn</p>
+    style="background-image: url('{% static 'website/img/banner/real-weddings-banner.jpg' %}?v=2'); position: relative; padding: 120px 0 80px;">
+    <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(180deg, rgba(15,17,21,0.55) 0%, rgba(15,17,21,0.7) 100%);"></div>
+    <div class="container" style="position: relative; z-index: 2;">
+        <div class="page-hero-content text-center">
+            <span style="display: inline-block; background: rgba(231,46,119,0.3); border: 1px solid rgba(255,255,255,0.4); color: #ffffff; font-weight: 700; font-size: 12px; text-transform: uppercase; letter-spacing: 2px; padding: 5px 16px; border-radius: 30px; margin-bottom: 16px;">
+                True Celebrations &bull; Real Couples
+            </span>
+            <h1 style="color: #ffffff; font-family: 'Playfair Display', serif; font-size: 44px; font-weight: 800; margin-bottom: 14px; text-shadow: 2px 2px 8px rgba(0,0,0,0.5);">
+                Real Wedding Stories
+            </h1>
+            <p style="color: #f3f4f6; font-size: 17px; max-width: 650px; margin: 0 auto; line-height: 1.6; text-shadow: 1px 1px 4px rgba(0,0,0,0.5);">
+                Get inspired by real couples who discovered and booked their dream wedding lawns, banquet halls, and wedding vendors with BookMyLawn.
+            </p>
         </div>
     </div>
 </div>
 <!-- Hero End -->
 
-<section class="real-weddings-section spad">
+<!-- Filter & Search Bar Section -->
+<section style="background: #ffffff; border-bottom: 1px solid #f1f5f9; padding: 25px 0; box-shadow: 0 4px 20px rgba(0,0,0,0.02);">
     <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-7 mb-3 mb-lg-0">
+                <div class="d-flex flex-wrap align-items-center" style="gap: 8px;">
+                    <span class="font-weight-bold text-dark mr-2" style="font-size: 13.5px;"><i class="fa fa-map-marker text-danger mr-1"></i> Filter by City:</span>
+                    <a href="{% url 'real_weddings' %}" class="btn btn-sm {% if selected_city == 'all' or not selected_city %}btn-danger{% else %}btn-outline-secondary{% endif %}" style="border-radius: 20px; font-size: 13px; font-weight: 600; padding: 5px 15px;">
+                        All Stories
+                    </a>
+                    <a href="{% url 'real_weddings' %}?city=Lucknow" class="btn btn-sm {% if selected_city|lower == 'lucknow' %}btn-danger{% else %}btn-outline-secondary{% endif %}" style="border-radius: 20px; font-size: 13px; font-weight: 600; padding: 5px 15px;">
+                        Lucknow
+                    </a>
+                    <a href="{% url 'real_weddings' %}?city=Delhi" class="btn btn-sm {% if selected_city|lower == 'delhi' %}btn-danger{% else %}btn-outline-secondary{% endif %}" style="border-radius: 20px; font-size: 13px; font-weight: 600; padding: 5px 15px;">
+                        Delhi
+                    </a>
+                    <a href="{% url 'real_weddings' %}?city=Mumbai" class="btn btn-sm {% if selected_city|lower == 'mumbai' %}btn-danger{% else %}btn-outline-secondary{% endif %}" style="border-radius: 20px; font-size: 13px; font-weight: 600; padding: 5px 15px;">
+                        Mumbai
+                    </a>
+                    <a href="{% url 'real_weddings' %}?city=Jaipur" class="btn btn-sm {% if selected_city|lower == 'jaipur' %}btn-danger{% else %}btn-outline-secondary{% endif %}" style="border-radius: 20px; font-size: 13px; font-weight: 600; padding: 5px 15px;">
+                        Jaipur
+                    </a>
+                    <a href="{% url 'real_weddings' %}?city=Bangalore" class="btn btn-sm {% if selected_city|lower == 'bangalore' %}btn-danger{% else %}btn-outline-secondary{% endif %}" style="border-radius: 20px; font-size: 13px; font-weight: 600; padding: 5px 15px;">
+                        Bangalore
+                    </a>
+                </div>
+            </div>
+            <div class="col-lg-5">
+                <form action="{% url 'real_weddings' %}" method="GET" class="d-flex" style="gap: 8px;">
+                    {% if selected_city and selected_city != 'all' %}
+                    <input type="hidden" name="city" value="{{ selected_city }}">
+                    {% endif %}
+                    <input type="text" name="q" value="{{ query|default:'' }}" class="form-control" placeholder="Search couple name, city, venue..." style="border-radius: 25px; font-size: 13.5px; height: 42px; border-color: #e5e7eb;">
+                    <button type="submit" class="btn btn-danger font-weight-bold px-4" style="border-radius: 25px; font-size: 13.5px; background: #e72e77; border-color: #e72e77;">
+                        Search
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Wedding Stories Grid Section -->
+<section class="real-weddings-section spad" style="padding-top: 55px; padding-bottom: 60px; background: #fafafa;">
+    <div class="container">
+        <div class="row align-items-center mb-4">
+            <div class="col-md-7">
+                <h2 style="font-family: 'Playfair Display', serif; font-size: 30px; font-weight: 700; color: #111; margin-bottom: 4px;">
+                    {% if selected_city and selected_city != 'all' %}
+                    Weddings in {{ selected_city|title }}
+                    {% elif query %}
+                    Search Results for "{{ query }}"
+                    {% else %}
+                    Inspiring Indian Wedding Highlights
+                    {% endif %}
+                </h2>
+                <p style="color: #6b7280; font-size: 14.5px; margin: 0;">
+                    Showing {{ weddings.count }} real wedding celebration{{ weddings.count|pluralize }} with authentic lawn, banquet &amp; decor inspirations
+                </p>
+            </div>
+            <div class="col-md-5 text-md-right mt-3 mt-md-0">
+                <a href="{% url 'contact' %}" class="btn btn-outline-danger font-weight-bold" style="border-radius: 25px; font-size: 13px; padding: 8px 20px;">
+                    <i class="fa fa-camera mr-1"></i> Submit Your Wedding Story
+                </a>
+            </div>
+        </div>
+
         <div class="row">
             {% for wedding in weddings %}
-            <div class="col-lg-4 col-md-6">
-                <div class="wedding-card">
+            <div class="col-lg-4 col-md-6 mb-4">
+                <div class="wedding-card" style="background: #ffffff; border-radius: 14px; overflow: hidden; box-shadow: 0 4px 18px rgba(0,0,0,0.05); border: 1px solid #f1f5f9; height: 100%; display: flex; flex-direction: column; transition: transform 0.25s ease, box-shadow 0.25s ease;">
                     <div class="wedding-image"
-                        style="background-image: url('{% if wedding.main_image %}{{ wedding.main_image.url }}{% else %}{% static 'website/img/product/product-1.jpg' %}{% endif %}');">
+                        style="height: 270px; background-size: cover; background-position: center; position: relative; background-image: url('{% if wedding.main_image %}{{ wedding.main_image.url }}{% else %}{% static 'website/img/product/product-1.jpg' %}{% endif %}');">
+                        <span style="position: absolute; top: 14px; left: 14px; background: rgba(0,0,0,0.65); color: #ffffff; padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: 600; backdrop-filter: blur(4px);">
+                            <i class="fa fa-map-marker text-danger mr-1"></i> {{ wedding.location }}
+                        </span>
+                        <span style="position: absolute; bottom: 14px; right: 14px; background: rgba(231,46,119,0.9); color: #ffffff; padding: 3px 10px; border-radius: 15px; font-size: 11.5px; font-weight: 700;">
+                            Verified Couple
+                        </span>
                     </div>
-                    <div class="wedding-content">
-                        <div class="wedding-title">{{ wedding.couple_name }}</div>
-                        <div class="wedding-meta">
-                            <span><i class="fa fa-map-marker"></i> {{ wedding.location }}</span>
-                            <span><i class="fa fa-calendar"></i> {{ wedding.date|date:"F Y" }}</span>
+                    <div class="wedding-content" style="padding: 22px; flex: 1; display: flex; flex-direction: column;">
+                        <h4 style="font-family: 'Playfair Display', serif; font-size: 22px; font-weight: 700; color: #111; margin-bottom: 6px;">
+                            {{ wedding.couple_name }}
+                        </h4>
+                        <div class="text-muted small mb-3">
+                            <i class="fa fa-calendar text-danger mr-1"></i> {{ wedding.date|date:"F Y" }} &bull; 
+                            <i class="fa fa-heart text-danger mx-1"></i> Real Wedding
                         </div>
-                        <div class="wedding-description">
+                        <p style="color: #6b7280; font-size: 14px; line-height: 1.65; margin-bottom: 16px; flex: 1;">
                             {{ wedding.description|truncatewords:20 }}
-                        </div>
+                        </p>
                         {% if wedding.venue %}
-                        <div class="mb-3" style="font-size: 13px;">
-                            <strong>Venue:</strong> <a href="{% url 'vendor_details' wedding.venue.uuid_field %}" class="wedding-venue-link" style="color: #e72e77; font-weight: 700; text-decoration: none;">{{ wedding.venue.name }} <i class="fa fa-external-link small ml-1"></i></a>
+                        <div class="mb-3 p-2 rounded" style="background: #fdf2f7; border: 1px solid #fbcfe8; font-size: 13px;">
+                            <span class="text-muted">Venue Booked:</span>
+                            <a href="{% url 'vendor_details' wedding.venue.uuid_field %}" style="color: #e72e77; font-weight: 700; text-decoration: none;">
+                                {{ wedding.venue.name }} <i class="fa fa-external-link small ml-1"></i>
+                            </a>
                         </div>
                         {% endif %}
-                        <button type="button" class="btn btn-sm btn-outline-danger btn-block font-weight-bold" style="border-radius: 20px; font-size: 13px;" data-toggle="modal" data-target="#weddingModal{{ wedding.id }}">
+                        <button type="button" class="btn btn-outline-danger btn-block font-weight-bold" style="border-radius: 25px; font-size: 13px; padding: 9px 16px;" data-toggle="modal" data-target="#weddingModal{{ wedding.id }}">
                             Read Full Story <i class="fa fa-angle-right ml-1"></i>
                         </button>
                     </div>
                 </div>
+            </div>
 
-                <!-- Wedding Story Modal -->
-                <div class="modal fade" id="weddingModal{{ wedding.id }}" tabindex="-1" role="dialog" aria-hidden="true">
-                    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
-                        <div class="modal-content" style="border-radius: 16px; overflow: hidden; border: none;">
-                            <div class="modal-header" style="background: #fdf2f7; border-bottom: 1px solid #fbcfe8;">
-                                <h5 class="modal-title font-weight-bold" style="color: #111;">{{ wedding.couple_name }}'s Wedding Celebration</h5>
-                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
-                            </div>
-                            <div class="modal-body p-4">
-                                <div style="height: 300px; border-radius: 12px; overflow: hidden; margin-bottom: 20px; background-size: cover; background-position: center; background-image: url('{% if wedding.main_image %}{{ wedding.main_image.url }}{% else %}{% static 'website/img/banner/banner-1.jpg' %}{% endif %}');"></div>
-                                <div class="d-flex text-muted mb-3" style="font-size: 14px; gap: 20px;">
-                                    <span><i class="fa fa-map-marker text-danger mr-1"></i> {{ wedding.location }}</span>
-                                    <span><i class="fa fa-calendar text-danger mr-1"></i> {{ wedding.date|date:"F Y" }}</span>
-                                </div>
-                                <p style="color: #374151; font-size: 15px; line-height: 1.8;">
-                                    {{ wedding.description }}
-                                </p>
-                                {% if wedding.venue %}
-                                <div class="p-3 bg-light rounded mt-3 d-flex justify-content-between align-items-center">
-                                    <div>
-                                        <span class="small text-muted d-block">Venue Booked:</span>
-                                        <strong>{{ wedding.venue.name }}</strong>
-                                    </div>
-                                    <a href="{% url 'vendor_details' wedding.venue.uuid_field %}" class="btn btn-sm btn-danger font-weight-bold" style="border-radius: 20px;">
-                                        View Venue Profile &amp; Pricing
-                                    </a>
-                                </div>
-                                {% endif %}
-                            </div>
+            <!-- Wedding Story Modal -->
+            <div class="modal fade" id="weddingModal{{ wedding.id }}" tabindex="-1" role="dialog" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+                    <div class="modal-content" style="border-radius: 16px; overflow: hidden; border: none; box-shadow: 0 15px 45px rgba(0,0,0,0.2);">
+                        <div class="modal-header" style="background: #fdf2f7; border-bottom: 1px solid #fbcfe8; padding: 18px 24px;">
+                            <h5 class="modal-title font-weight-bold" style="color: #111; font-family: 'Playfair Display', serif; font-size: 22px;">
+                                {{ wedding.couple_name }} &bull; Wedding Celebration
+                            </h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="font-size: 24px;">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
                         </div>
-                    </div>
+                        <div class="modal-body p-4">
+                            <div style="height: 320px; border-radius: 12px; overflow: hidden; margin-bottom: 20px; background-size: cover; background-position: center; background-image: url('{% if wedding.main_image %}{{ wedding.main_image.url }}{% else %}{% static 'website/img/banner/banner-1.jpg' %}{% endif %}'); position: relative;">
+                                <span style="position: absolute; bottom: 15px; left: 15px; background: rgba(0,0,0,0.7); color: #ffffff; padding: 5px 14px; border-radius: 20px; font-size: 13px;">
+                                    <i class="fa fa-map-marker text-danger mr-1"></i> {{ wedding.location }} &bull; {{ wedding.date|date:"F Y" }}
+                                </span>
+                            </div>
+                            <h6 class="font-weight-bold text-dark mb-2" style="font-size: 16px;">The Celebration Story</h6>
+                            <p style="color: #374151; font-size: 15px; line-height: 1.8; margin-bottom: 20px;">
+                                {{ wedding.description }}
+                            </p>
+                            {% if wedding.venue %}
+                            <div class="p-3 rounded d-flex flex-wrap justify-content-between align-items-center" style="background: #fdf2f7; border: 1px solid #fbcfe8; gap: 10px;">
+                                <div>
+                                    <span class="small text-muted d-block font-weight-bold" style="text-transform: uppercase; letter-spacing: 1px; font-size: 11px;">Venue Selected by Couple:</span>
+                                    <strong style="font-size: 16px; color: #111;">{{ wedding.venue.name }}</strong>
+                                    <span class="text-muted small ml-2"><i class="fa fa-map-marker text-danger mr-1"></i> {{ wedding.venue.location }}</span>
+                                </div>
+                                <a href="{% url 'vendor_details' wedding.venue.uuid_field %}" class="btn btn-sm btn-danger font-weight-bold px-3 py-2" style="border-radius: 20px; background: #e72e77; border-color: #e72e77;">
+                                    View Venue &amp; Pricing <i class="fa fa-arrow-right ml-1"></i>
+                                </a>
+                            </div>
+                            {% endif %}
+                        </div>
                     </div>
                 </div>
             </div>
             {% empty %}
-            <div class="col-lg-12 text-center">
-                <i class="fa fa-heart-o empty-icon"></i>
-                <h4>No stories shared yet</h4>
-                <p>Be the first one to share your beautiful journey with us!</p>
-                <a href="{% url 'contact' %}" class="btn-theme mt-3">Share Your Story</a>
+            <div class="col-lg-12 text-center py-5">
+                <i class="fa fa-heart-o text-muted fa-3x mb-3" style="color: #e72e77 !important;"></i>
+                <h4 style="font-family: 'Playfair Display', serif; font-weight: 700; color: #111;">No wedding stories found</h4>
+                <p style="color: #6b7280; font-size: 15px;">We couldn't find any wedding stories matching your current filters.</p>
+                <a href="{% url 'real_weddings' %}" class="btn btn-danger font-weight-bold px-4 py-2 mt-2" style="border-radius: 25px; background: #e72e77;">
+                    View All Wedding Stories
+                </a>
             </div>
             {% endfor %}
+        </div>
+    </div>
+</section>
+
+<!-- Submit Story Callout Banner -->
+<section style="background: linear-gradient(135deg, rgba(231,46,119,0.05) 0%, rgba(231,46,119,0.12) 100%); padding: 65px 0; border-top: 1px solid rgba(231,46,119,0.12);">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-8 text-center text-lg-left mb-4 mb-lg-0">
+                <span style="background: #fdf2f7; color: #e72e77; font-weight: 700; font-size: 12px; text-transform: uppercase; letter-spacing: 2px; padding: 5px 14px; border-radius: 20px; display: inline-block; margin-bottom: 12px; border: 1px solid #fbcfe8;">
+                    Couples &amp; Photographers
+                </span>
+                <h3 style="font-family: 'Playfair Display', serif; font-weight: 800; font-size: 32px; color: #111; margin-bottom: 10px;">
+                    Got Married Recently? Share Your Celebration!
+                </h3>
+                <p style="color: #4b5563; font-size: 15.5px; line-height: 1.7; margin: 0; max-width: 680px;">
+                    Feature your wedding photos, lawn setup, mandap decor, and vendor recommendations on BookMyLawn to inspire thousands of couples planning their big day.
+                </p>
+            </div>
+            <div class="col-lg-4 text-center text-lg-right">
+                <a href="{% url 'contact' %}" class="btn btn-danger font-weight-bold px-4 py-3" style="border-radius: 25px; font-size: 14px; background: #e72e77; border-color: #e72e77; box-shadow: 0 4px 15px rgba(231,46,119,0.3);">
+                    <i class="fa fa-paper-plane mr-2"></i> Submit Your Wedding Story
+                </a>
+            </div>
         </div>
     </div>
 </section>
