@@ -1,9 +1,9 @@
 {% extends 'website/base.html' %}
 {% load static %}
 
-{% block title %}Wedding Planning Guide, Trends & Lawn Tips | BookMyLawn Blog{% endblock %}
-{% block meta_description %}Read expert wedding planning tips, wedding lawn booking checklists, banquet hall advice, bridal trends, and decor inspiration on the BookMyLawn Blog.{% endblock %}
-{% block meta_keywords %}wedding blog, wedding planning tips, wedding lawn guide, banquet hall selection, Indian wedding budget, wedding decor trends, BookMyLawn{% endblock %}
+{% block title %}{{ page_title|default:"Wedding Planning Blog, Guides & Venue Advice | BookMyLawn" }}{% endblock %}
+{% block meta_description %}Read expert guides on booking wedding lawns, banquet hall checklists, catering cost per plate, mandap decor, and budget planning tips on BookMyLawn.{% endblock %}
+{% block meta_keywords %}wedding blog, wedding planning tips, wedding lawn guide, banquet hall selection, Indian wedding budget, wedding catering cost per plate, BookMyLawn blog{% endblock %}
 
 {% block structured_data %}
 <script type="application/ld+json">
@@ -21,8 +21,20 @@
       "@type": "ListItem",
       "position": 2,
       "name": "Wedding Blog",
+      "item": "{{ request.scheme }}://{{ request.get_host }}{% url 'blog' %}"
+    }{% if query %},
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "Search: {{ query|escapejs }}",
       "item": "{{ request.build_absolute_uri }}"
-    }
+    }{% elif selected_tag %},
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "{{ selected_tag|title|escapejs }}",
+      "item": "{{ request.build_absolute_uri }}"
+    }{% endif %}
   ]
 }
 </script>
@@ -37,7 +49,14 @@
                 <div class="col-lg-12">
                     <div class="breadcrumb__links">
                         <a href="{% url 'index' %}"><i class="fa fa-home"></i> Home</a>
-                        <span>Blog</span>
+                        <a href="{% url 'blog' %}">Blog</a>
+                        {% if query %}
+                        <span>Search: "{{ query }}"</span>
+                        {% elif selected_tag %}
+                        <span>Topic: {{ selected_tag|title }}</span>
+                        {% else %}
+                        <span>All Guides</span>
+                        {% endif %}
                     </div>
                 </div>
             </div>
@@ -45,26 +64,102 @@
     </div>
     <!-- Breadcrumb End -->
 
+    <!-- Blog Header Banner -->
+    <section style="background: linear-gradient(135deg, rgba(231,46,119,0.06) 0%, rgba(231,46,119,0.14) 100%); padding: 55px 0 45px; text-align: center; border-bottom: 1px solid rgba(231,46,119,0.15);">
+        <div class="container">
+            <span style="color: #e72e77; font-weight: 700; text-transform: uppercase; letter-spacing: 2px; font-size: 13px; display: block; margin-bottom: 10px;">
+                <i class="fa fa-book mr-1"></i> Expert Wedding Planning &amp; Venue Guidance
+            </span>
+            <h1 style="font-weight: 800; color: #111; font-size: 40px; margin-bottom: 14px; letter-spacing: -1px;">
+                The BookMyLawn Wedding Blog
+            </h1>
+            <p style="color: #4b5563; max-width: 680px; margin: 0 auto 25px; font-size: 16px; line-height: 1.6;">
+                Expert advice on booking wedding lawns, banquet hall negotiations, catering packages, and decor inspiration across India.
+            </p>
+
+            <!-- Search Bar Inside Blog -->
+            <div class="row justify-content-center">
+                <div class="col-md-7 col-lg-6">
+                    <form action="{% url 'blog' %}" method="GET" style="display: flex; gap: 8px; background: #fff; padding: 6px; border-radius: 35px; box-shadow: 0 4px 18px rgba(0,0,0,0.08); border: 1px solid #e5e7eb;">
+                        <input type="text" name="q" value="{{ query }}" placeholder="Search guides (e.g. Lawn, Budget, Lucknow, Catering)..." style="flex: 1; border: none; outline: none; padding-left: 20px; font-size: 14.5px; border-radius: 30px; color: #1f2937;">
+                        <button type="submit" style="background: #e72e77; color: white; border: none; padding: 10px 24px; border-radius: 25px; font-weight: 700; font-size: 14px; cursor: pointer; transition: all 0.3s;">
+                            <i class="fa fa-search mr-1"></i> Search
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Popular Topic Quick Filters -->
+            <div class="d-flex justify-content-center flex-wrap mt-3" style="gap: 8px;">
+                <a href="{% url 'blog' %}" class="badge {% if not selected_tag and not query %}badge-danger{% else %}badge-light text-dark border{% endif %}" style="padding: 7px 14px; font-size: 12.5px; border-radius: 15px; text-decoration: none;">All Articles</a>
+                <a href="{% url 'blog' %}?tag=lawn" class="badge {% if selected_tag == 'lawn' %}badge-danger{% else %}badge-light text-dark border{% endif %}" style="padding: 7px 14px; font-size: 12.5px; border-radius: 15px; text-decoration: none;">Wedding Lawns</a>
+                <a href="{% url 'blog' %}?tag=banquet" class="badge {% if selected_tag == 'banquet' %}badge-danger{% else %}badge-light text-dark border{% endif %}" style="padding: 7px 14px; font-size: 12.5px; border-radius: 15px; text-decoration: none;">Banquet Halls</a>
+                <a href="{% url 'blog' %}?tag=budget" class="badge {% if selected_tag == 'budget' %}badge-danger{% else %}badge-light text-dark border{% endif %}" style="padding: 7px 14px; font-size: 12.5px; border-radius: 15px; text-decoration: none;">Budget Planning</a>
+                <a href="{% url 'blog' %}?tag=catering" class="badge {% if selected_tag == 'catering' %}badge-danger{% else %}badge-light text-dark border{% endif %}" style="padding: 7px 14px; font-size: 12.5px; border-radius: 15px; text-decoration: none;">Catering &amp; Food</a>
+                <a href="{% url 'blog' %}?tag=Lucknow" class="badge {% if selected_tag == 'Lucknow' %}badge-danger{% else %}badge-light text-dark border{% endif %}" style="padding: 7px 14px; font-size: 12.5px; border-radius: 15px; text-decoration: none;">Lucknow Venues</a>
+                <a href="{% url 'blog' %}?tag=Delhi" class="badge {% if selected_tag == 'Delhi' %}badge-danger{% else %}badge-light text-dark border{% endif %}" style="padding: 7px 14px; font-size: 12.5px; border-radius: 15px; text-decoration: none;">Delhi NCR</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Search / Filter Query State Banner -->
+    {% if query or selected_tag %}
+    <div style="background: #fdf2f7; border-bottom: 1px solid #fbcfe8; padding: 12px 0;">
+        <div class="container d-flex justify-content-between align-items-center">
+            <span style="font-size: 14.5px; color: #111;">
+                Showing articles for: <strong>{% if query %}"{{ query }}"{% else %}{{ selected_tag|title }}{% endif %}</strong> ({{ posts.count }} found)
+            </span>
+            <a href="{% url 'blog' %}" style="color: #e72e77; font-weight: 700; font-size: 13.5px; text-decoration: none;">
+                <i class="fa fa-times-circle mr-1"></i> Clear Filter
+            </a>
+        </div>
+    </div>
+    {% endif %}
+
     <!-- Blog Section Begin -->
     <section class="blog spad">
         <div class="container">
             <div class="row">
                 {% for post in posts %}
-                <div class="col-lg-4 col-md-4 col-sm-6">
-                    <div class="blog__item">
-                        <div class="blog__item__pic set-bg" data-setbg="{% if post.image %}{{ post.image.url }}{% else %}{% static 'website/img/banner/banner-1.jpg' %}{% endif %}" style="background-image: url('{% if post.image %}{{ post.image.url }}{% else %}{% static 'website/img/banner/banner-1.jpg' %}{% endif %}');"></div>
-                        <div class="blog__item__text">
-                            <h6><a href="{% url 'blog_details' post.slug %}">{{ post.title }}</a></h6>
-                            <ul>
-                                <li>by <span>{{ post.author }}</span></li>
-                                <li>{{ post.created_at|date:"M d, Y" }}</li>
-                            </ul>
+                <div class="col-lg-4 col-md-6 col-sm-6 mb-4">
+                    <div class="blog__item" style="border: 1px solid #eef2f6; border-radius: 10px; overflow: hidden; background: #fff; height: 100%; display: flex; flex-direction: column;">
+                        <div class="blog__item__pic set-bg" data-setbg="{% if post.image %}{{ post.image.url }}{% else %}{% static 'website/img/banner/banner-1.jpg' %}{% endif %}" style="background-image: url('{% if post.image %}{{ post.image.url }}{% else %}{% static 'website/img/banner/banner-1.jpg' %}{% endif %}'); height: 210px; background-size: cover; background-position: center;"></div>
+                        <div class="blog__item__text" style="padding: 20px; flex: 1; display: flex; flex-direction: column; justify-content: space-between;">
+                            <div>
+                                <h6 style="font-size: 16px; font-weight: 700; line-height: 1.45; margin-bottom: 10px;">
+                                    <a href="{% url 'blog_details' post.slug %}" style="color: #111; text-decoration: none;">{{ post.title }}</a>
+                                </h6>
+                                <p style="font-size: 13.5px; color: #6b7280; line-height: 1.6; margin-bottom: 15px;">
+                                    {{ post.content|striptags|truncatewords:18 }}
+                                </p>
+                            </div>
+                            <div>
+                                <ul style="margin: 0; padding: 0; list-style: none; display: flex; justify-content: space-between; font-size: 12.5px; color: #888; border-top: 1px solid #f1f5f9; pt-2;">
+                                    <li><i class="fa fa-user text-danger mr-1"></i> <span>{{ post.author }}</span></li>
+                                    <li><i class="fa fa-calendar mr-1"></i> {{ post.created_at|date:"M d, Y" }}</li>
+                                </ul>
+                                <div class="mt-3">
+                                    <a href="{% url 'blog_details' post.slug %}" style="color: #e72e77; font-weight: 700; font-size: 13.5px; text-decoration: none;">
+                                        Read Complete Guide <i class="fa fa-angle-right ml-1"></i>
+                                    </a>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
                 {% empty %}
-                <div class="col-lg-12 text-center">
-                    <p>No blog posts found.</p>
+                <div class="col-lg-12 text-center py-5">
+                    <div style="max-width: 500px; margin: 0 auto;">
+                        <i class="fa fa-search fa-3x text-muted mb-3"></i>
+                        <h4 style="font-weight: 700;">No articles found matching "{% if query %}{{ query }}{% else %}{{ selected_tag }}{% endif %}"</h4>
+                        <p style="color: #666; font-size: 14.5px; margin-bottom: 20px;">Try searching for popular wedding topics below or browse all guides:</p>
+                        <div class="d-flex justify-content-center flex-wrap" style="gap: 8px;">
+                            <a href="{% url 'blog' %}?tag=lawn" class="btn btn-sm btn-outline-danger" style="border-radius: 20px;">Wedding Lawns</a>
+                            <a href="{% url 'blog' %}?tag=budget" class="btn btn-sm btn-outline-danger" style="border-radius: 20px;">Wedding Budget</a>
+                            <a href="{% url 'blog' %}?tag=catering" class="btn btn-sm btn-outline-danger" style="border-radius: 20px;">Catering Costs</a>
+                            <a href="{% url 'blog' %}" class="btn btn-sm btn-danger" style="border-radius: 20px;">View All Guides</a>
+                        </div>
+                    </div>
                 </div>
                 {% endfor %}
             </div>

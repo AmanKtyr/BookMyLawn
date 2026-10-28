@@ -1,9 +1,9 @@
 {% extends 'website/base.html' %}
 {% load static %}
 
-{% block title %}{{ post.title }} | BookMyLawn Blog{% endblock %}
+{% block title %}{{ post.title }} | BookMyLawn Wedding Blog{% endblock %}
 {% block meta_description %}{{ post.content|striptags|truncatewords:25 }}{% endblock %}
-{% block meta_keywords %}{{ post.title }}, wedding planning guide, wedding lawns, banquet halls, BookMyLawn blog{% endblock %}
+{% block meta_keywords %}{{ post.title }}, wedding planning guide, wedding lawns, banquet halls, Indian wedding cost, wedding decor, BookMyLawn blog{% endblock %}
 
 {% block og_title %}{{ post.title }} | BookMyLawn{% endblock %}
 {% block og_description %}{{ post.content|striptags|truncatewords:25 }}{% endblock %}
@@ -16,7 +16,7 @@
   "@context": "https://schema.org",
   "@type": "BlogPosting",
   "headline": "{{ post.title|escapejs }}",
-  "description": "{{ post.content|striptags|truncatewords:25|escapejs }}",
+  "description": "{{ post.content|striptags|truncatewords:28|escapejs }}",
   "datePublished": "{{ post.created_at|date:'c' }}",
   "dateModified": "{{ post.created_at|date:'c' }}",
   "mainEntityOfPage": {
@@ -52,7 +52,7 @@
     {
       "@type": "ListItem",
       "position": 2,
-      "name": "Blog",
+      "name": "Wedding Blog",
       "item": "{{ request.scheme }}://{{ request.get_host }}{% url 'blog' %}"
     },
     {
@@ -76,7 +76,7 @@
                     <div class="breadcrumb__links">
                         <a href="{% url 'index' %}"><i class="fa fa-home"></i> Home</a>
                         <a href="{% url 'blog' %}">Blog</a>
-                        <span>{{ post.title }}</span>
+                        <span>{{ post.title|truncatechars:45 }}</span>
                     </div>
                 </div>
             </div>
@@ -92,79 +92,170 @@
                     <div class="blog__details__content">
                         <div class="blog__details__item">
                             {% if post.image %}
-                            <img src="{{ post.image.url }}" alt="{{ post.title }}">
+                            <img src="{{ post.image.url }}" alt="{{ post.title }}" style="width: 100%; border-radius: 12px; margin-bottom: 25px; max-height: 440px; object-fit: cover;">
                             {% else %}
-                            <img src="{% static 'website/img/blog/details/blog-details.jpg' %}" alt="{{ post.title }}">
+                            <img src="{% static 'website/img/blog/details/blog-details.jpg' %}" alt="{{ post.title }}" style="width: 100%; border-radius: 12px; margin-bottom: 25px; max-height: 440px; object-fit: cover;">
                             {% endif %}
                             <div class="blog__details__item__title">
-                                <span class="tip">Wedding Guide</span>
-                                <h4>{{ post.title }}</h4>
-                                <ul>
-                                    <li>by <span>{{ post.author }}</span></li>
-                                    <li>{{ post.created_at|date:"M d, Y" }}</li>
+                                <span class="tip" style="background: #e72e77; color: #fff; font-size: 11px; font-weight: 700; text-transform: uppercase; padding: 4px 12px; border-radius: 20px; display: inline-block; margin-bottom: 12px;">Wedding Guide</span>
+                                <h1 style="font-family: 'Playfair Display', serif; font-size: 32px; font-weight: 700; line-height: 1.35; color: #111; margin-bottom: 15px;">
+                                    {{ post.title }}
+                                </h1>
+                                <ul style="list-style: none; padding: 0; margin-bottom: 25px; display: flex; gap: 20px; font-size: 13.5px; color: #6b7280;">
+                                    <li><i class="fa fa-user text-danger mr-1"></i> By <strong>{{ post.author }}</strong></li>
+                                    <li><i class="fa fa-calendar text-danger mr-1"></i> {{ post.created_at|date:"F d, Y" }}</li>
+                                    <li><i class="fa fa-clock-o text-danger mr-1"></i> 5 Min Read</li>
                                 </ul>
                             </div>
                         </div>
-                        <div class="blog__details__desc">
+
+                        <!-- Post Body Content -->
+                        <div class="blog__details__desc" style="font-size: 16px; line-height: 1.85; color: #374151;">
                             {{ post.content|safe }}
                         </div>
-                        <div class="blog__details__tags">
-                            <a href="{% url 'vendors' %}?category=venues">Wedding Lawns</a>
-                            <a href="{% url 'vendors' %}?category=photographers">Photographers</a>
-                            <a href="{% url 'vendors' %}?category=decorators">Decorators</a>
-                            <a href="{% url 'vendors' %}">Banquet Halls</a>
+
+                        <!-- Social Share Bar -->
+                        <div class="mt-4 pt-3 border-top d-flex justify-content-between align-items-center flex-wrap" style="gap: 12px;">
+                            <span class="font-weight-bold" style="font-size: 14px; color: #111;">Share this guide:</span>
+                            <div class="d-flex" style="gap: 8px;">
+                                <a href="https://wa.me/?text={{ post.title|urlencode }}%20{{ request.build_absolute_uri|urlencode }}" target="_blank" class="btn btn-sm btn-success" style="border-radius: 20px; font-size: 12.5px; padding: 5px 14px;">
+                                    <i class="fa fa-whatsapp mr-1"></i> WhatsApp
+                                </a>
+                                <a href="https://www.facebook.com/sharer/sharer.php?u={{ request.build_absolute_uri|urlencode }}" target="_blank" class="btn btn-sm btn-primary" style="border-radius: 20px; font-size: 12.5px; padding: 5px 14px;">
+                                    <i class="fa fa-facebook mr-1"></i> Share
+                                </a>
+                                <button type="button" onclick="navigator.clipboard.writeText(window.location.href); alert('Article link copied to clipboard!');" class="btn btn-sm btn-light border" style="border-radius: 20px; font-size: 12.5px; padding: 5px 14px;">
+                                    <i class="fa fa-link mr-1"></i> Copy Link
+                                </button>
+                            </div>
                         </div>
-                        <div class="blog__details__btns">
+
+                        <!-- Embedded Call to Action (Venue Leads Generator) -->
+                        <div class="my-5 p-4" style="background: linear-gradient(135deg, rgba(231,46,119,0.08) 0%, rgba(231,46,119,0.16) 100%); border-radius: 14px; border: 1.5px solid rgba(231,46,119,0.25);">
+                            <div class="row align-items-center">
+                                <div class="col-md-8">
+                                    <h4 style="font-weight: 800; font-size: 20px; color: #111; margin-bottom: 6px;">Looking for the Perfect Wedding Lawn or Banquet Hall?</h4>
+                                    <p style="color: #4b5563; font-size: 14px; margin: 0;">Explore 5,000+ verified venues across Lucknow, Delhi NCR, Jaipur &amp; more with transparent prices.</p>
+                                </div>
+                                <div class="col-md-4 text-md-right mt-3 mt-md-0">
+                                    <a href="{% url 'vendors' %}?type=venues" class="btn btn-danger" style="background: #e72e77; border-radius: 25px; font-weight: 700; padding: 10px 22px; font-size: 13.5px;">
+                                        Explore Venues <i class="fa fa-arrow-right ml-1"></i>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Tags Cloud -->
+                        <div class="blog__details__tags">
+                            <span class="font-weight-bold mr-2 text-dark">Tags:</span>
+                            <a href="{% url 'blog' %}?tag=lawn">Wedding Lawns</a>
+                            <a href="{% url 'blog' %}?tag=banquet">Banquet Halls</a>
+                            <a href="{% url 'blog' %}?tag=budget">Budget Tips</a>
+                            <a href="{% url 'blog' %}?tag=catering">Catering Costs</a>
+                            <a href="{% url 'blog' %}?tag=Lucknow">Lucknow</a>
+                            <a href="{% url 'blog' %}?tag=Delhi">Delhi NCR</a>
+                        </div>
+
+                        <!-- Navigation Back to All Posts -->
+                        <div class="blog__details__btns mt-4">
                             <div class="row">
                                 <div class="col-lg-6 col-md-6 col-sm-6">
                                     <div class="blog__details__btn__item">
-                                        <h6><a href="{% url 'blog' %}"><i class="fa fa-angle-left"></i> All Articles</a></h6>
+                                        <h6><a href="{% url 'blog' %}"><i class="fa fa-angle-left"></i> Back to All Guides</a></h6>
                                     </div>
                                 </div>
-                                <div class="col-lg-6 col-md-6 col-sm-6">
+                                <div class="col-lg-6 col-md-6 col-sm-6 text-right">
                                     <div class="blog__details__btn__item blog__details__btn__item--next">
-                                        <h6><a href="{% url 'vendors' %}">Browse Venues <i class="fa fa-angle-right"></i></a></h6>
+                                        <h6><a href="{% url 'wedding_tools' %}">Planning Tools <i class="fa fa-angle-right"></i></a></h6>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
+
+                <!-- Blog Sidebar -->
                 <div class="col-lg-4 col-md-4">
                     <div class="blog__sidebar">
+                        
+                        <!-- Sidebar Search -->
+                        <div class="blog__sidebar__item mb-4">
+                            <div class="section-title">
+                                <h4>Search Blog</h4>
+                            </div>
+                            <form action="{% url 'blog' %}" method="GET">
+                                <div style="display: flex; gap: 6px;">
+                                    <input type="text" name="q" placeholder="Search guides..." style="flex: 1; border: 1px solid #e5e7eb; border-radius: 25px; padding: 8px 16px; font-size: 13.5px; outline: none;">
+                                    <button type="submit" style="background: #e72e77; color: white; border: none; border-radius: 25px; padding: 8px 16px; font-weight: 700; font-size: 13px;">
+                                        <i class="fa fa-search"></i>
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+
+                        <!-- Categories -->
                         <div class="blog__sidebar__item">
                             <div class="section-title">
                                 <h4>Categories</h4>
                             </div>
                             <ul>
-                                <li><a href="{% url 'vendors' %}?category=venues">Wedding Venues &amp; Lawns</a></li>
-                                <li><a href="{% url 'vendors' %}?category=photographers">Wedding Photographers</a></li>
-                                <li><a href="{% url 'vendors' %}?category=decorators">Stage &amp; Floral Decorators</a></li>
-                                <li><a href="{% url 'vendors' %}?category=makeup">Bridal Makeup Artists</a></li>
+                                <li><a href="{% url 'blog' %}?tag=lawn">Wedding Lawns <span>(Guides)</span></a></li>
+                                <li><a href="{% url 'blog' %}?tag=banquet">Banquet Halls <span>(AC &amp; Indoor)</span></a></li>
+                                <li><a href="{% url 'blog' %}?tag=catering">Catering &amp; Food Costs <span>(Menus)</span></a></li>
+                                <li><a href="{% url 'blog' %}?tag=budget">Budget &amp; Checklists <span>(Tools)</span></a></li>
+                                <li><a href="{% url 'blog' %}?tag=photographer">Wedding Photography <span>(Tips)</span></a></li>
                             </ul>
                         </div>
+
+                        <!-- Recent / Featured Posts -->
+                        {% if recent_posts %}
                         <div class="blog__sidebar__item">
                             <div class="section-title">
-                                <h4>Popular Cities</h4>
+                                <h4>Recent Articles</h4>
+                            </div>
+                            {% for r in recent_posts %}
+                            <a href="{% url 'blog_details' r.slug %}" class="blog__feature__item d-flex align-items-center mb-3 text-decoration-none" style="gap: 12px;">
+                                <div style="width: 70px; height: 70px; border-radius: 8px; overflow: hidden; flex-shrink: 0; background-size: cover; background-position: center; background-image: url('{% if r.image %}{{ r.image.url }}{% else %}{% static 'website/img/banner/banner-1.jpg' %}{% endif %}');"></div>
+                                <div class="blog__feature__item__text">
+                                    <h6 style="font-size: 13.5px; font-weight: 600; line-height: 1.4; color: #1f2937; margin-bottom: 4px;">{{ r.title|truncatechars:45 }}</h6>
+                                    <span style="font-size: 12px; color: #9ca3af;"><i class="fa fa-calendar mr-1"></i> {{ r.created_at|date:"M d, Y" }}</span>
+                                </div>
+                            </a>
+                            {% endfor %}
+                        </div>
+                        {% endif %}
+
+                        <!-- Venues by Top Cities -->
+                        <div class="blog__sidebar__item">
+                            <div class="section-title">
+                                <h4>Venues by City</h4>
                             </div>
                             <ul>
-                                <li><a href="{% url 'vendors' %}?city=Lucknow">Lucknow Wedding Lawns</a></li>
-                                <li><a href="{% url 'vendors' %}?city=Delhi">Delhi NCR Banquet Halls</a></li>
-                                <li><a href="{% url 'vendors' %}?city=Jaipur">Jaipur Heritage Venues</a></li>
-                                <li><a href="{% url 'vendors' %}?city=Goa">Goa Beach Weddings</a></li>
+                                <li><a href="{% url 'vendors' %}?city=Lucknow"><i class="fa fa-map-marker text-danger mr-1"></i> Lucknow Wedding Lawns</a></li>
+                                <li><a href="{% url 'vendors' %}?city=Delhi"><i class="fa fa-map-marker text-danger mr-1"></i> Delhi NCR Farmhouses</a></li>
+                                <li><a href="{% url 'vendors' %}?city=Jaipur"><i class="fa fa-map-marker text-danger mr-1"></i> Jaipur Royal Palaces</a></li>
+                                <li><a href="{% url 'vendors' %}?city=Bangalore"><i class="fa fa-map-marker text-danger mr-1"></i> Bangalore Banquet Halls</a></li>
+                                <li><a href="{% url 'vendors' %}?city=Goa"><i class="fa fa-map-marker text-danger mr-1"></i> Goa Beach Resorts</a></li>
                             </ul>
                         </div>
+
+                        <!-- Tags Cloud -->
                         <div class="blog__sidebar__item">
                             <div class="section-title">
-                                <h4>Tags</h4>
+                                <h4>Popular Topics</h4>
                             </div>
                             <div class="blog__sidebar__tags">
-                                <a href="{% url 'vendors' %}?category=venues">Lawns</a>
-                                <a href="{% url 'vendors' %}?category=venues">Banquets</a>
-                                <a href="{% url 'wedding_tools' %}">Planning</a>
+                                <a href="{% url 'blog' %}?tag=lawn">Lawns</a>
+                                <a href="{% url 'blog' %}?tag=banquet">Banquets</a>
+                                <a href="{% url 'blog' %}?tag=budget">Budget</a>
+                                <a href="{% url 'blog' %}?tag=catering">Catering</a>
+                                <a href="{% url 'blog' %}?tag=Lucknow">Lucknow</a>
+                                <a href="{% url 'blog' %}?tag=Delhi">Delhi</a>
                                 <a href="{% url 'faq' %}">FAQ</a>
+                                <a href="{% url 'wedding_tools' %}">Tools</a>
                             </div>
                         </div>
+
                     </div>
                 </div>
             </div>

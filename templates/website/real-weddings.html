@@ -62,10 +62,48 @@
                         </div>
                         {% if wedding.venue %}
                         <div class="mb-3" style="font-size: 13px;">
-                            <strong>Venue:</strong> <span class="wedding-venue-link">{{ wedding.venue.name }}</span>
+                            <strong>Venue:</strong> <a href="{% url 'vendor_details' wedding.venue.uuid_field %}" class="wedding-venue-link" style="color: #e72e77; font-weight: 700; text-decoration: none;">{{ wedding.venue.name }} <i class="fa fa-external-link small ml-1"></i></a>
                         </div>
                         {% endif %}
-                        <a href="#" class="read-story-btn">Read Story <i class="fa fa-angle-right"></i></a>
+                        <button type="button" class="btn btn-sm btn-outline-danger btn-block font-weight-bold" style="border-radius: 20px; font-size: 13px;" data-toggle="modal" data-target="#weddingModal{{ wedding.id }}">
+                            Read Full Story <i class="fa fa-angle-right ml-1"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Wedding Story Modal -->
+                <div class="modal fade" id="weddingModal{{ wedding.id }}" tabindex="-1" role="dialog" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+                        <div class="modal-content" style="border-radius: 16px; overflow: hidden; border: none;">
+                            <div class="modal-header" style="background: #fdf2f7; border-bottom: 1px solid #fbcfe8;">
+                                <h5 class="modal-title font-weight-bold" style="color: #111;">{{ wedding.couple_name }}'s Wedding Celebration</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body p-4">
+                                <div style="height: 300px; border-radius: 12px; overflow: hidden; margin-bottom: 20px; background-size: cover; background-position: center; background-image: url('{% if wedding.main_image %}{{ wedding.main_image.url }}{% else %}{% static 'website/img/banner/banner-1.jpg' %}{% endif %}');"></div>
+                                <div class="d-flex text-muted mb-3" style="font-size: 14px; gap: 20px;">
+                                    <span><i class="fa fa-map-marker text-danger mr-1"></i> {{ wedding.location }}</span>
+                                    <span><i class="fa fa-calendar text-danger mr-1"></i> {{ wedding.date|date:"F Y" }}</span>
+                                </div>
+                                <p style="color: #374151; font-size: 15px; line-height: 1.8;">
+                                    {{ wedding.description }}
+                                </p>
+                                {% if wedding.venue %}
+                                <div class="p-3 bg-light rounded mt-3 d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <span class="small text-muted d-block">Venue Booked:</span>
+                                        <strong>{{ wedding.venue.name }}</strong>
+                                    </div>
+                                    <a href="{% url 'vendor_details' wedding.venue.uuid_field %}" class="btn btn-sm btn-danger font-weight-bold" style="border-radius: 20px;">
+                                        View Venue Profile &amp; Pricing
+                                    </a>
+                                </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
                     </div>
                 </div>
             </div>

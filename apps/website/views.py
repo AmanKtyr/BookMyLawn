@@ -383,12 +383,37 @@ def about_us(request):
     return render(request, 'website/about.html')
 
 def blog(request):
-    posts = BlogPost.objects.filter(is_published=True).order_by('-created_at')
-    return render(request, 'website/blog.html', {'posts': posts})
+    q = request.GET.get('q', '').strip()
+    tag = request.GET.get('tag', '').strip()
+    posts = BlogPost.objects.filter(is_published=True)
+    if q:
+        posts = posts.filter(
+            Q(title__icontains=q) | Q(content__icontains=q)
+        )
+    if tag:
+        posts = posts.filter(
+            Q(title__icontains=tag) | Q(content__icontains=tag)
+        )
+    posts = posts.order_by('-created_at')
+    recent_posts = BlogPost.objects.filter(is_published=True).order_by('-created_at')[:4]
+    
+    page_title = "Wedding Planning Blog, Guides & Venue Advice | BookMyLawn"
+    if q:
+        page_title = f"Search Results for '{q}' | Wedding Blog | BookMyLawn"
+    elif tag:
+        page_title = f"{tag.title()} Guides & Ideas | BookMyLawn Blog"
+
+    return render(request, 'website/blog.html', {
+        'posts': posts,
+        'query': q,
+        'selected_tag': tag,
+        'recent_posts': recent_posts,
+        'page_title': page_title,
+    })
 
 def blog_details(request, slug):
     post = get_object_or_404(BlogPost, slug=slug, is_published=True)
-    recent_posts = BlogPost.objects.filter(is_published=True).exclude(id=post.id).order_by('-created_at')[:3]
+    recent_posts = BlogPost.objects.filter(is_published=True).exclude(id=post.id).order_by('-created_at')[:4]
     return render(request, 'website/blog-details.html', {'post': post, 'recent_posts': recent_posts})
 
 @login_required(login_url='/login/')
@@ -536,7 +561,9 @@ def sitemap_xml(request):
             'loc': f"{base_url}/vendor/{v.uuid_field}/",
             'lastmod': v.created_at.strftime('%Y-%m-%d') if v.created_at else None,
             'changefreq': 'weekly',
-            'priority': '0.8'
+            'priority': '0.8',
+            'image': f"{base_url}{v.image.url}" if v.image else None,
+            'image_title': f"{v.name} - Wedding Lawn in {v.location}"
         })
 
     for b in BlogPost.objects.filter(is_published=True):
@@ -544,12 +571,15 @@ def sitemap_xml(request):
             'loc': f"{base_url}/blog/{b.slug}/",
             'lastmod': b.created_at.strftime('%Y-%m-%d') if b.created_at else None,
             'changefreq': 'monthly',
-            'priority': '0.8'
+            'priority': '0.8',
+            'image': f"{base_url}{b.image.url}" if b.image else None,
+            'image_title': b.title
         })
 
     xml_lines = [
         '<?xml version="1.0" encoding="UTF-8"?>',
-        '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">'
+        '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"',
+        '        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">'
     ]
     for p in pages:
         xml_lines.append('  <url>')
@@ -559,6 +589,13 @@ def sitemap_xml(request):
             xml_lines.append(f"    <lastmod>{p['lastmod']}</lastmod>")
         xml_lines.append(f"    <changefreq>{p['changefreq']}</changefreq>")
         xml_lines.append(f"    <priority>{p['priority']}</priority>")
+        if p.get('image'):
+            img_loc = escape(str(p['image']))
+            xml_lines.append('    <image:image>')
+            xml_lines.append(f"      <image:loc>{img_loc}</image:loc>")
+            if p.get('image_title'):
+                xml_lines.append(f"      <image:title>{escape(str(p['image_title']))}</image:title>")
+            xml_lines.append('    </image:image>')
         xml_lines.append('  </url>')
     xml_lines.append('</urlset>')
 

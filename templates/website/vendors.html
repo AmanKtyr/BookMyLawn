@@ -416,7 +416,7 @@
                                 </button>
                                 
                                 <a href="{% url 'vendor_details' vendor.uuid_field %}">
-                                    <img src="{% if vendor.image %}{{ vendor.image.url }}{% else %}https://images.pexels.com/photos/169190/pexels-photo-169190.jpeg?auto=compress&cs=tinysrgb&w=600{% endif %}" alt="{{ vendor.name }}">
+                                    <img src="{% if vendor.image %}{{ vendor.image.url }}{% else %}https://images.pexels.com/photos/169190/pexels-photo-169190.jpeg?auto=compress&cs=tinysrgb&w=600{% endif %}" alt="{{ vendor.name }} - {{ vendor.category.name }} in {{ vendor.location }}" loading="lazy">
                                 </a>
                             </div>
                             <div class="vendor-card-body">

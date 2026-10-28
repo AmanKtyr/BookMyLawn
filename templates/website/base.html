@@ -13,7 +13,7 @@
         content="{% block meta_description %}BookMyLawn - Your ultimate wedding planning companion. Find the best wedding lawns, banquet halls, photographers, and decorators with verified prices & reviews.{% endblock %}">
     <meta name="keywords"
         content="{% block meta_keywords %}wedding lawns, banquet halls, marriage lawns, party plots, farmhouses for wedding, wedding venues, destination wedding venues, wedding photographers, bridal makeup artists, wedding decorators, catering services, marriage garden, book wedding lawn online, BookMyLawn{% endblock %}">
-    <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
+    <meta name="robots" content="{% block meta_robots %}index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1{% endblock %}">
     <link rel="canonical" href="{% block canonical %}{{ request.build_absolute_uri }}{% endblock %}">
 
     <!-- Geo Meta Tags for Indian Local SEO -->
