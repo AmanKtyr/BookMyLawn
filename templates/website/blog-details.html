@@ -1,200 +1,190 @@
 {% extends 'website/base.html' %}
 {% load static %}
 
+{% block title %}{{ post.title }} | BookMyLawn Blog{% endblock %}
+{% block meta_description %}{{ post.content|striptags|truncatewords:25 }}{% endblock %}
+{% block meta_keywords %}{{ post.title }}, wedding planning guide, wedding lawns, banquet halls, BookMyLawn blog{% endblock %}
+
+{% block og_title %}{{ post.title }} | BookMyLawn{% endblock %}
+{% block og_description %}{{ post.content|striptags|truncatewords:25 }}{% endblock %}
+{% block og_type %}article{% endblock %}
+{% block og_image %}{% if post.image %}{{ request.scheme }}://{{ request.get_host }}{{ post.image.url }}{% else %}{{ request.scheme }}://{{ request.get_host }}{% static 'website/img/banner/banner-1.jpg' %}{% endif %}{% endblock %}
+
+{% block structured_data %}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "{{ post.title|escapejs }}",
+  "description": "{{ post.content|striptags|truncatewords:25|escapejs }}",
+  "datePublished": "{{ post.created_at|date:'c' }}",
+  "dateModified": "{{ post.created_at|date:'c' }}",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "{{ request.build_absolute_uri }}"
+  },
+  "author": {
+    "@type": "Person",
+    "name": "{{ post.author|escapejs }}"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "BookMyLawn",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "{{ request.scheme }}://{{ request.get_host }}{% static 'website/img/logo/logo.png' %}"
+    }
+  }{% if post.image %},
+  "image": "{{ request.scheme }}://{{ request.get_host }}{{ post.image.url }}"{% endif %}
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Home",
+      "item": "{{ request.scheme }}://{{ request.get_host }}/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Blog",
+      "item": "{{ request.scheme }}://{{ request.get_host }}{% url 'blog' %}"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "{{ post.title|escapejs }}",
+      "item": "{{ request.build_absolute_uri }}"
+    }
+  ]
+}
+</script>
+{% endblock %}
+
 {% block content %}
+<!-- Breadcrumb Begin -->
+<div class="breadcrumb-option bg-light py-2 border-bottom">
+    <div class="container">
+        <nav aria-label="breadcrumb">
+            <div class="small text-muted" style="font-size: 13px;">
+                <a href="{% url 'index' %}" class="text-muted"><i class="fa fa-home"></i> Home</a>
+                <i class="fa fa-angle-right mx-2"></i> 
+                <a href="{% url 'blog' %}" class="text-muted">Blog</a>
+                <i class="fa fa-angle-right mx-2"></i> 
+                <span class="text-truncate d-inline-block align-bottom text-dark font-weight-bold" style="max-width: 400px;">{{ post.title }}</span>
+            </div>
+        </nav>
+    </div>
+</div>
+<!-- Breadcrumb End -->
 
+<!-- Blog Details Section Begin -->
+<section class="blog-details spad" style="padding: 60px 0; background: #fff;">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-md-8">
+                <article class="blog__details__content">
+                    <header class="mb-4">
+                        <span style="color: #e72e77; font-weight: 700; font-size: 13px; text-transform: uppercase; letter-spacing: 1.5px; display: block; margin-bottom: 8px;">Wedding Planning Advice</span>
+                        <h1 style="font-weight: 800; font-size: 34px; line-height: 1.3; color: #111; margin-bottom: 14px;">
+                            {{ post.title }}
+                        </h1>
+                        <div class="d-flex align-items-center text-muted" style="font-size: 13.5px; gap: 15px; border-bottom: 1px solid #f1f5f9; padding-bottom: 16px;">
+                            <span><i class="fa fa-user text-danger mr-1"></i> By <strong>{{ post.author }}</strong></span>
+                            <span><i class="fa fa-calendar text-danger mr-1"></i> {{ post.created_at|date:"F d, Y" }}</span>
+                            <span><i class="fa fa-clock-o text-danger mr-1"></i> 5 min read</span>
+                        </div>
+                    </header>
 
-    <!-- Breadcrumb Begin -->
-    <div class="breadcrumb-option">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-12">
-                    <div class="breadcrumb__links">
-                        <a href="./index.html"><i class="fa fa-home"></i> Home</a>
-                        <a href="./blog.html">Blog</a>
-                        <span>Being seen: how is age diversity effecting change in fashion and beauty?</span>
+                    {% if post.image %}
+                    <div class="mb-4" style="border-radius: 12px; overflow: hidden; box-shadow: 0 4px 20px rgba(0,0,0,0.06);">
+                        <img src="{{ post.image.url }}" alt="{{ post.title }}" style="width: 100%; max-height: 450px; object-fit: cover;">
                     </div>
-                </div>
+                    {% endif %}
+
+                    <div class="blog-body" style="color: #374151; font-size: 16px; line-height: 1.85;">
+                        {{ post.content|linebreaks }}
+                    </div>
+
+                    <!-- Callout Box -->
+                    <div class="my-5 p-4" style="background: #fdf2f7; border-left: 4px solid #e72e77; border-radius: 8px;">
+                        <h5 style="font-weight: 700; color: #111; margin-bottom: 8px;">Planning Your Wedding Celebration?</h5>
+                        <p style="color: #4b5563; font-size: 14.5px; margin-bottom: 15px;">Discover hundreds of verified wedding lawns, marriage halls, and photographers with transparent pricing at BookMyLawn.</p>
+                        <a href="{% url 'vendors' %}?type=venues" class="btn-vendor-list" style="font-size: 13px;">Explore Wedding Lawns <i class="fa fa-arrow-right"></i></a>
+                    </div>
+
+                    <!-- Author Box -->
+                    <div class="d-flex align-items-center p-4 mt-5" style="background: #fafafa; border-radius: 12px; border: 1px solid #f1f5f9;">
+                        <div style="width: 60px; height: 60px; border-radius: 50%; background: #e72e77; color: white; display: flex; align-items: center; justify-content: center; font-size: 24px; font-weight: 700; flex-shrink: 0; margin-right: 20px;">
+                            <i class="fa fa-user"></i>
+                        </div>
+                        <div>
+                            <h6 style="font-weight: 700; margin-bottom: 4px; font-size: 16px;">{{ post.author }}</h6>
+                            <p style="color: #6b7280; font-size: 13.5px; margin: 0;">Wedding Specialist &amp; Venue Consultant at BookMyLawn, helping couples across India plan seamless celebrations.</p>
+                        </div>
+                    </div>
+                </article>
+            </div>
+
+            <!-- Sidebar -->
+            <div class="col-lg-4 col-md-4 mt-5 mt-md-0">
+                <aside class="sidebar-wrapper">
+                    <!-- Search Widget -->
+                    <div class="p-4 mb-4" style="background: #fafafa; border-radius: 12px; border: 1px solid #f1f5f9;">
+                        <h5 style="font-weight: 700; font-size: 17px; margin-bottom: 15px;">Find Wedding Lawns</h5>
+                        <form action="{% url 'vendors' %}" method="GET">
+                            <input type="hidden" name="type" value="venues">
+                            <input type="text" name="city" placeholder="Enter City (e.g. Lucknow)" class="form-control mb-2" style="font-size: 13.5px;">
+                            <button type="submit" class="btn btn-danger btn-block font-weight-bold" style="background: #e72e77; border-color: #e72e77; border-radius: 6px;">
+                                Search Venues
+                            </button>
+                        </form>
+                    </div>
+
+                    <!-- Recent Articles Widget -->
+                    {% if recent_posts %}
+                    <div class="p-4 mb-4" style="background: #fafafa; border-radius: 12px; border: 1px solid #f1f5f9;">
+                        <h5 style="font-weight: 700; font-size: 17px; margin-bottom: 18px; border-bottom: 2px solid #e72e77; padding-bottom: 8px; display: inline-block;">Recent Guides</h5>
+                        {% for rpost in recent_posts %}
+                        <div class="d-flex mb-3 align-items-center">
+                            {% if rpost.image %}
+                            <img src="{{ rpost.image.url }}" alt="{{ rpost.title }}" style="width: 65px; height: 65px; object-fit: cover; border-radius: 8px; margin-right: 12px; flex-shrink: 0;">
+                            {% endif %}
+                            <div>
+                                <h6 style="font-size: 13.5px; font-weight: 600; line-height: 1.4; margin-bottom: 4px;">
+                                    <a href="{% url 'blog_details' rpost.slug %}" style="color: #111; text-decoration: none;">
+                                        {{ rpost.title|truncatewords:8 }}
+                                    </a>
+                                </h6>
+                                <span style="font-size: 11.5px; color: #9ca3af;">{{ rpost.created_at|date:"M d, Y" }}</span>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    {% endif %}
+
+                    <!-- Popular Cities Widget -->
+                    <div class="p-4" style="background: #fafafa; border-radius: 12px; border: 1px solid #f1f5f9;">
+                        <h5 style="font-weight: 700; font-size: 17px; margin-bottom: 15px;">Popular Wedding Cities</h5>
+                        <div class="d-flex flex-wrap gap-2">
+                            <a href="{% url 'vendors' %}?type=venues&city=Lucknow" class="badge badge-light border p-2 mr-1 mb-1">Lucknow</a>
+                            <a href="{% url 'vendors' %}?type=venues&city=Delhi" class="badge badge-light border p-2 mr-1 mb-1">Delhi NCR</a>
+                            <a href="{% url 'vendors' %}?type=venues&city=Mumbai" class="badge badge-light border p-2 mr-1 mb-1">Mumbai</a>
+                            <a href="{% url 'vendors' %}?type=venues&city=Jaipur" class="badge badge-light border p-2 mr-1 mb-1">Jaipur</a>
+                            <a href="{% url 'vendors' %}?type=venues&city=Udaipur" class="badge badge-light border p-2 mr-1 mb-1">Udaipur</a>
+                            <a href="{% url 'vendors' %}?type=venues&city=Bangalore" class="badge badge-light border p-2 mr-1 mb-1">Bangalore</a>
+                        </div>
+                    </div>
+                </aside>
             </div>
         </div>
     </div>
-    <!-- Breadcrumb End -->
+</section>
+<!-- Blog Details Section End -->
 
-    <!-- Blog Details Section Begin -->
-    <section class="blog-details spad">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-8 col-md-8">
-                    <div class="blog__details__content">
-                        <div class="blog__details__item">
-                            <img src="img/blog/details/blog-details.jpg" alt="">
-                            <div class="blog__details__item__title">
-                                <span class="tip">Street style</span>
-                                <h4>Being seen: how is age diversity effecting change in fashion and beauty?</h4>
-                                <ul>
-                                    <li>by <span>Ema Timahe</span></li>
-                                    <li>Seb 17, 2019</li>
-                                    <li>39 Comments</li>
-                                </ul>
-                            </div>
-                        </div>
-                        <div class="blog__details__desc">
-                            <p>Afashion season can be defined as much by the people on the catwalk as it can by the
-                                clothes they are wearing. This time around, a key moment came at the end of Marc Jacobs’
-                                New York show, when an almost makeup-free Christy Turlington made a rare return to the
-                                catwalk, aged 50 (she also stars, with the designer himself, in the label’s AW ad
-                            campaign), where the average catwalk model is around 18.</p>
-                            <p>A few days later, Simone Rocha arguably upped the ante. The 32-year-old’s show – in part
-                                inspired by Louise Bourgeois, who lived until she was 98 – featured models in their 30s
-                            and 40s, including cult favourite Jeny Howorth and actor Chloë Sevigny.</p>
-                        </div>
-                        <div class="blog__details__quote">
-                            <div class="icon"><i class="fa fa-quote-left"></i></div>
-                            <p>Consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore dolore magna
-                                aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-                            aliquip ex ea commodo consequat.</p>
-                        </div>
-                        <div class="blog__details__desc">
-                            <p>Occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est
-                                laborum. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
-                                incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
-                                exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure
-                            dolor in reprehenderit in voluptate.</p>
-                        </div>
-                        <div class="blog__details__tags">
-                            <a href="#">Fashion</a>
-                            <a href="#">Street style</a>
-                            <a href="#">Diversity</a>
-                            <a href="#">Beauty</a>
-                        </div>
-                        <div class="blog__details__btns">
-                            <div class="row">
-                                <div class="col-lg-6 col-md-6 col-sm-6">
-                                    <div class="blog__details__btn__item">
-                                        <h6><a href="#"><i class="fa fa-angle-left"></i> Previous posts</a></h6>
-                                    </div>
-                                </div>
-                                <div class="col-lg-6 col-md-6 col-sm-6">
-                                    <div class="blog__details__btn__item blog__details__btn__item--next">
-                                        <h6><a href="#">Next posts <i class="fa fa-angle-right"></i></a></h6>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="blog__details__comment">
-                            <h5>3 Comment</h5>
-                            <a href="#" class="leave-btn">Leave a comment</a>
-                            <div class="blog__comment__item">
-                                <div class="blog__comment__item__pic">
-                                    <img src="img/blog/details/comment-1.jpg" alt="">
-                                </div>
-                                <div class="blog__comment__item__text">
-                                    <h6>Brandon Kelley</h6>
-                                    <p>Duis voluptatum. Id vis consequat consetetur dissentiet, ceteros commune perpetua
-                                    mei et. Simul viderer facilisis egimus tractatos splendi.</p>
-                                    <ul>
-                                        <li><i class="fa fa-clock-o"></i> Seb 17, 2019</li>
-                                        <li><i class="fa fa-heart-o"></i> 12</li>
-                                        <li><i class="fa fa-share"></i> 1</li>
-                                    </ul>
-                                </div>
-                            </div>
-                            <div class="blog__comment__item blog__comment__item--reply">
-                                <div class="blog__comment__item__pic">
-                                    <img src="img/blog/details/comment-2.jpg" alt="">
-                                </div>
-                                <div class="blog__comment__item__text">
-                                    <h6>Brandon Kelley</h6>
-                                    <p>Consequat consetetur dissentiet, ceteros commune perpetua mei et. Simul viderer
-                                    facilisis egimus ulla mcorper.</p>
-                                    <ul>
-                                        <li><i class="fa fa-clock-o"></i> Seb 17, 2019</li>
-                                        <li><i class="fa fa-heart-o"></i> 12</li>
-                                        <li><i class="fa fa-share"></i> 1</li>
-                                    </ul>
-                                </div>
-                            </div>
-                            <div class="blog__comment__item">
-                                <div class="blog__comment__item__pic">
-                                    <img src="img/blog/details/comment-3.jpg" alt="">
-                                </div>
-                                <div class="blog__comment__item__text">
-                                    <h6>Brandon Kelley</h6>
-                                    <p>Duis voluptatum. Id vis consequat consetetur dissentiet, ceteros commune perpetua
-                                    mei et. Simul viderer facilisis egimus tractatos splendi.</p>
-                                    <ul>
-                                        <li><i class="fa fa-clock-o"></i> Seb 17, 2019</li>
-                                        <li><i class="fa fa-heart-o"></i> 12</li>
-                                        <li><i class="fa fa-share"></i> 1</li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-4 col-md-4">
-                    <div class="blog__sidebar">
-                        <div class="blog__sidebar__item">
-                            <div class="section-title">
-                                <h4>Categories</h4>
-                            </div>
-                            <ul>
-                                <li><a href="#">All <span>(250)</span></a></li>
-                                <li><a href="#">Fashion week <span>(80)</span></a></li>
-                                <li><a href="#">Street style <span>(75)</span></a></li>
-                                <li><a href="#">Lifestyle <span>(35)</span></a></li>
-                                <li><a href="#">Beauty <span>(60)</span></a></li>
-                            </ul>
-                        </div>
-                        <div class="blog__sidebar__item">
-                            <div class="section-title">
-                                <h4>Feature posts</h4>
-                            </div>
-                            <a href="#" class="blog__feature__item">
-                                <div class="blog__feature__item__pic">
-                                    <img src="img/blog/sidebar/fp-1.jpg" alt="">
-                                </div>
-                                <div class="blog__feature__item__text">
-                                    <h6>Amf Cannes Red Carpet Celebrities Kend...</h6>
-                                    <span>Seb 17, 2019</span>
-                                </div>
-                            </a>
-                            <a href="#" class="blog__feature__item">
-                                <div class="blog__feature__item__pic">
-                                    <img src="img/blog/sidebar/fp-2.jpg" alt="">
-                                </div>
-                                <div class="blog__feature__item__text">
-                                    <h6>Amf Cannes Red Carpet Celebrities Kend...</h6>
-                                    <span>Seb 17, 2019</span>
-                                </div>
-                            </a>
-                            <a href="#" class="blog__feature__item">
-                                <div class="blog__feature__item__pic">
-                                    <img src="img/blog/sidebar/fp-3.jpg" alt="">
-                                </div>
-                                <div class="blog__feature__item__text">
-                                    <h6>Amf Cannes Red Carpet Celebrities Kend...</h6>
-                                    <span>Seb 17, 2019</span>
-                                </div>
-                            </a>
-                        </div>
-                        <div class="blog__sidebar__item">
-                            <div class="section-title">
-                                <h4>Tags cloud</h4>
-                            </div>
-                            <div class="blog__sidebar__tags">
-                                <a href="#">Fashion</a>
-                                <a href="#">Street style</a>
-                                <a href="#">Diversity</a>
-                                <a href="#">Beauty</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-    <!-- Blog Details Section End -->
-
-    
 {% endblock %}

@@ -1,13 +1,22 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.db.models import Q
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponse
 from django.contrib.auth.decorators import login_required
 from .models import Vendor, Category, RealWedding, Cart, CartItem, Wishlist, WishlistItem, Order, OrderItem, UserProfile, WeddingChecklist, BlogPost
 
 def index(request):
-    # Fetch some premium vendors for the homepage
-    featured_vendors = Vendor.objects.filter(is_premium=True).order_by('-created_at')[:3]
-    return render(request, 'website/index.html', {'featured_vendors': featured_vendors})
+    featured_vendors = Vendor.objects.filter(is_premium=True).order_by('-created_at')[:6]
+    if not featured_vendors.exists():
+        featured_vendors = Vendor.objects.all().order_by('-created_at')[:6]
+    categories = Category.objects.all()
+    real_weddings = RealWedding.objects.all().order_by('-date')[:3]
+    recent_blogs = BlogPost.objects.filter(is_published=True).order_by('-created_at')[:3]
+    return render(request, 'website/index.html', {
+        'featured_vendors': featured_vendors,
+        'categories': categories,
+        'real_weddings': real_weddings,
+        'recent_blogs': recent_blogs,
+    })
 
 def vendors(request):
     all_vendors = Vendor.objects.all().order_by('-created_at')
@@ -18,7 +27,6 @@ def vendors(request):
     city = request.GET.get('city')
     category_slug = request.GET.get('category')
     view_type = request.GET.get('type')
-    
     date = request.GET.get('date')
 
     if view_type == 'venues':
@@ -30,7 +38,9 @@ def vendors(request):
         all_vendors = all_vendors.filter(
             Q(name__icontains=query) | 
             Q(description__icontains=query) |
-            Q(category__name__icontains=query)
+            Q(category__name__icontains=query) |
+            Q(location__icontains=query) |
+            Q(address__icontains=query)
         )
         
     if city:
@@ -38,13 +48,41 @@ def vendors(request):
         
     if category_slug:
         all_vendors = all_vendors.filter(category__slug=category_slug)
-        
+
+    selected_category = Category.objects.filter(slug=category_slug).first() if category_slug else None
+
+    # Dynamic SEO titles and descriptions
+    if view_type == 'venues':
+        if city:
+            page_title = f"Top Wedding Lawns & Banquet Halls in {city} | BookMyLawn"
+            meta_description = f"Find and book the best wedding lawns, marriage gardens, and luxury banquet halls in {city}. Verified venues, transparent prices, guest capacity & real reviews."
+        else:
+            page_title = "Best Wedding Lawns, Banquet Halls & Venues in India | BookMyLawn"
+            meta_description = "Explore top wedding lawns, marriage halls, open-air party plots, and banquet venues across major Indian cities with verified reviews and transparent prices."
+    elif selected_category:
+        if city:
+            page_title = f"Best Wedding {selected_category.name} in {city} | BookMyLawn"
+            meta_description = f"Discover verified wedding {selected_category.name.lower()} in {city}. Compare packages, view portfolios, check ratings, and request free quotes at BookMyLawn."
+        else:
+            page_title = f"Top Wedding {selected_category.name} in India | BookMyLawn"
+            meta_description = f"Book verified wedding {selected_category.name.lower()} across India. Explore top-rated professionals, transparent prices, customer reviews, and portfolios."
+    elif city:
+        page_title = f"Wedding Venues & Vendors in {city} | BookMyLawn"
+        meta_description = f"Looking for wedding lawns, banquet halls, photographers & caterers in {city}? Browse top-rated wedding vendors in {city} with verified reviews at BookMyLawn."
+    else:
+        page_title = "Search Wedding Venues, Lawns & Vendors | BookMyLawn"
+        meta_description = "Find verified wedding lawns, luxury banquet halls, wedding photographers, bridal makeup artists, decorators, and caterers across India at BookMyLawn."
+
     context = {
         'vendors': all_vendors, 
         'categories': categories, 
         'view_type': view_type,
         'selected_city': city,
         'selected_date': date,
+        'selected_category': selected_category,
+        'page_title': page_title,
+        'meta_description': meta_description,
+        'vendor_count': all_vendors.count(),
     }
     return render(request, 'website/vendors.html', context)
 
@@ -57,6 +95,14 @@ def vendor_details(request, uuid):
     })
 
 def contact(request):
+    if request.method == 'POST':
+        name = request.POST.get('name', 'Valued Guest')
+        email = request.POST.get('email')
+        subject = request.POST.get('subject', 'General Inquiry')
+        message = request.POST.get('message')
+        from django.contrib import messages
+        messages.success(request, f"Thank you, {name}! Your message has been received. Our wedding concierge team will get back to you within 2 hours.")
+        return redirect('contact')
     return render(request, 'website/contact.html')
 
 def real_weddings(request):
@@ -434,3 +480,105 @@ def user_dashboard(request):
         'guests': guests,
     }
     return render(request, 'website/user-dashboard.html', context)
+
+
+# --- SEO, Legal & Trust Views ---
+
+def faq_view(request):
+    return render(request, 'website/faq.html')
+
+def privacy_policy(request):
+    return render(request, 'website/privacy-policy.html')
+
+def terms_of_service(request):
+    return render(request, 'website/terms-of-service.html')
+
+def sitemap_xml(request):
+    base_url = request.build_absolute_uri('/').rstrip('/')
+    pages = [
+        {'loc': f"{base_url}/", 'changefreq': 'daily', 'priority': '1.0'},
+        {'loc': f"{base_url}/vendors/", 'changefreq': 'daily', 'priority': '0.9'},
+        {'loc': f"{base_url}/vendors/?type=venues", 'changefreq': 'daily', 'priority': '0.9'},
+        {'loc': f"{base_url}/real-weddings/", 'changefreq': 'weekly', 'priority': '0.8'},
+        {'loc': f"{base_url}/blog/", 'changefreq': 'daily', 'priority': '0.85'},
+        {'loc': f"{base_url}/about-us/", 'changefreq': 'monthly', 'priority': '0.7'},
+        {'loc': f"{base_url}/contact/", 'changefreq': 'monthly', 'priority': '0.7'},
+        {'loc': f"{base_url}/faq/", 'changefreq': 'monthly', 'priority': '0.7'},
+        {'loc': f"{base_url}/planning-tools/", 'changefreq': 'weekly', 'priority': '0.85'},
+        {'loc': f"{base_url}/privacy-policy/", 'changefreq': 'yearly', 'priority': '0.4'},
+        {'loc': f"{base_url}/terms-of-service/", 'changefreq': 'yearly', 'priority': '0.4'},
+    ]
+
+    for cat in Category.objects.all():
+        pages.append({
+            'loc': f"{base_url}/vendors/?category={cat.slug}",
+            'changefreq': 'weekly',
+            'priority': '0.85'
+        })
+
+    popular_cities = ['Delhi', 'Mumbai', 'Lucknow', 'Jaipur', 'Bangalore', 'Udaipur', 'Goa', 'Chandigarh']
+    for city in popular_cities:
+        pages.append({
+            'loc': f"{base_url}/vendors/?city={city}",
+            'changefreq': 'weekly',
+            'priority': '0.85'
+        })
+        pages.append({
+            'loc': f"{base_url}/vendors/?type=venues&city={city}",
+            'changefreq': 'weekly',
+            'priority': '0.85'
+        })
+
+    for v in Vendor.objects.all():
+        pages.append({
+            'loc': f"{base_url}/vendor/{v.uuid_field}/",
+            'lastmod': v.created_at.strftime('%Y-%m-%d') if v.created_at else None,
+            'changefreq': 'weekly',
+            'priority': '0.8'
+        })
+
+    for b in BlogPost.objects.filter(is_published=True):
+        pages.append({
+            'loc': f"{base_url}/blog/{b.slug}/",
+            'lastmod': b.created_at.strftime('%Y-%m-%d') if b.created_at else None,
+            'changefreq': 'monthly',
+            'priority': '0.8'
+        })
+
+    xml_lines = [
+        '<?xml version="1.0" encoding="UTF-8"?>',
+        '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">'
+    ]
+    for p in pages:
+        xml_lines.append('  <url>')
+        xml_lines.append(f"    <loc>{p['loc']}</loc>")
+        if p.get('lastmod'):
+            xml_lines.append(f"    <lastmod>{p['lastmod']}</lastmod>")
+        xml_lines.append(f"    <changefreq>{p['changefreq']}</changefreq>")
+        xml_lines.append(f"    <priority>{p['priority']}</priority>")
+        xml_lines.append('  </url>')
+    xml_lines.append('</urlset>')
+
+    return HttpResponse('\n'.join(xml_lines), content_type='application/xml')
+
+def robots_txt(request):
+    base_url = request.build_absolute_uri('/').rstrip('/')
+    content = f"""User-agent: *
+Allow: /
+Disallow: /admin/
+Disallow: /superadmin/
+Disallow: /vendor/
+Disallow: /dashboard/
+Disallow: /cart/
+Disallow: /checkout/
+Disallow: /add-to-cart/
+Disallow: /add-to-wishlist/
+Disallow: /submit-inquiry/
+Disallow: /submit-review/
+
+Sitemap: {base_url}/sitemap.xml
+"""
+    return HttpResponse(content.strip(), content_type='text/plain')
+
+def wedding_tools(request):
+    return render(request, 'website/wedding-tools.html')

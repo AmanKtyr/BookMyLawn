@@ -7,6 +7,7 @@ urlpatterns = [
     path('vendor/<uuid:uuid>/', views.vendor_details, name='vendor_details'),
     path('contact/', views.contact, name='contact'),
     path('real-weddings/', views.real_weddings, name='real_weddings'),
+    path('planning-tools/', views.wedding_tools, name='wedding_tools'),
     path('login/', views.login_view, name='login'),
     path('logout/', views.logout_view, name='user_logout'),
     path('register/', views.register_view, name='register'),
@@ -22,4 +23,9 @@ urlpatterns = [
     path('blog/', views.blog, name='blog'),
     path('blog/<slug:slug>/', views.blog_details, name='blog_details'),
     path('dashboard/', views.user_dashboard, name='user_dashboard'),
+    path('faq/', views.faq_view, name='faq'),
+    path('privacy-policy/', views.privacy_policy, name='privacy_policy'),
+    path('terms-of-service/', views.terms_of_service, name='terms_of_service'),
+    path('sitemap.xml', views.sitemap_xml, name='sitemap_xml'),
+    path('robots.txt', views.robots_txt, name='robots_txt'),
 ]

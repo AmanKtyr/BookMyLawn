@@ -1,142 +1,106 @@
 {% extends 'website/base.html' %}
 {% load static %}
 
+{% block title %}Wedding Planning Guide, Trends & Lawn Tips | BookMyLawn Blog{% endblock %}
+{% block meta_description %}Read expert wedding planning tips, wedding lawn booking checklists, banquet hall advice, bridal trends, and decor inspiration on the BookMyLawn Blog.{% endblock %}
+{% block meta_keywords %}wedding blog, wedding planning tips, wedding lawn guide, banquet hall selection, Indian wedding budget, wedding decor trends, BookMyLawn{% endblock %}
+
+{% block structured_data %}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Home",
+      "item": "{{ request.scheme }}://{{ request.get_host }}/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Wedding Blog",
+      "item": "{{ request.build_absolute_uri }}"
+    }
+  ]
+}
+</script>
+{% endblock %}
+
 {% block content %}
+<!-- Header Hero -->
+<section style="background: linear-gradient(135deg, rgba(231,46,119,0.06) 0%, rgba(231,46,119,0.12) 100%); padding: 60px 0 40px; text-align: center; border-bottom: 1px solid rgba(231,46,119,0.15);">
+    <div class="container">
+        <span style="color:#e72e77; font-weight:700; text-transform:uppercase; letter-spacing:2px; font-size:13px; display:block; margin-bottom:8px;">Inspiration &amp; Advice</span>
+        <h1 style="font-weight: 800; color: #111; font-size: 40px; margin-bottom: 12px; letter-spacing: -1px;">The Wedding Planning Blog</h1>
+        <p style="color: #6b7280; max-width: 650px; margin: 0 auto; font-size: 16px;">
+            Expert advice on booking wedding lawns, choosing decorators, budgeting, and planning your dream Indian wedding.
+        </p>
+    </div>
+</section>
 
-
-    <!-- Breadcrumb Begin -->
-    <div class="breadcrumb-option">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-12">
-                    <div class="breadcrumb__links">
-                        <a href="./index.html"><i class="fa fa-home"></i> Home</a>
-                        <span>Blog</span>
-                    </div>
-                </div>
+<!-- Breadcrumb -->
+<div class="bg-light py-2 border-bottom">
+    <div class="container">
+        <nav aria-label="breadcrumb">
+            <div class="small text-muted" style="font-size: 13px;">
+                <a href="{% url 'index' %}" class="text-muted"><i class="fa fa-home"></i> Home</a>
+                <i class="fa fa-angle-right mx-2"></i> 
+                <span class="font-weight-bold text-dark">Blog</span>
             </div>
+        </nav>
+    </div>
+</div>
+
+<!-- Blog Section Begin -->
+<section class="blog spad" style="padding: 60px 0; background: #fafafa;">
+    <div class="container">
+        <div class="row">
+            {% for post in posts %}
+            <div class="col-lg-4 col-md-6 mb-4">
+                <article class="blog-card" style="background: #fff; border-radius: 14px; overflow: hidden; box-shadow: 0 4px 18px rgba(0,0,0,0.05); border: 1px solid #f1f5f9; height: 100%; display: flex; flex-direction: column; transition: transform 0.3s ease;">
+                    <div style="height: 220px; overflow: hidden; position: relative;">
+                        <a href="{% url 'blog_details' post.slug %}">
+                            <img src="{% if post.image %}{{ post.image.url }}{% else %}{% static 'website/img/banner/banner-1.jpg' %}{% endif %}" alt="{{ post.title }}" style="width: 100%; height: 100%; object-fit: cover; transition: transform 0.4s ease;">
+                        </a>
+                        <span style="position: absolute; top: 14px; left: 14px; background: #e72e77; color: #fff; font-size: 11px; font-weight: 700; text-transform: uppercase; padding: 4px 10px; border-radius: 20px;">
+                            Wedding Advice
+                        </span>
+                    </div>
+                    <div style="padding: 22px; flex: 1; display: flex; flex-direction: column; justify-content: space-between;">
+                        <div>
+                            <div style="font-size: 12.5px; color: #9ca3af; margin-bottom: 8px;">
+                                <span><i class="fa fa-calendar text-danger mr-1"></i> {{ post.created_at|date:"M d, Y" }}</span>
+                                <span class="ml-3"><i class="fa fa-user text-danger mr-1"></i> {{ post.author }}</span>
+                            </div>
+                            <h5 style="font-weight: 700; font-size: 18px; margin-bottom: 12px; line-height: 1.4;">
+                                <a href="{% url 'blog_details' post.slug %}" style="color: #111; text-decoration: none;" title="{{ post.title }}">
+                                    {{ post.title }}
+                                </a>
+                            </h5>
+                            <p style="color: #6b7280; font-size: 14px; line-height: 1.6; margin-bottom: 16px;">
+                                {{ post.content|striptags|truncatewords:20 }}
+                            </p>
+                        </div>
+                        <div>
+                            <a href="{% url 'blog_details' post.slug %}" style="color: #e72e77; font-weight: 700; font-size: 13.5px; text-decoration: none;">
+                                Read Complete Guide <i class="fa fa-arrow-right ml-1"></i>
+                            </a>
+                        </div>
+                    </div>
+                </article>
+            </div>
+            {% empty %}
+            <div class="col-12 text-center py-5">
+                <i class="fa fa-book fa-3x text-muted mb-3"></i>
+                <h4>No articles published yet</h4>
+                <p class="text-muted">Stay tuned! Our wedding editors are preparing comprehensive guides for you.</p>
+            </div>
+            {% endfor %}
         </div>
     </div>
-    <!-- Breadcrumb End -->
+</section>
+<!-- Blog Section End -->
 
-    <!-- Blog Section Begin -->
-    <section class="blog spad">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-4 col-md-4 col-sm-6">
-                    <div class="blog__item">
-                        <div class="blog__item__pic large__item set-bg" data-setbg="img/blog/blog-1.jpg"></div>
-                        <div class="blog__item__text">
-                            <h6><a href="#">No Bad Blood! The Reason Why Tamr Judge Finally Made Up With...</a></h6>
-                            <ul>
-                                <li>by <span>Ema Timahe</span></li>
-                                <li>Seb 17, 2019</li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="blog__item">
-                        <div class="blog__item__pic set-bg" data-setbg="img/blog/blog-7.jpg"></div>
-                        <div class="blog__item__text">
-                            <h6><a href="#">Pot Party! See Farrah Abraham Flaunt Smoking Body At...</a></h6>
-                            <ul>
-                                <li>by <span>Ema Timahe</span></li>
-                                <li>Seb 17, 2019</li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="blog__item">
-                        <div class="blog__item__pic set-bg" data-setbg="img/blog/blog-9.jpg"></div>
-                        <div class="blog__item__text">
-                            <h6><a href="#">CMT Awards 2019 Red Carpet Arrivals Carrie Underwood, Sheryl...</a></h6>
-                            <ul>
-                                <li>by <span>Ema Timahe</span></li>
-                                <li>Seb 17, 2019</li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-4 col-md-4 col-sm-6">
-                    <div class="blog__item">
-                        <div class="blog__item__pic set-bg" data-setbg="img/blog/blog-2.jpg"></div>
-                        <div class="blog__item__text">
-                            <h6><a href="#">Amf Cannes Red Carpet Celebrities Kendall Jenner, Pamela...</a></h6>
-                            <ul>
-                                <li>by <span>Ema Timahe</span></li>
-                                <li>Seb 17, 2019</li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="blog__item">
-                        <div class="blog__item__pic set-bg" data-setbg="img/blog/blog-4.jpg"></div>
-                        <div class="blog__item__text">
-                            <h6><a href="#">Ireland Baldwin Shows Off Trendy Ilse Valfre Tattoo At Stagecoach...</a>
-                            </h6>
-                            <ul>
-                                <li>by <span>Ema Timahe</span></li>
-                                <li>Seb 17, 2019</li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="blog__item">
-                        <div class="blog__item__pic set-bg" data-setbg="img/blog/blog-8.jpg"></div>
-                        <div class="blog__item__text">
-                            <h6><a href="#">Kim Kardashian Steps Out In Paris Wearing Shocking Sparkly...</a></h6>
-                            <ul>
-                                <li>by <span>Ema Timahe</span></li>
-                                <li>Seb 17, 2019</li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="blog__item">
-                        <div class="blog__item__pic set-bg" data-setbg="img/blog/blog-10.jpg"></div>
-                        <div class="blog__item__text">
-                            <h6><a href="#">A-list Battle! Angelina Jolie & Lady Gaga Fighting Over Who...</a></h6>
-                            <ul>
-                                <li>by <span>Ema Timahe</span></li>
-                                <li>Seb 17, 2019</li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-4 col-md-4 col-sm-6">
-                    <div class="blog__item">
-                        <div class="blog__item__pic set-bg" data-setbg="img/blog/blog-3.jpg"></div>
-                        <div class="blog__item__text">
-                            <h6><a href="#">Gigi Hadid, Rita Ora, Serena & Other Hot Celebs Stun At 2019...</a></h6>
-                            <ul>
-                                <li>by <span>Ema Timahe</span></li>
-                                <li>Seb 17, 2019</li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="blog__item">
-                        <div class="blog__item__pic set-bg" data-setbg="img/blog/blog-5.jpg"></div>
-                        <div class="blog__item__text">
-                            <h6><a href="#">Billboard Music Awards: Best, Worst & Wackiest Dresses On The...</a></h6>
-                            <ul>
-                                <li>by <span>Ema Timahe</span></li>
-                                <li>Seb 17, 2019</li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="blog__item">
-                        <div class="blog__item__pic large__item set-bg" data-setbg="img/blog/blog-6.jpg"></div>
-                        <div class="blog__item__text">
-                            <h6><a href="#">Stephanie Pratt Busts Out Of Teeny Black Bikini During Hawaii...</a></h6>
-                            <ul>
-                                <li>by <span>Ema Timahe</span></li>
-                                <li>Seb 17, 2019</li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-12 text-center">
-                    <a href="#" class="primary-btn load-btn">Load more posts</a>
-                </div>
-            </div>
-        </div>
-    </section>
-    <!-- Blog Section End -->
-
-    
 {% endblock %}

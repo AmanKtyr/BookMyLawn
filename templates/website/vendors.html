@@ -1,128 +1,172 @@
 {% extends 'website/base.html' %}
 {% load static %}
 
-{% block title %}Search Wedding Vendors | BookMyLawn{% endblock %}
+{% block title %}{{ page_title|default:"Wedding Lawns, Banquet Halls & Wedding Vendors | BookMyLawn" }}{% endblock %}
+{% block meta_description %}{{ meta_description|default:"Find and book verified wedding lawns, banquet halls, photographers, and decorators across India. Compare packages, read couple reviews & request free quotes at BookMyLawn." }}{% endblock %}
+{% block meta_keywords %}wedding lawns, banquet halls, marriage lawns in {{ selected_city|default:"India" }}, marriage gardens, wedding venues, wedding photographers {{ selected_city|default:"" }}, wedding decorators, BookMyLawn{% endblock %}
+
+{% block structured_data %}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Home",
+      "item": "{{ request.scheme }}://{{ request.get_host }}/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "{% if view_type == 'venues' %}Wedding Venues & Lawns{% else %}Wedding Vendors{% endif %}",
+      "item": "{{ request.scheme }}://{{ request.get_host }}{% url 'vendors' %}{% if view_type %}?type={{ view_type }}{% endif %}"
+    }{% if selected_city %},
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "{{ selected_city }}",
+      "item": "{{ request.build_absolute_uri }}"
+    }{% elif selected_category %},
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "{{ selected_category.name }}",
+      "item": "{{ request.build_absolute_uri }}"
+    }{% endif %}
+  ]
+}
+</script>
+{% endblock %}
 
 {% block content %}
 <style>
     .vendor-search-header {
-        background: linear-gradient(135deg, var(--theme-color-light) 0%, var(--color-bg-subtle) 100%);
-        padding: 60px 0 40px;
-        border-bottom: 1px solid var(--theme-color-border);
+        background: linear-gradient(135deg, rgba(231,46,119,0.06) 0%, rgba(231,46,119,0.12) 100%);
+        padding: 50px 0 35px;
+        border-bottom: 1px solid rgba(231,46,119,0.15);
     }
     .vendor-search-header h1 {
-        font-family: var(--font-heading);
-        font-weight: 700;
-        color: var(--color-dark);
+        font-family: 'Playfair Display', serif;
+        font-weight: 800;
+        color: #111;
+        font-size: 34px;
+        letter-spacing: -0.5px;
     }
     .search-bar-container {
-        background: var(--color-bg-card);
-        border-radius: var(--radius-pill);
-        padding: 10px;
-        box-shadow: var(--shadow-md);
+        background: #ffffff;
+        border-radius: 50px;
+        padding: 8px 12px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.08);
         display: flex;
         align-items: center;
-        margin-top: 30px;
+        margin-top: 25px;
+        border: 1px solid #e5e7eb;
     }
     .search-input-group {
         flex: 1;
         display: flex;
         align-items: center;
-        padding: 0 20px;
-        border-right: 1px solid var(--color-border);
+        padding: 0 15px;
+        border-right: 1px solid #e5e7eb;
     }
     .search-input-group:last-of-type {
         border-right: none;
     }
     .search-input-group i {
-        color: var(--theme-color);
-        font-size: 20px;
-        margin-right: 15px;
+        color: #e72e77;
+        font-size: 16px;
+        margin-right: 10px;
     }
     .search-input-group input, .search-input-group select {
         border: none;
         outline: none;
         width: 100%;
-        font-size: 16px;
+        font-size: 14px;
         background: transparent;
-        color: var(--color-dark);
+        color: #1f2937;
+        font-weight: 500;
     }
     .btn-search-main {
-        background: var(--theme-color);
+        background: linear-gradient(135deg, #e72e77 0%, #c2185b 100%);
         color: white;
-        border-radius: var(--radius-pill);
-        padding: 15px 40px;
+        border-radius: 40px;
+        padding: 12px 32px;
         font-weight: 700;
-        font-size: 16px;
+        font-size: 14px;
         border: none;
-        transition: var(--transition);
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 15px rgba(231,46,119,0.3);
     }
     .btn-search-main:hover {
-        background: var(--theme-color-dark);
-        transform: translateY(-2px);
+        transform: translateY(-1px);
+        box-shadow: 0 6px 20px rgba(231,46,119,0.45);
+        color: white;
     }
     
+    /* Category Filter Pills */
+    .filter-pills-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin-top: 20px;
+        justify-content: center;
+    }
+    .filter-pill {
+        background: #ffffff;
+        border: 1px solid #e5e7eb;
+        color: #4b5563;
+        padding: 6px 16px;
+        border-radius: 20px;
+        font-size: 13px;
+        font-weight: 600;
+        text-decoration: none;
+        transition: all 0.2s ease;
+    }
+    .filter-pill:hover, .filter-pill.active {
+        background: #e72e77;
+        border-color: #e72e77;
+        color: #ffffff;
+    }
+
     /* Sidebar styling */
     .filter-sidebar {
-        background: var(--color-bg-card);
-        border-radius: var(--radius-lg);
-        padding: 25px;
-        box-shadow: var(--shadow-sm);
-        border: 1px solid var(--color-border-light);
-        height: max-content;
-        max-height: calc(100vh - 120px);
-        overflow-y: auto;
+        background: #ffffff;
+        border-radius: 14px;
+        padding: 24px;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.03);
+        border: 1px solid #f1f5f9;
     }
     .sticky-filter-wrapper {
         position: sticky;
-        top: 100px;
-        z-index: 99;
-    }
-    /* Custom thin scrollbar for the filter sidebar */
-    .filter-sidebar::-webkit-scrollbar {
-        width: 5px;
-    }
-    .filter-sidebar::-webkit-scrollbar-track {
-        background: transparent;
-    }
-    .filter-sidebar::-webkit-scrollbar-thumb {
-        background: var(--color-border);
-        border-radius: 10px;
-    }
-    .filter-sidebar::-webkit-scrollbar-thumb:hover {
-        background: var(--color-text-light);
+        top: 90px;
+        z-index: 90;
     }
     .filter-group {
-        margin-bottom: 25px;
+        margin-bottom: 22px;
     }
     .filter-title {
         font-weight: 700;
-        font-size: 16px;
-        margin-bottom: 15px;
-        color: var(--color-dark);
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
+        font-size: 15px;
+        color: #111;
+        margin-bottom: 12px;
+        font-family: 'Montserrat', sans-serif;
     }
-    .custom-control-label {
-        color: var(--color-muted);
-        cursor: pointer;
-    }
-    
-    /* Premium Vendor Card */
+
+    /* Vendor Card */
     .vendor-card {
-        background: var(--color-bg-card);
-        border-radius: var(--radius-lg);
+        background: #ffffff;
+        border-radius: 14px;
         overflow: hidden;
-        box-shadow: var(--shadow-sm);
-        border: 1px solid var(--color-border-light);
-        transition: var(--transition);
+        border: 1px solid #f1f5f9;
+        box-shadow: 0 4px 18px rgba(0,0,0,0.04);
+        transition: all 0.3s ease;
         margin-bottom: 30px;
-        position: relative;
     }
     .vendor-card:hover {
-        transform: translateY(-10px);
-        box-shadow: var(--shadow-card-hover);
+        transform: translateY(-5px);
+        box-shadow: 0 12px 30px rgba(0,0,0,0.08);
     }
     .vendor-card-img {
         height: 220px;
@@ -133,86 +177,97 @@
         width: 100%;
         height: 100%;
         object-fit: cover;
-        transition: transform 0.5s ease;
+        transition: transform 0.4s ease;
     }
     .vendor-card:hover .vendor-card-img img {
-        transform: scale(1.05);
+        transform: scale(1.04);
     }
     .vendor-badge {
         position: absolute;
-        top: 15px;
-        left: 15px;
-        background: rgba(255, 255, 255, 0.95);
-        color: var(--color-dark);
-        padding: 5px 12px;
-        border-radius: var(--radius-pill);
-        font-size: 12px;
+        top: 14px;
+        left: 14px;
+        background: #10b981;
+        color: #fff;
+        padding: 4px 10px;
+        border-radius: 20px;
+        font-size: 11px;
         font-weight: 700;
-        box-shadow: var(--shadow-sm);
+        text-transform: uppercase;
         z-index: 2;
     }
     .vendor-badge.premium {
-        background: linear-gradient(135deg, #FFD700 0%, #FDB931 100%);
-        color: #000;
+        background: linear-gradient(135deg, #e72e77, #c2185b);
+        color: #fff;
     }
     .wishlist-btn {
         position: absolute;
-        top: 15px;
-        right: 15px;
-        background: white;
-        width: 40px;
-        height: 40px;
+        top: 14px;
+        right: 14px;
+        background: rgba(255,255,255,0.9);
+        width: 36px;
+        height: 36px;
         border-radius: 50%;
         display: flex;
         align-items: center;
         justify-content: center;
-        color: var(--color-border);
-        font-size: 18px;
-        box-shadow: var(--shadow-sm);
+        color: #9ca3af;
+        font-size: 16px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.15);
         z-index: 2;
-        transition: var(--transition);
+        transition: all 0.2s ease;
         border: none;
     }
     .wishlist-btn:hover, .wishlist-btn.active {
-        color: var(--theme-color);
+        color: #e72e77;
+        background: #fff;
     }
     .vendor-card-body {
         padding: 20px;
     }
     .vendor-title {
         font-weight: 700;
-        font-size: 18px;
-        color: var(--color-dark);
-        margin-bottom: 5px;
+        font-size: 17.5px;
+        color: #111;
+        margin-bottom: 4px;
         text-decoration: none;
         display: block;
+        transition: color 0.2s ease;
     }
     .vendor-title:hover {
-        color: var(--theme-color);
+        color: #e72e77;
     }
     .vendor-location {
-        color: var(--color-muted);
-        font-size: 14px;
+        color: #6b7280;
+        font-size: 13px;
         margin-bottom: 10px;
     }
     .vendor-rating {
         display: flex;
         align-items: center;
-        gap: 8px;
-        margin-bottom: 15px;
+        gap: 6px;
     }
     .rating-box {
-        background: #008000;
+        background: #059669;
         color: white;
-        padding: 3px 8px;
-        border-radius: var(--radius-sm);
+        padding: 2px 7px;
+        border-radius: 4px;
         font-weight: 700;
         font-size: 12px;
     }
+    .vendor-specs-row {
+        display: flex;
+        justify-content: space-between;
+        background: #f9fafb;
+        border-radius: 8px;
+        padding: 8px 12px;
+        margin: 12px 0;
+        font-size: 12px;
+        color: #4b5563;
+    }
     .vendor-price-divider {
         height: 1px;
-        background: var(--color-border-light);
-        margin: 15px 0;
+        background: #f1f5f9;
+        margin: 14px 0;
     }
     .vendor-price {
         display: flex;
@@ -221,21 +276,22 @@
     }
     .price-value {
         font-size: 18px;
-        font-weight: 700;
-        color: var(--color-dark);
+        font-weight: 800;
+        color: #111;
     }
     .btn-request {
-        border: 1px solid var(--theme-color);
-        color: var(--theme-color);
+        border: 1.5px solid #e72e77;
+        color: #e72e77;
         background: transparent;
-        padding: 6px 15px;
-        border-radius: var(--radius-sm);
-        font-size: 13px;
-        font-weight: 600;
-        transition: var(--transition);
+        padding: 6px 16px;
+        border-radius: 20px;
+        font-size: 12.5px;
+        font-weight: 700;
+        transition: all 0.2s ease;
+        text-decoration: none;
     }
     .btn-request:hover {
-        background: var(--theme-color);
+        background: #e72e77;
         color: white;
     }
 </style>
@@ -245,13 +301,26 @@
     <div class="container-fluid px-lg-5">
         <div class="row justify-content-center">
             <div class="col-lg-10 text-center">
-                <h1>Find The Best Wedding Vendors</h1>
-                <p class="text-muted mt-2 font-size-18">Browse through thousands of trusted wedding service providers</p>
+                <h1>
+                    {% if view_type == 'venues' %}
+                        Wedding Lawns &amp; Banquet Halls{% if selected_city %} in {{ selected_city }}{% endif %}
+                    {% elif selected_category %}
+                        Wedding {{ selected_category.name }}{% if selected_city %} in {{ selected_city }}{% endif %}
+                    {% elif selected_city %}
+                        Wedding Venues &amp; Vendors in {{ selected_city }}
+                    {% else %}
+                        Find &amp; Book Top Wedding Lawns &amp; Vendors
+                    {% endif %}
+                </h1>
+                <p class="text-muted mt-2" style="font-size: 15px;">
+                    Explore verified pricing, real photos, guest capacity, and genuine reviews from couples.
+                </p>
                 
                 <form method="GET" action="{% url 'vendors' %}" class="search-bar-container">
+                    <input type="hidden" name="type" value="{{ view_type|default:'' }}">
                     <div class="search-input-group">
                         <i class="fa fa-map-marker"></i>
-                        <input type="text" name="city" placeholder="Select City" value="{{ selected_city|default:'' }}">
+                        <input type="text" name="city" placeholder="City (e.g. Lucknow, Delhi...)" value="{{ selected_city|default:'' }}">
                     </div>
                     <div class="search-input-group">
                         <i class="fa fa-list"></i>
@@ -264,48 +333,83 @@
                     </div>
                     <div class="search-input-group">
                         <i class="fa fa-search"></i>
-                        <input type="text" name="q" placeholder="Search by name..." value="{{ request.GET.q|default:'' }}">
+                        <input type="text" name="q" placeholder="Search by name, lawn, hall..." value="{{ request.GET.q|default:'' }}">
                     </div>
                     <button type="submit" class="btn-search-main">Search</button>
                 </form>
+
+                <!-- Quick Category Filter Pills -->
+                <div class="filter-pills-row">
+                    <a href="{% url 'vendors' %}?type=venues" class="filter-pill {% if view_type == 'venues' and not request.GET.category %}active{% endif %}">
+                        <i class="fa fa-tree"></i> All Wedding Lawns
+                    </a>
+                    <a href="{% url 'vendors' %}?category=venues" class="filter-pill {% if request.GET.category == 'venues' %}active{% endif %}">
+                        <i class="fa fa-building-o"></i> Banquet Halls
+                    </a>
+                    <a href="{% url 'vendors' %}?category=photographers" class="filter-pill {% if request.GET.category == 'photographers' %}active{% endif %}">
+                        <i class="fa fa-camera"></i> Photographers
+                    </a>
+                    <a href="{% url 'vendors' %}?category=decorators" class="filter-pill {% if request.GET.category == 'decorators' %}active{% endif %}">
+                        <i class="fa fa-paint-brush"></i> Decorators
+                    </a>
+                    <a href="{% url 'vendors' %}?type=vendors" class="filter-pill {% if view_type == 'vendors' and not request.GET.category %}active{% endif %}">
+                        <i class="fa fa-users"></i> All Vendors
+                    </a>
+                </div>
             </div>
         </div>
     </div>
 </section>
 
 <!-- Breadcrumb -->
-<div class="bg-light py-2">
+<div class="bg-light py-2 border-bottom">
     <div class="container-fluid px-lg-5">
-        <div class="small text-muted">
-            <a href="{% url 'index' %}" class="text-muted">Home</a> <i class="fa fa-angle-right mx-2"></i> 
-            <span class="font-weight-bold">Vendors</span>
-            {% if selected_city %} <i class="fa fa-angle-right mx-2"></i> {{ selected_city }} {% endif %}
-        </div>
+        <nav aria-label="breadcrumb">
+            <div class="small text-muted" style="font-size: 13px;">
+                <a href="{% url 'index' %}" class="text-muted"><i class="fa fa-home"></i> Home</a>
+                <i class="fa fa-angle-right mx-2"></i> 
+                <a href="{% url 'vendors' %}" class="text-muted">Directory</a>
+                {% if view_type %}
+                    <i class="fa fa-angle-right mx-2"></i> 
+                    <span class="text-capitalize">{{ view_type }}</span>
+                {% endif %}
+                {% if selected_category %}
+                    <i class="fa fa-angle-right mx-2"></i> 
+                    <span>{{ selected_category.name }}</span>
+                {% endif %}
+                {% if selected_city %}
+                    <i class="fa fa-angle-right mx-2"></i> 
+                    <strong class="text-dark">{{ selected_city }}</strong>
+                {% endif %}
+            </div>
+        </nav>
     </div>
 </div>
 
-<section class="py-5">
+<section class="py-5" style="background: #fafafa;">
     <div class="container-fluid px-lg-5">
         <div class="row">
             <!-- Sidebar Filters -->
             <div class="col-lg-3 mb-4">
                 <form id="filterForm" method="GET" action="{% url 'vendors' %}" class="sticky-filter-wrapper">
                     <!-- Preserve existing search params -->
+                    <input type="hidden" name="type" value="{{ view_type|default:'' }}">
                     <input type="hidden" name="city" value="{{ selected_city|default:'' }}">
                     <input type="hidden" name="q" value="{{ request.GET.q|default:'' }}">
                     
                     <div class="filter-sidebar">
-                        <div class="d-flex justify-content-between align-items-center mb-4">
-                            <h5 class="font-weight-bold mb-0">Filters</h5>
-                            <a href="{% url 'vendors' %}" class="small text-danger">Clear All</a>
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <h5 class="font-weight-bold mb-0" style="font-size: 16px;">Filter Results</h5>
+                            <a href="{% url 'vendors' %}" class="small text-danger font-weight-bold">Clear All</a>
                         </div>
                         
+                        <!-- Category Filter -->
                         <div class="filter-group border-bottom pb-3">
-                            <div class="filter-title">Category</div>
+                            <div class="filter-title">Service Category</div>
                             {% for cat in categories %}
                             <div class="custom-control custom-radio mb-2">
                                 <input type="radio" id="cat_{{ cat.id }}" name="category" value="{{ cat.slug }}" class="custom-control-input filter-trigger" {% if request.GET.category == cat.slug %}checked{% endif %}>
-                                <label class="custom-control-label d-flex justify-content-between" for="cat_{{ cat.id }}">
+                                <label class="custom-control-label d-flex justify-content-between" for="cat_{{ cat.id }}" style="font-size: 13.5px; cursor: pointer;">
                                     <span>{{ cat.name }}</span>
                                     <span class="text-muted small">({{ cat.vendors.count }})</span>
                                 </label>
@@ -313,35 +417,31 @@
                             {% endfor %}
                         </div>
 
+                        <!-- Top Cities Filter -->
                         <div class="filter-group border-bottom pb-3">
-                            <div class="filter-title">Pricing Range</div>
-                            <div class="custom-control custom-checkbox mb-2">
-                                <input type="checkbox" id="price1" class="custom-control-input filter-trigger">
-                                <label class="custom-control-label" for="price1">Under ₹50,000</label>
-                            </div>
-                            <div class="custom-control custom-checkbox mb-2">
-                                <input type="checkbox" id="price2" class="custom-control-input filter-trigger">
-                                <label class="custom-control-label" for="price2">₹50,000 - ₹1,00,000</label>
-                            </div>
-                            <div class="custom-control custom-checkbox mb-2">
-                                <input type="checkbox" id="price3" class="custom-control-input filter-trigger">
-                                <label class="custom-control-label" for="price3">₹1,00,000 - ₹3,00,000</label>
-                            </div>
-                            <div class="custom-control custom-checkbox">
-                                <input type="checkbox" id="price4" class="custom-control-input filter-trigger">
-                                <label class="custom-control-label" for="price4">Above ₹3,00,000</label>
+                            <div class="filter-title">Filter by City</div>
+                            <div class="d-flex flex-wrap gap-1">
+                                {% for c in "Lucknow,Delhi,Mumbai,Jaipur,Udaipur,Bangalore,Goa,Chandigarh,kannauj"|make_list %}
+                                {% endfor %}
+                                <a href="{% url 'vendors' %}?type={{ view_type|default:'' }}&category={{ request.GET.category|default:'' }}&city=Lucknow" class="badge badge-light border p-2 mr-1 mb-1 {% if selected_city|lower == 'lucknow' %}badge-danger text-white{% endif %}">Lucknow</a>
+                                <a href="{% url 'vendors' %}?type={{ view_type|default:'' }}&category={{ request.GET.category|default:'' }}&city=Delhi" class="badge badge-light border p-2 mr-1 mb-1 {% if selected_city|lower == 'delhi' %}badge-danger text-white{% endif %}">Delhi NCR</a>
+                                <a href="{% url 'vendors' %}?type={{ view_type|default:'' }}&category={{ request.GET.category|default:'' }}&city=Mumbai" class="badge badge-light border p-2 mr-1 mb-1 {% if selected_city|lower == 'mumbai' %}badge-danger text-white{% endif %}">Mumbai</a>
+                                <a href="{% url 'vendors' %}?type={{ view_type|default:'' }}&category={{ request.GET.category|default:'' }}&city=Jaipur" class="badge badge-light border p-2 mr-1 mb-1 {% if selected_city|lower == 'jaipur' %}badge-danger text-white{% endif %}">Jaipur</a>
+                                <a href="{% url 'vendors' %}?type={{ view_type|default:'' }}&category={{ request.GET.category|default:'' }}&city=Udaipur" class="badge badge-light border p-2 mr-1 mb-1 {% if selected_city|lower == 'udaipur' %}badge-danger text-white{% endif %}">Udaipur</a>
+                                <a href="{% url 'vendors' %}?type={{ view_type|default:'' }}&category={{ request.GET.category|default:'' }}&city=Bangalore" class="badge badge-light border p-2 mr-1 mb-1 {% if selected_city|lower == 'bangalore' %}badge-danger text-white{% endif %}">Bangalore</a>
                             </div>
                         </div>
-                        
+
+                        <!-- Trust Features -->
                         <div class="filter-group mb-0">
-                            <div class="filter-title">Special Features</div>
+                            <div class="filter-title">Verification Status</div>
                             <div class="custom-control custom-checkbox mb-2">
                                 <input type="checkbox" id="feat1" class="custom-control-input filter-trigger">
-                                <label class="custom-control-label text-success font-weight-bold" for="feat1"><i class="fa fa-check-circle"></i> Verified Providers</label>
+                                <label class="custom-control-label text-success font-weight-bold" for="feat1" style="font-size: 13px;"><i class="fa fa-check-circle"></i> 100% Verified Only</label>
                             </div>
-                            <div class="custom-control custom-checkbox mb-2">
+                            <div class="custom-control custom-checkbox">
                                 <input type="checkbox" id="feat2" class="custom-control-input filter-trigger">
-                                <label class="custom-control-label text-warning font-weight-bold" for="feat2"><i class="fa fa-star"></i> Premium Vendors</label>
+                                <label class="custom-control-label text-warning font-weight-bold" for="feat2" style="font-size: 13px;"><i class="fa fa-star"></i> Featured / Premium</label>
                             </div>
                         </div>
                     </div>
@@ -350,12 +450,15 @@
 
             <!-- Vendor Results -->
             <div class="col-lg-9">
-                <div class="d-flex justify-content-between align-items-center mb-4">
-                    <h5 class="mb-0 text-dark">Showing <strong>{{ vendors.count }}</strong> Vendors</h5>
+                <div class="d-flex justify-content-between align-items-center mb-4 bg-white p-3 rounded border">
+                    <h5 class="mb-0 text-dark" style="font-size: 16px;">
+                        Showing <strong>{{ vendor_count }}</strong> Verified Listing{{ vendor_count|pluralize }}
+                        {% if selected_city %} in <strong>{{ selected_city }}</strong>{% endif %}
+                    </h5>
                     <div class="d-flex align-items-center">
-                        <span class="text-muted mr-2">Sort By:</span>
-                        <select class="form-control form-control-sm border-0 bg-light font-weight-bold" style="width: auto;">
-                            <option>Popularity</option>
+                        <span class="text-muted mr-2 small">Sort By:</span>
+                        <select class="form-control form-control-sm border bg-light font-weight-bold" style="width: auto; height: 32px; font-size: 13px;">
+                            <option>Recommended</option>
                             <option>Price: Low to High</option>
                             <option>Price: High to Low</option>
                             <option>Highest Rated</option>
@@ -369,38 +472,48 @@
                         <div class="vendor-card">
                             <div class="vendor-card-img">
                                 {% if vendor.is_premium %}
-                                <div class="vendor-badge premium"><i class="fa fa-crown mr-1"></i> Premium</div>
+                                <div class="vendor-badge premium"><i class="fa fa-diamond mr-1"></i> Premium</div>
                                 {% elif vendor.is_verified %}
-                                <div class="vendor-badge"><i class="fa fa-check-circle text-success mr-1"></i> Verified</div>
+                                <div class="vendor-badge"><i class="fa fa-check-circle mr-1"></i> Verified</div>
                                 {% endif %}
                                 
-                                <button class="wishlist-btn add-to-wishlist" data-id="{{ vendor.id }}">
+                                <button class="wishlist-btn add-to-wishlist" data-id="{{ vendor.id }}" title="Save to Wishlist">
                                     <i class="fa fa-heart"></i>
                                 </button>
                                 
                                 <a href="{% url 'vendor_details' vendor.uuid_field %}">
-                                    <img src="{% if vendor.image %}{{ vendor.image.url }}{% else %}https://images.pexels.com/photos/169190/pexels-photo-169190.jpeg?auto=compress&cs=tinysrgb&w=600{% endif %}" alt="{{ vendor.name }}">
+                                    <img src="{% if vendor.image %}{{ vendor.image.url }}{% else %}{% static 'website/img/product/product-1.jpg' %}{% endif %}" alt="{{ vendor.name }} - Wedding Lawn in {{ vendor.location }}" loading="lazy">
                                 </a>
                             </div>
                             <div class="vendor-card-body">
                                 <div class="d-flex justify-content-between align-items-start">
-                                    <div>
-                                        <a href="{% url 'vendor_details' vendor.uuid_field %}" class="vendor-title">{{ vendor.name }}</a>
-                                        <div class="vendor-location"><i class="fa fa-map-marker text-muted mr-1"></i> {{ vendor.location }}</div>
+                                    <div style="flex: 1; padding-right: 10px;">
+                                        <a href="{% url 'vendor_details' vendor.uuid_field %}" class="vendor-title" title="{{ vendor.name }}">{{ vendor.name }}</a>
+                                        <div class="vendor-location"><i class="fa fa-map-marker text-danger mr-1"></i> {{ vendor.location }}</div>
                                     </div>
                                     <div class="vendor-rating">
                                         <span class="rating-box"><i class="fa fa-star"></i> 4.8</span>
                                         <span class="small text-muted">({{ vendor.reviews.count }})</span>
                                     </div>
                                 </div>
-                                <div class="small text-muted mt-1"><i class="fa fa-tag mr-1"></i> {{ vendor.category.name }}</div>
+
+                                <div class="small text-muted mt-1"><i class="fa fa-tag text-danger mr-1"></i> {{ vendor.category.name }}</div>
+
+                                <!-- Specific specs for venues -->
+                                {% if vendor.category.slug == 'venues' %}
+                                <div class="vendor-specs-row">
+                                    <div><i class="fa fa-users text-danger mr-1"></i> {{ vendor.capacity|default:"500-1500" }} Pax</div>
+                                    <div><i class="fa fa-cutlery text-danger mr-1"></i> ₹{{ vendor.veg_price|default:vendor.price_starting|floatformat:0 }}/plate</div>
+                                    <div><i class="fa fa-bed text-danger mr-1"></i> {{ vendor.rooms|default:"5" }} Rooms</div>
+                                </div>
+                                {% endif %}
                                 
                                 <div class="vendor-price-divider"></div>
                                 
                                 <div class="vendor-price">
                                     <div>
-                                        <div class="small text-muted text-uppercase" style="font-size: 10px;">Starting Price</div>
-                                        <div class="price-value">₹{{ vendor.price_starting }}</div>
+                                        <div class="small text-muted text-uppercase" style="font-size: 10px; font-weight: 600;">Starting Package</div>
+                                        <div class="price-value">₹{{ vendor.price_starting|floatformat:0 }}</div>
                                     </div>
                                     <a href="{% url 'vendor_details' vendor.uuid_field %}" class="btn-request">View Details</a>
                                 </div>
@@ -408,27 +521,14 @@
                         </div>
                     </div>
                     {% empty %}
-                    <div class="col-12 text-center py-5">
-                        <i class="fa fa-search fa-4x text-muted mb-3"></i>
-                        <h4>No vendors found</h4>
-                        <p class="text-muted">Try adjusting your filters or search criteria.</p>
-                        <a href="{% url 'vendors' %}" class="btn btn-outline-primary mt-2">Clear Filters</a>
+                    <div class="col-12 text-center py-5 bg-white rounded border">
+                        <i class="fa fa-search fa-3x text-muted mb-3"></i>
+                        <h4>No venues or vendors found</h4>
+                        <p class="text-muted">We couldn't find matching listings for your search. Try adjusting the city or category filter.</p>
+                        <a href="{% url 'vendors' %}" class="btn btn-outline-danger mt-2" style="border-radius: 20px; font-weight: 600;">Clear All Filters</a>
                     </div>
                     {% endfor %}
                 </div>
-                
-                {% if vendors.count > 0 %}
-                <!-- Pagination -->
-                <nav aria-label="Page navigation" class="mt-4">
-                    <ul class="pagination justify-content-center">
-                        <li class="page-item disabled"><a class="page-link border-0 text-dark font-weight-bold" href="#">Previous</a></li>
-                        <li class="page-item active"><a class="page-link" href="#" style="background: #e72e77; border-color: #e72e77;">1</a></li>
-                        <li class="page-item"><a class="page-link text-dark" href="#">2</a></li>
-                        <li class="page-item"><a class="page-link text-dark" href="#">3</a></li>
-                        <li class="page-item"><a class="page-link border-0 text-dark font-weight-bold" href="#">Next</a></li>
-                    </ul>
-                </nav>
-                {% endif %}
             </div>
         </div>
     </div>
@@ -438,12 +538,10 @@
 {% block extra_js %}
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
-    // Auto-submit filter form when a radio button or checkbox changes
     $('.filter-trigger').change(function() {
         $('#filterForm').submit();
     });
 
-    // Wishlist Logic
     const csrfToken = '{{ csrf_token }}';
     $('.add-to-wishlist').click(function(e) {
         e.preventDefault();

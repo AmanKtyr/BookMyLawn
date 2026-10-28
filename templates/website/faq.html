@@ -1,0 +1,189 @@
+{% extends 'website/base.html' %}
+{% load static %}
+
+{% block title %}Frequently Asked Questions (FAQ) | BookMyLawn{% endblock %}
+{% block meta_description %}Have questions about booking wedding lawns, banquet halls, photographers, or vendor registration? Find answers in the BookMyLawn FAQ guide.{% endblock %}
+{% block meta_keywords %}wedding lawn faq, banquet hall booking questions, wedding venue cost, book marriage garden, wedding vendors help{% endblock %}
+
+{% block structured_data %}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "How does BookMyLawn help me find and book wedding venues?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "BookMyLawn is an online marketplace connecting couples with top wedding lawns, luxury banquet halls, photographers, decorators, and caterers across India. You can search by city, budget, guest capacity, and amenities, compare verified profiles, check reviews, and request free quotes directly."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Is using BookMyLawn free for couples planning a wedding?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes! BookMyLawn is 100% free for couples and event planners. You can browse all venues, view contact details, send booking inquiries, and read verified reviews without any booking fee."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What is the difference between an open-air wedding lawn and a banquet hall?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "An open-air wedding lawn provides a spacious outdoor garden setting ideal for large gatherings (500 to 2000+ guests), customized stage decor, and evening festivities. A banquet hall is an indoor climate-controlled space (AC) with in-built acoustic systems and lighting, suitable for all seasons. Many top venues on BookMyLawn offer combined lawn + AC banquet hall setups."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How far in advance should I book a wedding lawn?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "For peak wedding dates (Muhurat dates in October through February), we recommend booking your venue 6 to 9 months in advance. For off-peak dates or weekday receptions, 3 to 6 months is typically sufficient."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Are the venue prices and reviews on BookMyLawn verified?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes. Our team conducts verification on venue capacities, amenities (parking, rooms, power backup), and starting plate prices. Reviews are contributed by genuine couples who planned their celebration through our platform."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How can venue owners and wedding vendors list their business?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Venue owners, decorators, photographers, and caterers can click 'List Your Venue' or 'Vendor Register' in the header to submit their business details. Once verified by our superadmin team, your profile goes live to thousands of couples searching daily."
+      }
+    }
+  ]
+}
+</script>
+{% endblock %}
+
+{% block content %}
+<!-- Header Hero -->
+<section style="background: linear-gradient(135deg, rgba(231,46,119,0.05) 0%, rgba(231,46,119,0.12) 100%); padding: 70px 0 50px; text-align: center; border-bottom: 1px solid rgba(231,46,119,0.15);">
+    <div class="container">
+        <span style="color:#e72e77; font-weight:700; text-transform:uppercase; letter-spacing:2px; font-size:13px; display:block; margin-bottom:10px;">Help Center &amp; Guidance</span>
+        <h1 style="font-weight: 800; color: #111; font-size: 42px; margin-bottom: 15px; letter-spacing: -1px;">Frequently Asked Questions</h1>
+        <p style="color: #666; max-width: 650px; margin: 0 auto 20px; font-size: 16px;">Everything you need to know about booking wedding lawns, banquet halls, and wedding vendors on BookMyLawn.</p>
+        <div class="breadcrumb__links" style="display: flex; justify-content: center; gap: 10px; align-items: center; font-size: 14px;">
+            <a href="{% url 'index' %}" style="color: #555; font-weight: 600; text-decoration: none;"><i class="fa fa-home"></i> Home</a>
+            <span style="color: #ccc;">/</span>
+            <span style="color: #e72e77; font-weight: 700;">FAQ</span>
+        </div>
+    </div>
+</section>
+
+<!-- FAQ Accordion Section -->
+<section style="padding: 70px 0; background: #fff;">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-9">
+                <div class="accordion" id="faqAccordion">
+
+                    <!-- Question 1 -->
+                    <div class="card mb-3" style="border: 1px solid #e5e7eb; border-radius: 10px; overflow: hidden; box-shadow: 0 2px 10px rgba(0,0,0,0.03);">
+                        <div class="card-header" id="headingOne" style="background: #fafafa; padding: 18px 25px; border-bottom: none;">
+                            <h2 class="mb-0" style="font-size: 17px; font-family: 'Montserrat', sans-serif;">
+                                <button class="btn btn-link btn-block text-left font-weight-bold text-dark d-flex justify-content-between align-items-center" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne" style="text-decoration: none; padding: 0;">
+                                    <span><i class="fa fa-question-circle text-danger mr-2"></i> How does BookMyLawn help me find and book wedding venues?</span>
+                                    <i class="fa fa-chevron-down"></i>
+                                </button>
+                            </h2>
+                        </div>
+                        <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#faqAccordion">
+                            <div class="card-body" style="padding: 20px 25px; color: #555; line-height: 1.8; font-size: 15px;">
+                                BookMyLawn is India's dedicated marketplace connecting couples with top wedding lawns, luxury banquet halls, photographers, decorators, and caterers across India. You can search by city, budget, guest capacity, and amenities, compare verified profiles, check photos and reviews, and request free quotes directly.
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Question 2 -->
+                    <div class="card mb-3" style="border: 1px solid #e5e7eb; border-radius: 10px; overflow: hidden; box-shadow: 0 2px 10px rgba(0,0,0,0.03);">
+                        <div class="card-header" id="headingTwo" style="background: #fafafa; padding: 18px 25px; border-bottom: none;">
+                            <h2 class="mb-0" style="font-size: 17px; font-family: 'Montserrat', sans-serif;">
+                                <button class="btn btn-link btn-block text-left font-weight-bold text-dark d-flex justify-content-between align-items-center collapsed" type="button" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo" style="text-decoration: none; padding: 0;">
+                                    <span><i class="fa fa-question-circle text-danger mr-2"></i> Is using BookMyLawn free for couples planning a wedding?</span>
+                                    <i class="fa fa-chevron-down"></i>
+                                </button>
+                            </h2>
+                        </div>
+                        <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#faqAccordion">
+                            <div class="card-body" style="padding: 20px 25px; color: #555; line-height: 1.8; font-size: 15px;">
+                                Yes! BookMyLawn is 100% free for couples and event planners. You can browse all venues, check package prices, send booking inquiries, and read verified reviews with zero commission and zero booking fee.
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Question 3 -->
+                    <div class="card mb-3" style="border: 1px solid #e5e7eb; border-radius: 10px; overflow: hidden; box-shadow: 0 2px 10px rgba(0,0,0,0.03);">
+                        <div class="card-header" id="headingThree" style="background: #fafafa; padding: 18px 25px; border-bottom: none;">
+                            <h2 class="mb-0" style="font-size: 17px; font-family: 'Montserrat', sans-serif;">
+                                <button class="btn btn-link btn-block text-left font-weight-bold text-dark d-flex justify-content-between align-items-center collapsed" type="button" data-toggle="collapse" data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree" style="text-decoration: none; padding: 0;">
+                                    <span><i class="fa fa-question-circle text-danger mr-2"></i> What is the difference between an open-air wedding lawn and a banquet hall?</span>
+                                    <i class="fa fa-chevron-down"></i>
+                                </button>
+                            </h2>
+                        </div>
+                        <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#faqAccordion">
+                            <div class="card-body" style="padding: 20px 25px; color: #555; line-height: 1.8; font-size: 15px;">
+                                An open-air wedding lawn provides a scenic outdoor garden setting ideal for large gatherings (500 to 2500+ guests), grand mandap setups, fireworks, and live food counters. A banquet hall is an indoor, fully air-conditioned space suitable for any weather condition, offering superior acoustics for sangeet performances and DJ nights. Many premium venues listed on BookMyLawn offer combined lawn + banquet hall packages so you enjoy the best of both worlds!
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Question 4 -->
+                    <div class="card mb-3" style="border: 1px solid #e5e7eb; border-radius: 10px; overflow: hidden; box-shadow: 0 2px 10px rgba(0,0,0,0.03);">
+                        <div class="card-header" id="headingFour" style="background: #fafafa; padding: 18px 25px; border-bottom: none;">
+                            <h2 class="mb-0" style="font-size: 17px; font-family: 'Montserrat', sans-serif;">
+                                <button class="btn btn-link btn-block text-left font-weight-bold text-dark d-flex justify-content-between align-items-center collapsed" type="button" data-toggle="collapse" data-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour" style="text-decoration: none; padding: 0;">
+                                    <span><i class="fa fa-question-circle text-danger mr-2"></i> How far in advance should I book my wedding venue?</span>
+                                    <i class="fa fa-chevron-down"></i>
+                                </button>
+                            </h2>
+                        </div>
+                        <div id="collapseFour" class="collapse" aria-labelledby="headingFour" data-parent="#faqAccordion">
+                            <div class="card-body" style="padding: 20px 25px; color: #555; line-height: 1.8; font-size: 15px;">
+                                For popular auspicious dates (Sawa / Muhurat season in November, December, January, and February), we recommend locking in your wedding venue 6 to 9 months in advance. Early booking ensures you get your preferred date and gives you ample time to coordinate with photographers, decorators, and caterers.
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Question 5 -->
+                    <div class="card mb-3" style="border: 1px solid #e5e7eb; border-radius: 10px; overflow: hidden; box-shadow: 0 2px 10px rgba(0,0,0,0.03);">
+                        <div class="card-header" id="headingFive" style="background: #fafafa; padding: 18px 25px; border-bottom: none;">
+                            <h2 class="mb-0" style="font-size: 17px; font-family: 'Montserrat', sans-serif;">
+                                <button class="btn btn-link btn-block text-left font-weight-bold text-dark d-flex justify-content-between align-items-center collapsed" type="button" data-toggle="collapse" data-target="#collapseFive" aria-expanded="false" aria-controls="collapseFive" style="text-decoration: none; padding: 0;">
+                                    <span><i class="fa fa-question-circle text-danger mr-2"></i> Can I register my venue or wedding services on BookMyLawn?</span>
+                                    <i class="fa fa-chevron-down"></i>
+                                </button>
+                            </h2>
+                        </div>
+                        <div id="collapseFive" class="collapse" aria-labelledby="headingFive" data-parent="#faqAccordion">
+                            <div class="card-body" style="padding: 20px 25px; color: #555; line-height: 1.8; font-size: 15px;">
+                                Absolutely! Venue managers, decorators, photographers, and caterers can register by clicking <a href="{% url 'vendor_register' %}" class="text-danger font-weight-bold">Register as a Vendor</a>. Fill in your business profile, starting rates, amenities, and photos. Our verification team reviews the submission within 24 hours to set your listing live.
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- Still Have Questions CTA -->
+                <div class="text-center mt-5 p-4" style="background: #fdf2f7; border-radius: 15px; border: 1px dashed #e72e77;">
+                    <h4 style="font-weight: 700; margin-bottom: 10px;">Still have questions?</h4>
+                    <p style="color: #666; margin-bottom: 20px;">Our dedicated wedding concierge team is here to assist you with venue visits and custom quotes.</p>
+                    <a href="{% url 'contact' %}" class="btn-login-single" style="font-size: 14px; padding: 10px 28px;">
+                        <i class="fa fa-envelope-o"></i> Contact Our Team
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
