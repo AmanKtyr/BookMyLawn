@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-u_)#2s!&hfft2%3u=7gy+w5t0e$12d5r5lr1u#@#)!m_qu(7rj
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["https://bookmylawn.helyonex.com/", "bookmylawn.helyonex.com", "localhost", "127.0.0.1"]
 
 
 # Application definition
@@ -144,3 +144,35 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # Media files (Uploaded images, documents)
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
+
+# BookMyLawn production configuration
+import os
+from dotenv import load_dotenv
+
+load_dotenv(BASE_DIR / ".env", override=False)
+
+SECRET_KEY = os.environ["SECRET_KEY"]
+DEBUG = os.getenv("DEBUG", "False").lower() == "true"
+
+ALLOWED_HOSTS = [
+    h.strip() for h in os.environ.get("ALLOWED_HOSTS", "").split(",") if h.strip()
+]
+
+CSRF_TRUSTED_ORIGINS = [
+    u.strip() for u in os.environ.get("CSRF_TRUSTED_ORIGINS", "").split(",") if u.strip()
+]
+
+DATABASES = {
+    "default": {
+        "ENGINE": "django.db.backends.postgresql",
+        "NAME": os.environ["DB_NAME"],
+        "USER": os.environ["DB_USER"],
+        "PASSWORD": os.environ["DB_PASSWORD"],
+        "HOST": os.environ.get("DB_HOST", "127.0.0.1"),
+        "PORT": os.environ.get("DB_PORT", "5432"),
+        "CONN_MAX_AGE": 60,
+    }
+}
+
+STATIC_ROOT = BASE_DIR / "staticfiles"
+MEDIA_ROOT = BASE_DIR / "media"
