@@ -1,0 +1,536 @@
+{% extends 'website/base.html' %}
+{% load static %}
+
+{% block title %}Wedding Lawns & Banquet Halls FAQ | BookMyLawn Help Center{% endblock %}
+{% block meta_description %}Frequently asked questions about booking wedding lawns, banquet halls, catering prices, DJ curfew rules, and vendor listings in India on BookMyLawn.{% endblock %}
+{% block meta_keywords %}wedding lawn faq, banquet hall booking questions, wedding venue cost India, price per plate, DJ curfew wedding lawn, book marriage garden, BookMyLawn faq{% endblock %}
+
+{% block structured_data %}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "How does BookMyLawn help me discover and book wedding venues across India?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "BookMyLawn connects couples directly with 5,000+ verified wedding lawns, luxury banquet halls, heritage palaces, and farmhouses in major Indian cities like Lucknow, Delhi NCR, Mumbai, Jaipur, Bangalore, and Udaipur. You can compare guest capacities, price per plate, couple reviews, and high-resolution photo galleries to request instant callback quotes directly from venue managers without middleman markups."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What is the difference between an open-air marriage lawn and an AC banquet hall?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "An open-air marriage lawn offers expansive manicured green landscapes ideal for grand Indian weddings (500 to 3,000+ guests), customized mandap stages, fireworks, and live buffet counters. An AC banquet hall provides a climate-controlled, weatherproof space with integrated acoustics and lighting suitable for sangeet performances, cocktail parties, and summer or monsoon weddings. Many top venues on BookMyLawn offer combined Lawn + Banquet Hall combos for maximum flexibility."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How far in advance should I book a wedding lawn or banquet hall?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "For auspicious Indian wedding dates (Aabhuja and Muhurat dates during October to March), we recommend booking your venue 6 to 12 months in advance. For weekday events or summer weddings, 3 to 6 months is generally sufficient to secure your preferred date and pricing."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Can I schedule a free site visit to the wedding lawn before making a booking?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes! On every vendor profile page, you can click 'Send Inquiry' or request a site visit. Our team or the venue manager will arrange an accompanied property tour so you can inspect lawn dimensions, bridal dressing suites, washroom cleanliness, kitchen hygiene, and parking capacity before paying any deposit."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How is the pricing of a wedding lawn calculated in India?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Wedding venue pricing typically follows one of two models: (1) Per-Plate Catering Package: The venue rental is included in the food cost, starting from ₹1,000 to ₹3,500+ per plate for vegetarian and ₹1,400 to ₹4,500+ for non-vegetarian menus. (2) Pure Ground Rental: A flat fee (₹1,00,000 to ₹10,00,000+ per day) where you pay separately for space and hire outside caterers."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Are outside caterers allowed at wedding lawns?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "This varies by venue. Many standalone marriage gardens and farmhouses allow outside wedding caterers upon payment of a kitchen royalty fee. In contrast, 5-star hotels and luxury banquet halls usually mandate using their in-house culinary teams. Each venue profile on BookMyLawn specifies whether outside catering is permitted."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Do wedding venues provide alcohol licenses and allow outside liquor?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Venues holding a commercial bar license can serve alcohol directly. If you wish to bring your own liquor, you must obtain a temporary one-day excise permit (e.g. P-10 permit in UP/Delhi) through the venue or local excise portal. Corkage charges may apply depending on the property's house policy."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Are taxes (GST) and service charges included in the quoted prices?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "The starting package prices displayed on BookMyLawn represent base rates. In India, luxury event hospitality incurs 18% GST on venue space rental and 5% to 18% GST on catering services. We recommend confirming whether quotes are GST-inclusive prior to signing the booking agreement."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What is the policy regarding DJ curfew and sound timings in wedding lawns?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Under environmental noise regulations in India, outdoor sound systems and DJ music in open-air wedding lawns must shut down by 10:00 PM or 10:30 PM (or shift to low-volume ambient music). Indoor sound-insulated banquet halls are typically permitted to continue music and celebrations later into the night subject to local city permissions."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Can I bring my own wedding decorator or must I use the in-house decorator?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Most wedding lawns partner with 2 to 4 empanelled wedding decorators specializing in floral mandaps, fairy light canopies, and stage backdrops. Some venues permit outside decorators subject to a refundable security deposit or decoration royalty fee."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What parking and power backup facilities do wedding lawns provide?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Premier wedding lawns provide 100% DG (Diesel Generator) power backup to prevent blackouts during heavy lighting, sound systems, and AC operations. Most lawns also feature dedicated parking accommodating 100 to 500+ vehicles, often with complimentary valet service."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Do venues provide complimentary bridal and groom changing suites?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes! Almost all verified wedding lawns and banquet halls listed on BookMyLawn provide 1 to 2 air-conditioned green rooms or bridal dressing suites with attached washrooms included with the venue booking."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What is the standard payment schedule for booking a wedding lawn?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "The standard payment milestone schedule in India is: (1) Booking Token: 25% to 30% advance upon contract signing. (2) Second Installment: 40% to 50% paid 30 to 45 days prior to the wedding date. (3) Final Balance: Remaining 20% to 25% cleared 2 to 7 days before the event or on the wedding morning."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What happens if I need to postpone or cancel my wedding date?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "If you notify the venue 60 to 90 days in advance, most venue owners allow date rescheduling within the same calendar year without forfeiting your advance payment (subject to date availability). In case of total cancellation, advance tokens are usually non-refundable unless stated otherwise in the agreement."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Is my booking on BookMyLawn secure and transparent?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes. BookMyLawn lists only verified properties with verified managers. We provide transparent package rates, verified couple reviews, and direct connection channels to venue managers to guarantee no hidden charges."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How can venue owners and wedding vendors list their business on BookMyLawn?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Venue owners, banquet managers, caterers, photographers, and makeup artists can click 'Register as a Vendor' in our header. Submit your business profile, starting rates, amenities, and photo gallery. Our verification team reviews and publishes your profile within 24 hours."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Does BookMyLawn charge commission on venue bookings?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "BookMyLawn operates on a transparent direct-inquiry model. Couples connect directly with your team with zero commission deductions, allowing you to negotiate packages and contracts directly."
+      }
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Home",
+      "item": "{{ request.scheme }}://{{ request.get_host }}/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "FAQ",
+      "item": "{{ request.build_absolute_uri }}"
+    }
+  ]
+}
+</script>
+{% endblock %}
+
+{% block content %}
+<!-- Header Hero -->
+<section style="background: linear-gradient(135deg, rgba(231,46,119,0.06) 0%, rgba(231,46,119,0.14) 100%); padding: 75px 0 50px; text-align: center; border-bottom: 1px solid rgba(231,46,119,0.15);">
+    <div class="container">
+        <span style="color:#e72e77; font-weight:700; text-transform:uppercase; letter-spacing:2px; font-size:13px; display:block; margin-bottom:10px;">
+            <i class="fa fa-info-circle mr-1"></i> Official Wedding Venue &amp; Vendor Guide
+        </span>
+        <h1 style="font-weight: 800; color: #111; font-size: 42px; margin-bottom: 15px; letter-spacing: -1px;">Frequently Asked Questions</h1>
+        <p style="color: #4b5563; max-width: 700px; margin: 0 auto 20px; font-size: 16px; line-height: 1.6;">Everything you need to know about booking wedding lawns, banquet halls, catering packages, alcohol permits, and wedding vendors across India.</p>
+        <div class="breadcrumb__links" style="display: flex; justify-content: center; gap: 10px; align-items: center; font-size: 14px;">
+            <a href="{% url 'index' %}" style="color: #555; font-weight: 600; text-decoration: none;"><i class="fa fa-home"></i> Home</a>
+            <span style="color: #ccc;">/</span>
+            <span style="color: #e72e77; font-weight: 700;">Frequently Asked Questions</span>
+        </div>
+    </div>
+</section>
+
+<!-- Quick Category Selector Pills -->
+<div style="background: #fafafa; border-bottom: 1px solid #f1f5f9; padding: 15px 0;">
+    <div class="container text-center">
+        <div class="d-flex justify-content-center flex-wrap" style="gap: 10px;">
+            <button type="button" class="btn btn-sm filter-faq-btn" data-filter="all" style="border-radius: 20px; font-weight: 600; padding: 6px 18px; font-size: 13.5px; transition: all 0.2s; background: #e72e77; color: #fff;">
+                All
+            </button>
+            <button type="button" class="btn btn-sm filter-faq-btn" data-filter="venues-and-lawns" style="border-radius: 20px; font-weight: 600; padding: 6px 18px; font-size: 13.5px; transition: all 0.2s; background: #fff; color: #4b5563; border: 1px solid #e5e7eb;">
+                Venues & Lawns
+            </button>
+            <button type="button" class="btn btn-sm filter-faq-btn" data-filter="pricing-and-food" style="border-radius: 20px; font-weight: 600; padding: 6px 18px; font-size: 13.5px; transition: all 0.2s; background: #fff; color: #4b5563; border: 1px solid #e5e7eb;">
+                Pricing & Food
+            </button>
+            <button type="button" class="btn btn-sm filter-faq-btn" data-filter="decor-and-rules" style="border-radius: 20px; font-weight: 600; padding: 6px 18px; font-size: 13.5px; transition: all 0.2s; background: #fff; color: #4b5563; border: 1px solid #e5e7eb;">
+                Decor & Rules
+            </button>
+            <button type="button" class="btn btn-sm filter-faq-btn" data-filter="payments-and-policies" style="border-radius: 20px; font-weight: 600; padding: 6px 18px; font-size: 13.5px; transition: all 0.2s; background: #fff; color: #4b5563; border: 1px solid #e5e7eb;">
+                Payments & Policies
+            </button>
+            <button type="button" class="btn btn-sm filter-faq-btn" data-filter="for-vendors" style="border-radius: 20px; font-weight: 600; padding: 6px 18px; font-size: 13.5px; transition: all 0.2s; background: #fff; color: #4b5563; border: 1px solid #e5e7eb;">
+                For Vendors
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- FAQ Accordion Section -->
+<section style="padding: 60px 0 80px; background: #fff;">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-9">
+                <div class="accordion" id="faqAccordion">
+                    <!-- Question 1 -->
+                    <div class="card mb-3 faq-item-card" data-category="venues-and-lawns" style="border: 1px solid #e5e7eb; border-radius: 12px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.03); transition: all 0.2s;">
+                        <div class="card-header" id="headingFAQ1" style="background: #fafafa; padding: 16px 22px; border-bottom: none;">
+                            <h2 class="mb-0" style="font-size: 16px; font-family: 'Montserrat', sans-serif;">
+                                <button class="btn btn-link btn-block text-left font-weight-bold text-dark d-flex justify-content-between align-items-center " type="button" data-toggle="collapse" data-target="#collapseFAQ1" aria-expanded="true" aria-controls="collapseFAQ1" style="text-decoration: none; padding: 0; color: #1f2937;">
+                                    <span><i class="fa fa-building text-danger mr-2"></i> How does BookMyLawn help me discover and book wedding venues across India?</span>
+                                    <i class="fa fa-chevron-down text-muted small ml-2"></i>
+                                </button>
+                            </h2>
+                        </div>
+                        <div id="collapseFAQ1" class="collapse show" aria-labelledby="headingFAQ1" data-parent="#faqAccordion">
+                            <div class="card-body" style="padding: 20px 24px; color: #4b5563; line-height: 1.8; font-size: 15px; border-top: 1px solid #f3f4f6;">
+                                BookMyLawn connects couples directly with 5,000+ verified wedding lawns, luxury banquet halls, heritage palaces, and farmhouses in major Indian cities like Lucknow, Delhi NCR, Mumbai, Jaipur, Bangalore, and Udaipur. You can compare guest capacities, price per plate, couple reviews, and high-resolution photo galleries to request instant callback quotes directly from venue managers without middleman markups.
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Question 2 -->
+                    <div class="card mb-3 faq-item-card" data-category="venues-and-lawns" style="border: 1px solid #e5e7eb; border-radius: 12px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.03); transition: all 0.2s;">
+                        <div class="card-header" id="headingFAQ2" style="background: #fafafa; padding: 16px 22px; border-bottom: none;">
+                            <h2 class="mb-0" style="font-size: 16px; font-family: 'Montserrat', sans-serif;">
+                                <button class="btn btn-link btn-block text-left font-weight-bold text-dark d-flex justify-content-between align-items-center collapsed" type="button" data-toggle="collapse" data-target="#collapseFAQ2" aria-expanded="false" aria-controls="collapseFAQ2" style="text-decoration: none; padding: 0; color: #1f2937;">
+                                    <span><i class="fa fa-tree text-danger mr-2"></i> What is the difference between an open-air marriage lawn and an AC banquet hall?</span>
+                                    <i class="fa fa-chevron-down text-muted small ml-2"></i>
+                                </button>
+                            </h2>
+                        </div>
+                        <div id="collapseFAQ2" class="collapse " aria-labelledby="headingFAQ2" data-parent="#faqAccordion">
+                            <div class="card-body" style="padding: 20px 24px; color: #4b5563; line-height: 1.8; font-size: 15px; border-top: 1px solid #f3f4f6;">
+                                An open-air marriage lawn offers expansive manicured green landscapes ideal for grand Indian weddings (500 to 3,000+ guests), customized mandap stages, fireworks, and live buffet counters. An AC banquet hall provides a climate-controlled, weatherproof space with integrated acoustics and lighting suitable for sangeet performances, cocktail parties, and summer or monsoon weddings. Many top venues on BookMyLawn offer combined Lawn + Banquet Hall combos for maximum flexibility.
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Question 3 -->
+                    <div class="card mb-3 faq-item-card" data-category="venues-and-lawns" style="border: 1px solid #e5e7eb; border-radius: 12px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.03); transition: all 0.2s;">
+                        <div class="card-header" id="headingFAQ3" style="background: #fafafa; padding: 16px 22px; border-bottom: none;">
+                            <h2 class="mb-0" style="font-size: 16px; font-family: 'Montserrat', sans-serif;">
+                                <button class="btn btn-link btn-block text-left font-weight-bold text-dark d-flex justify-content-between align-items-center collapsed" type="button" data-toggle="collapse" data-target="#collapseFAQ3" aria-expanded="false" aria-controls="collapseFAQ3" style="text-decoration: none; padding: 0; color: #1f2937;">
+                                    <span><i class="fa fa-calendar-check-o text-danger mr-2"></i> How far in advance should I book a wedding lawn or banquet hall?</span>
+                                    <i class="fa fa-chevron-down text-muted small ml-2"></i>
+                                </button>
+                            </h2>
+                        </div>
+                        <div id="collapseFAQ3" class="collapse " aria-labelledby="headingFAQ3" data-parent="#faqAccordion">
+                            <div class="card-body" style="padding: 20px 24px; color: #4b5563; line-height: 1.8; font-size: 15px; border-top: 1px solid #f3f4f6;">
+                                For auspicious Indian wedding dates (Aabhuja and Muhurat dates during October to March), we recommend booking your venue 6 to 12 months in advance. For weekday events or summer weddings, 3 to 6 months is generally sufficient to secure your preferred date and pricing.
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Question 4 -->
+                    <div class="card mb-3 faq-item-card" data-category="venues-and-lawns" style="border: 1px solid #e5e7eb; border-radius: 12px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.03); transition: all 0.2s;">
+                        <div class="card-header" id="headingFAQ4" style="background: #fafafa; padding: 16px 22px; border-bottom: none;">
+                            <h2 class="mb-0" style="font-size: 16px; font-family: 'Montserrat', sans-serif;">
+                                <button class="btn btn-link btn-block text-left font-weight-bold text-dark d-flex justify-content-between align-items-center collapsed" type="button" data-toggle="collapse" data-target="#collapseFAQ4" aria-expanded="false" aria-controls="collapseFAQ4" style="text-decoration: none; padding: 0; color: #1f2937;">
+                                    <span><i class="fa fa-map-signs text-danger mr-2"></i> Can I schedule a free site visit to the wedding lawn before making a booking?</span>
+                                    <i class="fa fa-chevron-down text-muted small ml-2"></i>
+                                </button>
+                            </h2>
+                        </div>
+                        <div id="collapseFAQ4" class="collapse " aria-labelledby="headingFAQ4" data-parent="#faqAccordion">
+                            <div class="card-body" style="padding: 20px 24px; color: #4b5563; line-height: 1.8; font-size: 15px; border-top: 1px solid #f3f4f6;">
+                                Yes! On every vendor profile page, you can click 'Send Inquiry' or request a site visit. Our team or the venue manager will arrange an accompanied property tour so you can inspect lawn dimensions, bridal dressing suites, washroom cleanliness, kitchen hygiene, and parking capacity before paying any deposit.
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Question 5 -->
+                    <div class="card mb-3 faq-item-card" data-category="pricing-and-food" style="border: 1px solid #e5e7eb; border-radius: 12px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.03); transition: all 0.2s;">
+                        <div class="card-header" id="headingFAQ5" style="background: #fafafa; padding: 16px 22px; border-bottom: none;">
+                            <h2 class="mb-0" style="font-size: 16px; font-family: 'Montserrat', sans-serif;">
+                                <button class="btn btn-link btn-block text-left font-weight-bold text-dark d-flex justify-content-between align-items-center collapsed" type="button" data-toggle="collapse" data-target="#collapseFAQ5" aria-expanded="false" aria-controls="collapseFAQ5" style="text-decoration: none; padding: 0; color: #1f2937;">
+                                    <span><i class="fa fa-cutlery text-danger mr-2"></i> How is the pricing of a wedding lawn calculated in India?</span>
+                                    <i class="fa fa-chevron-down text-muted small ml-2"></i>
+                                </button>
+                            </h2>
+                        </div>
+                        <div id="collapseFAQ5" class="collapse " aria-labelledby="headingFAQ5" data-parent="#faqAccordion">
+                            <div class="card-body" style="padding: 20px 24px; color: #4b5563; line-height: 1.8; font-size: 15px; border-top: 1px solid #f3f4f6;">
+                                Wedding venue pricing typically follows one of two models: (1) Per-Plate Catering Package: The venue rental is included in the food cost, starting from ₹1,000 to ₹3,500+ per plate for vegetarian and ₹1,400 to ₹4,500+ for non-vegetarian menus. (2) Pure Ground Rental: A flat fee (₹1,00,000 to ₹10,00,000+ per day) where you pay separately for space and hire outside caterers.
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Question 6 -->
+                    <div class="card mb-3 faq-item-card" data-category="pricing-and-food" style="border: 1px solid #e5e7eb; border-radius: 12px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.03); transition: all 0.2s;">
+                        <div class="card-header" id="headingFAQ6" style="background: #fafafa; padding: 16px 22px; border-bottom: none;">
+                            <h2 class="mb-0" style="font-size: 16px; font-family: 'Montserrat', sans-serif;">
+                                <button class="btn btn-link btn-block text-left font-weight-bold text-dark d-flex justify-content-between align-items-center collapsed" type="button" data-toggle="collapse" data-target="#collapseFAQ6" aria-expanded="false" aria-controls="collapseFAQ6" style="text-decoration: none; padding: 0; color: #1f2937;">
+                                    <span><i class="fa fa-spoon text-danger mr-2"></i> Are outside caterers allowed at wedding lawns?</span>
+                                    <i class="fa fa-chevron-down text-muted small ml-2"></i>
+                                </button>
+                            </h2>
+                        </div>
+                        <div id="collapseFAQ6" class="collapse " aria-labelledby="headingFAQ6" data-parent="#faqAccordion">
+                            <div class="card-body" style="padding: 20px 24px; color: #4b5563; line-height: 1.8; font-size: 15px; border-top: 1px solid #f3f4f6;">
+                                This varies by venue. Many standalone marriage gardens and farmhouses allow outside wedding caterers upon payment of a kitchen royalty fee. In contrast, 5-star hotels and luxury banquet halls usually mandate using their in-house culinary teams. Each venue profile on BookMyLawn specifies whether outside catering is permitted.
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Question 7 -->
+                    <div class="card mb-3 faq-item-card" data-category="pricing-and-food" style="border: 1px solid #e5e7eb; border-radius: 12px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.03); transition: all 0.2s;">
+                        <div class="card-header" id="headingFAQ7" style="background: #fafafa; padding: 16px 22px; border-bottom: none;">
+                            <h2 class="mb-0" style="font-size: 16px; font-family: 'Montserrat', sans-serif;">
+                                <button class="btn btn-link btn-block text-left font-weight-bold text-dark d-flex justify-content-between align-items-center collapsed" type="button" data-toggle="collapse" data-target="#collapseFAQ7" aria-expanded="false" aria-controls="collapseFAQ7" style="text-decoration: none; padding: 0; color: #1f2937;">
+                                    <span><i class="fa fa-glass text-danger mr-2"></i> Do wedding venues provide alcohol licenses and allow outside liquor?</span>
+                                    <i class="fa fa-chevron-down text-muted small ml-2"></i>
+                                </button>
+                            </h2>
+                        </div>
+                        <div id="collapseFAQ7" class="collapse " aria-labelledby="headingFAQ7" data-parent="#faqAccordion">
+                            <div class="card-body" style="padding: 20px 24px; color: #4b5563; line-height: 1.8; font-size: 15px; border-top: 1px solid #f3f4f6;">
+                                Venues holding a commercial bar license can serve alcohol directly. If you wish to bring your own liquor, you must obtain a temporary one-day excise permit (e.g. P-10 permit in UP/Delhi) through the venue or local excise portal. Corkage charges may apply depending on the property's house policy.
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Question 8 -->
+                    <div class="card mb-3 faq-item-card" data-category="pricing-and-food" style="border: 1px solid #e5e7eb; border-radius: 12px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.03); transition: all 0.2s;">
+                        <div class="card-header" id="headingFAQ8" style="background: #fafafa; padding: 16px 22px; border-bottom: none;">
+                            <h2 class="mb-0" style="font-size: 16px; font-family: 'Montserrat', sans-serif;">
+                                <button class="btn btn-link btn-block text-left font-weight-bold text-dark d-flex justify-content-between align-items-center collapsed" type="button" data-toggle="collapse" data-target="#collapseFAQ8" aria-expanded="false" aria-controls="collapseFAQ8" style="text-decoration: none; padding: 0; color: #1f2937;">
+                                    <span><i class="fa fa-percent text-danger mr-2"></i> Are taxes (GST) and service charges included in the quoted prices?</span>
+                                    <i class="fa fa-chevron-down text-muted small ml-2"></i>
+                                </button>
+                            </h2>
+                        </div>
+                        <div id="collapseFAQ8" class="collapse " aria-labelledby="headingFAQ8" data-parent="#faqAccordion">
+                            <div class="card-body" style="padding: 20px 24px; color: #4b5563; line-height: 1.8; font-size: 15px; border-top: 1px solid #f3f4f6;">
+                                The starting package prices displayed on BookMyLawn represent base rates. In India, luxury event hospitality incurs 18% GST on venue space rental and 5% to 18% GST on catering services. We recommend confirming whether quotes are GST-inclusive prior to signing the booking agreement.
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Question 9 -->
+                    <div class="card mb-3 faq-item-card" data-category="decor-and-rules" style="border: 1px solid #e5e7eb; border-radius: 12px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.03); transition: all 0.2s;">
+                        <div class="card-header" id="headingFAQ9" style="background: #fafafa; padding: 16px 22px; border-bottom: none;">
+                            <h2 class="mb-0" style="font-size: 16px; font-family: 'Montserrat', sans-serif;">
+                                <button class="btn btn-link btn-block text-left font-weight-bold text-dark d-flex justify-content-between align-items-center collapsed" type="button" data-toggle="collapse" data-target="#collapseFAQ9" aria-expanded="false" aria-controls="collapseFAQ9" style="text-decoration: none; padding: 0; color: #1f2937;">
+                                    <span><i class="fa fa-music text-danger mr-2"></i> What is the policy regarding DJ curfew and sound timings in wedding lawns?</span>
+                                    <i class="fa fa-chevron-down text-muted small ml-2"></i>
+                                </button>
+                            </h2>
+                        </div>
+                        <div id="collapseFAQ9" class="collapse " aria-labelledby="headingFAQ9" data-parent="#faqAccordion">
+                            <div class="card-body" style="padding: 20px 24px; color: #4b5563; line-height: 1.8; font-size: 15px; border-top: 1px solid #f3f4f6;">
+                                Under environmental noise regulations in India, outdoor sound systems and DJ music in open-air wedding lawns must shut down by 10:00 PM or 10:30 PM (or shift to low-volume ambient music). Indoor sound-insulated banquet halls are typically permitted to continue music and celebrations later into the night subject to local city permissions.
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Question 10 -->
+                    <div class="card mb-3 faq-item-card" data-category="decor-and-rules" style="border: 1px solid #e5e7eb; border-radius: 12px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.03); transition: all 0.2s;">
+                        <div class="card-header" id="headingFAQ10" style="background: #fafafa; padding: 16px 22px; border-bottom: none;">
+                            <h2 class="mb-0" style="font-size: 16px; font-family: 'Montserrat', sans-serif;">
+                                <button class="btn btn-link btn-block text-left font-weight-bold text-dark d-flex justify-content-between align-items-center collapsed" type="button" data-toggle="collapse" data-target="#collapseFAQ10" aria-expanded="false" aria-controls="collapseFAQ10" style="text-decoration: none; padding: 0; color: #1f2937;">
+                                    <span><i class="fa fa-paint-brush text-danger mr-2"></i> Can I bring my own wedding decorator or must I use the in-house decorator?</span>
+                                    <i class="fa fa-chevron-down text-muted small ml-2"></i>
+                                </button>
+                            </h2>
+                        </div>
+                        <div id="collapseFAQ10" class="collapse " aria-labelledby="headingFAQ10" data-parent="#faqAccordion">
+                            <div class="card-body" style="padding: 20px 24px; color: #4b5563; line-height: 1.8; font-size: 15px; border-top: 1px solid #f3f4f6;">
+                                Most wedding lawns partner with 2 to 4 empanelled wedding decorators specializing in floral mandaps, fairy light canopies, and stage backdrops. Some venues permit outside decorators subject to a refundable security deposit or decoration royalty fee.
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Question 11 -->
+                    <div class="card mb-3 faq-item-card" data-category="decor-and-rules" style="border: 1px solid #e5e7eb; border-radius: 12px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.03); transition: all 0.2s;">
+                        <div class="card-header" id="headingFAQ11" style="background: #fafafa; padding: 16px 22px; border-bottom: none;">
+                            <h2 class="mb-0" style="font-size: 16px; font-family: 'Montserrat', sans-serif;">
+                                <button class="btn btn-link btn-block text-left font-weight-bold text-dark d-flex justify-content-between align-items-center collapsed" type="button" data-toggle="collapse" data-target="#collapseFAQ11" aria-expanded="false" aria-controls="collapseFAQ11" style="text-decoration: none; padding: 0; color: #1f2937;">
+                                    <span><i class="fa fa-car text-danger mr-2"></i> What parking and power backup facilities do wedding lawns provide?</span>
+                                    <i class="fa fa-chevron-down text-muted small ml-2"></i>
+                                </button>
+                            </h2>
+                        </div>
+                        <div id="collapseFAQ11" class="collapse " aria-labelledby="headingFAQ11" data-parent="#faqAccordion">
+                            <div class="card-body" style="padding: 20px 24px; color: #4b5563; line-height: 1.8; font-size: 15px; border-top: 1px solid #f3f4f6;">
+                                Premier wedding lawns provide 100% DG (Diesel Generator) power backup to prevent blackouts during heavy lighting, sound systems, and AC operations. Most lawns also feature dedicated parking accommodating 100 to 500+ vehicles, often with complimentary valet service.
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Question 12 -->
+                    <div class="card mb-3 faq-item-card" data-category="decor-and-rules" style="border: 1px solid #e5e7eb; border-radius: 12px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.03); transition: all 0.2s;">
+                        <div class="card-header" id="headingFAQ12" style="background: #fafafa; padding: 16px 22px; border-bottom: none;">
+                            <h2 class="mb-0" style="font-size: 16px; font-family: 'Montserrat', sans-serif;">
+                                <button class="btn btn-link btn-block text-left font-weight-bold text-dark d-flex justify-content-between align-items-center collapsed" type="button" data-toggle="collapse" data-target="#collapseFAQ12" aria-expanded="false" aria-controls="collapseFAQ12" style="text-decoration: none; padding: 0; color: #1f2937;">
+                                    <span><i class="fa fa-female text-danger mr-2"></i> Do venues provide complimentary bridal and groom changing suites?</span>
+                                    <i class="fa fa-chevron-down text-muted small ml-2"></i>
+                                </button>
+                            </h2>
+                        </div>
+                        <div id="collapseFAQ12" class="collapse " aria-labelledby="headingFAQ12" data-parent="#faqAccordion">
+                            <div class="card-body" style="padding: 20px 24px; color: #4b5563; line-height: 1.8; font-size: 15px; border-top: 1px solid #f3f4f6;">
+                                Yes! Almost all verified wedding lawns and banquet halls listed on BookMyLawn provide 1 to 2 air-conditioned green rooms or bridal dressing suites with attached washrooms included with the venue booking.
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Question 13 -->
+                    <div class="card mb-3 faq-item-card" data-category="payments-and-policies" style="border: 1px solid #e5e7eb; border-radius: 12px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.03); transition: all 0.2s;">
+                        <div class="card-header" id="headingFAQ13" style="background: #fafafa; padding: 16px 22px; border-bottom: none;">
+                            <h2 class="mb-0" style="font-size: 16px; font-family: 'Montserrat', sans-serif;">
+                                <button class="btn btn-link btn-block text-left font-weight-bold text-dark d-flex justify-content-between align-items-center collapsed" type="button" data-toggle="collapse" data-target="#collapseFAQ13" aria-expanded="false" aria-controls="collapseFAQ13" style="text-decoration: none; padding: 0; color: #1f2937;">
+                                    <span><i class="fa fa-credit-card text-danger mr-2"></i> What is the standard payment schedule for booking a wedding lawn?</span>
+                                    <i class="fa fa-chevron-down text-muted small ml-2"></i>
+                                </button>
+                            </h2>
+                        </div>
+                        <div id="collapseFAQ13" class="collapse " aria-labelledby="headingFAQ13" data-parent="#faqAccordion">
+                            <div class="card-body" style="padding: 20px 24px; color: #4b5563; line-height: 1.8; font-size: 15px; border-top: 1px solid #f3f4f6;">
+                                The standard payment milestone schedule in India is: (1) Booking Token: 25% to 30% advance upon contract signing. (2) Second Installment: 40% to 50% paid 30 to 45 days prior to the wedding date. (3) Final Balance: Remaining 20% to 25% cleared 2 to 7 days before the event or on the wedding morning.
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Question 14 -->
+                    <div class="card mb-3 faq-item-card" data-category="payments-and-policies" style="border: 1px solid #e5e7eb; border-radius: 12px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.03); transition: all 0.2s;">
+                        <div class="card-header" id="headingFAQ14" style="background: #fafafa; padding: 16px 22px; border-bottom: none;">
+                            <h2 class="mb-0" style="font-size: 16px; font-family: 'Montserrat', sans-serif;">
+                                <button class="btn btn-link btn-block text-left font-weight-bold text-dark d-flex justify-content-between align-items-center collapsed" type="button" data-toggle="collapse" data-target="#collapseFAQ14" aria-expanded="false" aria-controls="collapseFAQ14" style="text-decoration: none; padding: 0; color: #1f2937;">
+                                    <span><i class="fa fa-calendar-times-o text-danger mr-2"></i> What happens if I need to postpone or cancel my wedding date?</span>
+                                    <i class="fa fa-chevron-down text-muted small ml-2"></i>
+                                </button>
+                            </h2>
+                        </div>
+                        <div id="collapseFAQ14" class="collapse " aria-labelledby="headingFAQ14" data-parent="#faqAccordion">
+                            <div class="card-body" style="padding: 20px 24px; color: #4b5563; line-height: 1.8; font-size: 15px; border-top: 1px solid #f3f4f6;">
+                                If you notify the venue 60 to 90 days in advance, most venue owners allow date rescheduling within the same calendar year without forfeiting your advance payment (subject to date availability). In case of total cancellation, advance tokens are usually non-refundable unless stated otherwise in the agreement.
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Question 15 -->
+                    <div class="card mb-3 faq-item-card" data-category="payments-and-policies" style="border: 1px solid #e5e7eb; border-radius: 12px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.03); transition: all 0.2s;">
+                        <div class="card-header" id="headingFAQ15" style="background: #fafafa; padding: 16px 22px; border-bottom: none;">
+                            <h2 class="mb-0" style="font-size: 16px; font-family: 'Montserrat', sans-serif;">
+                                <button class="btn btn-link btn-block text-left font-weight-bold text-dark d-flex justify-content-between align-items-center collapsed" type="button" data-toggle="collapse" data-target="#collapseFAQ15" aria-expanded="false" aria-controls="collapseFAQ15" style="text-decoration: none; padding: 0; color: #1f2937;">
+                                    <span><i class="fa fa-shield text-danger mr-2"></i> Is my booking on BookMyLawn secure and transparent?</span>
+                                    <i class="fa fa-chevron-down text-muted small ml-2"></i>
+                                </button>
+                            </h2>
+                        </div>
+                        <div id="collapseFAQ15" class="collapse " aria-labelledby="headingFAQ15" data-parent="#faqAccordion">
+                            <div class="card-body" style="padding: 20px 24px; color: #4b5563; line-height: 1.8; font-size: 15px; border-top: 1px solid #f3f4f6;">
+                                Yes. BookMyLawn lists only verified properties with verified managers. We provide transparent package rates, verified couple reviews, and direct connection channels to venue managers to guarantee no hidden charges.
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Question 16 -->
+                    <div class="card mb-3 faq-item-card" data-category="for-vendors" style="border: 1px solid #e5e7eb; border-radius: 12px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.03); transition: all 0.2s;">
+                        <div class="card-header" id="headingFAQ16" style="background: #fafafa; padding: 16px 22px; border-bottom: none;">
+                            <h2 class="mb-0" style="font-size: 16px; font-family: 'Montserrat', sans-serif;">
+                                <button class="btn btn-link btn-block text-left font-weight-bold text-dark d-flex justify-content-between align-items-center collapsed" type="button" data-toggle="collapse" data-target="#collapseFAQ16" aria-expanded="false" aria-controls="collapseFAQ16" style="text-decoration: none; padding: 0; color: #1f2937;">
+                                    <span><i class="fa fa-briefcase text-danger mr-2"></i> How can venue owners and wedding vendors list their business on BookMyLawn?</span>
+                                    <i class="fa fa-chevron-down text-muted small ml-2"></i>
+                                </button>
+                            </h2>
+                        </div>
+                        <div id="collapseFAQ16" class="collapse " aria-labelledby="headingFAQ16" data-parent="#faqAccordion">
+                            <div class="card-body" style="padding: 20px 24px; color: #4b5563; line-height: 1.8; font-size: 15px; border-top: 1px solid #f3f4f6;">
+                                Venue owners, banquet managers, caterers, photographers, and makeup artists can click 'Register as a Vendor' in our header. Submit your business profile, starting rates, amenities, and photo gallery. Our verification team reviews and publishes your profile within 24 hours.
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Question 17 -->
+                    <div class="card mb-3 faq-item-card" data-category="for-vendors" style="border: 1px solid #e5e7eb; border-radius: 12px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.03); transition: all 0.2s;">
+                        <div class="card-header" id="headingFAQ17" style="background: #fafafa; padding: 16px 22px; border-bottom: none;">
+                            <h2 class="mb-0" style="font-size: 16px; font-family: 'Montserrat', sans-serif;">
+                                <button class="btn btn-link btn-block text-left font-weight-bold text-dark d-flex justify-content-between align-items-center collapsed" type="button" data-toggle="collapse" data-target="#collapseFAQ17" aria-expanded="false" aria-controls="collapseFAQ17" style="text-decoration: none; padding: 0; color: #1f2937;">
+                                    <span><i class="fa fa-money text-danger mr-2"></i> Does BookMyLawn charge commission on venue bookings?</span>
+                                    <i class="fa fa-chevron-down text-muted small ml-2"></i>
+                                </button>
+                            </h2>
+                        </div>
+                        <div id="collapseFAQ17" class="collapse " aria-labelledby="headingFAQ17" data-parent="#faqAccordion">
+                            <div class="card-body" style="padding: 20px 24px; color: #4b5563; line-height: 1.8; font-size: 15px; border-top: 1px solid #f3f4f6;">
+                                BookMyLawn operates on a transparent direct-inquiry model. Couples connect directly with your team with zero commission deductions, allowing you to negotiate packages and contracts directly.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Still Have Questions CTA -->
+                <div class="text-center mt-5 p-4" style="background: #fdf2f7; border-radius: 14px; border: 1.5px dashed #f472b6;">
+                    <div style="width: 50px; height: 50px; background: #fff; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; margin-bottom: 12px; box-shadow: 0 4px 10px rgba(231,46,119,0.15);">
+                        <i class="fa fa-comments text-danger fa-lg"></i>
+                    </div>
+                    <h4 style="font-weight: 800; color: #111; margin-bottom: 8px;">Still Have Questions About Booking a Wedding Lawn?</h4>
+                    <p style="color: #6b7280; font-size: 14.5px; max-width: 580px; margin: 0 auto 20px;">Our dedicated wedding concierge specialists can help you check lawn availability, negotiate per-plate packages, and arrange site visits.</p>
+                    <div class="d-flex justify-content-center gap-3 flex-wrap">
+                        <a href="{% url 'contact' %}" class="btn btn-theme" style="padding: 10px 28px; font-weight: 700; border-radius: 25px; font-size: 14px;">
+                            <i class="fa fa-envelope-o mr-1"></i> Contact Our Wedding Specialists
+                        </a>
+                        <a href="tel:+919876543210" class="btn btn-outline-dark" style="padding: 10px 24px; font-weight: 700; border-radius: 25px; font-size: 14px;">
+                            <i class="fa fa-phone mr-1"></i> Call +91 98765 43210
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+$(document).ready(function() {
+    $('.filter-faq-btn').click(function() {
+        $('.filter-faq-btn').css({'background': '#fff', 'color': '#4b5563', 'border': '1px solid #e5e7eb'});
+        $(this).css({'background': '#e72e77', 'color': '#fff', 'border': 'none'});
+        var filter = $(this).data('filter');
+        if (filter === 'all') {
+            $('.faq-item-card').fadeIn(200);
+        } else {
+            $('.faq-item-card').hide();
+            $('.faq-item-card[data-category="' + filter + '"]').fadeIn(200);
+        }
+    });
+});
+</script>
+{% endblock %}

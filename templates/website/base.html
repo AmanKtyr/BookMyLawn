@@ -1,20 +1,45 @@
 {% load static %}
 <!DOCTYPE html>
-<html lang="zxx">
+<html lang="en">
 
 <head>
     <meta charset="UTF-8">
-    <meta name="description"
-        content="{% block meta_description %}BookMyLawn - Your ultimate wedding planning companion. Find the best venues, photographers, and decorators.{% endblock %}">
-    <meta name="keywords" content="wedding, venues, photographers, decorators, BookMyLawn">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>{% block title %}BookMyLawn | Wedding Venues & Vendors{% endblock %}</title>
+
+    <!-- SEO Meta Tags -->
+    <title>{% block title %}BookMyLawn | Wedding Lawns, Banquet Halls & Wedding Vendors{% endblock %}</title>
+    <meta name="description"
+        content="{% block meta_description %}BookMyLawn - Your ultimate wedding planning companion. Find the best wedding lawns, banquet halls, photographers, and decorators with verified prices & reviews.{% endblock %}">
+    <meta name="keywords"
+        content="{% block meta_keywords %}wedding lawns, banquet halls, marriage lawns, party plots, farmhouses for wedding, wedding venues, destination wedding venues, wedding photographers, bridal makeup artists, wedding decorators, catering services, marriage garden, book wedding lawn online, BookMyLawn{% endblock %}">
+    <meta name="robots" content="{% block meta_robots %}index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1{% endblock %}">
+    <link rel="canonical" href="{% block canonical %}{{ request.build_absolute_uri }}{% endblock %}">
+
+    <!-- Geo Meta Tags for Indian Local SEO -->
+    <meta name="geo.region" content="IN">
+    <meta name="geo.placename" content="India">
+
+    <!-- Open Graph (Facebook, WhatsApp, LinkedIn) -->
+    <meta property="og:type" content="{% block og_type %}website{% endblock %}">
+    <meta property="og:site_name" content="BookMyLawn">
+    <meta property="og:url" content="{{ request.build_absolute_uri }}">
+    <meta property="og:title" content="{% block og_title %}BookMyLawn | Wedding Venues, Lawns & Banquet Halls{% endblock %}">
+    <meta property="og:description" content="{% block og_description %}Discover and book the finest wedding lawns, banquet halls, photographers & decorators across India with verified reviews at BookMyLawn.{% endblock %}">
+    <meta property="og:image" content="{% block og_image %}{{ request.scheme }}://{{ request.get_host }}{% static 'website/img/banner/banner-1.jpg' %}{% endblock %}">
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="{% block twitter_title %}BookMyLawn | Wedding Venues, Lawns & Banquet Halls{% endblock %}">
+    <meta name="twitter:description" content="{% block twitter_description %}Discover and book the finest wedding lawns, banquet halls, photographers & decorators across India with verified reviews at BookMyLawn.{% endblock %}">
+    <meta name="twitter:image" content="{% block twitter_image %}{{ request.scheme }}://{{ request.get_host }}{% static 'website/img/banner/banner-1.jpg' %}{% endblock %}">
 
     <!-- Google Font -->
     <link
         href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Montserrat:wght@300;400;500;600;700&display=swap"
         rel="stylesheet">
+
+    <!-- User's Original CSS Styles -->
     <style>
         body {
             font-family: 'Montserrat', sans-serif;
@@ -211,6 +236,51 @@
     <link rel="stylesheet" href="{% static 'website/css/owl.carousel.min.css' %}" type="text/css">
     <link rel="stylesheet" href="{% static 'website/css/slicknav.min.css' %}" type="text/css">
     <link rel="stylesheet" href="{% static 'website/css/style.css' %}?v=2" type="text/css">
+
+    <!-- Schema.org JSON-LD Structured Data for Google Indexing -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "Organization",
+          "@id": "{{ request.scheme }}://{{ request.get_host }}/#organization",
+          "name": "BookMyLawn",
+          "url": "{{ request.scheme }}://{{ request.get_host }}/",
+          "logo": {
+            "@type": "ImageObject",
+            "url": "{{ request.scheme }}://{{ request.get_host }}{% static 'website/img/logo/logo.png' %}",
+            "caption": "BookMyLawn - Wedding Venues & Lawns Booking"
+          },
+          "description": "India's trusted marketplace for booking wedding lawns, luxury banquet halls, photographers, decorators, and wedding vendors.",
+          "contactPoint": {
+            "@type": "ContactPoint",
+            "telephone": "+91-98765-43210",
+            "contactType": "Customer Support",
+            "areaServed": "IN"
+          }
+        },
+        {
+          "@type": "WebSite",
+          "@id": "{{ request.scheme }}://{{ request.get_host }}/#website",
+          "url": "{{ request.scheme }}://{{ request.get_host }}/",
+          "name": "BookMyLawn",
+          "publisher": {
+            "@id": "{{ request.scheme }}://{{ request.get_host }}/#organization"
+          },
+          "potentialAction": {
+            "@type": "SearchAction",
+            "target": {
+              "@type": "EntryPoint",
+              "urlTemplate": "{{ request.scheme }}://{{ request.get_host }}/vendors/?q={search_term_string}"
+            },
+            "query-input": "required name=search_term_string"
+          }
+        }
+      ]
+    }
+    </script>
+    {% block structured_data %}{% endblock %}
 </head>
 
 <body>
@@ -228,13 +298,12 @@
             <a href="/" style="display: flex; align-items: center; gap: 10px;">
                 <img src="{% static 'website/img/logo/logo.png' %}" alt="BookMyLawn Logo"
                     style="height: 45px; border-radius: 8px;">
-                <!-- <h2 style="color: #e72e77; font-weight: bold; margin: 0;">BookMyLawn</h2> -->
             </a>
         </div>
         <div id="mobile-menu-wrap"></div>
         <div class="offcanvas__auth">
-            <a href="/admin/">Vendor Login</a>
-            <a href="/admin/">User Login</a>
+            <a href="{% url 'vendor_register' %}">Vendor Register</a>
+            <a href="{% url 'login' %}">Login</a>
         </div>
     </div>
     <!-- Offcanvas Menu End -->
@@ -248,7 +317,6 @@
                         <a href="/" style="display: flex; align-items: center; gap: 10px;">
                             <img src="{% static 'website/img/logo/logo.png' %}" alt="BookMyLawn Logo"
                                 style="height: 45px; border-radius: 8px; margin-top: 5px;">
-                            <!-- <h2 style="color: #e72e77; font-weight: bold; margin: 0; padding-top: 5px;">BookMyLawn</h2> -->
                         </a>
                     </div>
                 </div>
@@ -267,6 +335,8 @@
                                     href="{% url 'blog' %}">Blog</a></li>
                             <li class="{% if request.resolver_match.url_name == 'real_weddings' %}active{% endif %}"><a
                                     href="{% url 'real_weddings' %}">Real Weddings</a></li>
+                            <li class="{% if request.resolver_match.url_name == 'wedding_tools' %}active{% endif %}"><a
+                                    href="{% url 'wedding_tools' %}">Planning Tools</a></li>
                             <li class="{% if request.resolver_match.url_name == 'contact' %}active{% endif %}"><a
                                     href="{% url 'contact' %}">Contact</a></li>
                         </ul>
@@ -316,7 +386,6 @@
                             <a href="/" style="display: flex; align-items: center; gap: 10px;">
                                 <img src="{% static 'website/img/logo/logo.png' %}" alt="BookMyLawn Logo"
                                     style="height: 45px; border-radius: 8px;">
-                                <!-- <h2 style="color: white; font-weight: bold; margin: 0;">BookMyLawn</h2> -->
                             </a>
                         </div>
                         <p style="color: #b7b7b7;">Your ultimate wedding planning companion. Find the best venues,
@@ -329,8 +398,12 @@
                         <ul style="list-style: none; padding: 0;">
                             <li><a href="{% url 'about_us' %}" style="color: #b7b7b7;">About Us</a></li>
                             <li><a href="{% url 'real_weddings' %}" style="color: #b7b7b7;">Wedding Stories</a></li>
+                            <li><a href="{% url 'wedding_tools' %}" style="color: #b7b7b7;">Planning Tools</a></li>
                             <li><a href="{% url 'contact' %}" style="color: #b7b7b7;">Contact</a></li>
-                            <li><a href="#" style="color: #b7b7b7;">FAQ</a></li>
+                            <li><a href="{% url 'faq' %}" style="color: #b7b7b7;">FAQ</a></li>
+                            <li><a href="{% url 'privacy_policy' %}" style="color: #b7b7b7;">Privacy Policy</a></li>
+                            <li><a href="{% url 'terms_of_service' %}" style="color: #b7b7b7;">Terms</a></li>
+                            <li><a href="{% url 'sitemap_xml' %}" target="_blank" style="color: #b7b7b7;">XML Sitemap</a></li>
                         </ul>
                     </div>
                 </div>
@@ -366,7 +439,6 @@
             </div>
             <div class="row">
                 <div class="col-lg-12">
-                    <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
                     <div class="footer__copyright__text">
                         <div
                             style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap;">
@@ -383,7 +455,6 @@
                             </div>
                         </div>
                     </div>
-                    <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
                 </div>
             </div>
         </div>
@@ -394,8 +465,8 @@
     <div class="search-model">
         <div class="h-100 d-flex align-items-center justify-content-center">
             <div class="search-close-switch">+</div>
-            <form class="search-model-form">
-                <input type="text" id="search-input" placeholder="Search here.....">
+            <form class="search-model-form" action="{% url 'vendors' %}" method="GET">
+                <input type="text" id="search-input" name="q" placeholder="Search here.....">
             </form>
         </div>
     </div>

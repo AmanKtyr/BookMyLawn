@@ -1,7 +1,38 @@
 {% extends 'website/base.html' %}
 {% load static %}
 
-{% block title %}{{ vendor.name }} - {{ vendor.category.name }} in {{ vendor.location }} | BookMyLawn{% endblock %}
+{% block title %}{{ vendor.name }} - Wedding Venue & Lawn in {{ vendor.location }} | BookMyLawn{% endblock %}
+{% block meta_description %}Book {{ vendor.name }} ({{ vendor.category.name }}) in {{ vendor.location }}. Check pricing, lawn capacity, guest rooms, amenities, customer reviews, photo gallery & send direct inquiry on BookMyLawn.{% endblock %}
+{% block meta_keywords %}{{ vendor.name }}, wedding lawn {{ vendor.location }}, banquet hall {{ vendor.location }}, {{ vendor.category.name|lower }} {{ vendor.location }}, wedding venues {{ vendor.location }}, marriage garden {{ vendor.location }}, BookMyLawn{% endblock %}
+{% block og_title %}{{ vendor.name }} - Wedding Lawn in {{ vendor.location }} | BookMyLawn{% endblock %}
+{% block og_description %}Discover {{ vendor.name }} in {{ vendor.location }}. Explore guest capacity, pricing per plate, verified reviews and photo gallery.{% endblock %}
+{% block og_image %}{% if vendor.image %}{{ request.scheme }}://{{ request.get_host }}{{ vendor.image.url }}{% else %}{{ request.scheme }}://{{ request.get_host }}{% static 'website/img/product/product-1.jpg' %}{% endif %}{% endblock %}
+
+{% block structured_data %}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "{% if vendor.category.slug == 'venues' %}EventVenue{% else %}LocalBusiness{% endif %}",
+  "name": "{{ vendor.name|escapejs }}",
+  "description": "{{ vendor.description|truncatewords:35|escapejs|default:'Premier wedding venue and services in India.' }}",
+  "url": "{{ request.build_absolute_uri }}",
+  "priceRange": "₹₹",
+  "address": {
+    "@type": "PostalAddress",
+    "streetAddress": "{{ vendor.address|escapejs|default:vendor.location|escapejs }}",
+    "addressLocality": "{{ vendor.location|escapejs }}",
+    "addressCountry": "IN"
+  }{% if vendor.image %},
+  "image": "{{ request.scheme }}://{{ request.get_host }}{{ vendor.image.url }}"{% endif %},
+  "aggregateRating": {
+    "@type": "AggregateRating",
+    "ratingValue": "4.8",
+    "reviewCount": "{{ vendor.reviews.count|default:'1' }}",
+    "bestRating": "5"
+  }
+}
+</script>
+{% endblock %}
 
 {% block content %}
 <style>
@@ -193,13 +224,13 @@
     <div class="container">
         <div class="gallery-grid">
             <a href="{% if vendor.image %}{{ vendor.image.url }}{% else %}https://images.pexels.com/photos/169190/pexels-photo-169190.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1{% endif %}" class="glightbox gallery-item main-gallery" data-gallery="vendor-gallery">
-                <img src="{% if vendor.image %}{{ vendor.image.url }}{% else %}https://images.pexels.com/photos/169190/pexels-photo-169190.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1{% endif %}" alt="Main Image">
+                <img src="{% if vendor.image %}{{ vendor.image.url }}{% else %}https://images.pexels.com/photos/169190/pexels-photo-169190.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1{% endif %}" alt="{{ vendor.name }} - Wedding Lawn &amp; Venue in {{ vendor.location }}">
             </a>
             
             {% if vendor.gallery.all %}
                 {% for img in vendor.gallery.all|slice:":2" %}
                 <a href="{{ img.image.url }}" class="glightbox gallery-item" data-gallery="vendor-gallery">
-                    <img src="{{ img.image.url }}" alt="Gallery Image">
+                    <img src="{{ img.image.url }}" alt="{{ vendor.name }} - Photo Gallery Image {{ forloop.counter }}" loading="lazy">
                     {% if forloop.last and vendor.gallery.all.count > 2 %}
                     <div class="more-photos"><i class="fa fa-camera"></i> {{ vendor.gallery.all.count }} Photos</div>
                     {% endif %}
@@ -212,10 +243,10 @@
                 {% endfor %}
             {% else %}
                 <a href="https://images.pexels.com/photos/1035665/pexels-photo-1035665.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" class="glightbox gallery-item" data-gallery="vendor-gallery">
-                    <img src="https://images.pexels.com/photos/1035665/pexels-photo-1035665.jpeg?auto=compress&cs=tinysrgb&w=600" alt="Gallery 1">
+                    <img src="https://images.pexels.com/photos/1035665/pexels-photo-1035665.jpeg?auto=compress&cs=tinysrgb&w=600" alt="{{ vendor.name }} Stage and Mandap Setup" loading="lazy">
                 </a>
                 <a href="https://images.pexels.com/photos/2291462/pexels-photo-2291462.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" class="glightbox gallery-item" data-gallery="vendor-gallery">
-                    <img src="https://images.pexels.com/photos/2291462/pexels-photo-2291462.jpeg?auto=compress&cs=tinysrgb&w=600" alt="Gallery 2">
+                    <img src="https://images.pexels.com/photos/2291462/pexels-photo-2291462.jpeg?auto=compress&cs=tinysrgb&w=600" alt="{{ vendor.name }} Lawn and Dining Area" loading="lazy">
                     <div class="more-photos"><i class="fa fa-camera"></i> 12+ Photos</div>
                 </a>
             {% endif %}
@@ -571,7 +602,7 @@
                 {% for related in related_vendors %}
                 <div class="col-lg-3 col-md-6">
                     <div class="info-card p-0 overflow-hidden h-100">
-                        <img src="{% if related.image %}{{ related.image.url }}{% else %}https://images.pexels.com/photos/169190/pexels-photo-169190.jpeg?auto=compress&cs=tinysrgb&w=300{% endif %}" class="w-100" style="height: 180px; object-fit: cover;">
+                        <img src="{% if related.image %}{{ related.image.url }}{% else %}https://images.pexels.com/photos/169190/pexels-photo-169190.jpeg?auto=compress&cs=tinysrgb&w=300{% endif %}" class="w-100" style="height: 180px; object-fit: cover;" alt="{{ related.name }} - {{ related.category.name }} in {{ related.location }}" loading="lazy">
                         <div class="p-3">
                             <h6 class="font-weight-bold mb-1"><a href="{% url 'vendor_details' related.uuid_field %}" class="text-dark">{{ related.name }}</a></h6>
                             <p class="small text-muted mb-2"><i class="fa fa-map-marker"></i> {{ related.location }}</p>

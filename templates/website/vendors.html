@@ -1,7 +1,44 @@
 {% extends 'website/base.html' %}
 {% load static %}
 
-{% block title %}Search Wedding Vendors | BookMyLawn{% endblock %}
+{% block title %}{{ page_title|default:"Wedding Lawns, Banquet Halls & Wedding Vendors | BookMyLawn" }}{% endblock %}
+{% block meta_description %}{{ meta_description|default:"Find and book verified wedding lawns, banquet halls, photographers, and decorators across India. Compare packages, read couple reviews & request free quotes at BookMyLawn." }}{% endblock %}
+{% block meta_keywords %}wedding lawns, banquet halls, marriage lawns in {{ selected_city|default:"India" }}, marriage gardens, wedding venues, wedding photographers {{ selected_city|default:"" }}, wedding decorators, BookMyLawn{% endblock %}
+
+{% block structured_data %}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Home",
+      "item": "{{ request.scheme }}://{{ request.get_host }}/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "{% if view_type == 'venues' %}Wedding Venues & Lawns{% else %}Wedding Vendors{% endif %}",
+      "item": "{{ request.scheme }}://{{ request.get_host }}{% url 'vendors' %}{% if view_type %}?type={{ view_type }}{% endif %}"
+    }{% if selected_city %},
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "{{ selected_city }}",
+      "item": "{{ request.build_absolute_uri }}"
+    }{% elif selected_category %},
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "{{ selected_category.name }}",
+      "item": "{{ request.build_absolute_uri }}"
+    }{% endif %}
+  ]
+}
+</script>
+{% endblock %}
 
 {% block content %}
 <style>
@@ -379,7 +416,7 @@
                                 </button>
                                 
                                 <a href="{% url 'vendor_details' vendor.uuid_field %}">
-                                    <img src="{% if vendor.image %}{{ vendor.image.url }}{% else %}https://images.pexels.com/photos/169190/pexels-photo-169190.jpeg?auto=compress&cs=tinysrgb&w=600{% endif %}" alt="{{ vendor.name }}">
+                                    <img src="{% if vendor.image %}{{ vendor.image.url }}{% else %}https://images.pexels.com/photos/169190/pexels-photo-169190.jpeg?auto=compress&cs=tinysrgb&w=600{% endif %}" alt="{{ vendor.name }} - {{ vendor.category.name }} in {{ vendor.location }}" loading="lazy">
                                 </a>
                             </div>
                             <div class="vendor-card-body">

@@ -1,6 +1,35 @@
 {% extends 'website/base.html' %}
 {% load static %}
 
+{% block title %}Contact BookMyLawn | Wedding Venue Booking & Vendor Support{% endblock %}
+{% block meta_description %}Get in touch with BookMyLawn support team. Inquire about wedding lawn bookings, banquet halls, free site visits, or vendor partnerships in India.{% endblock %}
+{% block meta_keywords %}contact bookmylawn, wedding lawn customer care, wedding venue helpline, banquet hall booking support, list wedding business{% endblock %}
+
+{% block structured_data %}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "ContactPage",
+  "name": "Contact BookMyLawn",
+  "description": "Customer support and wedding lawn booking assistance.",
+  "mainEntity": {
+    "@type": "Organization",
+    "name": "BookMyLawn",
+    "telephone": "+91-98765-43210",
+    "email": "support@bookmylawn.com",
+    "address": {
+      "@type": "PostalAddress",
+      "streetAddress": "BookMyLawn Tower, Gomti Nagar",
+      "addressLocality": "Lucknow",
+      "addressRegion": "Uttar Pradesh",
+      "postalCode": "226010",
+      "addressCountry": "IN"
+    }
+  }
+}
+</script>
+{% endblock %}
+
 {% block content %}
 
     <!-- Contact Hero Begin -->
@@ -49,19 +78,20 @@
                 <div class="col-lg-7">
                     <div class="premium-form">
                         <h3>Send Us a Message</h3>
-                        <form action="#">
+                        <form action="{% url 'contact' %}" method="POST">
+                            {% csrf_token %}
                             <div class="row">
                                 <div class="col-md-6 form-group">
-                                    <input type="text" placeholder="Your Name">
+                                    <input type="text" name="name" placeholder="Your Name" required>
                                 </div>
                                 <div class="col-md-6 form-group">
-                                    <input type="email" placeholder="Your Email">
+                                    <input type="email" name="email" placeholder="Your Email" required>
                                 </div>
                                 <div class="col-md-12 form-group">
-                                    <input type="text" placeholder="Subject / Occasion">
+                                    <input type="text" name="subject" placeholder="Subject / Occasion">
                                 </div>
                                 <div class="col-md-12 form-group">
-                                    <textarea placeholder="Tell us about your wedding plans..."></textarea>
+                                    <textarea name="message" placeholder="Tell us about your wedding plans..." required></textarea>
                                 </div>
                                 <div class="col-md-12">
                                     <button type="submit" class="btn-submit">Send Message</button>
