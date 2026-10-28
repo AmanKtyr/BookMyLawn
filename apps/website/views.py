@@ -493,6 +493,8 @@ def privacy_policy(request):
 def terms_of_service(request):
     return render(request, 'website/terms-of-service.html')
 
+from xml.sax.saxutils import escape
+
 def sitemap_xml(request):
     base_url = request.build_absolute_uri('/').rstrip('/')
     pages = [
@@ -551,7 +553,8 @@ def sitemap_xml(request):
     ]
     for p in pages:
         xml_lines.append('  <url>')
-        xml_lines.append(f"    <loc>{p['loc']}</loc>")
+        loc_escaped = escape(str(p['loc']))
+        xml_lines.append(f"    <loc>{loc_escaped}</loc>")
         if p.get('lastmod'):
             xml_lines.append(f"    <lastmod>{p['lastmod']}</lastmod>")
         xml_lines.append(f"    <changefreq>{p['changefreq']}</changefreq>")
