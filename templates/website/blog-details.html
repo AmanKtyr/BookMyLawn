@@ -67,124 +67,109 @@
 {% endblock %}
 
 {% block content %}
-<!-- Breadcrumb Begin -->
-<div class="breadcrumb-option bg-light py-2 border-bottom">
-    <div class="container">
-        <nav aria-label="breadcrumb">
-            <div class="small text-muted" style="font-size: 13px;">
-                <a href="{% url 'index' %}" class="text-muted"><i class="fa fa-home"></i> Home</a>
-                <i class="fa fa-angle-right mx-2"></i> 
-                <a href="{% url 'blog' %}" class="text-muted">Blog</a>
-                <i class="fa fa-angle-right mx-2"></i> 
-                <span class="text-truncate d-inline-block align-bottom text-dark font-weight-bold" style="max-width: 400px;">{{ post.title }}</span>
-            </div>
-        </nav>
-    </div>
-</div>
-<!-- Breadcrumb End -->
 
-<!-- Blog Details Section Begin -->
-<section class="blog-details spad" style="padding: 60px 0; background: #fff;">
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-8 col-md-8">
-                <article class="blog__details__content">
-                    <header class="mb-4">
-                        <span style="color: #e72e77; font-weight: 700; font-size: 13px; text-transform: uppercase; letter-spacing: 1.5px; display: block; margin-bottom: 8px;">Wedding Planning Advice</span>
-                        <h1 style="font-weight: 800; font-size: 34px; line-height: 1.3; color: #111; margin-bottom: 14px;">
-                            {{ post.title }}
-                        </h1>
-                        <div class="d-flex align-items-center text-muted" style="font-size: 13.5px; gap: 15px; border-bottom: 1px solid #f1f5f9; padding-bottom: 16px;">
-                            <span><i class="fa fa-user text-danger mr-1"></i> By <strong>{{ post.author }}</strong></span>
-                            <span><i class="fa fa-calendar text-danger mr-1"></i> {{ post.created_at|date:"F d, Y" }}</span>
-                            <span><i class="fa fa-clock-o text-danger mr-1"></i> 5 min read</span>
-                        </div>
-                    </header>
-
-                    {% if post.image %}
-                    <div class="mb-4" style="border-radius: 12px; overflow: hidden; box-shadow: 0 4px 20px rgba(0,0,0,0.06);">
-                        <img src="{{ post.image.url }}" alt="{{ post.title }}" style="width: 100%; max-height: 450px; object-fit: cover;">
+    <!-- Breadcrumb Begin -->
+    <div class="breadcrumb-option">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="breadcrumb__links">
+                        <a href="{% url 'index' %}"><i class="fa fa-home"></i> Home</a>
+                        <a href="{% url 'blog' %}">Blog</a>
+                        <span>{{ post.title }}</span>
                     </div>
-                    {% endif %}
-
-                    <div class="blog-body" style="color: #374151; font-size: 16px; line-height: 1.85;">
-                        {{ post.content|linebreaks }}
-                    </div>
-
-                    <!-- Callout Box -->
-                    <div class="my-5 p-4" style="background: #fdf2f7; border-left: 4px solid #e72e77; border-radius: 8px;">
-                        <h5 style="font-weight: 700; color: #111; margin-bottom: 8px;">Planning Your Wedding Celebration?</h5>
-                        <p style="color: #4b5563; font-size: 14.5px; margin-bottom: 15px;">Discover hundreds of verified wedding lawns, marriage halls, and photographers with transparent pricing at BookMyLawn.</p>
-                        <a href="{% url 'vendors' %}?type=venues" class="btn-vendor-list" style="font-size: 13px;">Explore Wedding Lawns <i class="fa fa-arrow-right"></i></a>
-                    </div>
-
-                    <!-- Author Box -->
-                    <div class="d-flex align-items-center p-4 mt-5" style="background: #fafafa; border-radius: 12px; border: 1px solid #f1f5f9;">
-                        <div style="width: 60px; height: 60px; border-radius: 50%; background: #e72e77; color: white; display: flex; align-items: center; justify-content: center; font-size: 24px; font-weight: 700; flex-shrink: 0; margin-right: 20px;">
-                            <i class="fa fa-user"></i>
-                        </div>
-                        <div>
-                            <h6 style="font-weight: 700; margin-bottom: 4px; font-size: 16px;">{{ post.author }}</h6>
-                            <p style="color: #6b7280; font-size: 13.5px; margin: 0;">Wedding Specialist &amp; Venue Consultant at BookMyLawn, helping couples across India plan seamless celebrations.</p>
-                        </div>
-                    </div>
-                </article>
-            </div>
-
-            <!-- Sidebar -->
-            <div class="col-lg-4 col-md-4 mt-5 mt-md-0">
-                <aside class="sidebar-wrapper">
-                    <!-- Search Widget -->
-                    <div class="p-4 mb-4" style="background: #fafafa; border-radius: 12px; border: 1px solid #f1f5f9;">
-                        <h5 style="font-weight: 700; font-size: 17px; margin-bottom: 15px;">Find Wedding Lawns</h5>
-                        <form action="{% url 'vendors' %}" method="GET">
-                            <input type="hidden" name="type" value="venues">
-                            <input type="text" name="city" placeholder="Enter City (e.g. Lucknow)" class="form-control mb-2" style="font-size: 13.5px;">
-                            <button type="submit" class="btn btn-danger btn-block font-weight-bold" style="background: #e72e77; border-color: #e72e77; border-radius: 6px;">
-                                Search Venues
-                            </button>
-                        </form>
-                    </div>
-
-                    <!-- Recent Articles Widget -->
-                    {% if recent_posts %}
-                    <div class="p-4 mb-4" style="background: #fafafa; border-radius: 12px; border: 1px solid #f1f5f9;">
-                        <h5 style="font-weight: 700; font-size: 17px; margin-bottom: 18px; border-bottom: 2px solid #e72e77; padding-bottom: 8px; display: inline-block;">Recent Guides</h5>
-                        {% for rpost in recent_posts %}
-                        <div class="d-flex mb-3 align-items-center">
-                            {% if rpost.image %}
-                            <img src="{{ rpost.image.url }}" alt="{{ rpost.title }}" style="width: 65px; height: 65px; object-fit: cover; border-radius: 8px; margin-right: 12px; flex-shrink: 0;">
-                            {% endif %}
-                            <div>
-                                <h6 style="font-size: 13.5px; font-weight: 600; line-height: 1.4; margin-bottom: 4px;">
-                                    <a href="{% url 'blog_details' rpost.slug %}" style="color: #111; text-decoration: none;">
-                                        {{ rpost.title|truncatewords:8 }}
-                                    </a>
-                                </h6>
-                                <span style="font-size: 11.5px; color: #9ca3af;">{{ rpost.created_at|date:"M d, Y" }}</span>
-                            </div>
-                        </div>
-                        {% endfor %}
-                    </div>
-                    {% endif %}
-
-                    <!-- Popular Cities Widget -->
-                    <div class="p-4" style="background: #fafafa; border-radius: 12px; border: 1px solid #f1f5f9;">
-                        <h5 style="font-weight: 700; font-size: 17px; margin-bottom: 15px;">Popular Wedding Cities</h5>
-                        <div class="d-flex flex-wrap gap-2">
-                            <a href="{% url 'vendors' %}?type=venues&city=Lucknow" class="badge badge-light border p-2 mr-1 mb-1">Lucknow</a>
-                            <a href="{% url 'vendors' %}?type=venues&city=Delhi" class="badge badge-light border p-2 mr-1 mb-1">Delhi NCR</a>
-                            <a href="{% url 'vendors' %}?type=venues&city=Mumbai" class="badge badge-light border p-2 mr-1 mb-1">Mumbai</a>
-                            <a href="{% url 'vendors' %}?type=venues&city=Jaipur" class="badge badge-light border p-2 mr-1 mb-1">Jaipur</a>
-                            <a href="{% url 'vendors' %}?type=venues&city=Udaipur" class="badge badge-light border p-2 mr-1 mb-1">Udaipur</a>
-                            <a href="{% url 'vendors' %}?type=venues&city=Bangalore" class="badge badge-light border p-2 mr-1 mb-1">Bangalore</a>
-                        </div>
-                    </div>
-                </aside>
+                </div>
             </div>
         </div>
     </div>
-</section>
-<!-- Blog Details Section End -->
+    <!-- Breadcrumb End -->
+
+    <!-- Blog Details Section Begin -->
+    <section class="blog-details spad">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-md-8">
+                    <div class="blog__details__content">
+                        <div class="blog__details__item">
+                            {% if post.image %}
+                            <img src="{{ post.image.url }}" alt="{{ post.title }}">
+                            {% else %}
+                            <img src="{% static 'website/img/blog/details/blog-details.jpg' %}" alt="{{ post.title }}">
+                            {% endif %}
+                            <div class="blog__details__item__title">
+                                <span class="tip">Wedding Guide</span>
+                                <h4>{{ post.title }}</h4>
+                                <ul>
+                                    <li>by <span>{{ post.author }}</span></li>
+                                    <li>{{ post.created_at|date:"M d, Y" }}</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="blog__details__desc">
+                            {{ post.content|safe }}
+                        </div>
+                        <div class="blog__details__tags">
+                            <a href="{% url 'vendors' %}?category=venues">Wedding Lawns</a>
+                            <a href="{% url 'vendors' %}?category=photographers">Photographers</a>
+                            <a href="{% url 'vendors' %}?category=decorators">Decorators</a>
+                            <a href="{% url 'vendors' %}">Banquet Halls</a>
+                        </div>
+                        <div class="blog__details__btns">
+                            <div class="row">
+                                <div class="col-lg-6 col-md-6 col-sm-6">
+                                    <div class="blog__details__btn__item">
+                                        <h6><a href="{% url 'blog' %}"><i class="fa fa-angle-left"></i> All Articles</a></h6>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6 col-md-6 col-sm-6">
+                                    <div class="blog__details__btn__item blog__details__btn__item--next">
+                                        <h6><a href="{% url 'vendors' %}">Browse Venues <i class="fa fa-angle-right"></i></a></h6>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-4">
+                    <div class="blog__sidebar">
+                        <div class="blog__sidebar__item">
+                            <div class="section-title">
+                                <h4>Categories</h4>
+                            </div>
+                            <ul>
+                                <li><a href="{% url 'vendors' %}?category=venues">Wedding Venues &amp; Lawns</a></li>
+                                <li><a href="{% url 'vendors' %}?category=photographers">Wedding Photographers</a></li>
+                                <li><a href="{% url 'vendors' %}?category=decorators">Stage &amp; Floral Decorators</a></li>
+                                <li><a href="{% url 'vendors' %}?category=makeup">Bridal Makeup Artists</a></li>
+                            </ul>
+                        </div>
+                        <div class="blog__sidebar__item">
+                            <div class="section-title">
+                                <h4>Popular Cities</h4>
+                            </div>
+                            <ul>
+                                <li><a href="{% url 'vendors' %}?city=Lucknow">Lucknow Wedding Lawns</a></li>
+                                <li><a href="{% url 'vendors' %}?city=Delhi">Delhi NCR Banquet Halls</a></li>
+                                <li><a href="{% url 'vendors' %}?city=Jaipur">Jaipur Heritage Venues</a></li>
+                                <li><a href="{% url 'vendors' %}?city=Goa">Goa Beach Weddings</a></li>
+                            </ul>
+                        </div>
+                        <div class="blog__sidebar__item">
+                            <div class="section-title">
+                                <h4>Tags</h4>
+                            </div>
+                            <div class="blog__sidebar__tags">
+                                <a href="{% url 'vendors' %}?category=venues">Lawns</a>
+                                <a href="{% url 'vendors' %}?category=venues">Banquets</a>
+                                <a href="{% url 'wedding_tools' %}">Planning</a>
+                                <a href="{% url 'faq' %}">FAQ</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Blog Details Section End -->
 
 {% endblock %}

@@ -1,7 +1,7 @@
 {% extends 'website/base.html' %}
 {% load static %}
 
-{% block title %}{{ vendor.name }} - Wedding Venue in {{ vendor.location }} | BookMyLawn{% endblock %}
+{% block title %}{{ vendor.name }} - Wedding Venue & Lawn in {{ vendor.location }} | BookMyLawn{% endblock %}
 {% block meta_description %}Book {{ vendor.name }} ({{ vendor.category.name }}) in {{ vendor.location }}. Check pricing, lawn capacity, guest rooms, amenities, customer reviews, photo gallery & send direct inquiry on BookMyLawn.{% endblock %}
 {% block meta_keywords %}{{ vendor.name }}, wedding lawn {{ vendor.location }}, banquet hall {{ vendor.location }}, {{ vendor.category.name|lower }} {{ vendor.location }}, wedding venues {{ vendor.location }}, marriage garden {{ vendor.location }}, BookMyLawn{% endblock %}
 {% block og_title %}{{ vendor.name }} - Wedding Lawn in {{ vendor.location }} | BookMyLawn{% endblock %}
@@ -16,7 +16,6 @@
   "name": "{{ vendor.name|escapejs }}",
   "description": "{{ vendor.description|truncatewords:35|escapejs|default:'Premier wedding venue and services in India.' }}",
   "url": "{{ request.build_absolute_uri }}",
-  "telephone": "+91-98765-43210",
   "priceRange": "₹₹",
   "address": {
     "@type": "PostalAddress",
@@ -32,20 +31,6 @@
     "bestRating": "5"
   }
 }
-
-    // Venue Budget Calculator
-    const baseStartingPrice = parseFloat("{{ vendor.price_starting|default:0 }}") || 0;
-    function updateCalculator() {
-        const guests = parseInt($('#guestRange').val()) || 500;
-        $('#guestCountDisplay').text(guests + ' Guests');
-        const platePrice = parseFloat($('input[name="calc_meal"]:checked').val()) || 800;
-        const total = (guests * platePrice) + baseStartingPrice;
-        $('#calcTotalCost').text('₹' + total.toLocaleString('en-IN'));
-    }
-    $('#guestRange').on('input change', updateCalculator);
-    $('input[name="calc_meal"]').on('change', updateCalculator);
-    updateCalculator();
-
 </script>
 {% endblock %}
 
@@ -334,42 +319,6 @@
                                 <i class="fa fa-info-circle"></i> Pricing may vary based on guest count and menu selection.
                             </div>
                         </div>
-
-                        <!-- Venue Cost Calculator Widget -->
-                        <div class="info-card" style="background: #fdf2f7; border: 1.5px solid #fbcfe8;">
-                            <div class="d-flex align-items-center mb-2">
-                                <i class="fa fa-calculator text-danger fa-lg mr-2"></i>
-                                <h5 class="mb-0 font-weight-bold" style="color: #111;">Estimated Event Cost Calculator</h5>
-                            </div>
-                            <p class="text-muted small mb-3">Estimate your total event cost (catering + venue rental):</p>
-                            <div class="row align-items-center">
-                                <div class="col-md-7 mb-3 mb-md-0">
-                                    <label class="small font-weight-bold d-flex justify-content-between">
-                                        <span>Estimated Guests:</span>
-                                        <span id="guestCountDisplay" class="text-danger font-weight-bold">500 Guests</span>
-                                    </label>
-                                    <input type="range" class="custom-range" id="guestRange" min="100" max="2000" step="50" value="500">
-                                </div>
-                                <div class="col-md-5">
-                                    <label class="small font-weight-bold d-block">Meal Preference:</label>
-                                    <div class="btn-group btn-group-toggle w-100" data-toggle="buttons">
-                                        <label class="btn btn-sm btn-outline-danger active" id="labelVeg">
-                                            <input type="radio" name="calc_meal" id="calcVeg" value="{{ vendor.veg_price|default:800 }}" checked> Veg
-                                        </label>
-                                        <label class="btn btn-sm btn-outline-danger" id="labelNonVeg">
-                                            <input type="radio" name="calc_meal" id="calcNonVeg" value="{{ vendor.non_veg_price|default:1100 }}"> Non-Veg
-                                        </label>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="d-flex justify-content-between align-items-center mt-3 pt-3 border-top">
-                                <div>
-                                    <span class="small text-muted d-block">Estimated Total Budget:</span>
-                                    <span class="badge badge-success">No Hidden Costs</span>
-                                </div>
-                                <h4 class="mb-0 font-weight-bold" style="color: #e72e77;" id="calcTotalCost">₹5,00,000</h4>
-                            </div>
-                        </div>
                     {% else %}
                         <!-- Non-Venue Specific Details (Photographers, Makeup Artists, etc.) -->
                         <div class="row mb-4">
@@ -570,9 +519,6 @@
                             <button type="submit" class="btn-book-now" id="submitInquiryBtn">
                                 <i class="fa fa-paper-plane"></i> Send Inquiry
                             </button>
-                            <a href="https://wa.me/919876543210?text=Hi%2C%20I%20am%20interested%20in%20booking%20{{ vendor.name|urlencode }}%20in%20{{ vendor.location|urlencode }}%20via%20BookMyLawn.%20Please%20share%20availability%20and%20packages." target="_blank" class="btn btn-success w-100 py-3 font-weight-bold my-2" style="border-radius: 10px; display: flex; align-items: center; justify-content: center; gap: 8px;">
-                                <i class="fa fa-whatsapp fa-lg"></i> Chat on WhatsApp
-                            </a>
                             <button type="button" class="btn btn-outline-dark w-100 py-3 font-weight-bold add-to-wishlist" data-id="{{ vendor.id }}" style="border-radius: 10px;">
                                 <i class="fa fa-heart-o"></i> Save to Wishlist
                             </button>
@@ -580,7 +526,7 @@
                         <hr>
                         <div class="text-center">
                             <p class="mb-2 small font-weight-bold">Direct Contact</p>
-                            <a href="tel:+919876543210" class="h5 text-dark font-weight-bold"><i class="fa fa-phone"></i> +91 98765 43210</a>
+                            <a href="tel:+910000000000" class="h5 text-dark font-weight-bold"><i class="fa fa-phone"></i> +91 8853 000000</a>
                         </div>
                     </div>
 
@@ -895,19 +841,5 @@
             }
         });
     });
-
-    // Venue Budget Calculator
-    const baseStartingPrice = parseFloat("{{ vendor.price_starting|default:0 }}") || 0;
-    function updateCalculator() {
-        const guests = parseInt($('#guestRange').val()) || 500;
-        $('#guestCountDisplay').text(guests + ' Guests');
-        const platePrice = parseFloat($('input[name="calc_meal"]:checked').val()) || 800;
-        const total = (guests * platePrice) + baseStartingPrice;
-        $('#calcTotalCost').text('₹' + total.toLocaleString('en-IN'));
-    }
-    $('#guestRange').on('input change', updateCalculator);
-    $('input[name="calc_meal"]').on('change', updateCalculator);
-    updateCalculator();
-
 </script>
 {% endblock %}

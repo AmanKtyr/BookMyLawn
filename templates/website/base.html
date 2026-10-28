@@ -4,112 +4,126 @@
 
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
-    <meta name="theme-color" content="#e72e77">
-    <meta name="format-detection" content="telephone=no">
 
     <!-- SEO Meta Tags -->
-    <title>{% block title %}BookMyLawn | Wedding Lawns, Banquet Halls & Wedding Vendors Booking{% endblock %}</title>
-    <meta name="description" content="{% block meta_description %}BookMyLawn is India's leading wedding lawn & venue booking platform. Explore top-rated banquet halls, marriage lawns, wedding photographers, bridal makeup artists, and decorators with transparent pricing & verified reviews.{% endblock %}">
-    <meta name="keywords" content="{% block meta_keywords %}wedding lawns, banquet halls, marriage lawns, party plots, farmhouses for wedding, wedding venues, destination wedding venues, wedding photographers, bridal makeup artists, wedding decorators, catering services, marriage garden, book wedding lawn online, BookMyLawn{% endblock %}">
-    <meta name="robots" content="{% block meta_robots %}index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1{% endblock %}">
+    <title>{% block title %}BookMyLawn | Wedding Lawns, Banquet Halls & Wedding Vendors{% endblock %}</title>
+    <meta name="description"
+        content="{% block meta_description %}BookMyLawn - Your ultimate wedding planning companion. Find the best wedding lawns, banquet halls, photographers, and decorators with verified prices & reviews.{% endblock %}">
+    <meta name="keywords"
+        content="{% block meta_keywords %}wedding lawns, banquet halls, marriage lawns, party plots, farmhouses for wedding, wedding venues, destination wedding venues, wedding photographers, bridal makeup artists, wedding decorators, catering services, marriage garden, book wedding lawn online, BookMyLawn{% endblock %}">
+    <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
     <link rel="canonical" href="{% block canonical %}{{ request.build_absolute_uri }}{% endblock %}">
 
-    <!-- Geo Meta Tags for Local SEO in India -->
+    <!-- Geo Meta Tags for Indian Local SEO -->
     <meta name="geo.region" content="IN">
     <meta name="geo.placename" content="India">
-    <meta name="geo.position" content="26.8467;80.9462">
-    <meta name="ICBM" content="26.8467, 80.9462">
 
     <!-- Open Graph (Facebook, WhatsApp, LinkedIn) -->
     <meta property="og:type" content="{% block og_type %}website{% endblock %}">
     <meta property="og:site_name" content="BookMyLawn">
-    <meta property="og:locale" content="en_IN">
     <meta property="og:url" content="{{ request.build_absolute_uri }}">
-    <meta property="og:title" content="{% block og_title %}BookMyLawn | Wedding Lawns, Banquet Halls & Wedding Vendors Booking{% endblock %}">
-    <meta property="og:description" content="{% block og_description %}Discover and book the finest wedding lawns, banquet halls, photographers & decorators across India. Transparent pricing, verified reviews, and free inquiry at BookMyLawn.{% endblock %}">
+    <meta property="og:title" content="{% block og_title %}BookMyLawn | Wedding Venues, Lawns & Banquet Halls{% endblock %}">
+    <meta property="og:description" content="{% block og_description %}Discover and book the finest wedding lawns, banquet halls, photographers & decorators across India with verified reviews at BookMyLawn.{% endblock %}">
     <meta property="og:image" content="{% block og_image %}{{ request.scheme }}://{{ request.get_host }}{% static 'website/img/banner/banner-1.jpg' %}{% endblock %}">
 
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:site" content="@BookMyLawn">
-    <meta name="twitter:title" content="{% block twitter_title %}BookMyLawn | Wedding Lawns, Banquet Halls & Wedding Vendors Booking{% endblock %}">
-    <meta name="twitter:description" content="{% block twitter_description %}Discover and book the finest wedding lawns, banquet halls, photographers & decorators across India. Transparent pricing, verified reviews, and free inquiry at BookMyLawn.{% endblock %}">
+    <meta name="twitter:title" content="{% block twitter_title %}BookMyLawn | Wedding Venues, Lawns & Banquet Halls{% endblock %}">
+    <meta name="twitter:description" content="{% block twitter_description %}Discover and book the finest wedding lawns, banquet halls, photographers & decorators across India with verified reviews at BookMyLawn.{% endblock %}">
     <meta name="twitter:image" content="{% block twitter_image %}{{ request.scheme }}://{{ request.get_host }}{% static 'website/img/banner/banner-1.jpg' %}{% endblock %}">
 
-    <!-- Google Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;0,700;0,800;1,400&family=Montserrat:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Google Font -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Montserrat:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
 
-    <!-- CSS Styles -->
-    <link rel="stylesheet" href="{% static 'website/css/bootstrap.min.css' %}" type="text/css">
-    <link rel="stylesheet" href="{% static 'website/css/font-awesome.min.css' %}" type="text/css">
-    <link rel="stylesheet" href="{% static 'website/css/elegant-icons.css' %}" type="text/css">
-    <link rel="stylesheet" href="{% static 'website/css/jquery-ui.min.css' %}" type="text/css">
-    <link rel="stylesheet" href="{% static 'website/css/magnific-popup.css' %}" type="text/css">
-    <link rel="stylesheet" href="{% static 'website/css/owl.carousel.min.css' %}" type="text/css">
-    <link rel="stylesheet" href="{% static 'website/css/slicknav.min.css' %}" type="text/css">
-    <link rel="stylesheet" href="{% static 'website/css/style.css' %}?v=3" type="text/css">
-
+    <!-- User's Original CSS Styles -->
     <style>
-        :root {
-            --primary-pink: #e72e77;
-            --primary-dark: #c2185b;
-            --primary-subtle: #fdf2f7;
-            --text-dark: #1f2937;
-            --text-muted: #6b7280;
-            --bg-light: #fafafa;
-        }
-
         body {
             font-family: 'Montserrat', sans-serif;
-            color: var(--text-dark);
-            background-color: #ffffff;
-            -webkit-font-smoothing: antialiased;
         }
 
-        h1, h2, h3, h4, h5, h6 {
+        h1,
+        h2,
+        h3,
+        h4,
+        h5,
+        h6 {
             font-family: 'Playfair Display', serif;
-            letter-spacing: -0.2px;
         }
 
-        /* Header Improvements */
+        .hero-search {
+            background: rgba(255, 255, 255, 0.9);
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
+        }
+
+        .hero-search input,
+        .hero-search select {
+            border: 1px solid #ddd;
+            padding: 15px;
+            width: 100%;
+            border-radius: 5px;
+            margin-bottom: 15px;
+        }
+
+        .hero-search button {
+            background: #e72e77;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 5px;
+            width: 100%;
+            font-weight: 600;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .hero-search button:hover {
+            background: #c2185b;
+        }
+
+        .vendor-category {
+            text-align: center;
+            padding: 20px;
+            transition: transform 0.3s;
+            cursor: pointer;
+        }
+
+        .vendor-category:hover {
+            transform: translateY(-10px);
+        }
+
+        .vendor-category img {
+            border-radius: 50%;
+            width: 150px;
+            height: 150px;
+            object-fit: cover;
+            margin-bottom: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Premium Header Styles */
         .header {
             background: #ffffff;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
-            padding: 10px 0;
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.05);
+            padding: 12px 0;
             position: sticky;
             top: 0;
-            z-index: 1000;
+            z-index: 999;
             transition: all 0.3s ease;
         }
 
-        .header__logo a {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            text-decoration: none;
-        }
-
-        .header__logo img {
-            height: 48px;
-            border-radius: 8px;
-            object-fit: contain;
-        }
-
-        .header__logo .logo-brand-text {
-            font-family: 'Montserrat', sans-serif;
+        .header__logo a h2 {
+            font-family: 'Montserrat', sans-serif !important;
             font-weight: 800;
-            font-size: 22px;
-            color: #111;
             letter-spacing: -0.5px;
-            line-height: 1;
-        }
-
-        .header__logo .logo-brand-text span {
-            color: var(--primary-pink);
+            font-size: 26px;
         }
 
         .header__menu ul {
@@ -117,31 +131,30 @@
             align-items: center;
             justify-content: center;
             margin: 0;
-            padding: 0;
-            list-style: none;
-            gap: 4px;
+            padding-top: 5px;
         }
 
         .header__menu ul li {
-            position: relative;
+            margin: 0 12px;
+            list-style: none;
         }
 
         .header__menu ul li a {
             font-family: 'Montserrat', sans-serif;
             font-weight: 600;
-            font-size: 13.5px;
+            font-size: 13px;
             color: #333333;
             text-transform: uppercase;
-            padding: 10px 12px;
-            display: inline-block;
-            transition: all 0.25s ease;
+            padding: 8px 0;
+            position: relative;
+            transition: all 0.3s;
             text-decoration: none;
-            letter-spacing: 0.3px;
+            white-space: nowrap;
         }
 
         .header__menu ul li.active a,
         .header__menu ul li a:hover {
-            color: var(--primary-pink);
+            color: #e72e77;
         }
 
         .header__menu ul li a::after {
@@ -149,202 +162,80 @@
             position: absolute;
             width: 0;
             height: 2px;
-            bottom: 4px;
-            left: 12px;
-            background-color: var(--primary-pink);
+            bottom: 0;
+            left: 0;
+            background-color: #e72e77;
             transition: all 0.3s ease;
         }
 
         .header__menu ul li.active a::after,
         .header__menu ul li a:hover::after {
-            width: calc(100% - 24px);
+            width: 100%;
         }
 
+        /* Auth Buttons */
         .header__right {
             display: flex;
             align-items: center;
             justify-content: flex-end;
-            gap: 12px;
+            height: 100%;
+            padding-top: 5px;
         }
 
-        .btn-vendor-list {
-            background: #fff;
-            color: var(--primary-pink) !important;
-            border: 1.5px solid var(--primary-pink);
-            padding: 7px 16px;
-            border-radius: 25px;
-            font-weight: 600;
-            font-size: 12.5px;
-            text-transform: uppercase;
-            letter-spacing: 0.4px;
-            transition: all 0.3s ease;
-            display: inline-flex;
+        .header__right__auth {
+            display: flex;
             align-items: center;
-            gap: 6px;
+            gap: 15px;
+            margin-right: 25px;
+        }
+
+        .header__right__auth a {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 600;
+            font-size: 14px;
+            transition: all 0.3s;
             text-decoration: none;
         }
 
-        .btn-vendor-list:hover {
-            background: var(--primary-subtle);
-            color: var(--primary-dark) !important;
-            transform: translateY(-1px);
-        }
-
+        /* Single Login Button */
         .btn-login-single {
-            background: linear-gradient(135deg, var(--primary-pink) 0%, var(--primary-dark) 100%);
+            background: linear-gradient(135deg, #e72e77 0%, #c2185b 100%);
             color: white !important;
-            padding: 8px 20px;
-            border-radius: 25px;
+            padding: 10px 26px;
+            border-radius: 30px;
             font-weight: 600;
-            font-size: 13px;
+            font-size: 14px;
             text-decoration: none;
             display: inline-flex;
             align-items: center;
             gap: 6px;
-            box-shadow: 0 4px 14px rgba(231, 46, 119, 0.25);
+            box-shadow: 0 4px 15px rgba(231, 46, 119, 0.3);
             transition: all 0.3s ease;
+            letter-spacing: 0.3px;
         }
 
         .btn-login-single:hover {
             transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(231, 46, 119, 0.4);
+            box-shadow: 0 8px 25px rgba(231, 46, 119, 0.45);
             color: white !important;
+            background: linear-gradient(135deg, #c2185b 0%, #ad1457 100%);
         }
 
-        /* SEO Footer Styles */
-        .site-footer {
-            background-color: #0f1115;
-            color: #d1d5db;
-            padding-top: 65px;
-            padding-bottom: 25px;
-            border-top: 4px solid var(--primary-pink);
-        }
-
-        .site-footer a {
-            color: #9ca3af;
-            text-decoration: none;
-            transition: color 0.2s ease, padding-left 0.2s ease;
-        }
-
-        .site-footer a:hover {
-            color: #ffffff;
-            padding-left: 3px;
-        }
-
-        .site-footer h6 {
-            color: #ffffff;
-            font-family: 'Montserrat', sans-serif;
-            font-weight: 700;
-            font-size: 15px;
-            text-transform: uppercase;
-            letter-spacing: 0.8px;
-            margin-bottom: 18px;
-            position: relative;
-            padding-bottom: 8px;
-        }
-
-        .site-footer h6::after {
-            content: '';
-            position: absolute;
-            left: 0;
-            bottom: 0;
-            width: 30px;
-            height: 2px;
-            background: var(--primary-pink);
-        }
-
-        .footer-links-list {
-            list-style: none;
-            padding: 0;
-            margin: 0;
-        }
-
-        .footer-links-list li {
-            margin-bottom: 9px;
-            font-size: 13.5px;
-            line-height: 1.5;
-        }
-
-        .footer-links-list li i {
-            font-size: 10px;
-            color: var(--primary-pink);
-            margin-right: 6px;
-        }
-
-        .footer-seo-cities {
-            background: #171a21;
-            padding: 25px 0;
-            margin-top: 40px;
-            border-top: 1px solid #232733;
-            border-bottom: 1px solid #232733;
-        }
-
-        .footer-seo-cities h6 {
-            font-size: 13px;
-            margin-bottom: 12px;
-            color: #e5e7eb;
-        }
-
-        .seo-city-tags {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 8px;
-        }
-
-        .seo-city-tags a {
-            background: #202430;
-            color: #9ca3af;
-            padding: 4px 10px;
-            border-radius: 4px;
-            font-size: 12px;
-            transition: all 0.2s ease;
-        }
-
-        .seo-city-tags a:hover {
-            background: var(--primary-pink);
-            color: #fff;
-            padding-left: 10px;
-        }
-
-        .footer-social-links a {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            width: 36px;
-            height: 36px;
-            border-radius: 50%;
-            background: #202430;
-            color: #ffffff;
-            margin-right: 8px;
-            transition: all 0.3s ease;
-        }
-
-        .footer-social-links a:hover {
-            background: var(--primary-pink);
-            transform: translateY(-2px);
-            padding-left: 0;
-        }
-
-        .footer-bottom {
-            padding-top: 25px;
-            font-size: 13px;
-            color: #6b7280;
-        }
-
-        .footer-trust-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            background: rgba(231, 46, 119, 0.12);
-            border: 1px solid rgba(231, 46, 119, 0.3);
-            color: #f472b6;
-            padding: 6px 14px;
-            border-radius: 20px;
-            font-size: 12.5px;
-            font-weight: 600;
-            margin-top: 14px;
+        .admin-login-link a:hover {
+            color: #e72e77 !important;
+            transform: scale(1.2);
         }
     </style>
+
+    <!-- Css Styles -->
+    <link rel="stylesheet" href="{% static 'website/css/bootstrap.min.css' %}" type="text/css">
+    <link rel="stylesheet" href="{% static 'website/css/font-awesome.min.css' %}" type="text/css">
+    <link rel="stylesheet" href="{% static 'website/css/elegant-icons.css' %}" type="text/css">
+    <link rel="stylesheet" href="{% static 'website/css/jquery-ui.min.css' %}" type="text/css">
+    <link rel="stylesheet" href="{% static 'website/css/magnific-popup.css' %}" type="text/css">
+    <link rel="stylesheet" href="{% static 'website/css/owl.carousel.min.css' %}" type="text/css">
+    <link rel="stylesheet" href="{% static 'website/css/slicknav.min.css' %}" type="text/css">
+    <link rel="stylesheet" href="{% static 'website/css/style.css' %}?v=2" type="text/css">
 
     <!-- Schema.org JSON-LD Structured Data for Google Indexing -->
     <script type="application/ld+json">
@@ -366,14 +257,8 @@
             "@type": "ContactPoint",
             "telephone": "+91-98765-43210",
             "contactType": "Customer Support",
-            "areaServed": "IN",
-            "availableLanguage": ["English", "Hindi"]
-          },
-          "sameAs": [
-            "https://www.facebook.com/BookMyLawn",
-            "https://www.instagram.com/BookMyLawn",
-            "https://twitter.com/BookMyLawn"
-          ]
+            "areaServed": "IN"
+          }
         },
         {
           "@type": "WebSite",
@@ -396,7 +281,6 @@
     }
     </script>
     {% block structured_data %}{% endblock %}
-    {% block extra_head %}{% endblock %}
 </head>
 
 <body>
@@ -405,107 +289,77 @@
         <div class="loader"></div>
     </div>
 
-    <!-- Offcanvas Mobile Menu Begin -->
+    <!-- Offcanvas Menu Begin -->
     <div class="offcanvas-menu-overlay"></div>
     <div class="offcanvas-menu-wrapper">
         <div class="offcanvas__close">+</div>
 
         <div class="offcanvas__logo">
-            <a href="/" style="display: flex; align-items: center; gap: 8px;">
-                <img src="{% static 'website/img/logo/logo.png' %}" alt="BookMyLawn Logo" style="height: 42px; border-radius: 8px;">
-                <span style="font-weight: 800; font-size: 20px; color: #111;">BookMy<span style="color: #e72e77;">Lawn</span></span>
+            <a href="/" style="display: flex; align-items: center; gap: 10px;">
+                <img src="{% static 'website/img/logo/logo.png' %}" alt="BookMyLawn Logo"
+                    style="height: 45px; border-radius: 8px;">
             </a>
         </div>
         <div id="mobile-menu-wrap"></div>
-        <div class="offcanvas__auth" style="margin-top: 20px; display: flex; flex-direction: column; gap: 10px;">
-            <a href="{% url 'wedding_tools' %}" class="btn-vendor-list" style="justify-content: center; background: #fdf2f7;">
-                <i class="fa fa-calculator text-danger"></i> Free Planning Tools
-            </a>
-            <a href="{% url 'vendor_register' %}" class="btn-vendor-list" style="justify-content: center;">
-                <i class="fa fa-briefcase"></i> List Your Venue / Business
-            </a>
-            {% if request.user.is_authenticated %}
-                {% if request.user.vendor_profile %}
-                    <a href="{% url 'vendor_dashboard' %}" class="btn-login-single" style="justify-content: center;">
-                        <i class="fa fa-dashboard"></i> Vendor Dashboard
-                    </a>
-                {% else %}
-                    <a href="{% url 'user_dashboard' %}" class="btn-login-single" style="justify-content: center;">
-                        <i class="fa fa-user-circle"></i> My Dashboard
-                    </a>
-                {% endif %}
-            {% else %}
-                <a href="{% url 'login' %}" class="btn-login-single" style="justify-content: center;">
-                    <i class="fa fa-user-circle"></i> Login / Register
-                </a>
-            {% endif %}
+        <div class="offcanvas__auth">
+            <a href="{% url 'vendor_register' %}">Vendor Register</a>
+            <a href="{% url 'login' %}">Login</a>
         </div>
     </div>
-    <!-- Offcanvas Mobile Menu End -->
+    <!-- Offcanvas Menu End -->
 
     <!-- Header Section Begin -->
     <header class="header">
         <div class="container-fluid">
-            <div class="row align-items-center">
-                <div class="col-xl-3 col-lg-3 col-6">
+            <div class="row">
+                <div class="col-xl-3 col-lg-2">
                     <div class="header__logo">
-                        <a href="/" title="BookMyLawn - Wedding Venues & Lawns Booking">
-                            <img src="{% static 'website/img/logo/logo.png' %}" alt="BookMyLawn - India's Best Wedding Lawns and Banquet Halls Booking Platform">
-                            <span class="logo-brand-text">BookMy<span>Lawn</span></span>
+                        <a href="/" style="display: flex; align-items: center; gap: 10px;">
+                            <img src="{% static 'website/img/logo/logo.png' %}" alt="BookMyLawn Logo"
+                                style="height: 45px; border-radius: 8px; margin-top: 5px;">
                         </a>
                     </div>
                 </div>
-                <div class="col-xl-6 col-lg-6 d-none d-lg-block">
-                    <nav class="header__menu" aria-label="Main Navigation">
+                <div class="col-xl-6 col-lg-7">
+                    <nav class="header__menu">
                         <ul>
-                            <li class="{% if request.resolver_match.url_name == 'index' %}active{% endif %}">
-                                <a href="{% url 'index' %}" title="Home - BookMyLawn">Home</a>
-                            </li>
-                            <li class="{% if view_type == 'venues' %}active{% endif %}">
-                                <a href="{% url 'vendors' %}?type=venues" title="Explore Wedding Lawns & Banquet Halls">Venues</a>
-                            </li>
-                            <li class="{% if view_type == 'vendors' %}active{% endif %}">
-                                <a href="{% url 'vendors' %}?type=vendors" title="Wedding Photographers, Decorators & Vendors">Vendors</a>
-                            </li>
-                            <li class="{% if request.resolver_match.url_name == 'real_weddings' %}active{% endif %}">
-                                <a href="{% url 'real_weddings' %}" title="Real Indian Wedding Stories & Inspiration">Real Weddings</a>
-                            </li>
-                            <li class="{% if request.resolver_match.url_name == 'wedding_tools' %}active{% endif %}">
-                                <a href="{% url 'wedding_tools' %}" title="Free Wedding Budget & Checklist Tools">Planning Tools</a>
-                            </li>
-                            <li class="{% if request.resolver_match.url_name == 'blog' or request.resolver_match.url_name == 'blog_details' %}active{% endif %}">
-                                <a href="{% url 'blog' %}" title="Wedding Planning Guide & Ideas Blog">Blog</a>
-                            </li>
-                            <li class="{% if request.resolver_match.url_name == 'about_us' %}active{% endif %}">
-                                <a href="{% url 'about_us' %}" title="About BookMyLawn">About Us</a>
-                            </li>
-                            <li class="{% if request.resolver_match.url_name == 'contact' %}active{% endif %}">
-                                <a href="{% url 'contact' %}" title="Contact BookMyLawn Support">Contact</a>
-                            </li>
+                            <li class="{% if request.resolver_match.url_name == 'index' %}active{% endif %}"><a
+                                    href="/">Home</a></li>
+                            <li class="{% if request.resolver_match.url_name == 'about_us' %}active{% endif %}"><a
+                                    href="{% url 'about_us' %}">About Us</a></li>
+                            <li class="{% if view_type == 'venues' %}active{% endif %}"><a
+                                    href="{% url 'vendors' %}?type=venues">Venues</a></li>
+                            <li class="{% if view_type == 'vendors' %}active{% endif %}"><a
+                                    href="{% url 'vendors' %}">Vendors</a></li>
+                            <li class="{% if request.resolver_match.url_name == 'blog' %}active{% endif %}"><a 
+                                    href="{% url 'blog' %}">Blog</a></li>
+                            <li class="{% if request.resolver_match.url_name == 'real_weddings' %}active{% endif %}"><a
+                                    href="{% url 'real_weddings' %}">Real Weddings</a></li>
+                            <li class="{% if request.resolver_match.url_name == 'wedding_tools' %}active{% endif %}"><a
+                                    href="{% url 'wedding_tools' %}">Planning Tools</a></li>
+                            <li class="{% if request.resolver_match.url_name == 'contact' %}active{% endif %}"><a
+                                    href="{% url 'contact' %}">Contact</a></li>
                         </ul>
                     </nav>
                 </div>
-                <div class="col-xl-3 col-lg-3 col-6">
+                <div class="col-lg-3">
                     <div class="header__right">
-                        <a href="{% url 'vendor_register' %}" class="btn-vendor-list d-none d-xl-inline-flex" title="Register as Venue Owner or Wedding Vendor">
-                            <i class="fa fa-plus-circle"></i> List Venue
-                        </a>
                         <div class="header__right__auth">
                             {% if request.user.is_authenticated %}
                                 {% if request.user.vendor_profile %}
-                                <a href="{% url 'vendor_dashboard' %}" class="btn-login-single" title="Vendor Dashboard">
-                                    <i class="fa fa-dashboard"></i> Dashboard
+                                <a href="{% url 'vendor_dashboard' %}" class="btn-login-single">
+                                    <i class="fa fa-dashboard" style="margin-right: 6px;"></i> Dashboard
                                 </a>
-                                <a href="{% url 'vendor_logout' %}" style="margin-left:8px; color:#555; font-weight:600; font-size:13px;" title="Logout">Logout</a>
+                                <a href="{% url 'vendor_logout' %}" style="margin-left:15px; color:#333; font-weight:600;">Logout</a>
                                 {% else %}
-                                <a href="{% url 'user_dashboard' %}" class="btn-login-single" title="User Profile">
-                                    <i class="fa fa-user-circle"></i> Profile
+                                <a href="{% url 'user_dashboard' %}" class="btn-login-single">
+                                    <i class="fa fa-user-circle" style="margin-right: 6px;"></i> Profile
                                 </a>
-                                <a href="{% url 'user_logout' %}" style="margin-left:8px; color:#555; font-weight:600; font-size:13px;" title="Logout">Logout</a>
+                                <a href="{% url 'user_logout' %}" style="margin-left:15px; color:#333; font-weight:600;">Logout</a>
                                 {% endif %}
                             {% else %}
-                            <a href="{% url 'login' %}" class="btn-login-single" title="Login or Create Account">
-                                <i class="fa fa-user-circle"></i> Login
+                            <a href="{% url 'login' %}" class="btn-login-single">
+                                <i class="fa fa-user-circle" style="margin-right: 6px;"></i> Login
                             </a>
                             {% endif %}
                         </div>
@@ -519,139 +373,106 @@
     </header>
     <!-- Header Section End -->
 
-    <main id="main-content">
-        {% block content %}
-        {% endblock %}
-    </main>
-
-    <!-- Popular Searches SEO Bar (WedMeGood / WeddingWire Pattern) -->
-    <section class="footer-seo-cities" aria-label="Popular Wedding Searches Across India">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-12">
-                    <h6><i class="fa fa-map-marker text-danger"></i> Popular Venue Searches Across India:</h6>
-                    <div class="seo-city-tags">
-                        <a href="{% url 'vendors' %}?type=venues&city=Delhi" title="Wedding Lawns and Banquet Halls in Delhi NCR">Wedding Lawns in Delhi NCR</a>
-                        <a href="{% url 'vendors' %}?type=venues&city=Mumbai" title="Best Wedding Venues & Banquet Halls in Mumbai">Banquet Halls in Mumbai</a>
-                        <a href="{% url 'vendors' %}?type=venues&city=Lucknow" title="Wedding Lawns & Marriage Gardens in Lucknow">Marriage Lawns in Lucknow</a>
-                        <a href="{% url 'vendors' %}?type=venues&city=Jaipur" title="Royal Wedding Venues & Heritage Lawns in Jaipur">Heritage Lawns in Jaipur</a>
-                        <a href="{% url 'vendors' %}?type=venues&city=Udaipur" title="Destination Wedding Venues in Udaipur">Destination Wedding in Udaipur</a>
-                        <a href="{% url 'vendors' %}?type=venues&city=Bangalore" title="Wedding Convention Centers & Lawns in Bangalore">Convention Lawns in Bangalore</a>
-                        <a href="{% url 'vendors' %}?type=venues&city=Goa" title="Beachside Wedding Lawns and Resorts in Goa">Beach Venues in Goa</a>
-                        <a href="{% url 'vendors' %}?type=venues&city=Chandigarh" title="Luxury Wedding Lawns in Chandigarh">Wedding Lawns in Chandigarh</a>
-                        <a href="{% url 'vendors' %}?category=photographers" title="Top Wedding Photographers in India">Wedding Photographers</a>
-                        <a href="{% url 'vendors' %}?category=decorators" title="Wedding Decorators and Stage Setup">Wedding Decorators</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
+    {% block content %}
+    {% endblock %}
 
     <!-- Footer Section Begin -->
-    <footer class="site-footer">
+    <footer class="footer" style="background-color: #111; padding-top: 60px;">
         <div class="container">
             <div class="row">
-                <!-- Col 1: About Platform -->
-                <div class="col-lg-4 col-md-6 mb-4">
+                <div class="col-lg-4 col-md-6 col-sm-7">
                     <div class="footer__about">
-                        <div class="footer__logo mb-3">
+                        <div class="footer__logo">
                             <a href="/" style="display: flex; align-items: center; gap: 10px;">
-                                <img src="{% static 'website/img/logo/logo.png' %}" alt="BookMyLawn Logo" style="height: 44px; border-radius: 8px;">
-                                <span style="font-weight: 800; font-size: 22px; color: #fff;">BookMy<span style="color: #e72e77;">Lawn</span></span>
+                                <img src="{% static 'website/img/logo/logo.png' %}" alt="BookMyLawn Logo"
+                                    style="height: 45px; border-radius: 8px;">
                             </a>
                         </div>
-                        <p style="color: #9ca3af; font-size: 13.5px; line-height: 1.7; margin-bottom: 15px;">
-                            BookMyLawn is India's most trusted online wedding venue and vendor discovery portal. Compare thousands of verified wedding lawns, luxury banquet halls, photographers, and decorators with authentic reviews and transparent pricing.
-                        </p>
-                        <div class="footer-trust-badge">
-                            <i class="fa fa-shield"></i> 100% Verified Venues &amp; Best Rate Guarantee
-                        </div>
-                        <div class="footer-social-links mt-3">
-                            <a href="https://facebook.com" target="_blank" rel="noopener nofollow" title="Follow BookMyLawn on Facebook"><i class="fa fa-facebook"></i></a>
-                            <a href="https://instagram.com" target="_blank" rel="noopener nofollow" title="Follow BookMyLawn on Instagram"><i class="fa fa-instagram"></i></a>
-                            <a href="https://twitter.com" target="_blank" rel="noopener nofollow" title="Follow BookMyLawn on Twitter"><i class="fa fa-twitter"></i></a>
-                            <a href="https://youtube.com" target="_blank" rel="noopener nofollow" title="Follow BookMyLawn on YouTube"><i class="fa fa-youtube-play"></i></a>
-                            <a href="https://pinterest.com" target="_blank" rel="noopener nofollow" title="Follow BookMyLawn on Pinterest"><i class="fa fa-pinterest"></i></a>
-                        </div>
+                        <p style="color: #b7b7b7;">Your ultimate wedding planning companion. Find the best venues,
+                            photographers, makeup artists, and more for your special day.</p>
                     </div>
                 </div>
-
-                <!-- Col 2: Wedding Venues by Category -->
-                <div class="col-lg-3 col-md-6 mb-4">
-                    <h6>Venues &amp; Vendors</h6>
-                    <ul class="footer-links-list">
-                        <li><a href="{% url 'vendors' %}?type=venues"><i class="fa fa-chevron-right"></i> Banquet Halls &amp; Lawns</a></li>
-                        <li><a href="{% url 'vendors' %}?type=venues"><i class="fa fa-chevron-right"></i> Open Air Marriage Lawns</a></li>
-                        <li><a href="{% url 'vendors' %}?type=venues"><i class="fa fa-chevron-right"></i> Farmhouses for Weddings</a></li>
-                        <li><a href="{% url 'vendors' %}?type=venues"><i class="fa fa-chevron-right"></i> Destination Wedding Resorts</a></li>
-                        <li><a href="{% url 'vendors' %}?category=photographers"><i class="fa fa-chevron-right"></i> Wedding Photographers</a></li>
-                        <li><a href="{% url 'vendors' %}?category=decorators"><i class="fa fa-chevron-right"></i> Wedding Stage Decorators</a></li>
-                        <li><a href="{% url 'vendors' %}"><i class="fa fa-chevron-right"></i> All Verified Vendors</a></li>
-                    </ul>
+                <div class="col-lg-2 col-md-3 col-sm-5">
+                    <div class="footer__widget">
+                        <h6 style="color: white;">Quick links</h6>
+                        <ul style="list-style: none; padding: 0;">
+                            <li><a href="{% url 'about_us' %}" style="color: #b7b7b7;">About Us</a></li>
+                            <li><a href="{% url 'real_weddings' %}" style="color: #b7b7b7;">Wedding Stories</a></li>
+                            <li><a href="{% url 'wedding_tools' %}" style="color: #b7b7b7;">Planning Tools</a></li>
+                            <li><a href="{% url 'contact' %}" style="color: #b7b7b7;">Contact</a></li>
+                            <li><a href="{% url 'faq' %}" style="color: #b7b7b7;">FAQ</a></li>
+                            <li><a href="{% url 'privacy_policy' %}" style="color: #b7b7b7;">Privacy Policy</a></li>
+                            <li><a href="{% url 'terms_of_service' %}" style="color: #b7b7b7;">Terms</a></li>
+                            <li><a href="{% url 'sitemap_xml' %}" target="_blank" style="color: #b7b7b7;">XML Sitemap</a></li>
+                        </ul>
+                    </div>
                 </div>
-
-                <!-- Col 3: Quick Links & Trust -->
-                <div class="col-lg-2 col-md-6 mb-4">
-                    <h6>Quick Links</h6>
-                    <ul class="footer-links-list">
-                        <li><a href="{% url 'about_us' %}"><i class="fa fa-chevron-right"></i> About Us</a></li>
-                        <li><a href="{% url 'real_weddings' %}"><i class="fa fa-chevron-right"></i> Real Weddings</a></li>
-                        <li><a href="{% url 'blog' %}"><i class="fa fa-chevron-right"></i> Wedding Planning Blog</a></li>
-                        <li><a href="{% url 'wedding_tools' %}"><i class="fa fa-chevron-right"></i> Free Planning Tools</a></li>
-                        <li><a href="{% url 'faq' %}"><i class="fa fa-chevron-right"></i> FAQs &amp; Help</a></li>
-                        <li><a href="{% url 'contact' %}"><i class="fa fa-chevron-right"></i> Contact Us</a></li>
-                        <li><a href="{% url 'privacy_policy' %}"><i class="fa fa-chevron-right"></i> Privacy Policy</a></li>
-                        <li><a href="{% url 'terms_of_service' %}"><i class="fa fa-chevron-right"></i> Terms &amp; Conditions</a></li>
-                        <li><a href="{% url 'sitemap_xml' %}" target="_blank"><i class="fa fa-chevron-right"></i> XML Sitemap</a></li>
-                    </ul>
+                <div class="col-lg-2 col-md-3 col-sm-4">
+                    <div class="footer__widget">
+                        <h6 style="color: white;">Top Vendors</h6>
+                        <ul style="list-style: none; padding: 0;">
+                            <li><a href="{% url 'vendors' %}?type=venues" style="color: #b7b7b7;">Banquet Halls</a></li>
+                            <li><a href="{% url 'vendors' %}?category=photographers"
+                                    style="color: #b7b7b7;">Photographers</a></li>
+                            <li><a href="{% url 'vendors' %}?category=decorators" style="color: #b7b7b7;">Decorators</a>
+                            </li>
+                            <li><a href="{% url 'vendors' %}?type=vendors" style="color: #b7b7b7;">All Vendors</a></li>
+                        </ul>
+                    </div>
                 </div>
-
-                <!-- Col 4: Vendors & Contact -->
-                <div class="col-lg-3 col-md-6 mb-4">
-                    <h6>For Business / Vendors</h6>
-                    <p style="color: #9ca3af; font-size: 13px; line-height: 1.6;">
-                        Are you a wedding lawn owner, banquet manager, or wedding photographer? List your business and get inquiries from couples across India.
-                    </p>
-                    <a href="{% url 'vendor_register' %}" class="btn-vendor-list" style="margin-bottom: 20px; display: inline-flex; width: 100%; justify-content: center;">
-                        <i class="fa fa-briefcase"></i> Register as a Vendor
-                    </a>
-
-                    <div style="font-size: 13px; color: #9ca3af;">
-                        <div style="margin-bottom: 6px;"><i class="fa fa-envelope text-danger mr-2"></i> support@bookmylawn.com</div>
-                        <div><i class="fa fa-phone text-danger mr-2"></i> +91 98765 43210 (10 AM - 7 PM)</div>
+                <div class="col-lg-4 col-md-8 col-sm-8">
+                    <div class="footer__newslatter">
+                        <h6>NEWSLETTER</h6>
+                        <form action="#">
+                            <input type="text" placeholder="Email">
+                            <button type="submit" class="site-btn">Subscribe</button>
+                        </form>
+                        <div class="footer__social">
+                            <a href="#"><i class="fa fa-facebook"></i></a>
+                            <a href="#"><i class="fa fa-twitter"></i></a>
+                            <a href="#"><i class="fa fa-youtube-play"></i></a>
+                            <a href="#"><i class="fa fa-instagram"></i></a>
+                            <a href="#"><i class="fa fa-pinterest"></i></a>
+                        </div>
                     </div>
                 </div>
             </div>
-
-            <!-- Footer Bottom Section -->
-            <div class="row footer-bottom align-items-center">
-                <div class="col-md-8 text-center text-md-left mb-2 mb-md-0">
-                    <p style="margin: 0; font-size: 13px; color: #6b7280;">
-                        Copyright &copy; <script>document.write(new Date().getFullYear());</script> <strong>BookMyLawn</strong>. All rights reserved. Designed for India's wedding industry.
-                    </p>
-                </div>
-                <div class="col-md-4 text-center text-md-right">
-                    <a href="{% url 'privacy_policy' %}" style="font-size: 12.5px; color: #6b7280; margin-right: 15px;">Privacy Policy</a>
-                    <a href="{% url 'terms_of_service' %}" style="font-size: 12.5px; color: #6b7280; margin-right: 15px;">Terms</a>
-                    <a href="{% url 'superadmin_login' %}" title="Staff Portal" style="color: #374151;"><i class="fa fa-shield"></i></a>
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="footer__copyright__text">
+                        <div
+                            style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap;">
+                            <p style="margin-bottom: 0;">Copyright &copy;
+                                <script>document.write(new Date().getFullYear());</script> All rights reserved | A
+                                Product
+                                Of <a href="https://helyonex.com" target="_blank">Helyonex</a>
+                            </p>
+                            <div class="admin-login-link">
+                                <a href="{% url 'superadmin_login' %}" title="Superadmin Login"
+                                    style="color: #333; transition: 0.3s;">
+                                    <i class="fa fa-shield" style="font-size: 18px;"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </footer>
     <!-- Footer Section End -->
 
-    <!-- Search Modal Begin -->
+    <!-- Search Begin -->
     <div class="search-model">
         <div class="h-100 d-flex align-items-center justify-content-center">
             <div class="search-close-switch">+</div>
             <form class="search-model-form" action="{% url 'vendors' %}" method="GET">
-                <input type="text" name="q" id="search-input" placeholder="Search wedding lawns, banquet halls, photographers...">
+                <input type="text" id="search-input" name="q" placeholder="Search here.....">
             </form>
         </div>
     </div>
-    <!-- Search Modal End -->
+    <!-- Search End -->
 
-    <!-- JavaScript Plugins -->
+    <!-- Js Plugins -->
     <script src="{% static 'website/js/jquery-3.3.1.min.js' %}"></script>
     <script src="{% static 'website/js/bootstrap.min.js' %}"></script>
     <script src="{% static 'website/js/jquery.magnific-popup.min.js' %}"></script>
@@ -662,6 +483,7 @@
     <script src="{% static 'website/js/owl.carousel.min.js' %}"></script>
     <script src="{% static 'website/js/jquery.nicescroll.min.js' %}"></script>
     <script src="{% static 'website/js/main.js' %}"></script>
+    <!-- SweetAlert2 -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
         const Toast = Swal.mixin({
@@ -671,8 +493,8 @@
             timer: 3000,
             timerProgressBar: true,
             didOpen: (toast) => {
-                toast.addEventListener('mouseenter', Swal.stopTimer);
-                toast.addEventListener('mouseleave', Swal.resumeTimer);
+                toast.addEventListener('mouseenter', Swal.stopTimer)
+                toast.addEventListener('mouseleave', Swal.resumeTimer)
             }
         });
 

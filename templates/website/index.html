@@ -16,7 +16,7 @@
       "name": "How do I choose the best wedding lawn or banquet hall on BookMyLawn?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Filter venues by city, guest capacity, price per plate (veg/non-veg), and amenities such as AC banquet halls, bridal changing rooms, and parking. Compare real couple ratings, view high-resolution photo galleries, and click 'Send Inquiry' to receive instant quotes directly from venue managers."
+        "text": "Filter venues by city, guest capacity, price per plate, and amenities such as AC banquet halls, bridal changing rooms, and parking. Compare real couple ratings, view high-resolution photo galleries, and click Send Inquiry to receive instant quotes directly from venue managers."
       }
     },
     {
@@ -32,7 +32,7 @@
       "name": "What is the average cost of booking a wedding lawn in India?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Wedding lawn rental costs range from ₹50,000 for intimate gathering lawns up to ₹5,00,000+ for royal destination wedding lawns and farmhouses. Per-plate catering typically ranges from ₹1,000 to ₹3,500+ depending on the menu and city."
+        "text": "Wedding lawn rental costs range from Rs 50,000 for intimate gathering lawns up to Rs 5,00,000+ for royal destination wedding lawns and farmhouses. Per-plate catering typically ranges from Rs 1,000 to Rs 3,500+ depending on the menu and city."
       }
     },
     {
@@ -52,75 +52,27 @@
 
 <!-- Hero Section Begin -->
 <section class="hero set-bg" data-setbg="{% static 'website/img/banner/banner-1.jpg' %}?v=2"
-    style="background-image: url('{% static 'website/img/banner/banner-1.jpg' %}?v=2'); padding: 130px 0 100px; background-size: cover; background-position: center; position: relative;">
-    <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(180deg, rgba(15,17,21,0.65) 0%, rgba(15,17,21,0.75) 100%);"></div>
-    <div class="container" style="position: relative; z-index: 2;">
+    style="background-image: url('{% static 'website/img/banner/banner-1.jpg' %}?v=2'); padding: 150px 0; background-size: cover; background-position: center;">
+    <div class="container">
         <div class="row">
-            <div class="col-lg-10 m-auto text-center">
-                <span style="display: inline-block; background: rgba(231,46,119,0.25); border: 1px solid rgba(231,46,119,0.5); color: #ff80ab; font-weight: 700; font-size: 13px; text-transform: uppercase; letter-spacing: 2px; padding: 6px 18px; border-radius: 30px; margin-bottom: 20px;">
-                    India's Premier Wedding Venue Discovery Platform
-                </span>
-                <h1 style="color: white; font-size: 46px; font-weight: 800; line-height: 1.25; margin-bottom: 18px; text-shadow: 0 2px 10px rgba(0,0,0,0.5);">
-                    Find &amp; Book the Perfect Wedding Lawns, Banquet Halls &amp; Vendors
-                </h1>
-                <p style="color: #e5e7eb; font-size: 18px; max-width: 750px; margin: 0 auto 35px; line-height: 1.6;">
-                    Explore 5,000+ verified marriage gardens, AC banquet halls, farmhouses, photographers, and decorators with authentic reviews and best price guarantee.
-                </p>
-
-                <!-- Professional Industry Search Bar -->
-                <div class="hero-search" style="border-radius: 14px; padding: 25px 28px; box-shadow: 0 20px 45px rgba(0,0,0,0.3); background: rgba(255,255,255,0.96); backdrop-filter: blur(12px);">
+            <div class="col-lg-8 m-auto text-center">
+                <h1
+                    style="color: white; font-size: 50px; text-shadow: 2px 2px 4px rgba(0,0,0,0.5); margin-bottom: 30px;">
+                    Find the Perfect Wedding Vendors</h1>
+                <div class="hero-search">
                     <form action="{% url 'vendors' %}" method="GET">
-                        <div class="row align-items-center">
-                            <div class="col-lg-3 col-md-6 mb-3 mb-lg-0 text-left">
-                                <label style="font-size: 11px; font-weight: 700; text-transform: uppercase; color: #6b7280; margin-bottom: 4px; display: block;">
-                                    <i class="fa fa-th-large text-danger mr-1"></i> Looking For
-                                </label>
-                                <select name="type" style="margin-bottom: 0; height: 50px; font-size: 14px; font-weight: 500; border-radius: 8px; border: 1.5px solid #e5e7eb;">
-                                    <option value="venues" selected>Wedding Lawns &amp; Venues</option>
-                                    <option value="vendors">Wedding Vendors</option>
-                                    <option value="">All Categories</option>
-                                </select>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <input type="text" name="q" placeholder="Search for vendors, venues...">
                             </div>
-                            <div class="col-lg-3 col-md-6 mb-3 mb-lg-0 text-left">
-                                <label style="font-size: 11px; font-weight: 700; text-transform: uppercase; color: #6b7280; margin-bottom: 4px; display: block;">
-                                    <i class="fa fa-map-marker text-danger mr-1"></i> Select City
-                                </label>
-                                <select name="city" style="margin-bottom: 0; height: 50px; font-size: 14px; font-weight: 500; border-radius: 8px; border: 1.5px solid #e5e7eb;">
-                                    <option value="">All Major Cities</option>
-                                    <option value="Lucknow">Lucknow</option>
-                                    <option value="Delhi">Delhi NCR</option>
-                                    <option value="Mumbai">Mumbai</option>
-                                    <option value="Jaipur">Jaipur</option>
-                                    <option value="Udaipur">Udaipur</option>
-                                    <option value="Bangalore">Bangalore</option>
-                                    <option value="Goa">Goa</option>
-                                    <option value="Chandigarh">Chandigarh</option>
-                                    <option value="kannauj">Kannauj</option>
-                                </select>
+                            <div class="col-md-4">
+                                <input type="text" name="city" placeholder="City or Zip code">
                             </div>
-                            <div class="col-lg-4 col-md-6 mb-3 mb-lg-0 text-left">
-                                <label style="font-size: 11px; font-weight: 700; text-transform: uppercase; color: #6b7280; margin-bottom: 4px; display: block;">
-                                    <i class="fa fa-search text-danger mr-1"></i> Search Keyword
-                                </label>
-                                <input type="text" name="q" placeholder="e.g. Grand Lawn, AC Banquet, Photography..." style="margin-bottom: 0; height: 50px; font-size: 14px; border-radius: 8px; border: 1.5px solid #e5e7eb;">
-                            </div>
-                            <div class="col-lg-2 col-md-6 text-left">
-                                <label style="font-size: 11px; font-weight: 700; text-transform: uppercase; color: transparent; margin-bottom: 4px; display: block;" class="d-none d-lg-block">Search</label>
-                                <button type="submit" style="height: 50px; font-size: 15px; border-radius: 8px; font-weight: 700; letter-spacing: 0.5px; box-shadow: 0 4px 15px rgba(231,46,119,0.35);">
-                                    <i class="fa fa-search mr-1"></i> Explore
-                                </button>
+                            <div class="col-md-4">
+                                <button type="submit">Search</button>
                             </div>
                         </div>
                     </form>
-                </div>
-
-                <!-- Popular Search Quick Tags -->
-                <div class="mt-4" style="color: #d1d5db; font-size: 13px;">
-                    <span style="font-weight: 600; color: #fff;">Trending Searches:</span>
-                    <a href="{% url 'vendors' %}?type=venues&city=Lucknow" style="color: #ff80ab; margin-left: 8px; text-decoration: underline;">Wedding Lawns in Lucknow</a> •
-                    <a href="{% url 'vendors' %}?type=venues&city=Delhi" style="color: #ff80ab; margin-left: 8px; text-decoration: underline;">Banquet Halls in Delhi NCR</a> •
-                    <a href="{% url 'vendors' %}?category=photographers" style="color: #ff80ab; margin-left: 8px; text-decoration: underline;">Top Wedding Photographers</a> •
-                    <a href="{% url 'vendors' %}?type=venues&city=Jaipur" style="color: #ff80ab; margin-left: 8px; text-decoration: underline;">Heritage Marriage Lawns</a>
                 </div>
             </div>
         </div>
@@ -128,516 +80,318 @@
 </section>
 <!-- Hero Section End -->
 
-<!-- Industry Trust Metrics Section -->
-<section style="background: #ffffff; padding: 40px 0; border-bottom: 1px solid #f1f5f9; box-shadow: 0 4px 15px rgba(0,0,0,0.02);">
+<!-- Categories Section Begin -->
+<section class="categories spad">
     <div class="container">
-        <div class="row text-center">
-            <div class="col-lg-3 col-6 mb-3 mb-lg-0">
-                <div style="padding: 10px;">
-                    <h3 style="font-weight: 800; color: #e72e77; font-size: 36px; margin-bottom: 4px;">5,000+</h3>
-                    <p style="color: #4b5563; font-weight: 600; font-size: 14px; margin: 0; text-transform: uppercase; letter-spacing: 0.5px;">Verified Venues &amp; Vendors</p>
-                </div>
-            </div>
-            <div class="col-lg-3 col-6 mb-3 mb-lg-0">
-                <div style="padding: 10px;">
-                    <h3 style="font-weight: 800; color: #e72e77; font-size: 36px; margin-bottom: 4px;">15,000+</h3>
-                    <p style="color: #4b5563; font-weight: 600; font-size: 14px; margin: 0; text-transform: uppercase; letter-spacing: 0.5px;">Happy Couples Planned</p>
-                </div>
-            </div>
-            <div class="col-lg-3 col-6">
-                <div style="padding: 10px;">
-                    <h3 style="font-weight: 800; color: #e72e77; font-size: 36px; margin-bottom: 4px;">25+</h3>
-                    <p style="color: #4b5563; font-weight: 600; font-size: 14px; margin: 0; text-transform: uppercase; letter-spacing: 0.5px;">Indian Cities Covered</p>
-                </div>
-            </div>
-            <div class="col-lg-3 col-6">
-                <div style="padding: 10px;">
-                    <h3 style="font-weight: 800; color: #e72e77; font-size: 36px; margin-bottom: 4px;">4.9 / 5</h3>
-                    <p style="color: #4b5563; font-weight: 600; font-size: 14px; margin: 0; text-transform: uppercase; letter-spacing: 0.5px;">Average User Rating</p>
+        <div class="row">
+            <div class="col-lg-12 text-center">
+                <div class="section-title">
+                    <h2>Popular Categories</h2>
                 </div>
             </div>
         </div>
-    </div>
-</section>
-
-<!-- Popular Categories Section Begin -->
-<section class="categories spad" style="padding: 70px 0; background: #fafafa;">
-    <div class="container">
         <div class="row">
-            <div class="col-lg-12 text-center mb-5">
-                <span style="color:#e72e77; font-weight:700; text-transform:uppercase; letter-spacing:2px; font-size:13px; display:block; margin-bottom:8px;">Curated Wedding Services</span>
-                <h2 style="font-weight: 800; font-size: 38px; color: #111;">Explore Wedding Categories</h2>
-                <p style="color: #6b7280; font-size: 16px; max-width: 600px; margin: 8px auto 0;">From sprawling green wedding lawns to award-winning photographers, find everything under one roof.</p>
+            <div class="col-lg-3 col-md-6 col-sm-6">
+                <div class="vendor-category">
+                    <img src="{% static 'website/img/categories/category-1.jpg' %}?v=2" alt="Venues">
+                    <h4>Venues</h4>
+                    <p>Find the perfect location</p>
+                </div>
             </div>
-        </div>
-        <div class="row">
-            <!-- Category 1: Venues / Wedding Lawns -->
-            <div class="col-lg-3 col-md-6 col-sm-6 mb-4">
-                <a href="{% url 'vendors' %}?type=venues" style="text-decoration: none; color: inherit; display: block;" title="Book Wedding Lawns and Banquet Halls">
-                    <div class="vendor-category" style="background: #fff; border-radius: 14px; padding: 30px 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.04); border: 1px solid #f1f5f9;">
-                        <img src="{% static 'website/img/categories/category-1.jpg' %}?v=2" alt="Wedding Lawns and Banquet Halls in India" style="width: 140px; height: 140px; object-fit: cover; border-radius: 50%; margin-bottom: 18px; border: 4px solid #fdf2f7;">
-                        <h4 style="font-weight: 700; font-size: 20px; margin-bottom: 6px; color: #111;">Wedding Lawns</h4>
-                        <p style="color: #6b7280; font-size: 13.5px; margin-bottom: 12px;">Open-Air Lawns, Banquet Halls &amp; Resorts</p>
-                        <span style="color: #e72e77; font-weight: 700; font-size: 13px;">Browse Venues <i class="fa fa-arrow-right"></i></span>
-                    </div>
-                </a>
+            <div class="col-lg-3 col-md-6 col-sm-6">
+                <div class="vendor-category">
+                    <img src="{% static 'website/img/categories/category-2.jpg' %}?v=2" alt="Photographers">
+                    <h4>Photographers</h4>
+                    <p>Capture your moments</p>
+                </div>
             </div>
-
-            <!-- Category 2: Photographers -->
-            <div class="col-lg-3 col-md-6 col-sm-6 mb-4">
-                <a href="{% url 'vendors' %}?category=photographers" style="text-decoration: none; color: inherit; display: block;" title="Find Candid Wedding Photographers">
-                    <div class="vendor-category" style="background: #fff; border-radius: 14px; padding: 30px 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.04); border: 1px solid #f1f5f9;">
-                        <img src="{% static 'website/img/categories/category-2.jpg' %}?v=2" alt="Candid Wedding Photographers and Videographers" style="width: 140px; height: 140px; object-fit: cover; border-radius: 50%; margin-bottom: 18px; border: 4px solid #fdf2f7;">
-                        <h4 style="font-weight: 700; font-size: 20px; margin-bottom: 6px; color: #111;">Photographers</h4>
-                        <p style="color: #6b7280; font-size: 13.5px; margin-bottom: 12px;">Candid, Traditional &amp; Pre-Wedding Shoots</p>
-                        <span style="color: #e72e77; font-weight: 700; font-size: 13px;">View Portfolios <i class="fa fa-arrow-right"></i></span>
-                    </div>
-                </a>
+            <div class="col-lg-3 col-md-6 col-sm-6">
+                <div class="vendor-category">
+                    <img src="{% static 'website/img/categories/category-3.jpg' %}?v=2" alt="Decorators">
+                    <h4>Decorators</h4>
+                    <p>Beautiful themes</p>
+                </div>
             </div>
-
-            <!-- Category 3: Decorators -->
-            <div class="col-lg-3 col-md-6 col-sm-6 mb-4">
-                <a href="{% url 'vendors' %}?category=decorators" style="text-decoration: none; color: inherit; display: block;" title="Book Wedding Decorators and Stage Setup">
-                    <div class="vendor-category" style="background: #fff; border-radius: 14px; padding: 30px 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.04); border: 1px solid #f1f5f9;">
-                        <img src="{% static 'website/img/categories/category-3.jpg' %}?v=2" alt="Wedding Stage Decorators and Mandap Designers" style="width: 140px; height: 140px; object-fit: cover; border-radius: 50%; margin-bottom: 18px; border: 4px solid #fdf2f7;">
-                        <h4 style="font-weight: 700; font-size: 20px; margin-bottom: 6px; color: #111;">Decorators</h4>
-                        <p style="color: #6b7280; font-size: 13.5px; margin-bottom: 12px;">Mandap Setup, Floral &amp; Theme Lighting</p>
-                        <span style="color: #e72e77; font-weight: 700; font-size: 13px;">Explore Themes <i class="fa fa-arrow-right"></i></span>
-                    </div>
-                </a>
-            </div>
-
-            <!-- Category 4: Makeup Artists -->
-            <div class="col-lg-3 col-md-6 col-sm-6 mb-4">
-                <a href="{% url 'vendors' %}?type=vendors" style="text-decoration: none; color: inherit; display: block;" title="Bridal Makeup and Wedding Specialists">
-                    <div class="vendor-category" style="background: #fff; border-radius: 14px; padding: 30px 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.04); border: 1px solid #f1f5f9;">
-                        <img src="{% static 'website/img/categories/category-4.jpg' %}?v=2" alt="Bridal Makeup Artists and Styling" style="width: 140px; height: 140px; object-fit: cover; border-radius: 50%; margin-bottom: 18px; border: 4px solid #fdf2f7;">
-                        <h4 style="font-weight: 700; font-size: 20px; margin-bottom: 6px; color: #111;">Bridal Makeup</h4>
-                        <p style="color: #6b7280; font-size: 13.5px; margin-bottom: 12px;">HD, Airbrush Makeup &amp; Mehendi Artists</p>
-                        <span style="color: #e72e77; font-weight: 700; font-size: 13px;">Find Artists <i class="fa fa-arrow-right"></i></span>
-                    </div>
-                </a>
+            <div class="col-lg-3 col-md-6 col-sm-6">
+                <div class="vendor-category">
+                    <img src="{% static 'website/img/categories/category-4.jpg' %}?v=2" alt="Makeup">
+                    <h4>Makeup Artists</h4>
+                    <p>Look your best</p>
+                </div>
             </div>
         </div>
     </div>
 </section>
 <!-- Categories Section End -->
 
-<!-- Featured Venues Section Begin -->
-<section class="featured-vendors spad" style="padding: 70px 0; background: #ffffff;">
+<!-- Featured Vendors Section Begin -->
+<section class="featured-vendors spad">
     <div class="container">
-        <div class="row align-items-end mb-4">
-            <div class="col-lg-8">
-                <span style="color:#e72e77; font-weight:700; text-transform:uppercase; letter-spacing:2px; font-size:13px; display:block; margin-bottom:8px;">Handpicked Choices</span>
-                <h2 style="font-weight: 800; font-size: 36px; color: #111;">Featured Wedding Lawns &amp; Venues</h2>
-                <p style="color: #6b7280; margin: 0; font-size: 15px;">Discover high-demand wedding lawns with verified capacities, guest rooms, and catering packages.</p>
-            </div>
-            <div class="col-lg-4 text-lg-right mt-3 mt-lg-0">
-                <a href="{% url 'vendors' %}?type=venues" class="btn-vendor-list" style="font-size: 13px; padding: 10px 20px;">
-                    View All Venues ({{ featured_vendors|length }}+) <i class="fa fa-angle-right"></i>
-                </a>
+        <div class="row">
+            <div class="col-lg-12 text-center">
+                <div class="section-title">
+                    <h2>Top Rated Vendors</h2>
+                </div>
             </div>
         </div>
         <div class="row">
             {% for vendor in featured_vendors %}
-            <div class="col-lg-4 col-md-6 mb-4">
-                <div class="product__item" style="border-radius: 12px; overflow: hidden; box-shadow: 0 4px 18px rgba(0,0,0,0.06); border: 1px solid #f1f5f9; background: #fff; transition: transform 0.3s ease;">
-                    <div class="product__item__pic set-bg" {% if vendor.image %}data-setbg="{{ vendor.image.url }}" {% else %}data-setbg="{% static 'website/img/product/product-1.jpg' %}?v=2" {% endif %} style="position: relative; height: 240px; background-size: cover; background-position: center;">
+            <div class="col-lg-4 col-md-6">
+                <div class="product__item">
+                    <div class="product__item__pic set-bg" {% if vendor.image %}data-setbg="{{ vendor.image.url }}" {%
+                        else %}data-setbg="{% static 'website/img/product/product-1.jpg' %}?v=2" {% endif %}>
                         {% if vendor.is_premium %}
-                        <div class="label" style="background: linear-gradient(135deg, #e72e77, #c2185b); color: #fff; font-weight: 700; font-size: 11px; padding: 4px 12px; border-radius: 20px; position: absolute; top: 15px; left: 15px; text-transform: uppercase;">
-                            <i class="fa fa-diamond"></i> Premium Venue
-                        </div>
+                        <div class="label new">Premium</div>
                         {% elif vendor.is_verified %}
-                        <div class="label" style="background: #10b981; color: #fff; font-weight: 700; font-size: 11px; padding: 4px 12px; border-radius: 20px; position: absolute; top: 15px; left: 15px; text-transform: uppercase;">
-                            <i class="fa fa-check-circle"></i> Verified
-                        </div>
+                        <div class="label">Verified</div>
                         {% endif %}
-                        <div style="position: absolute; bottom: 12px; right: 12px; background: rgba(0,0,0,0.7); color: #fff; padding: 4px 10px; border-radius: 6px; font-size: 12px; font-weight: 600;">
-                            <i class="fa fa-map-marker text-danger"></i> {{ vendor.location }}
-                        </div>
                     </div>
-                    <div class="product__item__text" style="padding: 20px;">
-                        <div class="d-flex justify-content-between align-items-start mb-2">
-                            <span style="font-size: 12px; font-weight: 700; color: #e72e77; text-transform: uppercase; letter-spacing: 0.5px;">{{ vendor.category.name }}</span>
-                            <div class="rating" style="font-size: 13px;">
-                                <i class="fa fa-star text-warning"></i>
-                                <strong style="color: #111;">4.8</strong>
-                                <span class="text-muted">({{ vendor.reviews.count }} reviews)</span>
-                            </div>
+                    <div class="product__item__text text-center">
+                        <h6><a href="{% url 'vendor_details' vendor.uuid_field %}">{{ vendor.name }}</a></h6>
+                        <div class="rating mt-2">
+                            <i class="fa fa-star text-warning"></i>
+                            <i class="fa fa-star text-warning"></i>
+                            <i class="fa fa-star text-warning"></i>
+                            <i class="fa fa-star text-warning"></i>
+                            <i class="fa fa-star text-warning"></i>
+                            <span class="text-muted ml-1">({{ vendor.reviews.count }} Reviews)</span>
                         </div>
-                        <h5 style="font-weight: 700; font-size: 18px; margin-bottom: 8px;">
-                            <a href="{% url 'vendor_details' vendor.uuid_field %}" style="color: #111; text-decoration: none;" title="{{ vendor.name }} - Wedding Lawn in {{ vendor.location }}">
-                                {{ vendor.name }}
-                            </a>
-                        </h5>
-
-                        <!-- Venue Specifications -->
-                        {% if vendor.category.slug == 'venues' %}
-                        <div class="d-flex justify-content-between text-muted mb-3" style="font-size: 12.5px; border-top: 1px dashed #e5e7eb; border-bottom: 1px dashed #e5e7eb; padding: 8px 0;">
-                            <div><i class="fa fa-users text-danger mr-1"></i> {{ vendor.capacity|default:"500-1500" }} Guests</div>
-                            <div><i class="fa fa-bed text-danger mr-1"></i> {{ vendor.rooms|default:"5" }} Rooms</div>
-                            <div><i class="fa fa-car text-danger mr-1"></i> Parking</div>
-                        </div>
-                        {% endif %}
-
-                        <div class="d-flex justify-content-between align-items-center mt-3">
-                            <div>
-                                <span style="font-size: 11px; text-transform: uppercase; color: #9ca3af; display: block;">Starting Price</span>
-                                <strong style="font-size: 17px; color: #111;">₹{{ vendor.price_starting|floatformat:0 }}</strong>
-                            </div>
-                            <a href="{% url 'vendor_details' vendor.uuid_field %}" class="btn-vendor-list" style="padding: 6px 14px; font-size: 12px;">
-                                View Details
-                            </a>
+                        <div class="product__price mt-2">
+                            {{ vendor.category.name }}, {{ vendor.location }}
                         </div>
                     </div>
                 </div>
             </div>
             {% empty %}
-            <div class="col-12 text-center py-5">
-                <p>No featured venues found at the moment.</p>
+            <div class="col-12 text-center">
+                <p>No featured vendors found at the moment.</p>
             </div>
             {% endfor %}
         </div>
+        <div class="row">
+            <div class="col-lg-12 text-center mt-4">
+                <a href="{% url 'vendors' %}" class="btn-theme">View All Vendors</a>
+            </div>
+        </div>
     </div>
 </section>
-<!-- Featured Venues Section End -->
+<!-- Featured Vendors Section End -->
 
-<!-- Popular Venues by City Section (Local SEO Goldmine) -->
-<section class="top-cities spad" style="background: #fafafa; padding: 70px 0;">
+<!-- Wedding Stories Inspiration Begin -->
+<section class="real-weddings spad">
     <div class="container">
         <div class="row">
-            <div class="col-lg-12 text-center mb-5">
-                <span style="color:#e72e77; font-weight:700; text-transform:uppercase; letter-spacing:2px; font-size:13px; display:block; margin-bottom:8px;">Destination &amp; Local Venues</span>
-                <h2 style="font-weight: 800; font-size: 38px; color: #111;">Popular Wedding Destinations in India</h2>
-                <p style="color: #6b7280; font-size: 16px; max-width: 650px; margin: 8px auto 0;">Explore handpicked wedding lawns, heritage palaces, and modern banquet halls across prime locations.</p>
+            <div class="col-lg-12 text-center">
+                <div class="section-title">
+                    <h2>Wedding Stories &amp; Inspiration</h2>
+                    <p class="section-subtitle">Get inspired by beautiful couples and stunning setups</p>
+                </div>
+            </div>
+        </div>
+        <div class="row mt-4">
+            <div class="col-lg-4 col-md-6 mb-4">
+                <div class="wedding-card">
+                    <img src="{% static 'website/img/product/product-2.jpg' %}?v=2" alt="Real Wedding"
+                        class="wedding-image" style="width:100%; object-fit:cover;">
+                    <div class="wedding-content">
+                        <h5 class="wedding-title">A Royal Affair in Udaipur</h5>
+                        <p class="wedding-description">Ankit &amp; Priya's Grand Celebration</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-6 mb-4">
+                <div class="wedding-card">
+                    <img src="{% static 'website/img/product/product-3.jpg' %}?v=2" alt="Real Wedding"
+                        class="wedding-image" style="width:100%; object-fit:cover;">
+                    <div class="wedding-content">
+                        <h5 class="wedding-title">Modern Minimalist Delhi Wedding</h5>
+                        <p class="wedding-description">Rohan &amp; Sneha's Intimate Vows</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-6 mb-4">
+                <div class="wedding-card">
+                    <img src="{% static 'website/img/product/product-1.jpg' %}?v=2" alt="Real Wedding"
+                        class="wedding-image" style="width:100%; object-fit:cover;">
+                    <div class="wedding-content">
+                        <h5 class="wedding-title">Beachside Bliss in Goa</h5>
+                        <p class="wedding-description">Kabir &amp; Meera's Sunset Reception</p>
+                    </div>
+                </div>
             </div>
         </div>
         <div class="row">
-            <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
-                <a href="{% url 'vendors' %}?type=venues&city=Lucknow" class="city-card" title="Wedding Lawns and Marriage Gardens in Lucknow">
-                    <img src="{% static 'website/img/cities/lucknow.jpg' %}?v=3" alt="Wedding Lawns and Marriage Gardens in Lucknow">
-                    <div class="city-overlay">
-                        <div class="city-name">Lucknow</div>
-                        <div class="venue-count">Lawns &amp; Banquets</div>
-                    </div>
-                </a>
+            <div class="col-lg-12 text-center mt-3">
+                <a href="#" class="btn-outline-theme">View Gallery</a>
             </div>
-            <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
-                <a href="{% url 'vendors' %}?type=venues&city=Delhi" class="city-card" title="Banquet Halls and Farmhouses in Delhi NCR">
-                    <img src="{% static 'website/img/cities/delhi.jpg' %}" alt="Banquet Halls and Farmhouses in Delhi NCR">
-                    <div class="city-overlay">
-                        <div class="city-name">Delhi NCR</div>
-                        <div class="venue-count">Farmhouses &amp; Lawns</div>
-                    </div>
-                </a>
+        </div>
+    </div>
+</section>
+<!-- Wedding Stories Inspiration End -->
+
+<!-- How it Works Section Begin -->
+<section class="how-it-works spad" style="background-color: #fffafb;">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 text-center">
+                <div class="section-title">
+                    <h2>How It Works</h2>
+                    <p class="section-subtitle">Plan your dream wedding in 4 simple steps</p>
+                </div>
             </div>
+        </div>
+        <div class="row text-center mt-4">
+            <div class="col-lg-3 col-md-6 mb-4">
+                <div class="step-card">
+                    <div class="step-icon"><i class="fa fa-search"></i></div>
+                    <h5 style="font-weight: 700; font-family: var(--font-heading);">1. Discover</h5>
+                    <p>Search for venues and vendors in your preferred city.</p>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6 mb-4">
+                <div class="step-card">
+                    <div class="step-icon"><i class="fa fa-sliders"></i></div>
+                    <h5 style="font-weight: 700; font-family: var(--font-heading);">2. Compare</h5>
+                    <p>Filter by prices, ratings, and read verified reviews.</p>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6 mb-4">
+                <div class="step-card">
+                    <div class="step-icon"><i class="fa fa-envelope-o"></i></div>
+                    <h5 style="font-weight: 700; font-family: var(--font-heading);">3. Contact</h5>
+                    <p>Chat directly with vendors to get personalized quotes.</p>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6 mb-4">
+                <div class="step-card">
+                    <div class="step-icon"><i class="fa fa-calendar-check-o"></i></div>
+                    <h5 style="font-weight: 700; font-family: var(--font-heading);">4. Book</h5>
+                    <p>Confirm your bookings and relax while we handle the rest.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- How it Works Section End -->
+
+<!-- Top Cities Section Begin -->
+<section class="top-cities spad" style="background: #fcfcfc;">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 text-center">
+                <div class="section-title">
+                    <h2>Popular Venues by City</h2>
+                    <p class="section-subtitle">Handpicked destinations for your perfect wedding</p>
+                </div>
+            </div>
+        </div>
+        <div class="row mt-4">
             <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
-                <a href="{% url 'vendors' %}?type=venues&city=Mumbai" class="city-card" title="Wedding Venues and Lawns in Mumbai">
-                    <img src="{% static 'website/img/cities/mumbai.jpg' %}" alt="Wedding Venues and Lawns in Mumbai">
+                <a href="{% url 'vendors' %}?city=Mumbai" class="city-card">
+                    <img src="{% static 'website/img/cities/mumbai.jpg' %}" alt="Mumbai">
                     <div class="city-overlay">
                         <div class="city-name">Mumbai</div>
-                        <div class="venue-count">Banquet Halls &amp; Lawns</div>
+                        <div class="venue-count">120+ Venues</div>
                     </div>
                 </a>
             </div>
             <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
-                <a href="{% url 'vendors' %}?type=venues&city=Jaipur" class="city-card" title="Royal Wedding Venues and Heritage Lawns in Jaipur">
-                    <img src="{% static 'website/img/cities/jaipur.jpg' %}" alt="Royal Wedding Venues and Heritage Lawns in Jaipur">
+                <a href="{% url 'vendors' %}?city=Delhi" class="city-card">
+                    <img src="{% static 'website/img/cities/delhi.jpg' %}" alt="Delhi">
                     <div class="city-overlay">
-                        <div class="city-name">Jaipur</div>
-                        <div class="venue-count">Heritage Palaces &amp; Lawns</div>
+                        <div class="city-name">Delhi NCR</div>
+                        <div class="venue-count">150+ Venues</div>
                     </div>
                 </a>
             </div>
             <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
-                <a href="{% url 'vendors' %}?type=venues&city=Udaipur" class="city-card" title="Destination Wedding Venues in Udaipur">
-                    <img src="{% static 'website/img/cities/udaipur.jpg' %}" alt="Destination Wedding Venues in Udaipur">
-                    <div class="city-overlay">
-                        <div class="city-name">Udaipur</div>
-                        <div class="venue-count">Destination Lake Venues</div>
-                    </div>
-                </a>
-            </div>
-            <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
-                <a href="{% url 'vendors' %}?type=venues&city=Bangalore" class="city-card" title="Wedding Convention Centers in Bangalore">
-                    <img src="{% static 'website/img/cities/bangalore.jpg' %}" alt="Wedding Convention Centers and Lawns in Bangalore">
+                <a href="{% url 'vendors' %}?city=Bangalore" class="city-card">
+                    <img src="{% static 'website/img/cities/bangalore.jpg' %}" alt="Bangalore">
                     <div class="city-overlay">
                         <div class="city-name">Bangalore</div>
-                        <div class="venue-count">Convention Halls &amp; Lawns</div>
+                        <div class="venue-count">95+ Venues</div>
                     </div>
                 </a>
             </div>
             <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
-                <a href="{% url 'vendors' %}?type=venues&city=Goa" class="city-card" title="Beach Wedding Resorts and Lawns in Goa">
-                    <img src="{% static 'website/img/cities/goa.jpg' %}" alt="Beach Wedding Resorts and Lawns in Goa">
+                <a href="{% url 'vendors' %}?city=Udaipur" class="city-card">
+                    <img src="{% static 'website/img/cities/udaipur.jpg' %}" alt="Udaipur">
+                    <div class="city-overlay">
+                        <div class="city-name">Udaipur</div>
+                        <div class="venue-count">45+ Venues</div>
+                    </div>
+                </a>
+            </div>
+            <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
+                <a href="{% url 'vendors' %}?city=Lucknow" class="city-card">
+                    <img src="{% static 'website/img/cities/lucknow.jpg' %}?v=3" alt="Lucknow">
+                    <div class="city-overlay">
+                        <div class="city-name">Lucknow</div>
+                        <div class="venue-count">60+ Venues</div>
+                    </div>
+                </a>
+            </div>
+            <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
+                <a href="{% url 'vendors' %}?city=Jaipur" class="city-card">
+                    <img src="{% static 'website/img/cities/jaipur.jpg' %}" alt="Jaipur">
+                    <div class="city-overlay">
+                        <div class="city-name">Jaipur</div>
+                        <div class="venue-count">80+ Venues</div>
+                    </div>
+                </a>
+            </div>
+            <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
+                <a href="{% url 'vendors' %}?city=Goa" class="city-card">
+                    <img src="{% static 'website/img/cities/goa.jpg' %}" alt="Goa">
                     <div class="city-overlay">
                         <div class="city-name">Goa</div>
-                        <div class="venue-count">Beachfront Lawns &amp; Resorts</div>
+                        <div class="venue-count">55+ Venues</div>
                     </div>
                 </a>
             </div>
             <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
-                <a href="{% url 'vendors' %}?type=venues&city=Chandigarh" class="city-card" title="Luxury Wedding Lawns in Chandigarh">
-                    <img src="{% static 'website/img/cities/chandigarh.jpg' %}?v=3" alt="Luxury Wedding Lawns and Resorts in Chandigarh">
+                <a href="{% url 'vendors' %}?city=Chandigarh" class="city-card">
+                    <img src="{% static 'website/img/cities/chandigarh.jpg' %}?v=3" alt="Chandigarh">
                     <div class="city-overlay">
                         <div class="city-name">Chandigarh</div>
-                        <div class="venue-count">Open Air Resorts</div>
+                        <div class="venue-count">40+ Venues</div>
                     </div>
                 </a>
             </div>
         </div>
     </div>
 </section>
-<!-- Popular Venues by City End -->
+<!-- Top Cities Section End -->
 
-<!-- Real Weddings Inspiration Begin -->
-<section class="real-weddings spad" style="padding: 70px 0; background: #ffffff;">
+<!-- Trust Section Begin -->
+<section class="services spad" style="background: #fdfdfd; border-top: 1px solid #f0f0f0;">
     <div class="container">
-        <div class="row align-items-end mb-4">
-            <div class="col-lg-8">
-                <span style="color:#e72e77; font-weight:700; text-transform:uppercase; letter-spacing:2px; font-size:13px; display:block; margin-bottom:8px;">Real Love Stories</span>
-                <h2 style="font-weight: 800; font-size: 36px; color: #111;">Wedding Stories &amp; Inspiration</h2>
-                <p style="color: #6b7280; margin: 0; font-size: 15px;">Discover real couples who found their dream wedding lawn and celebrated unforgettable moments.</p>
-            </div>
-            <div class="col-lg-4 text-lg-right mt-3 mt-lg-0">
-                <a href="{% url 'real_weddings' %}" class="btn-vendor-list" style="font-size: 13px; padding: 10px 20px;">
-                    View All Stories <i class="fa fa-angle-right"></i>
-                </a>
-            </div>
-        </div>
-        <div class="row">
-            {% for wedding in real_weddings %}
-            <div class="col-lg-4 col-md-6 mb-4">
-                <div class="wedding-card" style="border-radius: 12px; overflow: hidden; box-shadow: 0 4px 18px rgba(0,0,0,0.06); border: 1px solid #f1f5f9;">
-                    <div class="wedding-image" style="height: 220px; background-size: cover; background-position: center; background-image: url('{% if wedding.main_image %}{{ wedding.main_image.url }}{% else %}{% static 'website/img/product/product-2.jpg' %}{% endif %}');">
-                    </div>
-                    <div class="wedding-content" style="padding: 22px;">
-                        <h5 class="wedding-title" style="font-weight: 700; font-size: 18px; margin-bottom: 6px;">{{ wedding.couple_name }}</h5>
-                        <div class="wedding-meta" style="color: #6b7280; font-size: 13px; margin-bottom: 12px;">
-                            <span><i class="fa fa-map-marker text-danger"></i> {{ wedding.location }}</span>
-                            <span class="ml-3"><i class="fa fa-calendar text-danger"></i> {{ wedding.date|date:"F Y" }}</span>
-                        </div>
-                        <p class="wedding-description" style="color: #4b5563; font-size: 13.5px; line-height: 1.6; margin-bottom: 12px;">
-                            {{ wedding.description|truncatewords:16 }}
-                        </p>
-                        {% if wedding.venue %}
-                        <div style="font-size: 12.5px; color: #111; font-weight: 600;">
-                            <strong>Venue:</strong> <span style="color: #e72e77;">{{ wedding.venue.name }}</span>
-                        </div>
-                        {% endif %}
-                    </div>
-                </div>
-            </div>
-            {% empty %}
-            <div class="col-lg-4 col-md-6 mb-4">
-                <div class="wedding-card" style="border-radius: 12px; overflow: hidden; box-shadow: 0 4px 18px rgba(0,0,0,0.06); border: 1px solid #f1f5f9;">
-                    <img src="{% static 'website/img/product/product-2.jpg' %}?v=2" alt="A Royal Affair in Udaipur" style="width:100%; height: 220px; object-fit: cover;">
-                    <div class="wedding-content" style="padding: 22px;">
-                        <h5 class="wedding-title" style="font-weight: 700; font-size: 18px; margin-bottom: 6px;">Ankit &amp; Priya</h5>
-                        <p style="color: #6b7280; font-size: 13px; margin-bottom: 10px;"><i class="fa fa-map-marker text-danger"></i> Udaipur | Royal Palace Celebration</p>
-                        <p style="color: #4b5563; font-size: 13.5px;">A magnificent open-lawn royal celebration overlooking the Aravali hills with vibrant Rajasthani decor.</p>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-4 col-md-6 mb-4">
-                <div class="wedding-card" style="border-radius: 12px; overflow: hidden; box-shadow: 0 4px 18px rgba(0,0,0,0.06); border: 1px solid #f1f5f9;">
-                    <img src="{% static 'website/img/product/product-3.jpg' %}?v=2" alt="Delhi Wedding Celebration" style="width:100%; height: 220px; object-fit: cover;">
-                    <div class="wedding-content" style="padding: 22px;">
-                        <h5 class="wedding-title" style="font-weight: 700; font-size: 18px; margin-bottom: 6px;">Rohan &amp; Sneha</h5>
-                        <p style="color: #6b7280; font-size: 13px; margin-bottom: 10px;"><i class="fa fa-map-marker text-danger"></i> Delhi NCR | Grand Farmhouse Vows</p>
-                        <p style="color: #4b5563; font-size: 13.5px;">Intimate pheras under floral canopies followed by a glamorous reception in an AC banquet hall.</p>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-4 col-md-6 mb-4">
-                <div class="wedding-card" style="border-radius: 12px; overflow: hidden; box-shadow: 0 4px 18px rgba(0,0,0,0.06); border: 1px solid #f1f5f9;">
-                    <img src="{% static 'website/img/product/product-1.jpg' %}?v=2" alt="Beachside Bliss in Goa" style="width:100%; height: 220px; object-fit: cover;">
-                    <div class="wedding-content" style="padding: 22px;">
-                        <h5 class="wedding-title" style="font-weight: 700; font-size: 18px; margin-bottom: 6px;">Kabir &amp; Meera</h5>
-                        <p style="color: #6b7280; font-size: 13px; margin-bottom: 10px;"><i class="fa fa-map-marker text-danger"></i> Goa | Sunset Beach Lawn</p>
-                        <p style="color: #4b5563; font-size: 13.5px;">Pastel mandap by the ocean breeze with acoustic music and live barbecue under fairy lights.</p>
-                    </div>
-                </div>
-            </div>
-            {% endfor %}
-        </div>
-    </div>
-</section>
-<!-- Real Weddings End -->
-
-<!-- Why Choose BookMyLawn (Industry Trust Pillars) -->
-<section style="background: #fafafa; padding: 70px 0; border-top: 1px solid #f1f5f9; border-bottom: 1px solid #f1f5f9;">
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-12 text-center mb-5">
-                <span style="color:#e72e77; font-weight:700; text-transform:uppercase; letter-spacing:2px; font-size:13px; display:block; margin-bottom:8px;">Trust &amp; Reliability</span>
-                <h2 style="font-weight: 800; font-size: 38px; color: #111;">Why Choose BookMyLawn?</h2>
-                <p style="color: #6b7280; font-size: 16px; max-width: 600px; margin: 8px auto 0;">We take the uncertainty out of wedding planning with verified data, transparent pricing, and direct vendor access.</p>
-            </div>
-        </div>
         <div class="row text-center">
-            <div class="col-lg-3 col-md-6 mb-4">
-                <div style="background: #fff; padding: 35px 25px; border-radius: 14px; box-shadow: 0 4px 15px rgba(0,0,0,0.03); height: 100%;">
-                    <div style="width: 65px; height: 65px; background: #fdf2f7; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px;">
-                        <i class="fa fa-shield" style="color: #e72e77; font-size: 28px;"></i>
-                    </div>
-                    <h5 style="font-weight: 700; font-size: 18px; margin-bottom: 10px;">100% Verified Venues</h5>
-                    <p style="color: #6b7280; font-size: 14px; line-height: 1.6; margin: 0;">Every lawn and banquet hall is vetted for legal clearance, actual capacity, parking, and hygiene standards.</p>
+            <div class="col-lg-4 col-md-6 mb-4">
+                <div class="trust-card">
+                    <i class="fa fa-check-circle trust-icon"></i>
+                    <h6 style="font-weight: 700; font-family: var(--font-heading); font-size: 20px;">Verified Vendors
+                    </h6>
+                    <p>Thousands of trusted professionals evaluated for excellence.</p>
                 </div>
             </div>
-            <div class="col-lg-3 col-md-6 mb-4">
-                <div style="background: #fff; padding: 35px 25px; border-radius: 14px; box-shadow: 0 4px 15px rgba(0,0,0,0.03); height: 100%;">
-                    <div style="width: 65px; height: 65px; background: #fdf2f7; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px;">
-                        <i class="fa fa-tag" style="color: #e72e77; font-size: 28px;"></i>
-                    </div>
-                    <h5 style="font-weight: 700; font-size: 18px; margin-bottom: 10px;">Best Price Guarantee</h5>
-                    <p style="color: #6b7280; font-size: 14px; line-height: 1.6; margin: 0;">Get direct per-plate pricing and lawn rental rates with zero hidden platform markups or commission.</p>
+            <div class="col-lg-4 col-md-6 mb-4">
+                <div class="trust-card">
+                    <i class="fa fa-star trust-icon"></i>
+                    <h6 style="font-weight: 700; font-family: var(--font-heading); font-size: 20px;">Real Reviews</h6>
+                    <p>Read honest experiences and ratings from actual couples.</p>
                 </div>
             </div>
-            <div class="col-lg-3 col-md-6 mb-4">
-                <div style="background: #fff; padding: 35px 25px; border-radius: 14px; box-shadow: 0 4px 15px rgba(0,0,0,0.03); height: 100%;">
-                    <div style="width: 65px; height: 65px; background: #fdf2f7; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px;">
-                        <i class="fa fa-comments" style="color: #e72e77; font-size: 28px;"></i>
-                    </div>
-                    <h5 style="font-weight: 700; font-size: 18px; margin-bottom: 10px;">Direct Vendor Connect</h5>
-                    <p style="color: #6b7280; font-size: 14px; line-height: 1.6; margin: 0;">Connect directly with venue managers, photographers, and decorators without middlemen delaying replies.</p>
-                </div>
-            </div>
-            <div class="col-lg-3 col-md-6 mb-4">
-                <div style="background: #fff; padding: 35px 25px; border-radius: 14px; box-shadow: 0 4px 15px rgba(0,0,0,0.03); height: 100%;">
-                    <div style="width: 65px; height: 65px; background: #fdf2f7; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px;">
-                        <i class="fa fa-star" style="color: #e72e77; font-size: 28px;"></i>
-                    </div>
-                    <h5 style="font-weight: 700; font-size: 18px; margin-bottom: 10px;">Authentic Couple Reviews</h5>
-                    <p style="color: #6b7280; font-size: 14px; line-height: 1.6; margin: 0;">Make confident decisions with real feedback, photos, and ratings submitted by couples who actually held events there.</p>
+            <div class="col-lg-4 col-md-6 mb-4">
+                <div class="trust-card">
+                    <i class="fa fa-heart trust-icon"></i>
+                    <h6 style="font-weight: 700; font-family: var(--font-heading); font-size: 20px;">Easy Planning</h6>
+                    <p>Book securely and coordinate your entire event seamlessly.</p>
                 </div>
             </div>
         </div>
     </div>
 </section>
-
-<!-- Homepage FAQ Section (Rich Snippet Indexing) -->
-<section style="padding: 70px 0; background: #ffffff;">
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-12 text-center mb-5">
-                <span style="color:#e72e77; font-weight:700; text-transform:uppercase; letter-spacing:2px; font-size:13px; display:block; margin-bottom:8px;">Got Questions?</span>
-                <h2 style="font-weight: 800; font-size: 38px; color: #111;">Frequently Asked Questions About Wedding Venues</h2>
-                <p style="color: #6b7280; font-size: 16px; max-width: 650px; margin: 8px auto 0;">Everything you need to know about booking wedding lawns and banquet halls on BookMyLawn.</p>
-            </div>
-        </div>
-        <div class="row justify-content-center">
-            <div class="col-lg-9">
-                <div class="accordion" id="homeFaq">
-                    <div class="card mb-3" style="border: 1px solid #e5e7eb; border-radius: 10px; overflow: hidden;">
-                        <div class="card-header" id="hFaq1" style="background: #fafafa; padding: 18px 24px; border-bottom: none;">
-                            <h3 class="mb-0" style="font-size: 16px; font-family: 'Montserrat', sans-serif;">
-                                <button class="btn btn-link btn-block text-left font-weight-bold text-dark d-flex justify-content-between align-items-center" type="button" data-toggle="collapse" data-target="#collapseHFaq1" aria-expanded="true" style="text-decoration: none; padding: 0;">
-                                    <span>How do I choose the best wedding lawn or banquet hall on BookMyLawn?</span>
-                                    <i class="fa fa-chevron-down"></i>
-                                </button>
-                            </h3>
-                        </div>
-                        <div id="collapseHFaq1" class="collapse show" data-parent="#homeFaq">
-                            <div class="card-body" style="padding: 20px 24px; color: #4b5563; font-size: 14.5px; line-height: 1.8;">
-                                Filter venues by city, guest capacity, price per plate (veg/non-veg), and amenities such as AC banquet halls, bridal changing rooms, and parking. Compare real couple ratings, view high-resolution photo galleries, and click 'Send Inquiry' to receive instant quotes directly from venue managers.
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="card mb-3" style="border: 1px solid #e5e7eb; border-radius: 10px; overflow: hidden;">
-                        <div class="card-header" id="hFaq2" style="background: #fafafa; padding: 18px 24px; border-bottom: none;">
-                            <h3 class="mb-0" style="font-size: 16px; font-family: 'Montserrat', sans-serif;">
-                                <button class="btn btn-link btn-block text-left font-weight-bold text-dark d-flex justify-content-between align-items-center collapsed" type="button" data-toggle="collapse" data-target="#collapseHFaq2" aria-expanded="false" style="text-decoration: none; padding: 0;">
-                                    <span>What is included when booking an open-air wedding lawn?</span>
-                                    <i class="fa fa-chevron-down"></i>
-                                </button>
-                            </h3>
-                        </div>
-                        <div id="collapseHFaq2" class="collapse" data-parent="#homeFaq">
-                            <div class="card-body" style="padding: 20px 24px; color: #4b5563; font-size: 14.5px; line-height: 1.8;">
-                                Most wedding lawns provide the lush green ground space, stage foundation, power backup/generators, and dedicated valet parking. Many lawns also offer in-house catering (with per-plate packages) and stage decoration setups, while allowing external decorators and caterers upon request.
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="card mb-3" style="border: 1px solid #e5e7eb; border-radius: 10px; overflow: hidden;">
-                        <div class="card-header" id="hFaq3" style="background: #fafafa; padding: 18px 24px; border-bottom: none;">
-                            <h3 class="mb-0" style="font-size: 16px; font-family: 'Montserrat', sans-serif;">
-                                <button class="btn btn-link btn-block text-left font-weight-bold text-dark d-flex justify-content-between align-items-center collapsed" type="button" data-toggle="collapse" data-target="#collapseHFaq3" aria-expanded="false" style="text-decoration: none; padding: 0;">
-                                    <span>What is the average cost of booking a wedding lawn in India?</span>
-                                    <i class="fa fa-chevron-down"></i>
-                                </button>
-                            </h3>
-                        </div>
-                        <div id="collapseHFaq3" class="collapse" data-parent="#homeFaq">
-                            <div class="card-body" style="padding: 20px 24px; color: #4b5563; font-size: 14.5px; line-height: 1.8;">
-                                Wedding lawn rental costs range from ₹50,000 for intimate gathering lawns up to ₹5,00,000+ for royal destination wedding lawns and farmhouses. Per-plate catering typically ranges from ₹1,000 to ₹3,500+ depending on the menu and city.
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="card mb-3" style="border: 1px solid #e5e7eb; border-radius: 10px; overflow: hidden;">
-                        <div class="card-header" id="hFaq4" style="background: #fafafa; padding: 18px 24px; border-bottom: none;">
-                            <h3 class="mb-0" style="font-size: 16px; font-family: 'Montserrat', sans-serif;">
-                                <button class="btn btn-link btn-block text-left font-weight-bold text-dark d-flex justify-content-between align-items-center collapsed" type="button" data-toggle="collapse" data-target="#collapseHFaq4" aria-expanded="false" style="text-decoration: none; padding: 0;">
-                                    <span>Can I book wedding photographers and decorators along with the lawn?</span>
-                                    <i class="fa fa-chevron-down"></i>
-                                </button>
-                            </h3>
-                        </div>
-                        <div id="collapseHFaq4" class="collapse" data-parent="#homeFaq">
-                            <div class="card-body" style="padding: 20px 24px; color: #4b5563; font-size: 14.5px; line-height: 1.8;">
-                                Yes! BookMyLawn is an all-in-one wedding platform. Alongside wedding lawns, you can explore verified wedding photographers, bridal makeup artists, stage decorators, and catering vendors across India.
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="text-center mt-4">
-                    <a href="{% url 'faq' %}" class="btn-vendor-list" style="font-size: 13px;">View All 20+ Frequently Asked Questions <i class="fa fa-arrow-right"></i></a>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
-
-<!-- Sector-Specific SEO Editorial Guide (WedMeGood / WeddingWire Industry Standard) -->
-<section style="background: #fdfdfd; padding: 60px 0; border-top: 1px solid #f1f5f9;">
-    <div class="container">
-        <div class="row justify-content-center">
-            <div class="col-lg-11" style="color: #4b5563; font-size: 14.5px; line-height: 1.8;">
-                <h2 style="font-size: 26px; font-weight: 800; color: #111; margin-bottom: 16px;">
-                    BookMyLawn: India's Leading Wedding Lawn &amp; Banquet Hall Booking Portal
-                </h2>
-                <p>
-                    Planning a grand Indian wedding begins with choosing the right venue. Whether you envision a royal celebration under starlit skies on a sprawling <strong>open-air wedding lawn</strong>, a lavish reception inside an air-conditioned <strong>luxury banquet hall</strong>, or an intimate destination ceremony in a heritage palace, <strong>BookMyLawn</strong> connects you directly with top wedding venues across India.
-                </p>
-
-                <h3 style="font-size: 20px; font-weight: 700; color: #111; margin: 24px 0 12px;">
-                    Key Factors to Consider When Selecting a Wedding Lawn
-                </h3>
-                <p>
-                    When choosing a marriage lawn or party plot, consider:
-                </p>
-                <ul style="padding-left: 20px; margin-bottom: 20px;">
-                    <li><strong>Guest Capacity:</strong> Ensure the lawn accommodates your floating guest count comfortably (typically 500 to 2,000+ guests for Indian weddings) without overcrowding the dining area or mandap.</li>
-                    <li><strong>Lawn + Banquet Hall Combo:</strong> Venues offering both outdoor manicured lawns and indoor AC banquet halls provide flexibility for sudden weather changes, sangeet performances, and dining setups.</li>
-                    <li><strong>Catering Policies &amp; Price Per Plate:</strong> Inquire whether the venue mandates in-house catering or permits outside wedding caterers. Review veg and non-veg plate costs, live chaat stalls, and dessert counters.</li>
-                    <li><strong>Parking &amp; Guest Accommodation:</strong> Check for valet parking facilities, dedicated bridal dressing suites, and guest rooms for outstation family members.</li>
-                </ul>
-
-                <h3 style="font-size: 20px; font-weight: 700; color: #111; margin: 24px 0 12px;">
-                    Wedding Services Available on BookMyLawn
-                </h3>
-                <p>
-                    Beyond premier wedding lawns and banquet halls, BookMyLawn provides complete wedding vendor discovery:
-                    <a href="{% url 'vendors' %}?category=photographers" style="color: #e72e77; font-weight: 600;">Wedding Photographers</a> for pre-wedding shoots and candid coverage,
-                    <a href="{% url 'vendors' %}?category=decorators" style="color: #e72e77; font-weight: 600;">Wedding Decorators</a> specializing in floral mandaps, fairy lights, and themed stage backdrops,
-                    and experienced bridal makeup artists and caterers.
-                </p>
-            </div>
-        </div>
-    </div>
-</section>
+<!-- Trust Section End -->
 
 {% endblock %}
