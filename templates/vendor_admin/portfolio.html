@@ -1,0 +1,269 @@
+{% extends 'vendor_admin/base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-12 col-xl-11">
+    
+    <!-- Page Header -->
+    <div class="d-flex flex-wrap justify-content-between align-items-center mb-4 mt-3">
+        <div>
+            <h2 class="h3 page-title font-weight-bold mb-1">Portfolio & Photo Gallery</h2>
+            <p class="text-muted mb-0">Manage showcase photos of your wedding lawn, banquet setups, decor, and dining areas.</p>
+        </div>
+        <div class="mt-3 mt-md-0 d-flex gap-2">
+            <a href="{% url 'vendor_details' vendor.uuid_field %}" target="_blank" class="btn btn-outline-primary rounded-pill font-weight-bold px-3 shadow-sm mr-2">
+                <i class="fe fe-external-link mr-1"></i> View Live Listing
+            </a>
+            <button type="button" class="btn btn-primary rounded-pill font-weight-bold px-4 shadow-sm" onclick="document.getElementById('galleryFiles').click()">
+                <i class="fe fe-plus-circle mr-1"></i> Add Photos
+            </button>
+        </div>
+    </div>
+
+    <!-- Quick Stats & Cover Highlight -->
+    <div class="row mb-4">
+        <div class="col-md-4 mb-3 mb-md-0">
+            <div class="card shadow-sm border-0 h-100">
+                <div class="card-body d-flex align-items-center">
+                    <div class="bg-primary-light text-primary rounded-circle d-flex align-items-center justify-content-center mr-3" style="width: 52px; height: 52px; background: rgba(231,46,119,0.12); flex-shrink: 0;">
+                        <i class="fe fe-image fe-24 text-primary"></i>
+                    </div>
+                    <div>
+                        <h3 class="font-weight-bold mb-0 text-dark">{{ total_photos }}</h3>
+                        <p class="text-muted small mb-0 font-weight-semibold">Uploaded Portfolio Photos</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 mb-3 mb-md-0">
+            <div class="card shadow-sm border-0 h-100">
+                <div class="card-body d-flex align-items-center">
+                    <div class="rounded-circle d-flex align-items-center justify-content-center mr-3" style="width: 52px; height: 52px; background: rgba(40,167,69,0.12); flex-shrink: 0;">
+                        <i class="fe fe-check-circle fe-24 text-success"></i>
+                    </div>
+                    <div>
+                        <h6 class="font-weight-bold mb-0 text-dark">Cover Photo Active</h6>
+                        <p class="text-muted small mb-0">Shown on Search Results</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card shadow-sm border-0 h-100">
+                <div class="card-body d-flex align-items-center">
+                    <div class="rounded-circle d-flex align-items-center justify-content-center mr-3" style="width: 52px; height: 52px; background: rgba(255,193,7,0.15); flex-shrink: 0;">
+                        <i class="fe fe-trending-up fe-24 text-warning"></i>
+                    </div>
+                    <div>
+                        <h6 class="font-weight-bold mb-0 text-dark">+60% Inquiries</h6>
+                        <p class="text-muted small mb-0">Profiles with 10+ photos</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Upload Area Card -->
+    <div class="card shadow-sm border-0 mb-4" style="border-radius: 16px;">
+        <div class="card-header bg-white border-0 pt-4 px-4 px-md-5 d-flex justify-content-between align-items-center">
+            <div>
+                <h5 class="font-weight-bold text-dark mb-1">
+                    <i class="fe fe-upload-cloud mr-2 text-primary"></i> Upload New Portfolio Images
+                </h5>
+                <p class="text-muted small mb-0">Select multiple high-resolution photos (Stage, Mandap, Lawn Night Lighting, Banquet Interiors).</p>
+            </div>
+        </div>
+        <div class="card-body px-4 px-md-5 pb-5">
+            <form method="POST" enctype="multipart/form-data" id="portfolioUploadForm">
+                {% csrf_token %}
+                <div class="upload-area p-5 text-center bg-light mb-3" style="border: 2px dashed #d1d5db; border-radius: 16px; cursor: pointer; transition: all 0.3s;"
+                     onmouseover="this.style.borderColor='#e72e77'; this.style.backgroundColor='#fdf1f5'" 
+                     onmouseout="this.style.borderColor='#d1d5db'; this.style.backgroundColor='#f8f9fa'"
+                     onclick="document.getElementById('galleryFiles').click()">
+                    
+                    <div class="mb-3">
+                        <i class="fe fe-camera fe-32 text-primary" style="font-size: 42px;"></i>
+                    </div>
+                    <h5 class="font-weight-bold text-dark mb-2">Click to browse or drag & drop wedding photos</h5>
+                    <p class="text-muted small mb-0">Supported Formats: JPG, PNG, WEBP (Max 10MB per file) • You can select multiple images at once</p>
+                    
+                    <input type="file" id="galleryFiles" name="gallery_images" multiple accept="image/*" class="d-none" onchange="previewPortfolioFiles(this)">
+                </div>
+
+                <div class="row align-items-center">
+                    <div class="col-md-8 mb-3 mb-md-0">
+                        <input type="text" name="caption" class="form-control form-control-lg bg-light border-0 shadow-none rounded-pill px-4 text-dark" placeholder="Optional tag or title (e.g. Lawn Night View, Mandap Decor, Banquet Hall)">
+                    </div>
+                    <div class="col-md-4 text-md-right">
+                        <button type="submit" id="btnUploadSubmit" class="btn btn-primary btn-lg rounded-pill px-4 font-weight-bold shadow-sm w-100 w-md-auto" disabled>
+                            <i class="fe fe-upload mr-2"></i> Upload Selected Photos
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Preview container for newly selected files -->
+                <div id="newFilesPreviewContainer" class="mt-4 d-none">
+                    <div class="d-flex justify-content-between align-items-center mb-2">
+                        <h6 class="font-weight-bold text-dark mb-0">Selected Photos Preview (<span id="newFilesCount">0</span>)</h6>
+                        <button type="button" class="btn btn-sm btn-link text-danger p-0" onclick="clearSelectedFiles()">Clear All</button>
+                    </div>
+                    <div class="row" id="newFilesPreviewGrid"></div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Live Gallery Grid Card -->
+    <div class="card shadow-sm border-0 mb-5" style="border-radius: 16px;">
+        <div class="card-header bg-white border-0 pt-4 pb-2 px-4 px-md-5 d-flex justify-content-between align-items-center">
+            <div>
+                <h5 class="font-weight-bold text-dark mb-1">
+                    <i class="fe fe-grid mr-2 text-primary"></i> Live Portfolio Gallery ({{ total_photos }})
+                </h5>
+                <p class="text-muted small mb-0">These photos are visible to prospective couples on your listing page.</p>
+            </div>
+            {% if total_photos > 0 %}
+            <span class="badge badge-success px-3 py-2 font-weight-bold">Live On Website</span>
+            {% endif %}
+        </div>
+
+        <div class="card-body px-4 px-md-5 pb-5">
+            {% if gallery %}
+            <div class="row">
+                {% for img in gallery %}
+                <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-4">
+                    <div class="card h-100 border shadow-sm position-relative overflow-hidden" style="border-radius: 14px; transition: transform 0.2s, box-shadow 0.2s;" onmouseover="this.style.transform='translateY(-4px)'; this.style.boxShadow='0 10px 25px rgba(0,0,0,0.1)'" onmouseout="this.style.transform='none'; this.style.boxShadow='none'">
+                        
+                        <!-- Image Container -->
+                        <div class="position-relative" style="height: 180px; overflow: hidden; background: #f3f4f6;">
+                            <img src="{{ img.image.url }}" alt="{{ img.caption|default:vendor.name }}" class="w-100 h-100" style="object-fit: cover;">
+                            
+                            <!-- Badges -->
+                            {% if vendor.image and img.image.url == vendor.image.url %}
+                            <span class="badge badge-success position-absolute font-weight-bold shadow-sm" style="top: 10px; left: 10px; z-index: 2;">
+                                <i class="fe fe-star mr-1"></i> Primary Cover
+                            </span>
+                            {% endif %}
+                            
+                            <!-- View full photo button -->
+                            <a href="{{ img.image.url }}" target="_blank" class="btn btn-sm btn-dark rounded-circle position-absolute" style="top: 10px; right: 10px; opacity: 0.85; width: 32px; height: 32px; padding: 0; line-height: 32px; text-align: center; z-index: 2;" title="View Full Image">
+                                <i class="fe fe-maximize-2"></i>
+                            </a>
+                        </div>
+
+                        <!-- Card Body -->
+                        <div class="card-body p-3 d-flex flex-column justify-content-between">
+                            <div>
+                                <h6 class="font-weight-bold text-dark text-truncate mb-1" title="{{ img.caption|default:'Portfolio Photo' }}">
+                                    {{ img.caption|default:"Wedding Showcase" }}
+                                </h6>
+                                <p class="text-muted small mb-2">Added {{ img.created_at|date:"d M Y" }}</p>
+                            </div>
+
+                            <!-- Actions -->
+                            <div class="d-flex justify-content-between align-items-center pt-2 border-top">
+                                {% if vendor.image and img.image.url == vendor.image.url %}
+                                <span class="badge badge-light border text-muted small py-1">Cover Active</span>
+                                {% else %}
+                                <a href="{% url 'set_cover_image' img.id %}" class="btn btn-sm btn-outline-warning text-dark font-weight-bold px-2 py-1" style="font-size: 11px;" title="Set as primary thumbnail for search results">
+                                    <i class="fe fe-star text-warning mr-1"></i> Make Cover
+                                </a>
+                                {% endif %}
+
+                                <button type="button" class="btn btn-sm btn-outline-danger px-2 py-1" style="font-size: 11px;" onclick="confirmDeleteImage('{% url 'delete_portfolio_image' img.id %}')" title="Delete photo">
+                                    <i class="fe fe-trash-2 mr-1"></i> Delete
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            {% else %}
+            <!-- Empty State -->
+            <div class="text-center py-5">
+                <div class="mb-3">
+                    <i class="fe fe-image text-muted" style="font-size: 48px;"></i>
+                </div>
+                <h5 class="font-weight-bold text-dark">No Portfolio Photos Added Yet</h5>
+                <p class="text-muted small mb-3">Upload high quality photos of your venue, lawn, decor & services to start receiving inquiries.</p>
+                <button type="button" class="btn btn-primary rounded-pill px-4 font-weight-bold" onclick="document.getElementById('galleryFiles').click()">
+                    <i class="fe fe-upload mr-1"></i> Upload First Photos
+                </button>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+function previewPortfolioFiles(input) {
+    var container = document.getElementById('newFilesPreviewContainer');
+    var grid = document.getElementById('newFilesPreviewGrid');
+    var countLabel = document.getElementById('newFilesCount');
+    var submitBtn = document.getElementById('btnUploadSubmit');
+
+    grid.innerHTML = '';
+
+    if (input.files && input.files.length > 0) {
+        countLabel.innerText = input.files.length;
+        container.classList.remove('d-none');
+        submitBtn.removeAttribute('disabled');
+
+        Array.from(input.files).forEach(function(file, index) {
+            var reader = new FileReader();
+            reader.onload = function(e) {
+                var col = document.createElement('div');
+                col.className = 'col-6 col-sm-4 col-md-3 col-lg-2 mb-3';
+                col.innerHTML = `
+                    <div class="position-relative border rounded shadow-sm overflow-hidden" style="height: 110px; background: #000;">
+                        <img src="${e.target.result}" class="w-100 h-100" style="object-fit: cover; opacity: 0.9;">
+                        <span class="badge badge-dark position-absolute" style="bottom: 4px; left: 4px; font-size: 9px; opacity: 0.85;">${Math.round(file.size/1024)} KB</span>
+                    </div>
+                `;
+                grid.appendChild(col);
+            };
+            reader.readAsDataURL(file);
+        });
+    } else {
+        container.classList.add('d-none');
+        submitBtn.setAttribute('disabled', 'disabled');
+    }
+}
+
+function clearSelectedFiles() {
+    var input = document.getElementById('galleryFiles');
+    var container = document.getElementById('newFilesPreviewContainer');
+    var submitBtn = document.getElementById('btnUploadSubmit');
+    input.value = '';
+    container.classList.add('d-none');
+    submitBtn.setAttribute('disabled', 'disabled');
+}
+
+function confirmDeleteImage(url) {
+    if (typeof Swal !== 'undefined') {
+        Swal.fire({
+            title: 'Delete this photo?',
+            text: 'This photo will be permanently removed from your portfolio listing.',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#e72e77',
+            cancelButtonColor: '#6c757d',
+            confirmButtonText: 'Yes, delete it'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                window.location.href = url;
+            }
+        });
+    } else {
+        if (confirm('Are you sure you want to delete this photo from your portfolio?')) {
+            window.location.href = url;
+        }
+    }
+}
+</script>
+{% endblock %}
+

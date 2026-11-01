@@ -1,144 +1,296 @@
 {% extends 'vendor_admin/base.html' %}
+{% load static %}
 
 {% block content %}
 <style>
     .pricing-card {
-        border-radius: 15px;
+        border-radius: 18px;
         transition: transform 0.3s ease, box-shadow 0.3s ease;
-        border: 2px solid transparent;
+        border: 2px solid #e5e7eb;
         overflow: hidden;
     }
     .pricing-card:hover {
-        transform: translateY(-10px);
-        box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+        transform: translateY(-8px);
+        box-shadow: 0 20px 35px rgba(0,0,0,0.1) !important;
     }
-    .pricing-card.popular {
-        border-color: var(--theme-color);
-        box-shadow: 0 15px 30px rgba(231, 46, 119, 0.15);
+    .pricing-card.featured {
+        border-color: #e72e77;
+        box-shadow: 0 15px 35px rgba(231, 46, 119, 0.2);
     }
-    .pricing-card .badge-popular {
-        background: var(--theme-color);
+    .badge-ribbon {
+        background: #e72e77;
         color: white;
-        padding: 5px 20px;
+        padding: 5px 24px;
         position: absolute;
-        top: 15px;
+        top: 18px;
         right: -30px;
         transform: rotate(45deg);
-        font-size: 12px;
-        font-weight: bold;
+        font-size: 11px;
+        font-weight: 800;
         letter-spacing: 1px;
-        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-        width: 120px;
+        box-shadow: 0 2px 8px rgba(231, 46, 119, 0.4);
+        width: 125px;
         text-align: center;
     }
     .feature-list {
         list-style: none;
         padding: 0;
-        margin: 30px 0;
+        margin: 24px 0;
     }
     .feature-list li {
-        margin-bottom: 15px;
+        margin-bottom: 14px;
         display: flex;
         align-items: center;
+        font-size: 14px;
+        color: #374151;
     }
-    .feature-list li i {
+    .feature-list li i.check {
         color: #28a745;
-        margin-right: 10px;
-        font-size: 18px;
+        margin-right: 12px;
+        font-size: 16px;
+        flex-shrink: 0;
     }
-    .feature-list li.disabled {
-        opacity: 0.5;
-    }
-    .feature-list li.disabled i {
-        color: #dc3545;
+    .feature-list li i.cross {
+        color: #d1d5db;
+        margin-right: 12px;
+        font-size: 16px;
+        flex-shrink: 0;
     }
 </style>
 
 <div class="row justify-content-center">
-  <div class="col-12 col-xl-10">
-    <div class="text-center mb-5 mt-4">
-        <h2 class="h3 page-title font-weight-bold mb-2">Membership & Billing</h2>
-        <p class="text-muted">Upgrade your plan to get more leads and stand out to couples.</p>
+  <div class="col-12 col-xl-11">
+
+    <!-- Page Header -->
+    <div class="text-center mb-5 mt-3">
+        <span class="badge badge-primary px-3 py-2 rounded-pill font-weight-bold text-uppercase" style="letter-spacing: 1px; font-size: 11px;">
+            Grow Your Wedding Business
+        </span>
+        <h2 class="h2 page-title font-weight-bold mt-2 mb-2">Vendor Membership &amp; Growth Plans</h2>
+        <p class="text-muted mx-auto" style="max-width: 650px;">
+            Upgrade to a verified plan to dominate city search results, receive direct WhatsApp leads and build instant trust with couples.
+        </p>
     </div>
 
-    <div class="row align-items-center">
-        <!-- Basic Plan -->
-        <div class="col-md-6 col-lg-5 mb-4 mx-auto">
-            <div class="card pricing-card shadow-sm border-0 {% if not vendor.is_premium %}border-top border-primary{% endif %} h-100">
-                <div class="card-body p-5 d-flex flex-column">
-                    <div class="text-center mb-4">
-                        <h4 class="font-weight-bold mb-1">Basic Plan</h4>
-                        <p class="text-muted small mb-0">For new businesses</p>
+    <!-- 3-Tier Pricing Grid -->
+    <div class="row align-items-stretch mb-5">
+        
+        <!-- PLAN 1: Basic (Free) -->
+        <div class="col-lg-4 mb-4 mb-lg-0">
+            <div class="card pricing-card shadow-sm h-100 bg-white">
+                <div class="card-body p-4 p-md-5 d-flex flex-column justify-content-between">
+                    <div>
+                        <div class="text-center pb-3 border-bottom">
+                            <h4 class="font-weight-bold mb-1 text-dark">Basic Listing</h4>
+                            <p class="text-muted small mb-3">For new vendors starting out</p>
+                            <span class="display-4 font-weight-bold text-dark">Free</span>
+                            <span class="text-muted d-block small">Forever free</span>
+                        </div>
+
+                        <ul class="feature-list">
+                            <li><i class="fe fe-check-circle check"></i> Standard Directory Listing</li>
+                            <li><i class="fe fe-check-circle check"></i> Basic Profile &amp; Photo Gallery</li>
+                            <li><i class="fe fe-check-circle check"></i> Receive Web Inquiries</li>
+                            <li><i class="fe fe-check-circle check"></i> Availability Calendar</li>
+                            <li class="text-muted"><i class="fe fe-x-circle cross"></i> Top Placement in City Search</li>
+                            <li class="text-muted"><i class="fe fe-x-circle cross"></i> Verified Business Trust Badge</li>
+                            <li class="text-muted"><i class="fe fe-x-circle cross"></i> Direct WhatsApp Lead Button</li>
+                            <li class="text-muted"><i class="fe fe-x-circle cross"></i> Dedicated Account Manager</li>
+                        </ul>
                     </div>
-                    <div class="text-center my-4">
-                        <span class="display-4 font-weight-bold text-dark">Free</span>
-                    </div>
-                    <ul class="feature-list flex-grow-1">
-                        <li><i class="fe fe-check-circle"></i> Standard Directory Listing</li>
-                        <li><i class="fe fe-check-circle"></i> Basic Profile & Gallery</li>
-                        <li><i class="fe fe-check-circle"></i> Receive Customer Leads</li>
-                        <li class="text-muted opacity-50"><i class="fe fe-x text-danger"></i> Top Search Placement</li>
-                        <li class="text-muted opacity-50"><i class="fe fe-x text-danger"></i> Verification Badge</li>
-                        <li class="text-muted opacity-50"><i class="fe fe-x text-danger"></i> Direct WhatsApp Access</li>
-                    </ul>
-                    <div class="text-center mt-4">
+
+                    <div class="text-center pt-3 border-top">
                         {% if not vendor.is_premium %}
-                        <button class="btn btn-light btn-block btn-lg disabled font-weight-bold shadow-sm rounded text-muted">Current Plan</button>
+                        <button class="btn btn-light btn-block btn-lg disabled font-weight-bold shadow-sm rounded-pill text-muted">
+                            <i class="fe fe-check mr-1"></i> Current Active Plan
+                        </button>
                         {% else %}
-                        <button class="btn btn-outline-primary btn-block btn-lg font-weight-bold shadow-sm rounded">Downgrade</button>
+                        <span class="text-muted small">Standard Directory Tier</span>
                         {% endif %}
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- Premium Plan -->
-        <div class="col-md-6 col-lg-5 mb-4 mx-auto">
-            <div class="card pricing-card popular shadow border-0 bg-white position-relative h-100" style="transform: scale(1.03);">
-                <div class="badge-popular">POPULAR</div>
-                <div class="card-body p-5 d-flex flex-column">
-                    <div class="text-center mb-4">
-                        <h4 class="font-weight-bold mb-1 text-primary">Premium Plan</h4>
-                        <p class="text-muted small mb-0">Max visibility & verified trust</p>
+        <!-- PLAN 2: Pro Verified (₹4,999/yr) - Featured -->
+        <div class="col-lg-4 mb-4 mb-lg-0">
+            <div class="card pricing-card featured shadow-lg h-100 bg-white position-relative" style="transform: scale(1.02);">
+                <div class="badge-ribbon">POPULAR</div>
+                <div class="card-body p-4 p-md-5 d-flex flex-column justify-content-between">
+                    <div>
+                        <div class="text-center pb-3 border-bottom">
+                            <h4 class="font-weight-bold mb-1 text-primary">Pro Verified</h4>
+                            <p class="text-muted small mb-3">Best for active banquet lawns &amp; vendors</p>
+                            <span class="display-4 font-weight-bold text-dark">₹4,999</span>
+                            <span class="text-muted d-block small">per year + GST</span>
+                        </div>
+
+                        <ul class="feature-list">
+                            <li><i class="fe fe-check-circle text-primary mr-2" style="font-size: 16px;"></i> <strong>Everything in Basic</strong></li>
+                            <li><i class="fe fe-check-circle text-primary mr-2" style="font-size: 16px;"></i> <strong class="text-dark">Verified Business Badge (<i class="fe fe-check-circle text-success"></i>)</strong></li>
+                            <li><i class="fe fe-check-circle text-primary mr-2" style="font-size: 16px;"></i> <strong class="text-dark">Top 5 Placement in {{ vendor.location|default:"City" }} Search</strong></li>
+                            <li><i class="fe fe-check-circle text-primary mr-2" style="font-size: 16px;"></i> <strong class="text-dark">Direct WhatsApp Client CTA</strong></li>
+                            <li><i class="fe fe-check-circle check"></i> Lead Phone Number Alerts</li>
+                            <li><i class="fe fe-check-circle check"></i> Up to 50 High-Res Photos</li>
+                            <li><i class="fe fe-check-circle check"></i> Priority Customer Support</li>
+                            <li class="text-muted"><i class="fe fe-x-circle cross"></i> Dedicated Account Manager</li>
+                        </ul>
                     </div>
-                    <div class="text-center my-4">
-                        <span class="display-4 font-weight-bold text-dark">₹4,999</span>
-                        <span class="text-muted">/year</span>
-                    </div>
-                    <ul class="feature-list flex-grow-1">
-                        <li><i class="fe fe-check-circle text-primary"></i> <strong class="text-dark">Everything in Basic</strong></li>
-                        <li><i class="fe fe-check-circle text-primary"></i> <strong class="text-dark">Top Search Placement</strong></li>
-                        <li><i class="fe fe-check-circle text-primary"></i> <strong class="text-dark">Verified Business Badge</strong></li>
-                        <li><i class="fe fe-check-circle text-primary"></i> Direct WhatsApp Access</li>
-                        <li><i class="fe fe-check-circle text-primary"></i> Premium Support</li>
-                        <li><i class="fe fe-check-circle text-primary"></i> Analytics Dashboard</li>
-                    </ul>
-                    <div class="text-center mt-4">
+
+                    <div class="text-center pt-3 border-top">
                         {% if vendor.is_premium %}
-                        <button class="btn btn-success btn-block btn-lg disabled font-weight-bold shadow-sm rounded"><i class="fe fe-check mr-2"></i> Active Plan</button>
+                        <button class="btn btn-success btn-block btn-lg disabled font-weight-bold shadow-sm rounded-pill">
+                            <i class="fe fe-check mr-1"></i> Active Premium Plan
+                        </button>
                         {% else %}
-                        <button class="btn btn-primary btn-block btn-lg font-weight-bold shadow shadow-sm rounded" onclick="upgradePlan()">Upgrade Now</button>
+                        <button type="button" class="btn btn-primary btn-block btn-lg font-weight-bold shadow rounded-pill" onclick="openUpgradeModal('Pro Verified', '4999')">
+                            Upgrade to Pro Verified &rarr;
+                        </button>
                         {% endif %}
                     </div>
                 </div>
             </div>
         </div>
+
+        <!-- PLAN 3: Elite Dominance (₹9,999/yr) -->
+        <div class="col-lg-4">
+            <div class="card pricing-card shadow-sm h-100 bg-white">
+                <div class="card-body p-4 p-md-5 d-flex flex-column justify-content-between">
+                    <div>
+                        <div class="text-center pb-3 border-bottom">
+                            <h4 class="font-weight-bold mb-1 text-dark">Elite Platinum</h4>
+                            <p class="text-muted small mb-3">Total city market leadership</p>
+                            <span class="display-4 font-weight-bold text-dark">₹9,999</span>
+                            <span class="text-muted d-block small">per year + GST</span>
+                        </div>
+
+                        <ul class="feature-list">
+                            <li><i class="fe fe-check-circle check"></i> <strong>Everything in Pro Verified</strong></li>
+                            <li><i class="fe fe-check-circle check"></i> <strong class="text-dark">#1 Guaranteed Top Placement</strong></li>
+                            <li><i class="fe fe-check-circle check"></i> <strong class="text-dark">Featured on Homepage Carousel</strong></li>
+                            <li><i class="fe fe-check-circle check"></i> Real Weddings Editorial Feature</li>
+                            <li><i class="fe fe-check-circle check"></i> Dedicated Relationship Manager</li>
+                            <li><i class="fe fe-check-circle check"></i> Social Media &amp; Blog Shoutouts</li>
+                            <li><i class="fe fe-check-circle check"></i> Unlimited Photos &amp; Video Embeds</li>
+                            <li><i class="fe fe-check-circle check"></i> 0% Commission on All Bookings</li>
+                        </ul>
+                    </div>
+
+                    <div class="text-center pt-3 border-top">
+                        <button type="button" class="btn btn-outline-dark btn-block btn-lg font-weight-bold rounded-pill" onclick="openUpgradeModal('Elite Platinum', '9999')">
+                            Get Elite Platinum &rarr;
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
     </div>
-    
-    <div class="text-center mt-5 mb-4">
-        <p class="small text-muted font-weight-bold text-uppercase" style="letter-spacing: 0.5px;"><i class="fe fe-lock mr-1"></i> Secure checkout provided by Razorpay</p>
+
+    <!-- ROI Social Proof Banner -->
+    <div class="card shadow-sm border-0 mb-5 text-white" style="background: linear-gradient(135deg, #1f2937 0%, #111827 100%); border-radius: 18px;">
+        <div class="card-body p-4 p-md-5">
+            <div class="row align-items-center text-center text-md-left">
+                <div class="col-md-3 mb-3 mb-md-0 text-center">
+                    <span class="display-4 font-weight-bold text-warning">8.4x</span>
+                    <p class="mb-0 text-white-50 font-weight-semibold">Average ROI</p>
+                </div>
+                <div class="col-md-6 mb-3 mb-md-0">
+                    <h5 class="font-weight-bold text-white mb-1">Why Top Wedding Vendors Upgrade on BookMyLawn</h5>
+                    <p class="mb-0 text-white-50">Couples specifically look for the Verified Badge before booking lawns and paying wedding advances. Pro vendors generate an average of ₹15 Lakhs+ in seasonal wedding contracts.</p>
+                </div>
+                <div class="col-md-3 text-center text-md-right">
+                    <button type="button" class="btn btn-primary rounded-pill px-4 font-weight-bold shadow-sm" onclick="openUpgradeModal('Pro Verified', '4999')">
+                        Request Callback
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- FAQs Section -->
+    <div class="card shadow-sm border-0 mb-5" style="border-radius: 16px;">
+        <div class="card-body p-4 p-md-5">
+            <h4 class="font-weight-bold text-dark mb-4 text-center">Frequently Asked Questions</h4>
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <h6 class="font-weight-bold text-dark">How does the Verified Badge work?</h6>
+                    <p class="text-muted small">Our verification team verifies your business location, photos and identity. Once approved, the green Verified badge appears automatically on your storefront.</p>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <h6 class="font-weight-bold text-dark">Do you charge commissions on bookings?</h6>
+                    <p class="text-muted small">No! BookMyLawn is 100% commission-free. Whatever client contracts you close belong entirely to you.</p>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <h6 class="font-weight-bold text-dark">How soon is my upgrade activated?</h6>
+                    <p class="text-muted small">Upgrades are activated within 2 business hours after confirmation by your dedicated relationship manager.</p>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <h6 class="font-weight-bold text-dark">Can I change or cancel my plan?</h6>
+                    <p class="text-muted small">Yes, plans are renewed annually and you have full control over your subscription anytime.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- Modal: Request Plan Upgrade -->
+<div class="modal fade" id="upgradeModal" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content border-0 shadow-lg" style="border-radius: 16px;">
+      <form method="POST" action="{% url 'request_membership_upgrade' %}">
+        {% csrf_token %}
+        <input type="hidden" name="plan" id="modalPlanInput" value="Pro Verified">
+        
+        <div class="modal-header bg-primary text-white py-3 px-4" style="background: linear-gradient(135deg, #e72e77, #c2185b) !important;">
+          <div>
+            <h5 class="modal-title font-weight-bold text-white mb-0" id="modalPlanTitle">Upgrade to Pro Verified</h5>
+            <small class="text-white-50">Accelerate your wedding bookings on BookMyLawn</small>
+          </div>
+          <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+
+        <div class="modal-body p-4">
+          <div class="p-3 bg-light rounded mb-3">
+            <div class="d-flex justify-content-between align-items-center">
+                <span class="text-muted small font-weight-bold text-uppercase">Selected Plan</span>
+                <span class="font-weight-bold text-primary" id="modalPlanPrice">₹4,999 / year</span>
+            </div>
+          </div>
+
+          <div class="form-group mb-3">
+            <label class="font-weight-bold text-dark small text-uppercase">Contact Phone / WhatsApp <span class="text-danger">*</span></label>
+            <input type="tel" name="phone" class="form-control bg-light border-0 rounded" value="{{ vendor.user.username|default:'' }}" placeholder="+91 98765 43210" required>
+            <small class="text-muted">Our partnership team will contact you on this number to activate your plan.</small>
+          </div>
+
+          <div class="form-group mb-2">
+            <label class="font-weight-bold text-dark small text-uppercase">Preferred Call Time / Notes (Optional)</label>
+            <textarea name="notes" class="form-control bg-light border-0 rounded" rows="2" placeholder="e.g. Please call between 2 PM and 5 PM"></textarea>
+          </div>
+        </div>
+
+        <div class="modal-footer border-0 pt-0 px-4 pb-4">
+          <button type="button" class="btn btn-light rounded-pill px-4" data-dismiss="modal">Cancel</button>
+          <button type="submit" class="btn btn-primary rounded-pill font-weight-bold px-4 shadow-sm">
+            <i class="fe fe-check mr-1"></i> Submit Upgrade Request
+          </button>
+        </div>
+      </form>
     </div>
   </div>
 </div>
 
 <script>
-    function upgradePlan() {
-        Swal.fire({
-            title: 'Contact Support to Upgrade',
-            text: 'Premium upgrades are currently handled by our executive team. We will call you shortly!',
-            icon: 'info',
-            confirmButtonColor: '#e72e77'
-        });
-    }
+function openUpgradeModal(planName, price) {
+    document.getElementById('modalPlanInput').value = planName;
+    document.getElementById('modalPlanTitle').innerText = 'Upgrade to ' + planName;
+    document.getElementById('modalPlanPrice').innerText = '₹' + Number(price).toLocaleString('en-IN') + ' / year';
+    $('#upgradeModal').modal('show');
+}
 </script>
 {% endblock %}

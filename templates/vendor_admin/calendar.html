@@ -1,0 +1,398 @@
+{% extends 'vendor_admin/base.html' %}
+{% load static %}
+
+{% block content %}
+<style>
+    .cal-table {
+        table-layout: fixed;
+        width: 100%;
+        border-collapse: separate;
+        border-spacing: 6px;
+    }
+    .cal-th {
+        text-align: center;
+        font-weight: 700;
+        font-size: 13px;
+        text-transform: uppercase;
+        letter-spacing: 0.8px;
+        color: #6b7280;
+        padding: 10px 0;
+    }
+    .cal-day-cell {
+        height: 110px;
+        background: #ffffff;
+        border: 1px solid #e5e7eb;
+        border-radius: 12px;
+        padding: 8px;
+        vertical-align: top;
+        transition: all 0.2s ease;
+        cursor: pointer;
+        position: relative;
+    }
+    .cal-day-cell:hover {
+        border-color: #e72e77;
+        box-shadow: 0 4px 15px rgba(231, 46, 119, 0.12);
+        transform: translateY(-2px);
+    }
+    .cal-day-other-month {
+        background: #fafafa;
+        opacity: 0.45;
+    }
+    .cal-day-today {
+        border: 2px solid #e72e77 !important;
+        background: #fff8fb;
+    }
+    .cal-day-num {
+        font-weight: 800;
+        font-size: 15px;
+        color: #1f2937;
+    }
+    .cal-status-pill {
+        font-size: 11px;
+        font-weight: 700;
+        padding: 4px 8px;
+        border-radius: 6px;
+        display: block;
+        margin-top: 4px;
+        text-truncate: true;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+    .status-booked {
+        background: rgba(220, 53, 69, 0.12);
+        color: #dc3545;
+        border: 1px solid rgba(220, 53, 69, 0.3);
+    }
+    .status-tentative {
+        background: rgba(255, 193, 7, 0.15);
+        color: #b45309;
+        border: 1px solid rgba(255, 193, 7, 0.4);
+    }
+    .status-blocked {
+        background: rgba(108, 117, 125, 0.15);
+        color: #4b5563;
+        border: 1px solid rgba(108, 117, 125, 0.3);
+    }
+    .status-available {
+        background: rgba(40, 167, 69, 0.1);
+        color: #198754;
+        border: 1px solid rgba(40, 167, 69, 0.25);
+    }
+    @media (max-width: 768px) {
+        .cal-day-cell {
+            height: 75px;
+            padding: 4px;
+        }
+        .cal-status-pill {
+            font-size: 9px;
+            padding: 2px 4px;
+        }
+        .cal-day-num {
+            font-size: 12px;
+        }
+    }
+</style>
+
+<div class="row justify-content-center">
+  <div class="col-12 col-xl-11">
+
+    <!-- Page Header -->
+    <div class="d-flex flex-wrap justify-content-between align-items-center mb-4 mt-3">
+        <div>
+            <h2 class="h3 page-title font-weight-bold mb-1">Availability & Booking Calendar</h2>
+            <p class="text-muted mb-0">Manage your wedding lawn and banquet dates. Mark dates as Booked, Tentative or Blocked.</p>
+        </div>
+        <div class="mt-3 mt-md-0 d-flex gap-2">
+            <button type="button" class="btn btn-primary rounded-pill font-weight-bold px-4 shadow-sm" onclick="openUpdateModal('{{ today|date:'Y-m-d' }}', 'booked', '')">
+                <i class="fe fe-calendar mr-1"></i> Update Date Status
+            </button>
+        </div>
+    </div>
+
+    <!-- Monthly Overview Stats -->
+    <div class="row mb-4">
+        <div class="col-6 col-md-3 mb-3 mb-md-0">
+            <div class="card shadow-sm border-0 h-100">
+                <div class="card-body p-3 d-flex align-items-center">
+                    <div class="rounded-circle d-flex align-items-center justify-content-center mr-3" style="width: 48px; height: 48px; background: rgba(220, 53, 69, 0.12); flex-shrink: 0;">
+                        <i class="fe fe-lock fe-20 text-danger"></i>
+                    </div>
+                    <div>
+                        <h4 class="font-weight-bold mb-0 text-dark">{{ booked_count }}</h4>
+                        <p class="text-muted small mb-0 font-weight-semibold">Booked This Month</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-6 col-md-3 mb-3 mb-md-0">
+            <div class="card shadow-sm border-0 h-100">
+                <div class="card-body p-3 d-flex align-items-center">
+                    <div class="rounded-circle d-flex align-items-center justify-content-center mr-3" style="width: 48px; height: 48px; background: rgba(255, 193, 7, 0.18); flex-shrink: 0;">
+                        <i class="fe fe-clock fe-20 text-warning"></i>
+                    </div>
+                    <div>
+                        <h4 class="font-weight-bold mb-0 text-dark">{{ tentative_count }}</h4>
+                        <p class="text-muted small mb-0 font-weight-semibold">Tentative / Fast Filling</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-6 col-md-3 mb-3 mb-md-0">
+            <div class="card shadow-sm border-0 h-100">
+                <div class="card-body p-3 d-flex align-items-center">
+                    <div class="rounded-circle d-flex align-items-center justify-content-center mr-3" style="width: 48px; height: 48px; background: rgba(108, 117, 125, 0.15); flex-shrink: 0;">
+                        <i class="fe fe-slash fe-20 text-secondary"></i>
+                    </div>
+                    <div>
+                        <h4 class="font-weight-bold mb-0 text-dark">{{ blocked_count }}</h4>
+                        <p class="text-muted small mb-0 font-weight-semibold">Blocked / Maintenance</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-6 col-md-3">
+            <div class="card shadow-sm border-0 h-100">
+                <div class="card-body p-3 d-flex align-items-center">
+                    <div class="rounded-circle d-flex align-items-center justify-content-center mr-3" style="width: 48px; height: 48px; background: rgba(40, 167, 69, 0.12); flex-shrink: 0;">
+                        <i class="fe fe-check-circle fe-20 text-success"></i>
+                    </div>
+                    <div>
+                        <h4 class="font-weight-bold mb-0 text-dark">Live Sync</h4>
+                        <p class="text-muted small mb-0 font-weight-semibold">Visible to Couples</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Calendar Card -->
+    <div class="card shadow-sm border-0 mb-4" style="border-radius: 16px;">
+        <!-- Calendar Header Navigation -->
+        <div class="card-header bg-white border-0 py-4 px-4 px-md-5 d-flex flex-wrap justify-content-between align-items-center">
+            <div class="d-flex align-items-center mb-2 mb-md-0">
+                <h4 class="font-weight-bold text-dark mb-0 mr-3">
+                    <i class="fe fe-calendar mr-2 text-primary"></i> {{ month_name }} {{ year }}
+                </h4>
+                <a href="?year={{ today.year }}&month={{ today.month }}" class="btn btn-sm btn-outline-secondary rounded-pill px-3">Today</a>
+            </div>
+
+            <!-- Legend & Prev/Next Buttons -->
+            <div class="d-flex align-items-center flex-wrap gap-2">
+                <div class="d-none d-lg-flex align-items-center mr-3 small">
+                    <span class="badge status-available mr-2"><i class="fe fe-check"></i> Available</span>
+                    <span class="badge status-booked mr-2"><i class="fe fe-lock"></i> Booked</span>
+                    <span class="badge status-tentative mr-2"><i class="fe fe-clock"></i> Tentative</span>
+                    <span class="badge status-blocked"><i class="fe fe-slash"></i> Blocked</span>
+                </div>
+                <div class="btn-group shadow-sm">
+                    <a href="?year={{ prev_year }}&month={{ prev_month }}" class="btn btn-light border px-3" title="Previous Month">
+                        <i class="fe fe-chevron-left font-weight-bold"></i>
+                    </a>
+                    <a href="?year={{ next_year }}&month={{ next_month }}" class="btn btn-light border px-3" title="Next Month">
+                        <i class="fe fe-chevron-right font-weight-bold"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Calendar Table -->
+        <div class="card-body p-2 p-md-4">
+            <div class="table-responsive">
+                <table class="cal-table">
+                    <thead>
+                        <tr>
+                            <th class="cal-th text-danger">Sun</th>
+                            <th class="cal-th">Mon</th>
+                            <th class="cal-th">Tue</th>
+                            <th class="cal-th">Wed</th>
+                            <th class="cal-th">Thu</th>
+                            <th class="cal-th">Fri</th>
+                            <th class="cal-th text-danger">Sat</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for week in weeks_data %}
+                        <tr>
+                            {% for day in week %}
+                            <td class="cal-day-cell {% if not day.is_current_month %}cal-day-other-month{% endif %} {% if day.is_today %}cal-day-today{% endif %}"
+                                onclick="openUpdateModal('{{ day.date_str }}', '{{ day.status }}', '{{ day.note|escapejs }}')"
+                                title="Click to update availability for {{ day.date|date:'d M Y' }}">
+                                
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <span class="cal-day-num {% if day.is_today %}text-primary{% endif %}">
+                                        {{ day.day_num }}
+                                    </span>
+                                    {% if day.is_today %}
+                                    <span class="badge badge-primary" style="font-size: 9px; padding: 2px 5px;">Today</span>
+                                    {% endif %}
+                                </div>
+
+                                <!-- Status Badge -->
+                                {% if day.status == 'booked' %}
+                                <div class="cal-status-pill status-booked" title="{{ day.note|default:'Booked' }}">
+                                    <i class="fe fe-lock mr-1"></i> {{ day.note|default:"Booked" }}
+                                </div>
+                                {% elif day.status == 'tentative' %}
+                                <div class="cal-status-pill status-tentative" title="{{ day.note|default:'Tentative' }}">
+                                    <i class="fe fe-clock mr-1"></i> {{ day.note|default:"Tentative" }}
+                                </div>
+                                {% elif day.status == 'blocked' %}
+                                <div class="cal-status-pill status-blocked" title="{{ day.note|default:'Blocked' }}">
+                                    <i class="fe fe-slash mr-1"></i> {{ day.note|default:"Blocked" }}
+                                </div>
+                                {% else %}
+                                <div class="cal-status-pill status-available d-none d-md-block">
+                                    <i class="fe fe-check mr-1"></i> Available
+                                </div>
+                                {% endif %}
+
+                                <!-- Inquiries indicator -->
+                                {% if day.inquiries_count > 0 %}
+                                <div class="mt-1">
+                                    <span class="badge badge-primary shadow-none" style="font-size: 9px; padding: 2px 4px;">
+                                        <i class="fe fe-mail mr-1"></i> {{ day.inquiries_count }} Lead{{ day.inquiries_count|pluralize }}
+                                    </span>
+                                </div>
+                                {% endif %}
+                            </td>
+                            {% endfor %}
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            <div class="text-muted small mt-3 px-2">
+                <i class="fe fe-info text-primary mr-1"></i> <strong>Pro Tip:</strong> Click directly on any date cell to quickly mark it as Booked, Tentative or Blocked.
+            </div>
+        </div>
+    </div>
+
+    <!-- Upcoming Bookings List -->
+    <div class="card shadow-sm border-0 mb-5" style="border-radius: 16px;">
+        <div class="card-header bg-white border-0 py-3 px-4 px-md-5 d-flex justify-content-between align-items-center">
+            <h5 class="font-weight-bold text-dark mb-0">
+                <i class="fe fe-list mr-2 text-primary"></i> Upcoming Booked & Blocked Dates
+            </h5>
+            <span class="badge badge-light border text-muted px-3 py-2 font-weight-bold">{{ upcoming_dates.count }} Reserved Dates</span>
+        </div>
+        <div class="card-body p-0">
+            {% if upcoming_dates %}
+            <div class="table-responsive">
+                <table class="table table-hover mb-0">
+                    <thead class="bg-light">
+                        <tr>
+                            <th class="border-0 pl-4">Event Date</th>
+                            <th class="border-0">Status</th>
+                            <th class="border-0">Event / Client Note</th>
+                            <th class="border-0">Updated At</th>
+                            <th class="border-0 text-right pr-4">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for item in upcoming_dates %}
+                        <tr>
+                            <td class="pl-4 font-weight-bold text-dark">
+                                <i class="fe fe-calendar mr-2 text-primary"></i> {{ item.date|date:"D, d M Y" }}
+                            </td>
+                            <td>
+                                {% if item.status == 'booked' %}
+                                <span class="badge status-booked px-2 py-1"><i class="fe fe-lock mr-1"></i> Confirmed Booked</span>
+                                {% elif item.status == 'tentative' %}
+                                <span class="badge status-tentative px-2 py-1"><i class="fe fe-clock mr-1"></i> Tentative / Fast Filling</span>
+                                {% elif item.status == 'blocked' %}
+                                <span class="badge status-blocked px-2 py-1"><i class="fe fe-slash mr-1"></i> Blocked / Closed</span>
+                                {% else %}
+                                <span class="badge status-available px-2 py-1">Available</span>
+                                {% endif %}
+                            </td>
+                            <td>
+                                <span class="text-dark font-weight-semibold">{{ item.note|default:"—" }}</span>
+                            </td>
+                            <td class="text-muted small">
+                                {{ item.updated_at|date:"d M Y, h:i A" }}
+                            </td>
+                            <td class="text-right pr-4">
+                                <a href="{% url 'delete_calendar_date' item.id %}" class="btn btn-sm btn-outline-danger rounded-pill px-3 font-weight-bold" onclick="return confirm('Reset {{ item.date|date:'d M Y' }} to Available?')">
+                                    <i class="fe fe-rotate-ccw mr-1"></i> Reset Available
+                                </a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            {% else %}
+            <div class="text-center py-5">
+                <div class="mb-3">
+                    <i class="fe fe-calendar text-muted" style="font-size: 42px;"></i>
+                </div>
+                <h6 class="font-weight-bold text-dark">No Dates Reserved Yet</h6>
+                <p class="text-muted small mb-0">Click any date in the calendar above to mark upcoming wedding bookings.</p>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- Modal: Update Date Availability -->
+<div class="modal fade" id="updateDateModal" tabindex="-1" role="dialog" aria-labelledby="updateDateModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content border-0 shadow-lg" style="border-radius: 16px;">
+      <form method="POST" action="{% url 'update_calendar_date' %}">
+        {% csrf_token %}
+        <div class="modal-header border-0 pb-0 pt-4 px-4">
+          <h5 class="modal-title font-weight-bold text-dark" id="updateDateModalLabel">
+            <i class="fe fe-edit-3 mr-2 text-primary"></i> Update Date Availability
+          </h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body px-4 py-4">
+          <div class="form-group mb-3">
+            <label class="font-weight-bold small text-muted text-uppercase" style="letter-spacing: 0.5px;">Date</label>
+            <input type="date" name="date" id="modalDateInput" class="form-control form-control-lg bg-light border-0 shadow-none rounded" required>
+          </div>
+
+          <div class="form-group mb-3">
+            <label class="font-weight-bold small text-muted text-uppercase" style="letter-spacing: 0.5px;">Availability Status</label>
+            <select name="status" id="modalStatusSelect" class="form-control form-control-lg bg-light border-0 shadow-none rounded" required>
+                <option value="booked">🔴 Booked (Confirmed Booking)</option>
+                <option value="tentative">🟡 Tentative / Fast Filling (In Discussion)</option>
+                <option value="blocked">⚫ Blocked (Maintenance / Leave)</option>
+                <option value="available">🟢 Available (Open for Bookings)</option>
+            </select>
+          </div>
+
+          <div class="form-group mb-2">
+            <label class="font-weight-bold small text-muted text-uppercase" style="letter-spacing: 0.5px;">Event Title / Note <span class="font-weight-normal text-muted">(Optional)</span></label>
+            <input type="text" name="note" id="modalNoteInput" class="form-control form-control-lg bg-light border-0 shadow-none rounded" placeholder="e.g. Sharma Family Wedding, Lawn Renovation">
+            <small class="text-muted">This note helps you remember what event is booked on this date.</small>
+          </div>
+        </div>
+        <div class="modal-footer border-0 pt-0 px-4 pb-4">
+          <button type="button" class="btn btn-light rounded-pill px-4" data-dismiss="modal">Cancel</button>
+          <button type="submit" class="btn btn-primary rounded-pill font-weight-bold px-4 shadow-sm">Save Availability</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<script>
+function openUpdateModal(dateStr, status, note) {
+    document.getElementById('modalDateInput').value = dateStr;
+    if (status) {
+        document.getElementById('modalStatusSelect').value = status;
+    } else {
+        document.getElementById('modalStatusSelect').value = 'booked';
+    }
+    document.getElementById('modalNoteInput').value = note || '';
+    $('#updateDateModal').modal('show');
+}
+</script>
+{% endblock %}
+

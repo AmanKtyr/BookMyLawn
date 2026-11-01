@@ -97,6 +97,8 @@ class Review(models.Model):
     reviewer_name = models.CharField(max_length=100)
     rating = models.IntegerField(default=5)
     comment = models.TextField(blank=True)
+    vendor_reply = models.TextField(blank=True, null=True)
+    vendor_replied_at = models.DateTimeField(blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     
     def __str__(self):
@@ -168,6 +170,7 @@ class Inquiry(models.Model):
     customer_phone = models.CharField(max_length=20)
     event_date = models.DateField(null=True, blank=True)
     message = models.TextField()
+    vendor_notes = models.TextField(blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     status = models.CharField(max_length=20, choices=[('new', 'New'), ('contacted', 'Contacted'), ('closed', 'Closed')], default='new')
 
@@ -231,3 +234,54 @@ class Guest(models.Model):
 
     def __str__(self):
         return f"{self.name} ({self.rsvp_status})"
+
+class SupportTicket(models.Model):
+    STATUS_CHOICES = (
+        ('open', 'Open'),
+        ('in_progress', 'In Progress'),
+        ('resolved', 'Resolved'),
+        ('closed', 'Closed'),
+    )
+    SUBJECT_CHOICES = (
+        ('profile', 'Profile Update Issue'),
+        ('billing', 'Billing / Premium Subscription'),
+        ('leads', 'Not receiving enough leads'),
+        ('technical', 'Technical Error / Bug'),
+        ('other', 'Other'),
+    )
+    vendor = models.ForeignKey(Vendor, on_delete=models.CASCADE, related_name='support_tickets')
+    subject = models.CharField(max_length=50, choices=SUBJECT_CHOICES)
+    message = models.TextField()
+    attachment = models.ImageField(upload_to='support_tickets/', blank=True, null=True)
+    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='open')
+    admin_reply = models.TextField(blank=True, null=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        ordering = ['-created_at']
+
+    def __str__(self):
+        return f"Ticket #{self.id} - {self.vendor.name} ({self.get_subject_display()})"
+
+class VendorAvailability(models.Model):
+    STATUS_CHOICES = (
+        ('available', 'Available'),
+        ('booked', 'Booked'),
+        ('tentative', 'Tentative / Fast Filling'),
+        ('blocked', 'Blocked / Not Available'),
+    )
+    vendor = models.ForeignKey(Vendor, on_delete=models.CASCADE, related_name='availability_dates')
+    date = models.DateField()
+    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='booked')
+    note = models.CharField(max_length=200, blank=True, help_text="e.g. Wedding Reception - Sharma Family")
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        unique_together = ('vendor', 'date')
+        ordering = ['date']
+
+    def __str__(self):
+        return f"{self.vendor.name} - {self.date} ({self.status})"
+

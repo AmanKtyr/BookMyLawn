@@ -1,61 +1,280 @@
 {% extends 'vendor_admin/base.html' %}
+{% load static %}
 
 {% block content %}
-<style>
-    .review-card {
-        transition: transform 0.3s ease, box-shadow 0.3s ease;
-    }
-    .review-card:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 15px 35px rgba(0,0,0,0.1) !important;
-    }
-</style>
 <div class="row justify-content-center">
   <div class="col-12 col-xl-11">
-    <div class="d-flex justify-content-between align-items-center mb-4 mt-3">
-        <h2 class="h3 page-title font-weight-bold mb-0">Customer Reviews</h2>
-        <span class="badge badge-primary px-3 py-2 rounded-pill shadow-sm">Total Reviews: {{ reviews|length }}</span>
+
+    <!-- Header Section -->
+    <div class="d-flex flex-wrap justify-content-between align-items-center mb-4 mt-3">
+        <div>
+            <h2 class="h3 page-title font-weight-bold mb-1">Customer Reviews & Ratings</h2>
+            <p class="text-muted mb-0">Build trust with prospective couples by collecting and responding to authentic reviews.</p>
+        </div>
+        <div class="mt-3 mt-md-0">
+            <button type="button" class="btn btn-success rounded-pill font-weight-bold px-4 shadow-sm d-inline-flex align-items-center" style="background-color: #25D366 !important; border-color: #25D366 !important;" onclick="shareReviewWhatsApp()">
+                <span class="mr-2 d-inline-flex align-items-center"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="white" viewBox="0 0 16 16"><path d="M13.601 2.326A7.854 7.854 0 0 0 7.994 0C3.627 0 .068 3.558.064 7.926c0 1.399.366 2.76 1.057 3.965L0 16l4.204-1.102a7.933 7.933 0 0 0 3.79.965h.004c4.368 0 7.926-3.558 7.93-7.93A7.898 7.898 0 0 0 13.6 2.326zM7.994 14.521a6.573 6.573 0 0 1-3.356-.92l-.24-.144-2.494.654.666-2.433-.156-.251a6.56 6.56 0 0 1-1.007-3.505c0-3.626 2.957-6.584 6.591-6.584a6.56 6.56 0 0 1 4.66 1.931 6.557 6.557 0 0 1 1.928 4.66c-.004 3.639-2.961 6.592-6.592 6.592zm3.615-4.934c-.197-.099-1.17-.578-1.353-.646-.182-.065-.315-.099-.445.099-.133.197-.513.646-.627.775-.114.133-.232.148-.43.05-.197-.1-.836-.308-1.592-.985-.59-.525-.985-1.175-1.103-1.372-.114-.198-.011-.304.088-.403.087-.088.197-.232.296-.346.1-.114.133-.198.198-.33.065-.134.034-.248-.016-.347-.05-.099-.445-1.076-.612-1.47-.16-.389-.323-.335-.445-.34-.114-.007-.247-.007-.38-.007a.729.729 0 0 0-.529.247c-.182.198-.691.677-.691 1.654 0 .977.71 1.916.81 2.049.098.133 1.394 2.132 3.383 2.992.47.205.84.326 1.129.418.475.152.904.129 1.246.08.38-.058 1.171-.48 1.338-.943.164-.464.164-.86.114-.943-.049-.084-.182-.133-.38-.232z"/></svg></span> Request Reviews on WhatsApp
+            </button>
+        </div>
     </div>
-    
-    <div class="row">
-        {% for review in reviews %}
-        <div class="col-md-6 mb-4">
-            <div class="card shadow-sm border-0 h-100 review-card">
-                <div class="card-body p-4">
-                    <div class="d-flex align-items-start mb-4">
-                        <div class="avatar avatar-md bg-primary text-white font-weight-bold rounded-circle d-flex align-items-center justify-content-center mr-3 shadow-sm" style="width: 50px; height: 50px; font-size: 20px;">
-                            {{ review.reviewer_name|first|upper }}
-                        </div>
-                        <div class="flex-grow-1">
-                            <h6 class="mb-0 font-weight-bold text-dark">{{ review.reviewer_name }}</h6>
-                            <p class="text-muted small mb-0">{{ review.created_at|date:"F d, Y" }}</p>
-                        </div>
-                        <div class="text-warning bg-light px-2 py-1 rounded shadow-sm">
-                            <span class="font-weight-bold text-dark mr-1">{{ review.rating }}.0</span>
-                            <i class="fe fe-star fill"></i>
+
+    <!-- Rating Scorecard & Request Card -->
+    <div class="row mb-4">
+        <!-- Big Scorecard -->
+        <div class="col-lg-5 mb-4 mb-lg-0">
+            <div class="card shadow-sm border-0 h-100" style="border-radius: 16px;">
+                <div class="card-body p-4 p-md-5 d-flex flex-column justify-content-between">
+                    <div>
+                        <span class="text-muted small text-uppercase font-weight-bold" style="letter-spacing: 0.5px;">Overall Rating</span>
+                        <div class="d-flex align-items-baseline mt-2 mb-2">
+                            <span class="display-3 font-weight-bold text-dark mr-3">{{ avg_rating }}</span>
+                            <div>
+                                <div class="text-warning mb-1" style="font-size: 20px;">
+                                    {% for i in "12345" %}
+                                    <i class="fa fa-star"></i>
+                                    {% endfor %}
+                                </div>
+                                <span class="text-muted small font-weight-bold">Based on {{ total_reviews }} verified review{{ total_reviews|pluralize }}</span>
+                            </div>
                         </div>
                     </div>
-                    <div class="p-4 bg-light rounded shadow-sm border-0 position-relative">
-                        <i class="fe fe-message-square text-muted opacity-25 position-absolute" style="top: 15px; right: 15px; font-size: 24px;"></i>
-                        <p class="mb-0 font-italic text-dark font-weight-500" style="font-size: 15px; line-height: 1.6;">"{{ review.comment }}"</p>
+
+                    <!-- Recommendation Badge -->
+                    <div class="p-3 bg-light rounded mt-3 d-flex align-items-center">
+                        <div class="rounded-circle d-flex align-items-center justify-content-center mr-3 text-white" style="width: 40px; height: 40px; background: #28a745; flex-shrink: 0;">
+                            <i class="fe fe-thumbs-up"></i>
+                        </div>
+                        <div>
+                            <h6 class="font-weight-bold mb-0 text-dark">{{ recommend_pct }}% of Couples</h6>
+                            <p class="text-muted small mb-0">Highly recommend your venue and services</p>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
+
+        <!-- Star Breakdown Progress Bars -->
+        <div class="col-lg-7">
+            <div class="card shadow-sm border-0 h-100" style="border-radius: 16px;">
+                <div class="card-body p-4 p-md-5">
+                    <h6 class="font-weight-bold text-dark mb-4">Rating Breakdown</h6>
+
+                    <!-- 5 Star -->
+                    <div class="d-flex align-items-center mb-2">
+                        <span class="small font-weight-bold text-dark mr-2" style="width: 50px;">5 Stars</span>
+                        <div class="progress flex-grow-1 mr-3" style="height: 10px; border-radius: 5px; background: #f0f0f0;">
+                            <div class="progress-bar bg-success" role="progressbar" style="width: {{ star_pcts.5 }}%"></div>
+                        </div>
+                        <span class="small text-muted font-weight-bold" style="width: 45px; text-align: right;">{{ star_counts.5 }}</span>
+                    </div>
+
+                    <!-- 4 Star -->
+                    <div class="d-flex align-items-center mb-2">
+                        <span class="small font-weight-bold text-dark mr-2" style="width: 50px;">4 Stars</span>
+                        <div class="progress flex-grow-1 mr-3" style="height: 10px; border-radius: 5px; background: #f0f0f0;">
+                            <div class="progress-bar bg-primary" role="progressbar" style="width: {{ star_pcts.4 }}%"></div>
+                        </div>
+                        <span class="small text-muted font-weight-bold" style="width: 45px; text-align: right;">{{ star_counts.4 }}</span>
+                    </div>
+
+                    <!-- 3 Star -->
+                    <div class="d-flex align-items-center mb-2">
+                        <span class="small font-weight-bold text-dark mr-2" style="width: 50px;">3 Stars</span>
+                        <div class="progress flex-grow-1 mr-3" style="height: 10px; border-radius: 5px; background: #f0f0f0;">
+                            <div class="progress-bar bg-warning" role="progressbar" style="width: {{ star_pcts.3 }}%"></div>
+                        </div>
+                        <span class="small text-muted font-weight-bold" style="width: 45px; text-align: right;">{{ star_counts.3 }}</span>
+                    </div>
+
+                    <!-- 2 Star -->
+                    <div class="d-flex align-items-center mb-2">
+                        <span class="small font-weight-bold text-dark mr-2" style="width: 50px;">2 Stars</span>
+                        <div class="progress flex-grow-1 mr-3" style="height: 10px; border-radius: 5px; background: #f0f0f0;">
+                            <div class="progress-bar bg-secondary" role="progressbar" style="width: {{ star_pcts.2 }}%"></div>
+                        </div>
+                        <span class="small text-muted font-weight-bold" style="width: 45px; text-align: right;">{{ star_counts.2 }}</span>
+                    </div>
+
+                    <!-- 1 Star -->
+                    <div class="d-flex align-items-center">
+                        <span class="small font-weight-bold text-dark mr-2" style="width: 50px;">1 Star</span>
+                        <div class="progress flex-grow-1 mr-3" style="height: 10px; border-radius: 5px; background: #f0f0f0;">
+                            <div class="progress-bar bg-danger" role="progressbar" style="width: {{ star_pcts.1 }}%"></div>
+                        </div>
+                        <span class="small text-muted font-weight-bold" style="width: 45px; text-align: right;">{{ star_counts.1 }}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Request Reviews Banner -->
+    <div class="card shadow-sm border-0 mb-4 text-white" style="background: linear-gradient(135deg, #e72e77 0%, #ff6b6b 100%); border-radius: 16px;">
+        <div class="card-body p-4 p-md-5 d-flex flex-wrap justify-content-between align-items-center">
+            <div class="mb-3 mb-md-0 col-md-8 px-0">
+                <h4 class="font-weight-bold mb-2 text-white"><i class="fa fa-heart mr-2"></i> Get More 5-Star Reviews</h4>
+                <p class="mb-0 text-white-50">Vendors with 10+ reviews get up to 4x more wedding inquiries on BookMyLawn. Share your storefront link directly with past couples.</p>
+            </div>
+            <div class="col-md-4 text-md-right px-0">
+                <button type="button" class="btn btn-light rounded-pill px-4 font-weight-bold text-primary shadow-sm" onclick="copyReviewLink()">
+                    <i class="fe fe-copy mr-1"></i> Copy Review Link
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Reviews Filter Toolbar -->
+    <div class="card shadow-sm border-0 mb-4" style="border-radius: 16px;">
+        <div class="card-body p-3 p-md-4">
+            <div class="d-flex flex-wrap justify-content-between align-items-center">
+                <div class="nav nav-pills">
+                    <a href="{% url 'vendor_reviews' %}" class="nav-link rounded-pill font-weight-bold px-3 py-2 mr-2 {% if not current_rating %}active bg-primary text-white{% else %}bg-light text-dark{% endif %}">
+                        All Reviews ({{ total_reviews }})
+                    </a>
+                    <a href="{% url 'vendor_reviews' %}?rating=5" class="nav-link rounded-pill font-weight-bold px-3 py-2 mr-2 {% if current_rating == '5' %}active bg-primary text-white{% else %}bg-light text-dark{% endif %}">
+                        5 Stars ({{ star_counts.5 }})
+                    </a>
+                    <a href="{% url 'vendor_reviews' %}?rating=4" class="nav-link rounded-pill font-weight-bold px-3 py-2 mr-2 {% if current_rating == '4' %}active bg-primary text-white{% else %}bg-light text-dark{% endif %}">
+                        4 Stars ({{ star_counts.4 }})
+                    </a>
+                    <a href="{% url 'vendor_reviews' %}?rating=3" class="nav-link rounded-pill font-weight-bold px-3 py-2 {% if current_rating == '3' %}active bg-primary text-white{% else %}bg-light text-dark{% endif %}">
+                        3 Stars &amp; Below ({{ star_counts.3|add:star_counts.2|add:star_counts.1 }})
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Review Cards List -->
+    <div class="row">
+        {% for review in reviews %}
+        <div class="col-md-6 mb-4">
+            <div class="card shadow-sm border-0 h-100" style="border-radius: 16px;">
+                <div class="card-body p-4 d-flex flex-column justify-content-between">
+                    <div>
+                        <!-- Review Header -->
+                        <div class="d-flex align-items-start justify-content-between mb-3">
+                            <div class="d-flex align-items-center">
+                                <div class="rounded-circle d-flex align-items-center justify-content-center text-white font-weight-bold mr-3 shadow-sm" style="width: 48px; height: 48px; background: #e72e77; font-size: 18px; flex-shrink: 0;">
+                                    {{ review.reviewer_name|first|upper }}
+                                </div>
+                                <div>
+                                    <h6 class="font-weight-bold text-dark mb-0">{{ review.reviewer_name }}</h6>
+                                    <small class="text-muted">{{ review.created_at|date:"F d, Y" }}</small>
+                                </div>
+                            </div>
+                            <div class="badge badge-light border px-2 py-1 text-warning font-weight-bold">
+                                <span class="text-dark mr-1">{{ review.rating }}.0</span>
+                                <i class="fa fa-star"></i>
+                            </div>
+                        </div>
+
+                        <!-- Review Comment -->
+                        <div class="p-3 bg-light rounded mb-3" style="border-left: 3px solid #e72e77;">
+                            <p class="mb-0 text-dark font-italic" style="font-size: 14.5px; line-height: 1.6;">
+                                "{{ review.comment|default:'The couple rated this vendor with 5 stars.' }}"
+                            </p>
+                        </div>
+
+                        <!-- Vendor Response (if any) -->
+                        {% if review.vendor_reply %}
+                        <div class="p-3 bg-white border rounded mb-3" style="border-left: 3px solid #28a745 !important;">
+                            <div class="d-flex justify-content-between align-items-center mb-1">
+                                <span class="small font-weight-bold text-success">
+                                    <i class="fe fe-corner-down-right mr-1"></i> Response from {{ vendor.name }}
+                                </span>
+                                <small class="text-muted">{{ review.vendor_replied_at|date:"d M Y" }}</small>
+                            </div>
+                            <p class="mb-0 text-dark small" style="line-height: 1.5;">{{ review.vendor_reply }}</p>
+                        </div>
+                        {% endif %}
+                    </div>
+
+                    <!-- Bottom Action (Reply Button) -->
+                    <div class="pt-2 border-top d-flex justify-content-between align-items-center">
+                        <span class="small text-muted"><i class="fe fe-check-circle text-success mr-1"></i> Verified Couple Review</span>
+                        <button type="button" class="btn btn-sm btn-outline-primary rounded-pill px-3 font-weight-bold" data-toggle="modal" data-target="#replyModal{{ review.id }}">
+                            <i class="fe fe-message-square mr-1"></i> {% if review.vendor_reply %}Edit Reply{% else %}Reply to Review{% endif %}
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Reply Modal -->
+        <div class="modal fade" id="replyModal{{ review.id }}" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content border-0 shadow-lg" style="border-radius: 16px;">
+                    <form method="POST" action="{% url 'reply_to_review' review.id %}">
+                        {% csrf_token %}
+                        <div class="modal-header border-0 pb-0 pt-4 px-4">
+                            <h5 class="modal-title font-weight-bold text-dark">
+                                <i class="fe fe-message-square mr-2 text-primary"></i> Public Reply to {{ review.reviewer_name }}
+                            </h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body px-4 py-3">
+                            <div class="p-3 bg-light rounded mb-3 small">
+                                <strong>{{ review.reviewer_name }} wrote:</strong>
+                                <p class="mb-0 text-muted font-italic">"{{ review.comment }}"</p>
+                            </div>
+                            <div class="form-group mb-2">
+                                <label class="font-weight-bold text-dark small text-uppercase">Your Public Response</label>
+                                <textarea name="reply_text" class="form-control bg-light border-0 rounded" rows="4" placeholder="Thank you so much! It was an absolute honor hosting your wedding day..." required>{{ review.vendor_reply|default:'' }}</textarea>
+                                <small class="text-muted">This response will be visible to all couples visiting your storefront.</small>
+                            </div>
+                        </div>
+                        <div class="modal-footer border-0 pt-0 px-4 pb-4">
+                            <button type="button" class="btn btn-light rounded-pill px-4" data-dismiss="modal">Cancel</button>
+                            <button type="submit" class="btn btn-primary rounded-pill font-weight-bold px-4 shadow-sm">Publish Response</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
         {% empty %}
         <div class="col-12">
-            <div class="card shadow-sm border-0">
-                <div class="card-body text-center py-5">
-                    <div class="circle circle-lg bg-light text-muted mx-auto mb-4" style="width: 80px; height: 80px; font-size: 30px;">
-                        <i class="fe fe-star"></i>
-                    </div>
-                    <h5 class="text-dark font-weight-bold">No reviews yet</h5>
-                    <p class="text-muted mb-0">When customers leave a review for your business, it will appear here.</p>
+            <div class="card shadow-sm border-0 text-center py-5" style="border-radius: 16px;">
+                <div class="card-body">
+                    <i class="fe fe-star text-muted mb-3 d-block" style="font-size: 42px;"></i>
+                    <h5 class="font-weight-bold text-dark">No reviews matching this filter</h5>
+                    <p class="text-muted small mb-3">Share your review link with past couples to build your verified reputation.</p>
+                    <button type="button" class="btn btn-primary rounded-pill px-4 font-weight-bold" onclick="copyReviewLink()">
+                        <i class="fe fe-copy mr-1"></i> Copy Review Link
+                    </button>
                 </div>
             </div>
         </div>
         {% endfor %}
     </div>
+
   </div>
 </div>
+
+<script>
+var reviewUrl = window.location.origin + "{% url 'vendor_details' vendor.uuid_field %}#reviews";
+
+function copyReviewLink() {
+    navigator.clipboard.writeText(reviewUrl).then(function() {
+        if (typeof Swal !== 'undefined') {
+            Swal.fire({
+                title: 'Review Link Copied!',
+                text: 'The direct link to your reviews section has been copied to your clipboard. Send it to your clients!',
+                icon: 'success',
+                confirmButtonColor: '#e72e77'
+            });
+        } else {
+            alert('Review Link Copied to clipboard!\n' + reviewUrl);
+        }
+    });
+}
+
+function shareReviewWhatsApp() {
+    var msg = "Hi! Thank you for choosing " + "{{ vendor.name|escapejs }}" + " for your wedding celebrations. We would love to hear your feedback! Could you please take 1 minute to leave us a quick review on BookMyLawn? Here is the link: " + reviewUrl;
+    window.open("https://wa.me/?text=" + encodeURIComponent(msg), "_blank");
+}
+</script>
 {% endblock %}

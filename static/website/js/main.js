@@ -51,23 +51,55 @@ Created: Colorib
     });
 
     //Canvas Menu
-    $(".canvas__open").on('click', function () {
+    function openOffcanvas() {
         $(".offcanvas-menu-wrapper").addClass("active");
         $(".offcanvas-menu-overlay").addClass("active");
-    });
+        $(".canvas__open").addClass("active");
+        $("body").addClass("offcanvas-open");
+    }
 
-    $(".offcanvas-menu-overlay, .offcanvas__close").on('click', function () {
+    function closeOffcanvas() {
         $(".offcanvas-menu-wrapper").removeClass("active");
         $(".offcanvas-menu-overlay").removeClass("active");
+        $(".canvas__open").removeClass("active");
+        $("body").removeClass("offcanvas-open");
+    }
+
+    $(".canvas__open").on('click', function (e) {
+        e.preventDefault();
+        if ($(".offcanvas-menu-wrapper").hasClass("active")) {
+            closeOffcanvas();
+        } else {
+            openOffcanvas();
+        }
+    });
+
+    $(".offcanvas-menu-overlay, .offcanvas__close").on('click', function (e) {
+        e.preventDefault();
+        closeOffcanvas();
+    });
+
+    // Close mobile menu when a nav link is clicked
+    $(".offcanvas__nav-list a").on('click', function () {
+        closeOffcanvas();
+    });
+
+    // Close on Escape key
+    $(document).on('keydown', function (e) {
+        if (e.key === 'Escape' || e.keyCode === 27) {
+            closeOffcanvas();
+        }
     });
 
     /*------------------
 		Navigation
 	--------------------*/
-    $(".header__menu").slicknav({
-        prependTo: '#mobile-menu-wrap',
-        allowParentLinks: true
-    });
+    if ($('#mobile-menu-wrap').length > 0 && $('#mobile-menu-wrap').is(':visible')) {
+        $(".header__menu").slicknav({
+            prependTo: '#mobile-menu-wrap',
+            allowParentLinks: true
+        });
+    }
 
     /*------------------
         Accordin Active

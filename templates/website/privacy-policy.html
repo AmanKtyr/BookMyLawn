@@ -1,0 +1,69 @@
+{% extends 'website/base.html' %}
+{% load static %}
+
+{% block title %}Privacy Policy | BookMyLawn{% endblock %}
+{% block meta_description %}Read BookMyLawn's Privacy Policy. Learn how we protect your personal information, booking details, and privacy when using our wedding planning platform.{% endblock %}
+{% block meta_robots %}index, follow{% endblock %}
+
+{% block content %}
+<!-- Hero Section Begin -->
+<section class="page-hero set-bg" data-setbg="{% static 'website/img/banner/banner-1.jpg' %}?v=2" style="background-image: url('{% static 'website/img/banner/banner-1.jpg' %}?v=2');">
+    <div class="container">
+        <div class="page-hero-content text-center">
+            <span class="hero-badge">
+                <i class="fa fa-shield mr-1"></i> Trust &amp; Transparency
+            </span>
+            <h1>Privacy Policy</h1>
+            <p>Learn how BookMyLawn protects your personal information, booking details, and privacy.</p>
+        </div>
+    </div>
+</section>
+<!-- Hero Section End -->
+
+<!-- Breadcrumb Section Begin -->
+<div class="breadcrumb-option bg-light py-2 border-bottom">
+    <div class="container">
+        <div class="breadcrumb__links">
+            <a href="{% url 'index' %}"><i class="fa fa-home"></i> Home</a>
+            <span>Privacy Policy</span>
+        </div>
+    </div>
+</div>
+<!-- Breadcrumb Section End -->
+
+<section style="padding: 60px 0; background: #fff;">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-10" style="color: #4b5563; line-height: 1.8; font-size: 15px;">
+                <h4 style="font-weight: 700; color: #111; margin-bottom: 15px;">1. Information We Collect</h4>
+                <p>When you use BookMyLawn to search for wedding lawns, banquet halls, or wedding vendors, we collect information you provide directly to us:</p>
+                <ul style="padding-left: 20px; margin-bottom: 25px;">
+                    <li><strong>Account Information:</strong> Name, email address, phone number, and password when you register.</li>
+                    <li><strong>Wedding Details:</strong> Tentative wedding dates, preferred event cities, estimated guest count, and budget.</li>
+                    <li><strong>Vendor Inquiries:</strong> Messages, dates, and contact requests sent to venue managers or wedding vendors.</li>
+                    <li><strong>Reviews &amp; Ratings:</strong> Reviews and ratings you submit for vendors you have booked or contacted.</li>
+                </ul>
+
+                <h4 style="font-weight: 700; color: #111; margin-bottom: 15px;">2. How We Use Your Information</h4>
+                <p>We use the collected information to:</p>
+                <ul style="padding-left: 20px; margin-bottom: 25px;">
+                    <li>Connect you with wedding venues and vendors you specifically inquire about.</li>
+                    <li>Facilitate venue availability checks, price estimates, and bookings.</li>
+                    <li>Maintain account security and prevent fraudulent inquiries.</li>
+                    <li>Improve our search algorithms, website speed, and recommendations.</li>
+                </ul>
+
+                <h4 style="font-weight: 700; color: #111; margin-bottom: 15px;">3. Sharing of Information</h4>
+                <p>We never sell your personal information. When you submit an inquiry for a venue or vendor, we share your name, phone number, and event details with that specific vendor so they can provide availability and quotes.</p>
+
+                <h4 style="font-weight: 700; color: #111; margin-bottom: 15px;">4. Data Security</h4>
+                <p>We implement industry-standard encryption, SSL protocols, and restricted database access to safeguard your data from unauthorized access, disclosure, or destruction.</p>
+
+                <h4 style="font-weight: 700; color: #111; margin-bottom: 15px;">5. Contact Us</h4>
+                <p>If you have any questions regarding this Privacy Policy, please contact our privacy officer at <a href="mailto:privacy@bookmylawn.com" class="text-danger font-weight-bold">privacy@bookmylawn.com</a>.</p>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+

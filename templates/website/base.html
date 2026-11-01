@@ -1,20 +1,58 @@
 {% load static %}
 <!DOCTYPE html>
-<html lang="zxx">
+<html lang="en">
 
 <head>
     <meta charset="UTF-8">
-    <meta name="description"
-        content="{% block meta_description %}BookMyLawn - Your ultimate wedding planning companion. Find the best venues, photographers, and decorators.{% endblock %}">
-    <meta name="keywords" content="wedding, venues, photographers, decorators, BookMyLawn">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>{% block title %}BookMyLawn | Wedding Venues & Vendors{% endblock %}</title>
+
+    <!-- Google Site Verification -->
+    <meta name="google-site-verification" content="kGF0SgLDW6arbFZU2J_uVcaP4p74k930WziuN69Y-XE">
+
+    <!-- SEO Meta Tags -->
+    <title>{% block title %}BookMyLawn | Wedding Lawns, Banquet Halls & Wedding Vendors{% endblock %}</title>
+    <meta name="description"
+        content="{% block meta_description %}BookMyLawn - Your ultimate wedding planning companion. Find the best wedding lawns, banquet halls, photographers, and decorators with verified prices & reviews.{% endblock %}">
+    <meta name="keywords"
+        content="{% block meta_keywords %}wedding lawns, banquet halls, marriage lawns, party plots, farmhouses for wedding, wedding venues, destination wedding venues, wedding photographers, bridal makeup artists, wedding decorators, catering services, marriage garden, book wedding lawn online, BookMyLawn{% endblock %}">
+    <meta name="robots" content="{% block meta_robots %}index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1{% endblock %}">
+    <link rel="canonical" href="{% block canonical %}{{ request.build_absolute_uri }}{% endblock %}">
+
+    <!-- Geo Meta Tags for Indian Local SEO -->
+    <meta name="geo.region" content="IN">
+    <meta name="geo.placename" content="India">
+
+    <!-- Open Graph (Facebook, WhatsApp, LinkedIn) -->
+    <meta property="og:type" content="{% block og_type %}website{% endblock %}">
+    <meta property="og:site_name" content="BookMyLawn">
+    <meta property="og:url" content="{{ request.build_absolute_uri }}">
+    <meta property="og:title" content="{% block og_title %}BookMyLawn | Wedding Venues, Lawns & Banquet Halls{% endblock %}">
+    <meta property="og:description" content="{% block og_description %}Discover and book the finest wedding lawns, banquet halls, photographers & decorators across India with verified reviews at BookMyLawn.{% endblock %}">
+    <meta property="og:image" content="{% block og_image %}{{ request.scheme }}://{{ request.get_host }}{% static 'website/img/banner/banner-1.jpg' %}{% endblock %}">
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="{% block twitter_title %}BookMyLawn | Wedding Venues, Lawns & Banquet Halls{% endblock %}">
+    <meta name="twitter:description" content="{% block twitter_description %}Discover and book the finest wedding lawns, banquet halls, photographers & decorators across India with verified reviews at BookMyLawn.{% endblock %}">
+    <meta name="twitter:image" content="{% block twitter_image %}{{ request.scheme }}://{{ request.get_host }}{% static 'website/img/banner/banner-1.jpg' %}{% endblock %}">
 
     <!-- Google Font -->
     <link
         href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Montserrat:wght@300;400;500;600;700&display=swap"
         rel="stylesheet">
+
+    <!-- Css Styles -->
+    <link rel="stylesheet" href="{% static 'website/css/bootstrap.min.css' %}" type="text/css">
+    <link rel="stylesheet" href="{% static 'website/css/font-awesome.min.css' %}" type="text/css">
+    <link rel="stylesheet" href="{% static 'website/css/elegant-icons.css' %}" type="text/css">
+    <link rel="stylesheet" href="{% static 'website/css/jquery-ui.min.css' %}" type="text/css">
+    <link rel="stylesheet" href="{% static 'website/css/magnific-popup.css' %}" type="text/css">
+    <link rel="stylesheet" href="{% static 'website/css/owl.carousel.min.css' %}" type="text/css">
+    <link rel="stylesheet" href="{% static 'website/css/slicknav.min.css' %}" type="text/css">
+    <link rel="stylesheet" href="{% static 'website/css/style.css' %}?v=3" type="text/css">
+
+    <!-- User's Original CSS Styles -->
     <style>
         body {
             font-family: 'Montserrat', sans-serif;
@@ -83,15 +121,32 @@
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
         }
 
-        /* Premium Header Styles */
+        /* Premium Responsive Header & Navigation Styles */
         .header {
             background: #ffffff;
             box-shadow: 0 4px 30px rgba(0, 0, 0, 0.05);
-            padding: 12px 0;
+            padding: 10px 0;
             position: sticky;
             top: 0;
             z-index: 999;
             transition: all 0.3s ease;
+        }
+
+        .header__row {
+            min-height: unset;
+        }
+
+        .header__logo {
+            padding: 0 !important;
+            margin: 0 !important;
+            display: flex;
+            align-items: center;
+        }
+
+        .header__logo a {
+            display: inline-flex;
+            align-items: center;
+            line-height: 1;
         }
 
         .header__logo a h2 {
@@ -99,6 +154,15 @@
             font-weight: 800;
             letter-spacing: -0.5px;
             font-size: 26px;
+            margin: 0;
+        }
+
+        .header__logo-img {
+            height: 40px;
+            width: auto;
+            border-radius: 8px;
+            display: block;
+            transition: height 0.2s ease;
         }
 
         .header__menu ul {
@@ -106,11 +170,11 @@
             align-items: center;
             justify-content: center;
             margin: 0;
-            padding-top: 5px;
+            padding: 5px 0 0;
         }
 
         .header__menu ul li {
-            margin: 0 12px;
+            margin: 0 10px;
             list-style: none;
         }
 
@@ -148,20 +212,72 @@
             width: 100%;
         }
 
-        /* Auth Buttons */
+        /* Vendors Dropdown Menu */
+        .header__menu ul li.has-dropdown {
+            position: relative;
+        }
+        .header__menu ul li .dropdown {
+            position: absolute;
+            left: 0;
+            top: 40px;
+            width: 250px;
+            background: #ffffff;
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.12);
+            border-radius: 12px;
+            border: 1px solid #f0f0f0;
+            padding: 8px 0;
+            margin: 0;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.25s ease;
+            z-index: 999;
+            text-align: left;
+            display: block;
+        }
+        .header__menu ul li.has-dropdown:hover .dropdown {
+            opacity: 1;
+            visibility: visible;
+            top: 32px;
+        }
+        .header__menu ul li .dropdown li {
+            margin: 0;
+            display: block;
+            width: 100%;
+        }
+        .header__menu ul li .dropdown li a {
+            display: flex;
+            align-items: center;
+            padding: 8px 18px;
+            font-size: 13px;
+            font-weight: 500;
+            text-transform: capitalize;
+            color: #374151;
+            transition: background 0.2s, color 0.2s;
+        }
+        .header__menu ul li .dropdown li a:hover {
+            background: #fdf2f6;
+            color: #e72e77;
+        }
+        .header__menu ul li .dropdown li a::after {
+            display: none !important;
+        }
+
+        /* Desktop Auth Buttons */
         .header__right {
             display: flex;
             align-items: center;
             justify-content: flex-end;
+            padding: 0 !important;
+            margin: 0 !important;
             height: 100%;
-            padding-top: 5px;
         }
 
         .header__right__auth {
             display: flex;
             align-items: center;
             gap: 15px;
-            margin-right: 25px;
+            padding: 0;
+            margin: 0;
         }
 
         .header__right__auth a {
@@ -176,10 +292,10 @@
         .btn-login-single {
             background: linear-gradient(135deg, #e72e77 0%, #c2185b 100%);
             color: white !important;
-            padding: 10px 26px;
+            padding: 9px 24px;
             border-radius: 30px;
             font-weight: 600;
-            font-size: 14px;
+            font-size: 13px;
             text-decoration: none;
             display: inline-flex;
             align-items: center;
@@ -187,6 +303,7 @@
             box-shadow: 0 4px 15px rgba(231, 46, 119, 0.3);
             transition: all 0.3s ease;
             letter-spacing: 0.3px;
+            white-space: nowrap;
         }
 
         .btn-login-single:hover {
@@ -200,17 +317,449 @@
             color: #e72e77 !important;
             transform: scale(1.2);
         }
+
+        /* Mobile Controls in Top Header */
+        .header__mobile-controls {
+            display: none;
+            align-items: center;
+            gap: 8px;
+            padding: 0;
+            margin: 0;
+        }
+
+        .btn-mobile-auth {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: rgba(231, 46, 119, 0.1);
+            color: #e72e77 !important;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            text-decoration: none;
+            transition: all 0.2s ease;
+            border: 1px solid rgba(231, 46, 119, 0.2);
+            flex-shrink: 0;
+        }
+
+        .btn-mobile-auth:hover,
+        .btn-mobile-auth:focus {
+            background: #e72e77;
+            color: #ffffff !important;
+        }
+
+        .canvas__open {
+            display: none;
+            width: 36px;
+            height: 36px;
+            border-radius: 8px;
+            background: #f8f9fa;
+            border: 1.5px solid #e0e0e0;
+            color: #222222;
+            font-size: 16px;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            padding: 0;
+            margin: 0;
+            position: static;
+            outline: none;
+            flex-shrink: 0;
+            line-height: 1;
+        }
+
+        .canvas__open:hover,
+        .canvas__open:focus,
+        .canvas__open.active {
+            background: #e72e77;
+            color: #ffffff;
+            border-color: #e72e77;
+        }
+
+        /* Offcanvas Drawer & Overlay */
+        body.offcanvas-open {
+            overflow: hidden !important;
+            touch-action: none;
+        }
+
+        .offcanvas-menu-overlay {
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(3px);
+            -webkit-backdrop-filter: blur(3px);
+            z-index: 10000;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+        }
+
+        .offcanvas-menu-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .offcanvas-menu-wrapper {
+            position: fixed;
+            left: -320px;
+            top: 0;
+            width: 300px;
+            max-width: 85vw;
+            height: 100%;
+            height: 100dvh;
+            background: #ffffff;
+            z-index: 10001;
+            box-shadow: 6px 0 30px rgba(0, 0, 0, 0.15);
+            display: flex;
+            flex-direction: column;
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            overflow: hidden;
+            visibility: hidden;
+            padding: 0;
+            opacity: 1;
+        }
+
+        .offcanvas-menu-wrapper.active {
+            transform: translateX(320px);
+            visibility: visible;
+            left: -320px;
+        }
+
+        .offcanvas__header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px 18px;
+            border-bottom: 1px solid #f0f0f0;
+            background: #ffffff;
+        }
+
+        .offcanvas__logo img {
+            height: 32px;
+            border-radius: 6px;
+        }
+
+        .offcanvas__close {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: #f5f5f5;
+            border: 1px solid #e0e0e0;
+            color: #333333;
+            font-size: 20px;
+            line-height: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            position: static;
+            transform: none;
+            padding: 0;
+            outline: none;
+        }
+
+        .offcanvas__close:hover,
+        .offcanvas__close:focus {
+            background: #e72e77;
+            color: #ffffff;
+            border-color: #e72e77;
+        }
+
+        .offcanvas__nav-wrap {
+            flex: 1;
+            overflow-y: auto;
+            padding: 16px 14px;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .offcanvas__nav-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .offcanvas__nav-list li {
+            margin-bottom: 5px;
+        }
+
+        .offcanvas__nav-list li a {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 11px 16px;
+            border-radius: 10px;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 14px;
+            font-weight: 600;
+            color: #333333;
+            text-decoration: none;
+            transition: all 0.2s ease;
+        }
+
+        .offcanvas__nav-list li a i {
+            font-size: 16px;
+            width: 20px;
+            text-align: center;
+            color: #888888;
+            transition: color 0.2s ease;
+        }
+
+        .offcanvas__nav-list li.active a,
+        .offcanvas__nav-list li a:hover {
+            background: rgba(231, 46, 119, 0.08);
+            color: #e72e77;
+        }
+
+        .offcanvas__nav-list li.active a i,
+        .offcanvas__nav-list li a:hover i {
+            color: #e72e77;
+        }
+
+        .offcanvas__footer {
+            padding: 16px 18px;
+            border-top: 1px solid #f0f0f0;
+            background: #fafafa;
+        }
+
+        .offcanvas__auth-box {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin-bottom: 12px;
+        }
+
+        .btn-mobile-menu-auth {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            width: 100%;
+            padding: 10px 16px;
+            border-radius: 25px;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 600;
+            font-size: 13px;
+            text-decoration: none;
+            transition: all 0.2s ease;
+        }
+
+        .btn-mobile-menu-auth.primary {
+            background: linear-gradient(135deg, #e72e77 0%, #c2185b 100%);
+            color: #ffffff !important;
+            box-shadow: 0 4px 12px rgba(231, 46, 119, 0.25);
+        }
+
+        .btn-mobile-menu-auth.primary:hover {
+            box-shadow: 0 6px 16px rgba(231, 46, 119, 0.35);
+            transform: translateY(-1px);
+        }
+
+        .btn-mobile-menu-auth.secondary {
+            background: #ffffff;
+            border: 1px solid #e0e0e0;
+            color: #333333 !important;
+        }
+
+        .btn-mobile-menu-auth.secondary:hover {
+            border-color: #e72e77;
+            color: #e72e77 !important;
+        }
+
+        .offcanvas__contact-info {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            padding-top: 4px;
+            font-size: 12px;
+            color: #777777;
+        }
+
+        .offcanvas__contact-info a {
+            color: #777777;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 12px;
+        }
+
+        .offcanvas__contact-info a:hover {
+            color: #e72e77;
+        }
+
+        /* Responsive Breakpoints */
+        @media only screen and (max-width: 991px) {
+            .header {
+                padding: 6px 0 !important;
+            }
+            .header__logo {
+                padding: 0 !important;
+                margin: 0 !important;
+                line-height: 1 !important;
+            }
+            .header__logo a {
+                display: inline-flex !important;
+                align-items: center !important;
+                line-height: 1 !important;
+            }
+            .header__logo-img {
+                height: 34px !important;
+                width: auto !important;
+                display: block !important;
+            }
+            .header__right {
+                padding: 0 !important;
+                margin: 0 !important;
+            }
+            .header__menu {
+                display: none !important;
+            }
+            .header__right__auth {
+                display: none !important;
+            }
+            .header__mobile-controls {
+                display: flex !important;
+                align-items: center !important;
+                gap: 8px !important;
+                margin: 0 !important;
+                padding: 0 !important;
+            }
+            .canvas__open {
+                display: inline-flex !important;
+                width: 36px !important;
+                height: 36px !important;
+                font-size: 16px !important;
+                margin: 0 !important;
+            }
+            .btn-mobile-auth {
+                width: 36px !important;
+                height: 36px !important;
+                font-size: 16px !important;
+            }
+        }
+
+        @media only screen and (max-width: 767px) {
+            .page-hero {
+                padding: 45px 0 30px !important;
+                border-radius: 0 0 16px 16px !important;
+                margin-bottom: 0 !important;
+            }
+            .page-hero::before {
+                border-radius: 0 0 16px 16px !important;
+            }
+            .hero-badge {
+                font-size: 11px !important;
+                letter-spacing: 1.5px !important;
+                padding: 5px 14px !important;
+                margin-bottom: 10px !important;
+            }
+            .page-hero-content h1,
+            .page-hero-content h2 {
+                font-size: 26px !important;
+                line-height: 1.25 !important;
+                margin-bottom: 8px !important;
+            }
+            .page-hero-content p {
+                font-size: 13.5px !important;
+                line-height: 1.5 !important;
+                padding: 0 8px !important;
+            }
+            .section-title h2 {
+                font-size: 24px !important;
+                line-height: 1.3 !important;
+            }
+            .section-title {
+                margin-bottom: 25px !important;
+            }
+        }
+
+        @media only screen and (max-width: 576px) {
+            .header {
+                padding: 4px 0 !important;
+            }
+            .header__logo-img {
+                height: 30px !important;
+            }
+            .canvas__open {
+                width: 34px !important;
+                height: 34px !important;
+                font-size: 15px !important;
+            }
+            .btn-mobile-auth {
+                width: 34px !important;
+                height: 34px !important;
+                font-size: 15px !important;
+            }
+            .header__mobile-controls {
+                gap: 6px !important;
+            }
+        }
+
+        @media only screen and (min-width: 992px) and (max-width: 1199px) {
+            .header__menu ul li {
+                margin: 0 6px;
+            }
+            .header__menu ul li a {
+                font-size: 12px;
+                padding: 6px 0;
+            }
+            .btn-login-single {
+                padding: 8px 18px;
+                font-size: 12px;
+            }
+        }
     </style>
 
-    <!-- Css Styles -->
-    <link rel="stylesheet" href="{% static 'website/css/bootstrap.min.css' %}" type="text/css">
-    <link rel="stylesheet" href="{% static 'website/css/font-awesome.min.css' %}" type="text/css">
-    <link rel="stylesheet" href="{% static 'website/css/elegant-icons.css' %}" type="text/css">
-    <link rel="stylesheet" href="{% static 'website/css/jquery-ui.min.css' %}" type="text/css">
-    <link rel="stylesheet" href="{% static 'website/css/magnific-popup.css' %}" type="text/css">
-    <link rel="stylesheet" href="{% static 'website/css/owl.carousel.min.css' %}" type="text/css">
-    <link rel="stylesheet" href="{% static 'website/css/slicknav.min.css' %}" type="text/css">
-    <link rel="stylesheet" href="{% static 'website/css/style.css' %}?v=2" type="text/css">
+    <!-- Schema.org JSON-LD Structured Data for Google Indexing -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "Organization",
+          "@id": "{{ request.scheme }}://{{ request.get_host }}/#organization",
+          "name": "BookMyLawn",
+          "url": "{{ request.scheme }}://{{ request.get_host }}/",
+          "logo": {
+            "@type": "ImageObject",
+            "url": "{{ request.scheme }}://{{ request.get_host }}{% static 'website/img/logo/logo.png' %}",
+            "caption": "BookMyLawn - Wedding Venues & Lawns Booking"
+          },
+          "description": "India's trusted marketplace for booking wedding lawns, luxury banquet halls, photographers, decorators, and wedding vendors.",
+          "contactPoint": {
+            "@type": "ContactPoint",
+            "telephone": "+91-98765-43210",
+            "contactType": "Customer Support",
+            "areaServed": "IN"
+          }
+        },
+        {
+          "@type": "WebSite",
+          "@id": "{{ request.scheme }}://{{ request.get_host }}/#website",
+          "url": "{{ request.scheme }}://{{ request.get_host }}/",
+          "name": "BookMyLawn",
+          "publisher": {
+            "@id": "{{ request.scheme }}://{{ request.get_host }}/#organization"
+          },
+          "potentialAction": {
+            "@type": "SearchAction",
+            "target": {
+              "@type": "EntryPoint",
+              "urlTemplate": "{{ request.scheme }}://{{ request.get_host }}/vendors/?q={search_term_string}"
+            },
+            "query-input": "required name=search_term_string"
+          }
+        }
+      ]
+    }
+    </script>
+    {% block structured_data %}{% endblock %}
 </head>
 
 <body>
@@ -221,60 +770,130 @@
 
     <!-- Offcanvas Menu Begin -->
     <div class="offcanvas-menu-overlay"></div>
-    <div class="offcanvas-menu-wrapper">
-        <div class="offcanvas__close">+</div>
-
-        <div class="offcanvas__logo">
-            <a href="/" style="display: flex; align-items: center; gap: 10px;">
-                <img src="{% static 'website/img/logo/logo.png' %}" alt="BookMyLawn Logo"
-                    style="height: 45px; border-radius: 8px;">
-                <!-- <h2 style="color: #e72e77; font-weight: bold; margin: 0;">BookMyLawn</h2> -->
-            </a>
+    <div class="offcanvas-menu-wrapper" id="offcanvasMenu">
+        <div class="offcanvas__header">
+            <div class="offcanvas__logo">
+                <a href="/" class="d-flex align-items-center">
+                    <img src="{% static 'website/img/logo/logo.png' %}" alt="BookMyLawn Logo">
+                </a>
+            </div>
+            <button type="button" class="offcanvas__close" aria-label="Close menu">&times;</button>
         </div>
-        <div id="mobile-menu-wrap"></div>
-        <div class="offcanvas__auth">
-            <a href="/admin/">Vendor Login</a>
-            <a href="/admin/">User Login</a>
+
+        <div class="offcanvas__nav-wrap">
+            <ul class="offcanvas__nav-list">
+                <li class="{% if request.resolver_match.url_name == 'index' %}active{% endif %}">
+                    <a href="/"><i class="fa fa-home"></i> <span>Home</span></a>
+                </li>
+                <li class="{% if request.resolver_match.url_name == 'about_us' %}active{% endif %}">
+                    <a href="{% url 'about_us' %}"><i class="fa fa-info-circle"></i> <span>About Us</span></a>
+                </li>
+                <li class="{% if request.resolver_match.url_name == 'vendors' %}active{% endif %}">
+                    <a href="{% url 'vendors' %}"><i class="fa fa-users"></i> <span>Vendors</span></a>
+                </li>
+                <li class="{% if request.resolver_match.url_name == 'blog' %}active{% endif %}">
+                    <a href="{% url 'blog' %}"><i class="fa fa-newspaper-o"></i> <span>Blog</span></a>
+                </li>
+                <li class="{% if request.resolver_match.url_name == 'real_weddings' %}active{% endif %}">
+                    <a href="{% url 'real_weddings' %}"><i class="fa fa-heart"></i> <span>Real Weddings</span></a>
+                </li>
+                <li class="{% if request.resolver_match.url_name == 'wedding_tools' %}active{% endif %}">
+                    <a href="{% url 'wedding_tools' %}"><i class="fa fa-calculator"></i> <span>Planning Tools</span></a>
+                </li>
+                <li class="{% if request.resolver_match.url_name == 'contact' %}active{% endif %}">
+                    <a href="{% url 'contact' %}"><i class="fa fa-envelope"></i> <span>Contact</span></a>
+                </li>
+            </ul>
+        </div>
+
+        <!-- Hidden container for SlickNav compatibility -->
+        <div id="mobile-menu-wrap" style="display: none;"></div>
+
+        <div class="offcanvas__footer">
+            <div class="offcanvas__auth-box">
+                {% if request.user.is_authenticated %}
+                    {% if request.user.vendor_profile %}
+                    <a href="{% url 'vendor_dashboard' %}" class="btn-mobile-menu-auth primary">
+                        <i class="fa fa-dashboard"></i> Vendor Dashboard
+                    </a>
+                    <a href="{% url 'vendor_logout' %}" class="btn-mobile-menu-auth secondary">
+                        <i class="fa fa-sign-out"></i> Logout
+                    </a>
+                    {% else %}
+                    <a href="{% url 'user_dashboard' %}" class="btn-mobile-menu-auth primary">
+                        <i class="fa fa-user-circle"></i> My Profile
+                    </a>
+                    <a href="{% url 'user_logout' %}" class="btn-mobile-menu-auth secondary">
+                        <i class="fa fa-sign-out"></i> Logout
+                    </a>
+                    {% endif %}
+                {% else %}
+                <a href="{% url 'login' %}" class="btn-mobile-menu-auth primary">
+                    <i class="fa fa-user-circle"></i> Login
+                </a>
+                <a href="{% url 'vendor_register' %}" class="btn-mobile-menu-auth secondary">
+                    <i class="fa fa-briefcase"></i> Vendor Register
+                </a>
+                {% endif %}
+            </div>
+            <div class="offcanvas__contact-info">
+                <a href="tel:+919876543210"><i class="fa fa-phone"></i> +91 98765 43210</a>
+                <a href="mailto:support@bookmylawn.com"><i class="fa fa-envelope-o"></i> support@bookmylawn.com</a>
+            </div>
         </div>
     </div>
     <!-- Offcanvas Menu End -->
 
     <!-- Header Section Begin -->
     <header class="header">
-        <div class="container-fluid">
-            <div class="row">
-                <div class="col-xl-3 col-lg-2">
+        <div class="container-fluid px-3 px-md-4">
+            <div class="row align-items-center justify-content-between header__row">
+                <div class="col-auto col-xl-3 col-lg-2">
                     <div class="header__logo">
-                        <a href="/" style="display: flex; align-items: center; gap: 10px;">
-                            <img src="{% static 'website/img/logo/logo.png' %}" alt="BookMyLawn Logo"
-                                style="height: 45px; border-radius: 8px; margin-top: 5px;">
-                            <!-- <h2 style="color: #e72e77; font-weight: bold; margin: 0; padding-top: 5px;">BookMyLawn</h2> -->
+                        <a href="/" class="d-flex align-items-center">
+                            <img src="{% static 'website/img/logo/logo.png' %}" alt="BookMyLawn Logo" class="header__logo-img">
                         </a>
                     </div>
                 </div>
-                <div class="col-xl-6 col-lg-7">
+                <div class="col-xl-6 col-lg-7 d-none d-lg-block">
                     <nav class="header__menu">
                         <ul>
                             <li class="{% if request.resolver_match.url_name == 'index' %}active{% endif %}"><a
                                     href="/">Home</a></li>
                             <li class="{% if request.resolver_match.url_name == 'about_us' %}active{% endif %}"><a
                                     href="{% url 'about_us' %}">About Us</a></li>
-                            <li class="{% if view_type == 'venues' %}active{% endif %}"><a
-                                    href="{% url 'vendors' %}?type=venues">Venues</a></li>
-                            <li class="{% if view_type == 'vendors' %}active{% endif %}"><a
-                                    href="{% url 'vendors' %}">Vendors</a></li>
+                            <li class="has-dropdown {% if request.resolver_match.url_name == 'vendors' %}active{% endif %}">
+                                <a href="{% url 'vendors' %}">Vendors <i class="fa fa-angle-down ml-1" style="font-size: 11px;"></i></a>
+                                <ul class="dropdown">
+                                    <li><a href="{% url 'vendors' %}?category=venues"><i class="fa fa-map-pin text-primary mr-2" style="width: 18px;"></i> Venues &amp; Lawns</a></li>
+                                    <li><a href="{% url 'vendors' %}?category=photographers"><i class="fa fa-camera text-primary mr-2" style="width: 18px;"></i> Photographers</a></li>
+                                    <li><a href="{% url 'vendors' %}?category=makeup-artists"><i class="fa fa-paint-brush text-primary mr-2" style="width: 18px;"></i> Bridal Makeup</a></li>
+                                    <li><a href="{% url 'vendors' %}?category=decorators"><i class="fa fa-magic text-primary mr-2" style="width: 18px;"></i> Decorators &amp; Planners</a></li>
+                                    <li><a href="{% url 'vendors' %}?category=catering"><i class="fa fa-cutlery text-primary mr-2" style="width: 18px;"></i> Catering &amp; Food</a></li>
+                                    <li><a href="{% url 'vendors' %}?category=mehendi-artists"><i class="fa fa-hand-paper-o text-primary mr-2" style="width: 18px;"></i> Mehendi Artists</a></li>
+                                    <li><a href="{% url 'vendors' %}?category=djs-entertainment"><i class="fa fa-music text-primary mr-2" style="width: 18px;"></i> DJs &amp; Entertainment</a></li>
+                                    <li style="border-top: 1px solid #f0f0f0; margin-top: 5px; padding-top: 5px;">
+                                        <a href="{% url 'vendors' %}" style="color: #e72e77; font-weight: 700;">
+                                            <i class="fa fa-th-large text-primary mr-2" style="width: 18px;"></i> All Wedding Vendors &rarr;
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
                             <li class="{% if request.resolver_match.url_name == 'blog' %}active{% endif %}"><a 
                                     href="{% url 'blog' %}">Blog</a></li>
                             <li class="{% if request.resolver_match.url_name == 'real_weddings' %}active{% endif %}"><a
                                     href="{% url 'real_weddings' %}">Real Weddings</a></li>
+                            <li class="{% if request.resolver_match.url_name == 'wedding_tools' %}active{% endif %}"><a
+                                    href="{% url 'wedding_tools' %}">Planning Tools</a></li>
                             <li class="{% if request.resolver_match.url_name == 'contact' %}active{% endif %}"><a
                                     href="{% url 'contact' %}">Contact</a></li>
                         </ul>
                     </nav>
                 </div>
-                <div class="col-lg-3">
-                    <div class="header__right">
-                        <div class="header__right__auth">
+                <div class="col-auto col-lg-3">
+                    <div class="header__right d-flex align-items-center justify-content-end">
+                        <!-- Desktop Auth -->
+                        <div class="header__right__auth d-none d-lg-flex">
                             {% if request.user.is_authenticated %}
                                 {% if request.user.vendor_profile %}
                                 <a href="{% url 'vendor_dashboard' %}" class="btn-login-single">
@@ -293,11 +912,30 @@
                             </a>
                             {% endif %}
                         </div>
+
+                        <!-- Mobile Controls (Quick Login Icon + Hamburger Button) -->
+                        <div class="header__mobile-controls d-flex align-items-center d-lg-none">
+                            {% if request.user.is_authenticated %}
+                                {% if request.user.vendor_profile %}
+                                <a href="{% url 'vendor_dashboard' %}" class="btn-mobile-auth" title="Vendor Dashboard">
+                                    <i class="fa fa-dashboard"></i>
+                                </a>
+                                {% else %}
+                                <a href="{% url 'user_dashboard' %}" class="btn-mobile-auth" title="User Profile">
+                                    <i class="fa fa-user-circle"></i>
+                                </a>
+                                {% endif %}
+                            {% else %}
+                            <a href="{% url 'login' %}" class="btn-mobile-auth" title="Login">
+                                <i class="fa fa-user-circle"></i>
+                            </a>
+                            {% endif %}
+                            <button type="button" class="canvas__open" aria-label="Toggle navigation menu">
+                                <i class="fa fa-bars"></i>
+                            </button>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="canvas__open">
-                <i class="fa fa-bars"></i>
             </div>
         </div>
     </header>
@@ -316,7 +954,6 @@
                             <a href="/" style="display: flex; align-items: center; gap: 10px;">
                                 <img src="{% static 'website/img/logo/logo.png' %}" alt="BookMyLawn Logo"
                                     style="height: 45px; border-radius: 8px;">
-                                <!-- <h2 style="color: white; font-weight: bold; margin: 0;">BookMyLawn</h2> -->
                             </a>
                         </div>
                         <p style="color: #b7b7b7;">Your ultimate wedding planning companion. Find the best venues,
@@ -329,8 +966,12 @@
                         <ul style="list-style: none; padding: 0;">
                             <li><a href="{% url 'about_us' %}" style="color: #b7b7b7;">About Us</a></li>
                             <li><a href="{% url 'real_weddings' %}" style="color: #b7b7b7;">Wedding Stories</a></li>
+                            <li><a href="{% url 'wedding_tools' %}" style="color: #b7b7b7;">Planning Tools</a></li>
                             <li><a href="{% url 'contact' %}" style="color: #b7b7b7;">Contact</a></li>
-                            <li><a href="#" style="color: #b7b7b7;">FAQ</a></li>
+                            <li><a href="{% url 'faq' %}" style="color: #b7b7b7;">FAQ</a></li>
+                            <li><a href="{% url 'privacy_policy' %}" style="color: #b7b7b7;">Privacy Policy</a></li>
+                            <li><a href="{% url 'terms_of_service' %}" style="color: #b7b7b7;">Terms</a></li>
+                            <li><a href="{% url 'sitemap_xml' %}" target="_blank" style="color: #b7b7b7;">XML Sitemap</a></li>
                         </ul>
                     </div>
                 </div>
@@ -366,7 +1007,6 @@
             </div>
             <div class="row">
                 <div class="col-lg-12">
-                    <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
                     <div class="footer__copyright__text">
                         <div
                             style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap;">
@@ -383,7 +1023,6 @@
                             </div>
                         </div>
                     </div>
-                    <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
                 </div>
             </div>
         </div>
@@ -394,8 +1033,8 @@
     <div class="search-model">
         <div class="h-100 d-flex align-items-center justify-content-center">
             <div class="search-close-switch">+</div>
-            <form class="search-model-form">
-                <input type="text" id="search-input" placeholder="Search here.....">
+            <form class="search-model-form" action="{% url 'vendors' %}" method="GET">
+                <input type="text" id="search-input" name="q" placeholder="Search here.....">
             </form>
         </div>
     </div>

@@ -1,0 +1,60 @@
+{% extends 'website/base.html' %}
+{% load static %}
+
+{% block title %}Terms of Service | BookMyLawn{% endblock %}
+{% block meta_description %}Review BookMyLawn's Terms of Service for venue bookings, vendor inquiries, and platform guidelines.{% endblock %}
+{% block meta_robots %}index, follow{% endblock %}
+
+{% block content %}
+<!-- Hero Section Begin -->
+<section class="page-hero set-bg" data-setbg="{% static 'website/img/banner/banner-1.jpg' %}?v=2" style="background-image: url('{% static 'website/img/banner/banner-1.jpg' %}?v=2');">
+    <div class="container">
+        <div class="page-hero-content text-center">
+            <span class="hero-badge">
+                <i class="fa fa-file-text-o mr-1"></i> Legal &amp; Policies
+            </span>
+            <h1>Terms of Service</h1>
+            <p>Review BookMyLawn's terms and guidelines for wedding venue bookings and inquiries.</p>
+        </div>
+    </div>
+</section>
+<!-- Hero Section End -->
+
+<!-- Breadcrumb Section Begin -->
+<div class="breadcrumb-option bg-light py-2 border-bottom">
+    <div class="container">
+        <div class="breadcrumb__links">
+            <a href="{% url 'index' %}"><i class="fa fa-home"></i> Home</a>
+            <span>Terms of Service</span>
+        </div>
+    </div>
+</div>
+<!-- Breadcrumb Section End -->
+
+<section style="padding: 60px 0; background: #fff;">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-10" style="color: #4b5563; line-height: 1.8; font-size: 15px;">
+                <h4 style="font-weight: 700; color: #111; margin-bottom: 15px;">1. Agreement to Terms</h4>
+                <p>By accessing or using the BookMyLawn platform, website, and services, you agree to comply with and be bound by these Terms of Service. If you disagree with any part of these terms, please do not use the service.</p>
+
+                <h4 style="font-weight: 700; color: #111; margin-bottom: 15px;">2. Role of BookMyLawn</h4>
+                <p>BookMyLawn acts as an intermediary discovery and connection platform between clients (couples, event hosts) and third-party vendors (wedding lawn owners, banquet halls, photographers, decorators). BookMyLawn does not own, manage, or operate venues directly unless explicitly stated.</p>
+
+                <h4 style="font-weight: 700; color: #111; margin-bottom: 15px;">3. Vendor Listings &amp; Pricing</h4>
+                <p>Venues and vendors are responsible for the accuracy of pricing, capacities, amenities, and policies displayed on their profiles. While BookMyLawn verifies listings, users are advised to inspect venues and obtain signed agreements directly before making advance payments.</p>
+
+                <h4 style="font-weight: 700; color: #111; margin-bottom: 15px;">4. User Conduct</h4>
+                <p>Users agree not to submit fraudulent inquiries, false reviews, or abusive content. Reviews must reflect honest, firsthand experiences with the relevant vendor.</p>
+
+                <h4 style="font-weight: 700; color: #111; margin-bottom: 15px;">5. Limitation of Liability</h4>
+                <p>BookMyLawn is not liable for contractual disputes, service discrepancies, cancellations, or property conditions between customers and vendors. Any agreements made are solely between the client and the vendor.</p>
+
+                <h4 style="font-weight: 700; color: #111; margin-bottom: 15px;">6. Contact</h4>
+                <p>For questions regarding our terms, write to <a href="mailto:legal@bookmylawn.com" class="text-danger font-weight-bold">legal@bookmylawn.com</a>.</p>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+

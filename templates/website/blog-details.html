@@ -1,8 +1,72 @@
 {% extends 'website/base.html' %}
 {% load static %}
 
-{% block content %}
+{% block title %}{{ post.title }} | BookMyLawn Wedding Blog{% endblock %}
+{% block meta_description %}{{ post.content|striptags|truncatewords:25 }}{% endblock %}
+{% block meta_keywords %}{{ post.title }}, wedding planning guide, wedding lawns, banquet halls, Indian wedding cost, wedding decor, BookMyLawn blog{% endblock %}
 
+{% block og_title %}{{ post.title }} | BookMyLawn{% endblock %}
+{% block og_description %}{{ post.content|striptags|truncatewords:25 }}{% endblock %}
+{% block og_type %}article{% endblock %}
+{% block og_image %}{% if post.image %}{{ request.scheme }}://{{ request.get_host }}{{ post.image.url }}{% else %}{{ request.scheme }}://{{ request.get_host }}{% static 'website/img/banner/banner-1.jpg' %}{% endif %}{% endblock %}
+
+{% block structured_data %}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "{{ post.title|escapejs }}",
+  "description": "{{ post.content|striptags|truncatewords:28|escapejs }}",
+  "datePublished": "{{ post.created_at|date:'c' }}",
+  "dateModified": "{{ post.created_at|date:'c' }}",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "{{ request.build_absolute_uri }}"
+  },
+  "author": {
+    "@type": "Person",
+    "name": "{{ post.author|escapejs }}"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "BookMyLawn",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "{{ request.scheme }}://{{ request.get_host }}{% static 'website/img/logo/logo.png' %}"
+    }
+  }{% if post.image %},
+  "image": "{{ request.scheme }}://{{ request.get_host }}{{ post.image.url }}"{% endif %}
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Home",
+      "item": "{{ request.scheme }}://{{ request.get_host }}/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Wedding Blog",
+      "item": "{{ request.scheme }}://{{ request.get_host }}{% url 'blog' %}"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "{{ post.title|escapejs }}",
+      "item": "{{ request.build_absolute_uri }}"
+    }
+  ]
+}
+</script>
+{% endblock %}
+
+{% block content %}
 
     <!-- Breadcrumb Begin -->
     <div class="breadcrumb-option">
@@ -10,9 +74,9 @@
             <div class="row">
                 <div class="col-lg-12">
                     <div class="breadcrumb__links">
-                        <a href="./index.html"><i class="fa fa-home"></i> Home</a>
-                        <a href="./blog.html">Blog</a>
-                        <span>Being seen: how is age diversity effecting change in fashion and beauty?</span>
+                        <a href="{% url 'index' %}"><i class="fa fa-home"></i> Home</a>
+                        <a href="{% url 'blog' %}">Blog</a>
+                        <span>{{ post.title|truncatechars:45 }}</span>
                     </div>
                 </div>
             </div>
@@ -27,168 +91,171 @@
                 <div class="col-lg-8 col-md-8">
                     <div class="blog__details__content">
                         <div class="blog__details__item">
-                            <img src="img/blog/details/blog-details.jpg" alt="">
+                            {% if post.image %}
+                            <img src="{{ post.image.url }}" alt="{{ post.title }}" style="width: 100%; border-radius: 12px; margin-bottom: 25px; max-height: 440px; object-fit: cover;">
+                            {% else %}
+                            <img src="{% static 'website/img/blog/details/blog-details.jpg' %}" alt="{{ post.title }}" style="width: 100%; border-radius: 12px; margin-bottom: 25px; max-height: 440px; object-fit: cover;">
+                            {% endif %}
                             <div class="blog__details__item__title">
-                                <span class="tip">Street style</span>
-                                <h4>Being seen: how is age diversity effecting change in fashion and beauty?</h4>
-                                <ul>
-                                    <li>by <span>Ema Timahe</span></li>
-                                    <li>Seb 17, 2019</li>
-                                    <li>39 Comments</li>
+                                <span class="tip" style="background: #e72e77; color: #fff; font-size: 11px; font-weight: 700; text-transform: uppercase; padding: 4px 12px; border-radius: 20px; display: inline-block; margin-bottom: 12px;">Wedding Guide</span>
+                                <h1 style="font-family: 'Playfair Display', serif; font-size: 32px; font-weight: 700; line-height: 1.35; color: #111; margin-bottom: 15px;">
+                                    {{ post.title }}
+                                </h1>
+                                <ul style="list-style: none; padding: 0; margin-bottom: 25px; display: flex; gap: 20px; font-size: 13.5px; color: #6b7280;">
+                                    <li><i class="fa fa-user text-danger mr-1"></i> By <strong>{{ post.author }}</strong></li>
+                                    <li><i class="fa fa-calendar text-danger mr-1"></i> {{ post.created_at|date:"F d, Y" }}</li>
+                                    <li><i class="fa fa-clock-o text-danger mr-1"></i> 5 Min Read</li>
                                 </ul>
                             </div>
                         </div>
-                        <div class="blog__details__desc">
-                            <p>Afashion season can be defined as much by the people on the catwalk as it can by the
-                                clothes they are wearing. This time around, a key moment came at the end of Marc Jacobs’
-                                New York show, when an almost makeup-free Christy Turlington made a rare return to the
-                                catwalk, aged 50 (she also stars, with the designer himself, in the label’s AW ad
-                            campaign), where the average catwalk model is around 18.</p>
-                            <p>A few days later, Simone Rocha arguably upped the ante. The 32-year-old’s show – in part
-                                inspired by Louise Bourgeois, who lived until she was 98 – featured models in their 30s
-                            and 40s, including cult favourite Jeny Howorth and actor Chloë Sevigny.</p>
+
+                        <!-- Post Body Content -->
+                        <div class="blog__details__desc" style="font-size: 16px; line-height: 1.85; color: #374151;">
+                            {{ post.content|safe }}
                         </div>
-                        <div class="blog__details__quote">
-                            <div class="icon"><i class="fa fa-quote-left"></i></div>
-                            <p>Consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore dolore magna
-                                aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-                            aliquip ex ea commodo consequat.</p>
+
+                        <!-- Social Share Bar -->
+                        <div class="mt-4 pt-3 border-top d-flex justify-content-between align-items-center flex-wrap" style="gap: 12px;">
+                            <span class="font-weight-bold" style="font-size: 14px; color: #111;">Share this guide:</span>
+                            <div class="d-flex" style="gap: 8px;">
+                                <a href="https://wa.me/?text={{ post.title|urlencode }}%20{{ request.build_absolute_uri|urlencode }}" target="_blank" class="btn btn-sm btn-success" style="border-radius: 20px; font-size: 12.5px; padding: 5px 14px;">
+                                    <i class="fa fa-whatsapp mr-1"></i> WhatsApp
+                                </a>
+                                <a href="https://www.facebook.com/sharer/sharer.php?u={{ request.build_absolute_uri|urlencode }}" target="_blank" class="btn btn-sm btn-primary" style="border-radius: 20px; font-size: 12.5px; padding: 5px 14px;">
+                                    <i class="fa fa-facebook mr-1"></i> Share
+                                </a>
+                                <button type="button" onclick="navigator.clipboard.writeText(window.location.href); alert('Article link copied to clipboard!');" class="btn btn-sm btn-light border" style="border-radius: 20px; font-size: 12.5px; padding: 5px 14px;">
+                                    <i class="fa fa-link mr-1"></i> Copy Link
+                                </button>
+                            </div>
                         </div>
-                        <div class="blog__details__desc">
-                            <p>Occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est
-                                laborum. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
-                                incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
-                                exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure
-                            dolor in reprehenderit in voluptate.</p>
+
+                        <!-- Embedded Call to Action (Venue Leads Generator) -->
+                        <div class="my-5 p-4" style="background: linear-gradient(135deg, rgba(231,46,119,0.08) 0%, rgba(231,46,119,0.16) 100%); border-radius: 14px; border: 1.5px solid rgba(231,46,119,0.25);">
+                            <div class="row align-items-center">
+                                <div class="col-md-8">
+                                    <h4 style="font-weight: 800; font-size: 20px; color: #111; margin-bottom: 6px;">Looking for the Perfect Wedding Lawn or Banquet Hall?</h4>
+                                    <p style="color: #4b5563; font-size: 14px; margin: 0;">Explore 5,000+ verified venues across Lucknow, Delhi NCR, Jaipur &amp; more with transparent prices.</p>
+                                </div>
+                                <div class="col-md-4 text-md-right mt-3 mt-md-0">
+                                    <a href="{% url 'vendors' %}?type=venues" class="btn btn-danger" style="background: #e72e77; border-radius: 25px; font-weight: 700; padding: 10px 22px; font-size: 13.5px;">
+                                        Explore Venues <i class="fa fa-arrow-right ml-1"></i>
+                                    </a>
+                                </div>
+                            </div>
                         </div>
+
+                        <!-- Tags Cloud -->
                         <div class="blog__details__tags">
-                            <a href="#">Fashion</a>
-                            <a href="#">Street style</a>
-                            <a href="#">Diversity</a>
-                            <a href="#">Beauty</a>
+                            <span class="font-weight-bold mr-2 text-dark">Tags:</span>
+                            <a href="{% url 'blog' %}?tag=lawn">Wedding Lawns</a>
+                            <a href="{% url 'blog' %}?tag=banquet">Banquet Halls</a>
+                            <a href="{% url 'blog' %}?tag=budget">Budget Tips</a>
+                            <a href="{% url 'blog' %}?tag=catering">Catering Costs</a>
+                            <a href="{% url 'blog' %}?tag=Lucknow">Lucknow</a>
+                            <a href="{% url 'blog' %}?tag=Delhi">Delhi NCR</a>
                         </div>
-                        <div class="blog__details__btns">
+
+                        <!-- Navigation Back to All Posts -->
+                        <div class="blog__details__btns mt-4">
                             <div class="row">
                                 <div class="col-lg-6 col-md-6 col-sm-6">
                                     <div class="blog__details__btn__item">
-                                        <h6><a href="#"><i class="fa fa-angle-left"></i> Previous posts</a></h6>
+                                        <h6><a href="{% url 'blog' %}"><i class="fa fa-angle-left"></i> Back to All Guides</a></h6>
                                     </div>
                                 </div>
-                                <div class="col-lg-6 col-md-6 col-sm-6">
+                                <div class="col-lg-6 col-md-6 col-sm-6 text-right">
                                     <div class="blog__details__btn__item blog__details__btn__item--next">
-                                        <h6><a href="#">Next posts <i class="fa fa-angle-right"></i></a></h6>
+                                        <h6><a href="{% url 'wedding_tools' %}">Planning Tools <i class="fa fa-angle-right"></i></a></h6>
                                     </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="blog__details__comment">
-                            <h5>3 Comment</h5>
-                            <a href="#" class="leave-btn">Leave a comment</a>
-                            <div class="blog__comment__item">
-                                <div class="blog__comment__item__pic">
-                                    <img src="img/blog/details/comment-1.jpg" alt="">
-                                </div>
-                                <div class="blog__comment__item__text">
-                                    <h6>Brandon Kelley</h6>
-                                    <p>Duis voluptatum. Id vis consequat consetetur dissentiet, ceteros commune perpetua
-                                    mei et. Simul viderer facilisis egimus tractatos splendi.</p>
-                                    <ul>
-                                        <li><i class="fa fa-clock-o"></i> Seb 17, 2019</li>
-                                        <li><i class="fa fa-heart-o"></i> 12</li>
-                                        <li><i class="fa fa-share"></i> 1</li>
-                                    </ul>
-                                </div>
-                            </div>
-                            <div class="blog__comment__item blog__comment__item--reply">
-                                <div class="blog__comment__item__pic">
-                                    <img src="img/blog/details/comment-2.jpg" alt="">
-                                </div>
-                                <div class="blog__comment__item__text">
-                                    <h6>Brandon Kelley</h6>
-                                    <p>Consequat consetetur dissentiet, ceteros commune perpetua mei et. Simul viderer
-                                    facilisis egimus ulla mcorper.</p>
-                                    <ul>
-                                        <li><i class="fa fa-clock-o"></i> Seb 17, 2019</li>
-                                        <li><i class="fa fa-heart-o"></i> 12</li>
-                                        <li><i class="fa fa-share"></i> 1</li>
-                                    </ul>
-                                </div>
-                            </div>
-                            <div class="blog__comment__item">
-                                <div class="blog__comment__item__pic">
-                                    <img src="img/blog/details/comment-3.jpg" alt="">
-                                </div>
-                                <div class="blog__comment__item__text">
-                                    <h6>Brandon Kelley</h6>
-                                    <p>Duis voluptatum. Id vis consequat consetetur dissentiet, ceteros commune perpetua
-                                    mei et. Simul viderer facilisis egimus tractatos splendi.</p>
-                                    <ul>
-                                        <li><i class="fa fa-clock-o"></i> Seb 17, 2019</li>
-                                        <li><i class="fa fa-heart-o"></i> 12</li>
-                                        <li><i class="fa fa-share"></i> 1</li>
-                                    </ul>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
+
+                <!-- Blog Sidebar -->
                 <div class="col-lg-4 col-md-4">
                     <div class="blog__sidebar">
+                        
+                        <!-- Sidebar Search -->
+                        <div class="blog__sidebar__item mb-4">
+                            <div class="section-title">
+                                <h4>Search Blog</h4>
+                            </div>
+                            <form action="{% url 'blog' %}" method="GET">
+                                <div style="display: flex; gap: 6px;">
+                                    <input type="text" name="q" placeholder="Search guides..." style="flex: 1; border: 1px solid #e5e7eb; border-radius: 25px; padding: 8px 16px; font-size: 13.5px; outline: none;">
+                                    <button type="submit" style="background: #e72e77; color: white; border: none; border-radius: 25px; padding: 8px 16px; font-weight: 700; font-size: 13px;">
+                                        <i class="fa fa-search"></i>
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+
+                        <!-- Categories -->
                         <div class="blog__sidebar__item">
                             <div class="section-title">
                                 <h4>Categories</h4>
                             </div>
                             <ul>
-                                <li><a href="#">All <span>(250)</span></a></li>
-                                <li><a href="#">Fashion week <span>(80)</span></a></li>
-                                <li><a href="#">Street style <span>(75)</span></a></li>
-                                <li><a href="#">Lifestyle <span>(35)</span></a></li>
-                                <li><a href="#">Beauty <span>(60)</span></a></li>
+                                <li><a href="{% url 'blog' %}?tag=lawn">Wedding Lawns <span>(Guides)</span></a></li>
+                                <li><a href="{% url 'blog' %}?tag=banquet">Banquet Halls <span>(AC &amp; Indoor)</span></a></li>
+                                <li><a href="{% url 'blog' %}?tag=catering">Catering &amp; Food Costs <span>(Menus)</span></a></li>
+                                <li><a href="{% url 'blog' %}?tag=budget">Budget &amp; Checklists <span>(Tools)</span></a></li>
+                                <li><a href="{% url 'blog' %}?tag=photographer">Wedding Photography <span>(Tips)</span></a></li>
                             </ul>
                         </div>
+
+                        <!-- Recent / Featured Posts -->
+                        {% if recent_posts %}
                         <div class="blog__sidebar__item">
                             <div class="section-title">
-                                <h4>Feature posts</h4>
+                                <h4>Recent Articles</h4>
                             </div>
-                            <a href="#" class="blog__feature__item">
-                                <div class="blog__feature__item__pic">
-                                    <img src="img/blog/sidebar/fp-1.jpg" alt="">
-                                </div>
+                            {% for r in recent_posts %}
+                            <a href="{% url 'blog_details' r.slug %}" class="blog__feature__item d-flex align-items-center mb-3 text-decoration-none" style="gap: 12px;">
+                                <div style="width: 70px; height: 70px; border-radius: 8px; overflow: hidden; flex-shrink: 0; background-size: cover; background-position: center; background-image: url('{% if r.image %}{{ r.image.url }}{% else %}{% static 'website/img/banner/banner-1.jpg' %}{% endif %}');"></div>
                                 <div class="blog__feature__item__text">
-                                    <h6>Amf Cannes Red Carpet Celebrities Kend...</h6>
-                                    <span>Seb 17, 2019</span>
+                                    <h6 style="font-size: 13.5px; font-weight: 600; line-height: 1.4; color: #1f2937; margin-bottom: 4px;">{{ r.title|truncatechars:45 }}</h6>
+                                    <span style="font-size: 12px; color: #9ca3af;"><i class="fa fa-calendar mr-1"></i> {{ r.created_at|date:"M d, Y" }}</span>
                                 </div>
                             </a>
-                            <a href="#" class="blog__feature__item">
-                                <div class="blog__feature__item__pic">
-                                    <img src="img/blog/sidebar/fp-2.jpg" alt="">
-                                </div>
-                                <div class="blog__feature__item__text">
-                                    <h6>Amf Cannes Red Carpet Celebrities Kend...</h6>
-                                    <span>Seb 17, 2019</span>
-                                </div>
-                            </a>
-                            <a href="#" class="blog__feature__item">
-                                <div class="blog__feature__item__pic">
-                                    <img src="img/blog/sidebar/fp-3.jpg" alt="">
-                                </div>
-                                <div class="blog__feature__item__text">
-                                    <h6>Amf Cannes Red Carpet Celebrities Kend...</h6>
-                                    <span>Seb 17, 2019</span>
-                                </div>
-                            </a>
+                            {% endfor %}
                         </div>
+                        {% endif %}
+
+                        <!-- Venues by Top Cities -->
                         <div class="blog__sidebar__item">
                             <div class="section-title">
-                                <h4>Tags cloud</h4>
+                                <h4>Venues by City</h4>
+                            </div>
+                            <ul>
+                                <li><a href="{% url 'vendors' %}?city=Lucknow"><i class="fa fa-map-marker text-danger mr-1"></i> Lucknow Wedding Lawns</a></li>
+                                <li><a href="{% url 'vendors' %}?city=Delhi"><i class="fa fa-map-marker text-danger mr-1"></i> Delhi NCR Farmhouses</a></li>
+                                <li><a href="{% url 'vendors' %}?city=Jaipur"><i class="fa fa-map-marker text-danger mr-1"></i> Jaipur Royal Palaces</a></li>
+                                <li><a href="{% url 'vendors' %}?city=Bangalore"><i class="fa fa-map-marker text-danger mr-1"></i> Bangalore Banquet Halls</a></li>
+                                <li><a href="{% url 'vendors' %}?city=Goa"><i class="fa fa-map-marker text-danger mr-1"></i> Goa Beach Resorts</a></li>
+                            </ul>
+                        </div>
+
+                        <!-- Tags Cloud -->
+                        <div class="blog__sidebar__item">
+                            <div class="section-title">
+                                <h4>Popular Topics</h4>
                             </div>
                             <div class="blog__sidebar__tags">
-                                <a href="#">Fashion</a>
-                                <a href="#">Street style</a>
-                                <a href="#">Diversity</a>
-                                <a href="#">Beauty</a>
+                                <a href="{% url 'blog' %}?tag=lawn">Lawns</a>
+                                <a href="{% url 'blog' %}?tag=banquet">Banquets</a>
+                                <a href="{% url 'blog' %}?tag=budget">Budget</a>
+                                <a href="{% url 'blog' %}?tag=catering">Catering</a>
+                                <a href="{% url 'blog' %}?tag=Lucknow">Lucknow</a>
+                                <a href="{% url 'blog' %}?tag=Delhi">Delhi</a>
+                                <a href="{% url 'faq' %}">FAQ</a>
+                                <a href="{% url 'wedding_tools' %}">Tools</a>
                             </div>
                         </div>
+
                     </div>
                 </div>
             </div>
@@ -196,5 +263,4 @@
     </section>
     <!-- Blog Details Section End -->
 
-    
 {% endblock %}
