@@ -1,8 +1,8 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required, user_passes_test
-from apps.website.models import Vendor, Inquiry, Review, OrderItem, SupportTicket
+from apps.website.models import Vendor, Inquiry, Review, OrderItem, SupportTicket, VendorImage, VendorAvailability
 
 def is_vendor(user):
     return user.is_authenticated and hasattr(user, 'vendor_profile')
@@ -207,3 +207,182 @@ def vendor_support(request):
 
     tickets = vendor.support_tickets.all()
     return render(request, 'vendor_admin/support.html', {'vendor': vendor, 'tickets': tickets})
+
+
+@user_passes_test(is_vendor, login_url='vendor_login')
+def vendor_portfolio(request):
+    vendor = request.user.vendor_profile
+    if request.method == 'POST':
+        images = request.FILES.getlist('gallery_images')
+        caption = request.POST.get('caption', '').strip()
+        if images:
+            count = 0
+            for img in images:
+                VendorImage.objects.create(vendor=vendor, image=img, caption=caption)
+                count += 1
+            messages.success(request, f"Successfully uploaded {count} photo(s) to your portfolio.")
+        else:
+            messages.error(request, "Please select at least one image to upload.")
+        return redirect('vendor_portfolio')
+    
+    gallery = vendor.gallery.all().order_by('-created_at')
+    return render(request, 'vendor_admin/portfolio.html', {
+        'vendor': vendor,
+        'gallery': gallery,
+        'total_photos': gallery.count(),
+    })
+
+@user_passes_test(is_vendor, login_url='vendor_login')
+def delete_portfolio_image(request, image_id):
+    vendor = request.user.vendor_profile
+    img = get_object_or_404(VendorImage, id=image_id, vendor=vendor)
+    img.delete()
+    messages.success(request, "Photo removed from portfolio.")
+    return redirect('vendor_portfolio')
+
+@user_passes_test(is_vendor, login_url='vendor_login')
+def set_cover_image(request, image_id):
+    vendor = request.user.vendor_profile
+    img = get_object_or_404(VendorImage, id=image_id, vendor=vendor)
+    vendor.image = img.image
+    vendor.save()
+    messages.success(request, "This photo has been set as your primary listing cover.")
+    return redirect('vendor_portfolio')
+
+@user_passes_test(is_vendor, login_url='vendor_login')
+def vendor_calendar(request):
+    vendor = request.user.vendor_profile
+    import datetime
+    import calendar
+    
+    today = datetime.date.today()
+    try:
+        year = int(request.GET.get('year', today.year))
+        month = int(request.GET.get('month', today.month))
+        if month < 1:
+            month = 12
+            year -= 1
+        elif month > 12:
+            month = 1
+            year += 1
+    except (ValueError, TypeError):
+        year = today.year
+        month = today.month
+
+    # Prev / Next month calculations
+    prev_month = month - 1 if month > 1 else 12
+    prev_year = year if month > 1 else year - 1
+    next_month = month + 1 if month < 12 else 1
+    next_year = year if month < 12 else year + 1
+
+    month_name = calendar.month_name[month]
+    
+    # Days in month
+    cal = calendar.Calendar(firstweekday=6) # Start Sunday
+    month_days = cal.monthdatescalendar(year, month)
+    
+    # Existing availability records for this vendor in this month range
+    start_date = month_days[0][0]
+    end_date = month_days[-1][-1]
+    
+    avail_qs = VendorAvailability.objects.filter(vendor=vendor, date__range=(start_date, end_date))
+    avail_map = {a.date: a for a in avail_qs}
+    
+    # Also check inquiries with event_date in this month range
+    inquiries_qs = Inquiry.objects.filter(vendor=vendor, event_date__range=(start_date, end_date))
+    inquiry_map = {}
+    for inq in inquiries_qs:
+        inquiry_map.setdefault(inq.event_date, []).append(inq)
+
+    # Prepare structured weeks data
+    weeks_data = []
+    for week in month_days:
+        week_days = []
+        for day in week:
+            is_current_month = (day.month == month)
+            avail = avail_map.get(day)
+            inqs = inquiry_map.get(day, [])
+            
+            status = avail.status if avail else 'available'
+            note = avail.note if avail else ''
+            
+            week_days.append({
+                'date': day,
+                'date_str': day.strftime('%Y-%m-%d'),
+                'day_num': day.day,
+                'is_current_month': is_current_month,
+                'is_today': (day == today),
+                'is_past': (day < today),
+                'status': status,
+                'note': note,
+                'avail_id': avail.id if avail else None,
+                'inquiries_count': len(inqs),
+            })
+        weeks_data.append(week_days)
+
+    # Monthly Stats
+    current_month_avails = [a for a in avail_qs if a.date.month == month]
+    booked_count = sum(1 for a in current_month_avails if a.status == 'booked')
+    tentative_count = sum(1 for a in current_month_avails if a.status == 'tentative')
+    blocked_count = sum(1 for a in current_month_avails if a.status == 'blocked')
+    
+    # Upcoming Booked / Blocked / Tentative events list
+    upcoming_dates = VendorAvailability.objects.filter(
+        vendor=vendor, date__gte=today
+    ).order_by('date')[:12]
+
+    return render(request, 'vendor_admin/calendar.html', {
+        'vendor': vendor,
+        'year': year,
+        'month': month,
+        'month_name': month_name,
+        'prev_month': prev_month,
+        'prev_year': prev_year,
+        'next_month': next_month,
+        'next_year': next_year,
+        'weeks_data': weeks_data,
+        'booked_count': booked_count,
+        'tentative_count': tentative_count,
+        'blocked_count': blocked_count,
+        'upcoming_dates': upcoming_dates,
+        'today': today,
+    })
+
+@user_passes_test(is_vendor, login_url='vendor_login')
+def update_calendar_date(request):
+    vendor = request.user.vendor_profile
+    if request.method == 'POST':
+        date_str = request.POST.get('date')
+        status = request.POST.get('status', 'booked')
+        note = request.POST.get('note', '').strip()
+        
+        import datetime
+        try:
+            parsed_date = datetime.datetime.strptime(date_str, '%Y-%m-%d').date()
+        except (ValueError, TypeError):
+            messages.error(request, "Invalid date format.")
+            return redirect('vendor_calendar')
+            
+        if status == 'available':
+            VendorAvailability.objects.filter(vendor=vendor, date=parsed_date).delete()
+            messages.success(request, f"{parsed_date.strftime('%d %b %Y')} marked as Available.")
+        else:
+            avail, created = VendorAvailability.objects.update_or_create(
+                vendor=vendor,
+                date=parsed_date,
+                defaults={'status': status, 'note': note}
+            )
+            messages.success(request, f"{parsed_date.strftime('%d %b %Y')} updated to {avail.get_status_display()}.")
+            
+        return redirect(f"{redirect('vendor_calendar').url}?year={parsed_date.year}&month={parsed_date.month}")
+        
+    return redirect('vendor_calendar')
+
+@user_passes_test(is_vendor, login_url='vendor_login')
+def delete_calendar_date(request, date_id):
+    vendor = request.user.vendor_profile
+    avail = get_object_or_404(VendorAvailability, id=date_id, vendor=vendor)
+    y, m = avail.date.year, avail.date.month
+    avail.delete()
+    messages.success(request, "Date reset to Available.")
+    return redirect(f"{redirect('vendor_calendar').url}?year={y}&month={m}")

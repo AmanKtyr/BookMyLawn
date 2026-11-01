@@ -9,5 +9,11 @@ urlpatterns = [
     path('inquiries/', views.vendor_inquiries, name='vendor_inquiries'),
     path('reviews/', views.vendor_reviews, name='vendor_reviews'),
     path('membership/', views.vendor_subscription, name='vendor_subscription'),
+    path('portfolio/', views.vendor_portfolio, name='vendor_portfolio'),
+    path('portfolio/delete/<int:image_id>/', views.delete_portfolio_image, name='delete_portfolio_image'),
+    path('portfolio/set-cover/<int:image_id>/', views.set_cover_image, name='set_cover_image'),
+    path('calendar/', views.vendor_calendar, name='vendor_calendar'),
+    path('calendar/update-date/', views.update_calendar_date, name='update_calendar_date'),
+    path('calendar/delete-date/<int:date_id>/', views.delete_calendar_date, name='delete_calendar_date'),
     path('support/', views.vendor_support, name='vendor_support'),
 ]
