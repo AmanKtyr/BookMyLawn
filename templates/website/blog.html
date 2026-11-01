@@ -42,65 +42,79 @@
 
 {% block content %}
 
-    <!-- Breadcrumb Begin -->
-    <div class="breadcrumb-option">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-12">
-                    <div class="breadcrumb__links">
-                        <a href="{% url 'index' %}"><i class="fa fa-home"></i> Home</a>
-                        <a href="{% url 'blog' %}">Blog</a>
-                        {% if query %}
-                        <span>Search: "{{ query }}"</span>
-                        {% elif selected_tag %}
-                        <span>Topic: {{ selected_tag|title }}</span>
-                        {% else %}
-                        <span>All Guides</span>
-                        {% endif %}
+    <!-- Blog Hero Section Begin -->
+    <section class="page-hero set-bg" data-setbg="{% static 'website/img/banner/banner-1.jpg' %}?v=2" style="background-image: url('{% static 'website/img/banner/banner-1.jpg' %}?v=2'); position: relative;">
+        <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(180deg, rgba(15,17,21,0.68) 0%, rgba(15,17,21,0.80) 100%); border-radius: 0 0 24px 24px;"></div>
+        <div class="container" style="position: relative; z-index: 2;">
+            <div class="page-hero-content text-center">
+                <span style="display: inline-block; background: rgba(231,46,119,0.3); border: 1px solid rgba(255,255,255,0.4); color: #ffffff; font-weight: 700; font-size: 12px; text-transform: uppercase; letter-spacing: 2px; padding: 6px 18px; border-radius: 30px; margin-bottom: 16px;">
+                    <i class="fa fa-book mr-1"></i> Expert Wedding Planning &amp; Venue Guides
+                </span>
+                <h1 style="color: #ffffff; font-family: 'Playfair Display', serif; font-size: 44px; font-weight: 800; margin-bottom: 14px; text-shadow: 2px 2px 8px rgba(0,0,0,0.5);">
+                    The BookMyLawn Wedding Journal
+                </h1>
+                <p style="color: #f3f4f6; font-size: 16.5px; max-width: 720px; margin: 0 auto 26px; line-height: 1.6; text-shadow: 1px 1px 4px rgba(0,0,0,0.5);">
+                    Expert advice on wedding lawn bookings, banquet hall negotiations, catering per-plate costs, mandap decor inspirations, and budget checklists across India.
+                </p>
+
+                <!-- Search Bar Inside Blog Hero -->
+                <div class="row justify-content-center">
+                    <div class="col-md-8 col-lg-6">
+                        <form action="{% url 'blog' %}" method="GET" style="display: flex; gap: 8px; background: #ffffff; padding: 6px; border-radius: 35px; box-shadow: 0 10px 30px rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.2);">
+                            <input type="text" name="q" value="{{ query }}" placeholder="Search guides (e.g. Lawn, Budget, Lucknow, Catering)..." style="flex: 1; border: none; outline: none; padding-left: 20px; font-size: 14.5px; border-radius: 30px; color: #1f2937;">
+                            <button type="submit" class="btn-theme" style="padding: 10px 24px; border-radius: 25px; font-size: 13.5px; font-weight: 700; border: none; cursor: pointer; white-space: nowrap;">
+                                <i class="fa fa-search mr-1"></i> Search
+                            </button>
+                        </form>
                     </div>
                 </div>
-            </div>
-        </div>
-    </div>
-    <!-- Breadcrumb End -->
 
-    <!-- Blog Header Banner -->
-    <section style="background: linear-gradient(135deg, rgba(231,46,119,0.06) 0%, rgba(231,46,119,0.14) 100%); padding: 55px 0 45px; text-align: center; border-bottom: 1px solid rgba(231,46,119,0.15);">
-        <div class="container">
-            <span style="color: #e72e77; font-weight: 700; text-transform: uppercase; letter-spacing: 2px; font-size: 13px; display: block; margin-bottom: 10px;">
-                <i class="fa fa-book mr-1"></i> Expert Wedding Planning &amp; Venue Guidance
-            </span>
-            <h1 style="font-weight: 800; color: #111; font-size: 40px; margin-bottom: 14px; letter-spacing: -1px;">
-                The BookMyLawn Wedding Blog
-            </h1>
-            <p style="color: #4b5563; max-width: 680px; margin: 0 auto 25px; font-size: 16px; line-height: 1.6;">
-                Expert advice on booking wedding lawns, banquet hall negotiations, catering packages, and decor inspiration across India.
-            </p>
-
-            <!-- Search Bar Inside Blog -->
-            <div class="row justify-content-center">
-                <div class="col-md-7 col-lg-6">
-                    <form action="{% url 'blog' %}" method="GET" style="display: flex; gap: 8px; background: #fff; padding: 6px; border-radius: 35px; box-shadow: 0 4px 18px rgba(0,0,0,0.08); border: 1px solid #e5e7eb;">
-                        <input type="text" name="q" value="{{ query }}" placeholder="Search guides (e.g. Lawn, Budget, Lucknow, Catering)..." style="flex: 1; border: none; outline: none; padding-left: 20px; font-size: 14.5px; border-radius: 30px; color: #1f2937;">
-                        <button type="submit" style="background: #e72e77; color: white; border: none; padding: 10px 24px; border-radius: 25px; font-weight: 700; font-size: 14px; cursor: pointer; transition: all 0.3s;">
-                            <i class="fa fa-search mr-1"></i> Search
-                        </button>
-                    </form>
+                <!-- Popular Topic Quick Filters -->
+                <div class="d-flex justify-content-center flex-wrap mt-3" style="gap: 8px;">
+                    <a href="{% url 'blog' %}" class="badge {% if not selected_tag and not query %}badge-danger{% else %}badge-light text-dark{% endif %}" style="padding: 7px 15px; font-size: 12.5px; border-radius: 20px; text-decoration: none; font-weight: 600; {% if selected_tag or query %}background: rgba(255,255,255,0.85);{% endif %}">
+                        All Articles
+                    </a>
+                    <a href="{% url 'blog' %}?tag=lawn" class="badge {% if selected_tag == 'lawn' %}badge-danger{% else %}badge-light text-dark{% endif %}" style="padding: 7px 15px; font-size: 12.5px; border-radius: 20px; text-decoration: none; font-weight: 600; {% if selected_tag != 'lawn' %}background: rgba(255,255,255,0.85);{% endif %}">
+                        Wedding Lawns
+                    </a>
+                    <a href="{% url 'blog' %}?tag=banquet" class="badge {% if selected_tag == 'banquet' %}badge-danger{% else %}badge-light text-dark{% endif %}" style="padding: 7px 15px; font-size: 12.5px; border-radius: 20px; text-decoration: none; font-weight: 600; {% if selected_tag != 'banquet' %}background: rgba(255,255,255,0.85);{% endif %}">
+                        Banquet Halls
+                    </a>
+                    <a href="{% url 'blog' %}?tag=budget" class="badge {% if selected_tag == 'budget' %}badge-danger{% else %}badge-light text-dark{% endif %}" style="padding: 7px 15px; font-size: 12.5px; border-radius: 20px; text-decoration: none; font-weight: 600; {% if selected_tag != 'budget' %}background: rgba(255,255,255,0.85);{% endif %}">
+                        Budget Planning
+                    </a>
+                    <a href="{% url 'blog' %}?tag=catering" class="badge {% if selected_tag == 'catering' %}badge-danger{% else %}badge-light text-dark{% endif %}" style="padding: 7px 15px; font-size: 12.5px; border-radius: 20px; text-decoration: none; font-weight: 600; {% if selected_tag != 'catering' %}background: rgba(255,255,255,0.85);{% endif %}">
+                        Catering &amp; Food
+                    </a>
+                    <a href="{% url 'blog' %}?tag=Lucknow" class="badge {% if selected_tag == 'Lucknow' %}badge-danger{% else %}badge-light text-dark{% endif %}" style="padding: 7px 15px; font-size: 12.5px; border-radius: 20px; text-decoration: none; font-weight: 600; {% if selected_tag != 'Lucknow' %}background: rgba(255,255,255,0.85);{% endif %}">
+                        Lucknow Venues
+                    </a>
+                    <a href="{% url 'blog' %}?tag=Delhi" class="badge {% if selected_tag == 'Delhi' %}badge-danger{% else %}badge-light text-dark{% endif %}" style="padding: 7px 15px; font-size: 12.5px; border-radius: 20px; text-decoration: none; font-weight: 600; {% if selected_tag != 'Delhi' %}background: rgba(255,255,255,0.85);{% endif %}">
+                        Delhi NCR
+                    </a>
                 </div>
-            </div>
-
-            <!-- Popular Topic Quick Filters -->
-            <div class="d-flex justify-content-center flex-wrap mt-3" style="gap: 8px;">
-                <a href="{% url 'blog' %}" class="badge {% if not selected_tag and not query %}badge-danger{% else %}badge-light text-dark border{% endif %}" style="padding: 7px 14px; font-size: 12.5px; border-radius: 15px; text-decoration: none;">All Articles</a>
-                <a href="{% url 'blog' %}?tag=lawn" class="badge {% if selected_tag == 'lawn' %}badge-danger{% else %}badge-light text-dark border{% endif %}" style="padding: 7px 14px; font-size: 12.5px; border-radius: 15px; text-decoration: none;">Wedding Lawns</a>
-                <a href="{% url 'blog' %}?tag=banquet" class="badge {% if selected_tag == 'banquet' %}badge-danger{% else %}badge-light text-dark border{% endif %}" style="padding: 7px 14px; font-size: 12.5px; border-radius: 15px; text-decoration: none;">Banquet Halls</a>
-                <a href="{% url 'blog' %}?tag=budget" class="badge {% if selected_tag == 'budget' %}badge-danger{% else %}badge-light text-dark border{% endif %}" style="padding: 7px 14px; font-size: 12.5px; border-radius: 15px; text-decoration: none;">Budget Planning</a>
-                <a href="{% url 'blog' %}?tag=catering" class="badge {% if selected_tag == 'catering' %}badge-danger{% else %}badge-light text-dark border{% endif %}" style="padding: 7px 14px; font-size: 12.5px; border-radius: 15px; text-decoration: none;">Catering &amp; Food</a>
-                <a href="{% url 'blog' %}?tag=Lucknow" class="badge {% if selected_tag == 'Lucknow' %}badge-danger{% else %}badge-light text-dark border{% endif %}" style="padding: 7px 14px; font-size: 12.5px; border-radius: 15px; text-decoration: none;">Lucknow Venues</a>
-                <a href="{% url 'blog' %}?tag=Delhi" class="badge {% if selected_tag == 'Delhi' %}badge-danger{% else %}badge-light text-dark border{% endif %}" style="padding: 7px 14px; font-size: 12.5px; border-radius: 15px; text-decoration: none;">Delhi NCR</a>
             </div>
         </div>
     </section>
+    <!-- Blog Hero Section End -->
+
+    <!-- Breadcrumb Section Begin -->
+    <div class="breadcrumb-option bg-light py-2 border-bottom">
+        <div class="container">
+            <div class="breadcrumb__links">
+                <a href="{% url 'index' %}"><i class="fa fa-home"></i> Home</a>
+                <a href="{% url 'blog' %}">Blog</a>
+                {% if query %}
+                <span>Search: "{{ query }}"</span>
+                {% elif selected_tag %}
+                <span>Topic: {{ selected_tag|title }}</span>
+                {% else %}
+                <span>All Guides</span>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    <!-- Breadcrumb Section End -->
 
     <!-- Search / Filter Query State Banner -->
     {% if query or selected_tag %}
@@ -117,7 +131,7 @@
     {% endif %}
 
     <!-- Blog Section Begin -->
-    <section class="blog spad">
+    <section class="blog spad py-4 py-md-5">
         <div class="container">
             <div class="row">
                 {% for post in posts %}

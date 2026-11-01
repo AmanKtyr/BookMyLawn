@@ -42,61 +42,106 @@
 
 {% block content %}
 <style>
-    .vendor-search-header {
-        background: linear-gradient(135deg, var(--theme-color-light) 0%, var(--color-bg-subtle) 100%);
-        padding: 60px 0 40px;
-        border-bottom: 1px solid var(--theme-color-border);
-    }
-    .vendor-search-header h1 {
-        font-family: var(--font-heading);
-        font-weight: 700;
-        color: var(--color-dark);
-    }
+    /* Hero Search Bar */
     .search-bar-container {
-        background: var(--color-bg-card);
-        border-radius: var(--radius-pill);
-        padding: 10px;
-        box-shadow: var(--shadow-md);
+        background: #ffffff;
+        border-radius: 60px;
+        padding: 8px 10px;
+        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.25);
         display: flex;
         align-items: center;
-        margin-top: 30px;
+        margin-top: 28px;
+        max-width: 960px;
+        margin-left: auto;
+        margin-right: auto;
+        border: 2px solid rgba(255, 255, 255, 0.85);
     }
     .search-input-group {
         flex: 1;
         display: flex;
         align-items: center;
-        padding: 0 20px;
-        border-right: 1px solid var(--color-border);
+        padding: 6px 18px;
+        border-right: 1px solid #e5e7eb;
+        min-width: 0;
     }
     .search-input-group:last-of-type {
         border-right: none;
     }
     .search-input-group i {
-        color: var(--theme-color);
-        font-size: 20px;
-        margin-right: 15px;
+        color: var(--theme-color, #e72e77);
+        font-size: 18px;
+        margin-right: 12px;
+        flex-shrink: 0;
     }
     .search-input-group input, .search-input-group select {
         border: none;
         outline: none;
         width: 100%;
-        font-size: 16px;
+        font-size: 15px;
         background: transparent;
-        color: var(--color-dark);
+        color: #1f2937;
+        font-family: inherit;
+    }
+    .search-input-group input::placeholder {
+        color: #9ca3af;
     }
     .btn-search-main {
-        background: var(--theme-color);
-        color: white;
-        border-radius: var(--radius-pill);
-        padding: 15px 40px;
+        background: var(--theme-color, #e72e77);
+        color: #ffffff;
+        border-radius: 50px;
+        padding: 13px 34px;
         font-weight: 700;
-        font-size: 16px;
+        font-size: 15px;
         border: none;
-        transition: var(--transition);
+        transition: all 0.3s ease;
+        white-space: nowrap;
+        flex-shrink: 0;
+        cursor: pointer;
     }
     .btn-search-main:hover {
-        background: var(--theme-color-dark);
+        background: var(--theme-color-dark, #c51b63);
         transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(231, 46, 119, 0.4);
+    }
+    @media (max-width: 991px) {
+        .search-bar-container {
+            flex-direction: column;
+            border-radius: 16px;
+            padding: 12px;
+            gap: 8px;
+            margin-top: 20px;
+        }
+        .search-input-group {
+            width: 100%;
+            border-right: none;
+            border-bottom: 1px solid #f0f0f0;
+            padding: 8px 10px;
+        }
+        .search-input-group:last-of-type {
+            border-bottom: none;
+        }
+        .btn-search-main {
+            width: 100%;
+            border-radius: 10px;
+            padding: 12px 20px;
+        }
+        .sticky-filter-wrapper {
+            position: static;
+        }
+    }
+    @media (max-width: 767px) {
+        .search-bar-container {
+            border-radius: 14px;
+            padding: 10px 8px;
+            margin-top: 14px;
+        }
+        .search-input-group input, .search-input-group select {
+            font-size: 14px;
+        }
+        .btn-search-main {
+            font-size: 14px;
+            padding: 10px 16px;
+        }
     }
     
     /* Sidebar styling */
@@ -277,15 +322,29 @@
     }
 </style>
 
-<!-- Hero Search Section -->
-<section class="vendor-search-header">
+<!-- Page Hero Section Begin -->
+<section class="page-hero set-bg" data-setbg="{% static 'website/img/banner/banner-1.jpg' %}?v=2" style="background-image: url('{% static 'website/img/banner/banner-1.jpg' %}?v=2');">
     <div class="container-fluid px-lg-5">
         <div class="row justify-content-center">
-            <div class="col-lg-10 text-center">
+            <div class="col-lg-10 text-center page-hero-content">
+                {% if view_type == 'venues' %}
+                <span class="hero-badge"><i class="fa fa-map-pin mr-1"></i> Verified Venues &amp; Lawns</span>
+                <h1>Find The Best Wedding Venues</h1>
+                <p>Browse through thousands of trusted marriage lawns, luxury banquet halls &amp; wedding venues across India.</p>
+                {% elif selected_category %}
+                <span class="hero-badge"><i class="fa fa-star mr-1"></i> Verified Wedding Specialists</span>
+                <h1>Best Wedding {{ selected_category.name }}</h1>
+                <p>Discover top-rated {{ selected_category.name|lower }} with verified couple reviews, packages &amp; fast quotes.</p>
+                {% else %}
+                <span class="hero-badge"><i class="fa fa-search mr-1"></i> India's Premier Wedding Directory</span>
                 <h1>Find The Best Wedding Vendors</h1>
-                <p class="text-muted mt-2 font-size-18">Browse through thousands of trusted wedding service providers</p>
+                <p>Browse through thousands of trusted wedding service providers, venues &amp; artists across India.</p>
+                {% endif %}
                 
                 <form method="GET" action="{% url 'vendors' %}" class="search-bar-container">
+                    {% if view_type %}
+                    <input type="hidden" name="type" value="{{ view_type }}">
+                    {% endif %}
                     <div class="search-input-group">
                         <i class="fa fa-map-marker"></i>
                         <input type="text" name="city" placeholder="Select City" value="{{ selected_city|default:'' }}">
@@ -303,23 +362,37 @@
                         <i class="fa fa-search"></i>
                         <input type="text" name="q" placeholder="Search by name..." value="{{ request.GET.q|default:'' }}">
                     </div>
-                    <button type="submit" class="btn-search-main">Search</button>
+                    <button type="submit" class="btn-search-main"><i class="fa fa-search mr-1"></i> Search</button>
                 </form>
             </div>
         </div>
     </div>
 </section>
+<!-- Page Hero Section End -->
 
-<!-- Breadcrumb -->
-<div class="bg-light py-2">
+<!-- Breadcrumb Section Begin -->
+<div class="breadcrumb-option bg-light py-2 border-bottom">
     <div class="container-fluid px-lg-5">
-        <div class="small text-muted">
-            <a href="{% url 'index' %}" class="text-muted">Home</a> <i class="fa fa-angle-right mx-2"></i> 
-            <span class="font-weight-bold">Vendors</span>
-            {% if selected_city %} <i class="fa fa-angle-right mx-2"></i> {{ selected_city }} {% endif %}
+        <div class="breadcrumb__text">
+            <div class="breadcrumb__links">
+                <a href="{% url 'index' %}"><i class="fa fa-home"></i> Home</a>
+                {% if view_type == 'venues' %}
+                <a href="{% url 'vendors' %}?type=venues">Venues</a>
+                {% else %}
+                <a href="{% url 'vendors' %}">Vendors</a>
+                {% endif %}
+                {% if selected_category %}
+                <span>{{ selected_category.name }}</span>
+                {% elif selected_city %}
+                <span>{{ selected_city }}</span>
+                {% else %}
+                <span>All Listings</span>
+                {% endif %}
+            </div>
         </div>
     </div>
 </div>
+<!-- Breadcrumb Section End -->
 
 <section class="py-5">
     <div class="container-fluid px-lg-5">

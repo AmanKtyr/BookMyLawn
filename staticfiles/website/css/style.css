@@ -208,38 +208,55 @@
 .page-hero {
     background-size: cover;
     background-position: center;
-    padding: 120px 0;
+    padding: 85px 0 60px;
     position: relative;
-    border-radius: 0 0 30px 30px;
-    margin-bottom: 60px;
+    border-radius: 0 0 24px 24px;
+    margin-bottom: 0;
 }
 .page-hero::before {
     content: '';
     position: absolute;
     top: 0; left: 0; right: 0; bottom: 0;
-    background: rgba(0, 0, 0, 0.62);
-    border-radius: 0 0 30px 30px;
+    background: linear-gradient(180deg, rgba(15,17,21,0.68) 0%, rgba(15,17,21,0.80) 100%);
+    border-radius: 0 0 24px 24px;
 }
 .page-hero-content {
     position: relative;
-    z-index: 1;
+    z-index: 2;
     text-align: center;
     color: #fff;
 }
+.hero-badge {
+    display: inline-block;
+    background: rgba(231,46,119,0.3);
+    border: 1px solid rgba(255,255,255,0.4);
+    color: #ffffff;
+    font-weight: 700;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    padding: 6px 18px;
+    border-radius: 30px;
+    margin-bottom: 14px;
+}
+.page-hero-content h1,
 .page-hero-content h2 {
     font-family: var(--font-heading);
-    font-size: 52px;
-    font-weight: 700;
+    font-size: 42px;
+    font-weight: 800;
     color: #fff;
-    margin-bottom: 15px;
-    text-shadow: 0 2px 15px rgba(0,0,0,0.4);
+    margin-bottom: 12px;
+    text-shadow: 2px 2px 8px rgba(0,0,0,0.5);
+    line-height: 1.25;
 }
 .page-hero-content p {
-    font-size: 18px;
-    color: #fff;
-    opacity: 0.92;
-    max-width: 750px;
+    font-size: 16px;
+    color: #f3f4f6;
+    opacity: 0.95;
+    max-width: 720px;
     margin: 0 auto;
+    line-height: 1.6;
+    text-shadow: 1px 1px 4px rgba(0,0,0,0.5);
 }
 
 /* ── Section Subtitle ─────────────────────────────── */
@@ -1864,7 +1881,7 @@ ol {
 -----------------------*/
 
 .breadcrumb-option {
-	padding-top: 35px;
+	padding: 14px 0;
 }
 
 .breadcrumb__links a {

@@ -6,12 +6,30 @@
 {% block meta_robots %}index, follow{% endblock %}
 
 {% block content %}
-<section style="background: linear-gradient(135deg, rgba(231,46,119,0.04) 0%, rgba(231,46,119,0.1) 100%); padding: 60px 0 40px; text-align: center; border-bottom: 1px solid rgba(231,46,119,0.1);">
+<!-- Hero Section Begin -->
+<section class="page-hero set-bg" data-setbg="{% static 'website/img/banner/banner-1.jpg' %}?v=2" style="background-image: url('{% static 'website/img/banner/banner-1.jpg' %}?v=2');">
     <div class="container">
-        <h1 style="font-weight: 800; color: #111; font-size: 38px; margin-bottom: 10px;">Terms of Service</h1>
-        <p style="color: #666; font-size: 15px; margin: 0;">Last Updated: October 2026</p>
+        <div class="page-hero-content text-center">
+            <span class="hero-badge">
+                <i class="fa fa-file-text-o mr-1"></i> Legal &amp; Policies
+            </span>
+            <h1>Terms of Service</h1>
+            <p>Review BookMyLawn's terms and guidelines for wedding venue bookings and inquiries.</p>
+        </div>
     </div>
 </section>
+<!-- Hero Section End -->
+
+<!-- Breadcrumb Section Begin -->
+<div class="breadcrumb-option bg-light py-2 border-bottom">
+    <div class="container">
+        <div class="breadcrumb__links">
+            <a href="{% url 'index' %}"><i class="fa fa-home"></i> Home</a>
+            <span>Terms of Service</span>
+        </div>
+    </div>
+</div>
+<!-- Breadcrumb Section End -->
 
 <section style="padding: 60px 0; background: #fff;">
     <div class="container">

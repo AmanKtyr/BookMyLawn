@@ -173,21 +173,30 @@
 {% endblock %}
 
 {% block content %}
-<!-- Header Hero -->
-<section style="background: linear-gradient(135deg, rgba(231,46,119,0.06) 0%, rgba(231,46,119,0.14) 100%); padding: 75px 0 50px; text-align: center; border-bottom: 1px solid rgba(231,46,119,0.15);">
+<!-- Hero Section Begin -->
+<section class="page-hero set-bg" data-setbg="{% static 'website/img/banner/banner-1.jpg' %}?v=2" style="background-image: url('{% static 'website/img/banner/banner-1.jpg' %}?v=2');">
     <div class="container">
-        <span style="color:#e72e77; font-weight:700; text-transform:uppercase; letter-spacing:2px; font-size:13px; display:block; margin-bottom:10px;">
-            <i class="fa fa-info-circle mr-1"></i> Official Wedding Venue &amp; Vendor Guide
-        </span>
-        <h1 style="font-weight: 800; color: #111; font-size: 42px; margin-bottom: 15px; letter-spacing: -1px;">Frequently Asked Questions</h1>
-        <p style="color: #4b5563; max-width: 700px; margin: 0 auto 20px; font-size: 16px; line-height: 1.6;">Everything you need to know about booking wedding lawns, banquet halls, catering packages, alcohol permits, and wedding vendors across India.</p>
-        <div class="breadcrumb__links" style="display: flex; justify-content: center; gap: 10px; align-items: center; font-size: 14px;">
-            <a href="{% url 'index' %}" style="color: #555; font-weight: 600; text-decoration: none;"><i class="fa fa-home"></i> Home</a>
-            <span style="color: #ccc;">/</span>
-            <span style="color: #e72e77; font-weight: 700;">Frequently Asked Questions</span>
+        <div class="page-hero-content text-center">
+            <span class="hero-badge">
+                <i class="fa fa-question-circle mr-1"></i> Official Venue &amp; Vendor Help Center
+            </span>
+            <h1>Frequently Asked Questions</h1>
+            <p>Everything you need to know about booking wedding lawns, banquet halls, catering packages, alcohol permits, and wedding vendors across India.</p>
         </div>
     </div>
 </section>
+<!-- Hero Section End -->
+
+<!-- Breadcrumb Section Begin -->
+<div class="breadcrumb-option bg-light py-2 border-bottom">
+    <div class="container">
+        <div class="breadcrumb__links">
+            <a href="{% url 'index' %}"><i class="fa fa-home"></i> Home</a>
+            <span>Frequently Asked Questions</span>
+        </div>
+    </div>
+</div>
+<!-- Breadcrumb Section End -->
 
 <!-- Quick Category Selector Pills -->
 <div style="background: #fafafa; border-bottom: 1px solid #f1f5f9; padding: 15px 0;">

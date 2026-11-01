@@ -35,25 +35,30 @@
 
 {% block content %}
 
-<!-- Hero Begin -->
-<div class="page-hero set-bg" data-setbg="{% static 'website/img/banner/real-weddings-banner.jpg' %}?v=2"
-    style="background-image: url('{% static 'website/img/banner/real-weddings-banner.jpg' %}?v=2'); position: relative; padding: 120px 0 80px;">
-    <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(180deg, rgba(15,17,21,0.55) 0%, rgba(15,17,21,0.7) 100%);"></div>
-    <div class="container" style="position: relative; z-index: 2;">
+<!-- Hero Section Begin -->
+<section class="page-hero set-bg" data-setbg="{% static 'website/img/banner/real-weddings-banner.jpg' %}?v=2" style="background-image: url('{% static 'website/img/banner/real-weddings-banner.jpg' %}?v=2');">
+    <div class="container">
         <div class="page-hero-content text-center">
-            <span style="display: inline-block; background: rgba(231,46,119,0.3); border: 1px solid rgba(255,255,255,0.4); color: #ffffff; font-weight: 700; font-size: 12px; text-transform: uppercase; letter-spacing: 2px; padding: 5px 16px; border-radius: 30px; margin-bottom: 16px;">
-                True Celebrations &bull; Real Couples
+            <span class="hero-badge">
+                <i class="fa fa-heart mr-1"></i> True Celebrations &bull; Real Couples
             </span>
-            <h1 style="color: #ffffff; font-family: 'Playfair Display', serif; font-size: 44px; font-weight: 800; margin-bottom: 14px; text-shadow: 2px 2px 8px rgba(0,0,0,0.5);">
-                Real Wedding Stories
-            </h1>
-            <p style="color: #f3f4f6; font-size: 17px; max-width: 650px; margin: 0 auto; line-height: 1.6; text-shadow: 1px 1px 4px rgba(0,0,0,0.5);">
-                Get inspired by real couples who discovered and booked their dream wedding lawns, banquet halls, and wedding vendors with BookMyLawn.
-            </p>
+            <h1>Real Wedding Stories</h1>
+            <p>Get inspired by real couples who discovered and booked their dream wedding lawns, banquet halls, and wedding vendors with BookMyLawn.</p>
+        </div>
+    </div>
+</section>
+<!-- Hero Section End -->
+
+<!-- Breadcrumb Section Begin -->
+<div class="breadcrumb-option bg-light py-2 border-bottom">
+    <div class="container">
+        <div class="breadcrumb__links">
+            <a href="{% url 'index' %}"><i class="fa fa-home"></i> Home</a>
+            <span>Real Weddings</span>
         </div>
     </div>
 </div>
-<!-- Hero End -->
+<!-- Breadcrumb Section End -->
 
 <!-- Filter & Search Bar Section -->
 <section style="background: #ffffff; border-bottom: 1px solid #f1f5f9; padding: 25px 0; box-shadow: 0 4px 20px rgba(0,0,0,0.02);">

@@ -45,47 +45,44 @@
 {% endblock %}
 
 {% block content %}
-<!-- Hero Section -->
-<section style="background: linear-gradient(135deg, rgba(231,46,119,0.06) 0%, rgba(231,46,119,0.14) 100%); padding: 80px 0 60px; text-align: center; border-bottom: 1px solid rgba(231,46,119,0.15);">
+<!-- Hero Section Begin -->
+<section class="page-hero set-bg" data-setbg="{% static 'website/img/banner/banner-1.jpg' %}?v=2" style="background-image: url('{% static 'website/img/banner/banner-1.jpg' %}?v=2');">
     <div class="container">
-        <span style="color: #e72e77; font-weight: 700; text-transform: uppercase; letter-spacing: 2px; font-size: 13px; display: block; margin-bottom: 10px;">
-            100% Free For All Couples
-        </span>
-        <h1 style="font-weight: 800; color: #111; font-size: 44px; margin-bottom: 16px; letter-spacing: -1px;">
-            Smart Wedding Planning Tools
-        </h1>
-        <p style="color: #4b5563; font-size: 17px; max-width: 680px; margin: 0 auto 30px; line-height: 1.6;">
-            Eliminate wedding stress with our automated budget calculator, 12-month master checklist, and guest list manager.
-        </p>
-        <div class="d-flex justify-content-center gap-3 flex-wrap">
-            {% if request.user.is_authenticated %}
-            <a href="{% url 'user_dashboard' %}" class="btn-login-single" style="font-size: 15px; padding: 12px 32px;">
-                <i class="fa fa-dashboard mr-2"></i> Open My Dashboard
-            </a>
-            {% else %}
-            <a href="{% url 'register' %}" class="btn-login-single" style="font-size: 15px; padding: 12px 32px;">
-                <i class="fa fa-heart mr-2"></i> Create Free Account
-            </a>
-            <a href="{% url 'login' %}" class="btn-vendor-list" style="font-size: 14px; padding: 11px 24px;">
-                Existing User? Log In
-            </a>
-            {% endif %}
+        <div class="page-hero-content text-center">
+            <span class="hero-badge">
+                <i class="fa fa-calculator mr-1"></i> 100% Free For All Couples
+            </span>
+            <h1>Smart Wedding Planning Tools</h1>
+            <p>Eliminate wedding stress with our automated budget calculator, 12-month master checklist, and guest list manager.</p>
+            <div class="d-flex justify-content-center gap-3 flex-wrap mt-3">
+                {% if request.user.is_authenticated %}
+                <a href="{% url 'user_dashboard' %}" class="btn-theme" style="font-size: 13.5px; padding: 10px 28px;">
+                    <i class="fa fa-dashboard mr-2"></i> Open My Dashboard
+                </a>
+                {% else %}
+                <a href="{% url 'register' %}" class="btn-theme" style="font-size: 13.5px; padding: 10px 28px;">
+                    <i class="fa fa-heart mr-2"></i> Create Free Account
+                </a>
+                <a href="{% url 'login' %}" class="btn-outline-theme" style="font-size: 13.5px; padding: 9px 24px; background: rgba(255,255,255,0.15); color: #fff; border-color: rgba(255,255,255,0.6);">
+                    Existing User? Log In
+                </a>
+                {% endif %}
+            </div>
         </div>
     </div>
 </section>
+<!-- Hero Section End -->
 
-<!-- Breadcrumb -->
-<div class="bg-light py-2 border-bottom">
+<!-- Breadcrumb Section Begin -->
+<div class="breadcrumb-option bg-light py-2 border-bottom">
     <div class="container">
-        <nav aria-label="breadcrumb">
-            <div class="small text-muted" style="font-size: 13px;">
-                <a href="{% url 'index' %}" class="text-muted"><i class="fa fa-home"></i> Home</a>
-                <i class="fa fa-angle-right mx-2"></i> 
-                <span class="font-weight-bold text-dark">Planning Tools</span>
-            </div>
-        </nav>
+        <div class="breadcrumb__links">
+            <a href="{% url 'index' %}"><i class="fa fa-home"></i> Home</a>
+            <span>Planning Tools</span>
+        </div>
     </div>
 </div>
+<!-- Breadcrumb Section End -->
 
 <!-- Tool 1: Interactive Wedding Budget Estimator -->
 <section style="padding: 70px 0; background: #ffffff;">
