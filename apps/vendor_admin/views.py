@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required, user_passes_test
-from apps.website.models import Vendor, Inquiry, Review, OrderItem, SupportTicket, VendorImage, VendorAvailability
+from apps.website.models import Vendor, Inquiry, Review, OrderItem, SupportTicket, VendorImage, VendorAvailability, Category
 
 def is_vendor(user):
     return user.is_authenticated and hasattr(user, 'vendor_profile')
@@ -105,30 +105,59 @@ def vendor_profile(request):
     vendor = request.user.vendor_profile
     if request.method == 'POST':
         # Basic Info
-        vendor.name = request.POST.get('name')
-        vendor.location = request.POST.get('location')
-        vendor.address = request.POST.get('address')
-        vendor.price_starting = request.POST.get('price_starting', 0)
+        vendor.name = request.POST.get('name', '').strip()
+        vendor.location = request.POST.get('location', '').strip()
+        vendor.address = request.POST.get('address', '').strip()
         
-        # Specifics
-        vendor.veg_price = request.POST.get('veg_price', 0)
-        vendor.non_veg_price = request.POST.get('non_veg_price', 0)
-        vendor.capacity = request.POST.get('capacity', 0)
-        vendor.rooms = request.POST.get('rooms', 0)
+        cat_id = request.POST.get('category')
+        if cat_id:
+            category_obj = Category.objects.filter(id=cat_id).first()
+            if category_obj:
+                vendor.category = category_obj
+
+        try:
+            vendor.price_starting = float(request.POST.get('price_starting') or 0)
+        except ValueError:
+            vendor.price_starting = 0
+            
+        try:
+            vendor.experience_years = int(request.POST.get('experience_years') or 0)
+        except ValueError:
+            vendor.experience_years = 0
         
-        # Details
-        vendor.description = request.POST.get('description', '')
-        vendor.amenities = request.POST.get('amenities', '')
-        vendor.map_link = request.POST.get('map_link', '')
-        vendor.website_link = request.POST.get('website_link', '')
-        vendor.facebook_link = request.POST.get('facebook_link', '')
-        vendor.instagram_link = request.POST.get('instagram_link', '')
-        vendor.experience_years = request.POST.get('experience_years', 0)
+        # Specifics (Venues & General)
+        try:
+            vendor.veg_price = float(request.POST.get('veg_price') or 0)
+        except ValueError:
+            vendor.veg_price = 0
+            
+        try:
+            vendor.non_veg_price = float(request.POST.get('non_veg_price') or 0)
+        except ValueError:
+            vendor.non_veg_price = 0
+            
+        try:
+            vendor.capacity = int(request.POST.get('capacity') or 0)
+        except ValueError:
+            vendor.capacity = 0
+            
+        try:
+            vendor.rooms = int(request.POST.get('rooms') or 0)
+        except ValueError:
+            vendor.rooms = 0
+        
+        # Details & Amenities
+        vendor.description = request.POST.get('description', '').strip()
+        vendor.amenities = request.POST.get('amenities', '').strip()
+        vendor.map_link = request.POST.get('map_link', '').strip()
+        vendor.website_link = request.POST.get('website_link', '').strip()
+        vendor.facebook_link = request.POST.get('facebook_link', '').strip()
+        vendor.instagram_link = request.POST.get('instagram_link', '').strip()
         
         # Business Policies
-        vendor.cancellation_policy = request.POST.get('cancellation_policy', '')
-        vendor.payment_terms = request.POST.get('payment_terms', '')
-        vendor.travel_policy = request.POST.get('travel_policy', '')
+        vendor.cancellation_policy = request.POST.get('cancellation_policy', '').strip()
+        vendor.payment_terms = request.POST.get('payment_terms', '').strip()
+        vendor.travel_policy = request.POST.get('travel_policy', '').strip()
         
         if request.FILES.get('image'):
             vendor.image = request.FILES.get('image')
@@ -137,20 +166,45 @@ def vendor_profile(request):
         
         # Handle Gallery Uploads
         gallery_images = request.FILES.getlist('gallery_images')
-        from apps.website.models import VendorImage
         for img in gallery_images:
             VendorImage.objects.create(vendor=vendor, image=img)
             
-        messages.success(request, 'Profile and Gallery updated successfully.')
+        messages.success(request, 'Your storefront profile has been updated successfully.')
         return redirect('vendor_profile')
         
-    gallery = vendor.gallery.all()
-    return render(request, 'vendor_admin/profile.html', {'vendor': vendor, 'gallery': gallery})
+    gallery = vendor.gallery.all().order_by('-created_at')
+    categories = Category.objects.all().order_by('name')
+
+    # Profile Completeness Score
+    score = 0
+    if vendor.name: score += 15
+    if vendor.location: score += 10
+    if vendor.description and len(vendor.description) > 30: score += 15
+    if vendor.price_starting > 0: score += 15
+    if vendor.image: score += 15
+    if gallery.count() >= 5: score += 15
+    elif gallery.count() > 0: score += 8
+    if vendor.cancellation_policy or vendor.payment_terms: score += 15
+    score = min(score, 100)
+
+    return render(request, 'vendor_admin/profile.html', {
+        'vendor': vendor,
+        'gallery': gallery,
+        'categories': categories,
+        'profile_score': score,
+    })
 
 @user_passes_test(is_vendor, login_url='vendor_login')
 def vendor_inquiries(request):
     vendor = request.user.vendor_profile
-    inquiries = Inquiry.objects.filter(vendor=vendor).order_by('-created_at')
+    all_inqs = Inquiry.objects.filter(vendor=vendor)
+    
+    total_count = all_inqs.count()
+    new_count = all_inqs.filter(status='new').count()
+    contacted_count = all_inqs.filter(status='contacted').count()
+    closed_count = all_inqs.filter(status='closed').count()
+    
+    inquiries = all_inqs.order_by('-created_at')
     
     # Filter by Status
     status_filter = request.GET.get('status', '')
@@ -168,17 +222,106 @@ def vendor_inquiries(request):
         )
         
     context = {
+        'vendor': vendor,
         'inquiries': inquiries,
         'current_status': status_filter,
-        'current_search': search_query
+        'current_search': search_query,
+        'total_count': total_count,
+        'new_count': new_count,
+        'contacted_count': contacted_count,
+        'closed_count': closed_count,
     }
     return render(request, 'vendor_admin/inquiries.html', context)
 
 @user_passes_test(is_vendor, login_url='vendor_login')
+def update_inquiry_status(request, inquiry_id):
+    vendor = request.user.vendor_profile
+    inquiry = get_object_or_404(Inquiry, id=inquiry_id, vendor=vendor)
+    if request.method == 'POST':
+        new_status = request.POST.get('status')
+        notes = request.POST.get('vendor_notes', '').strip()
+        if new_status in ['new', 'contacted', 'closed']:
+            inquiry.status = new_status
+        if notes:
+            inquiry.vendor_notes = notes
+        inquiry.save()
+        messages.success(request, f"Lead #{inquiry.id} updated to {inquiry.get_status_display()}.")
+    return redirect('vendor_inquiries')
+
+@user_passes_test(is_vendor, login_url='vendor_login')
 def vendor_reviews(request):
     vendor = request.user.vendor_profile
-    reviews = Review.objects.filter(vendor=vendor).order_by('-created_at')
-    return render(request, 'vendor_admin/reviews.html', {'reviews': reviews})
+    all_reviews = Review.objects.filter(vendor=vendor)
+    total_reviews = all_reviews.count()
+    
+    reviews = all_reviews.order_by('-created_at')
+    
+    # Filter by rating
+    rating_filter = request.GET.get('rating', '')
+    if rating_filter:
+        try:
+            reviews = reviews.filter(rating=int(rating_filter))
+        except ValueError:
+            pass
+
+    if total_reviews > 0:
+        avg_rating = round(sum(r.rating for r in all_reviews) / total_reviews, 1)
+        star_counts = {
+            5: all_reviews.filter(rating=5).count(),
+            4: all_reviews.filter(rating=4).count(),
+            3: all_reviews.filter(rating=3).count(),
+            2: all_reviews.filter(rating=2).count(),
+            1: all_reviews.filter(rating=1).count(),
+        }
+        star_pcts = {k: int((v / total_reviews) * 100) for k, v in star_counts.items()}
+        pos = star_counts[5] + star_counts[4]
+        recommend_pct = int((pos / total_reviews) * 100)
+    else:
+        avg_rating = 5.0
+        star_counts = {5: 0, 4: 0, 3: 0, 2: 0, 1: 0}
+        star_pcts = {5: 0, 4: 0, 3: 0, 2: 0, 1: 0}
+        recommend_pct = 100
+
+    return render(request, 'vendor_admin/reviews.html', {
+        'vendor': vendor,
+        'reviews': reviews,
+        'total_reviews': total_reviews,
+        'avg_rating': avg_rating,
+        'star_counts': star_counts,
+        'star_pcts': star_pcts,
+        'recommend_pct': recommend_pct,
+        'current_rating': rating_filter,
+    })
+
+@user_passes_test(is_vendor, login_url='vendor_login')
+def reply_to_review(request, review_id):
+    vendor = request.user.vendor_profile
+    review = get_object_or_404(Review, id=review_id, vendor=vendor)
+    if request.method == 'POST':
+        reply_text = request.POST.get('reply_text', '').strip()
+        from django.utils import timezone
+        review.vendor_reply = reply_text
+        review.vendor_replied_at = timezone.now()
+        review.save()
+        messages.success(request, "Your reply has been posted successfully.")
+    return redirect('vendor_reviews')
+
+@user_passes_test(is_vendor, login_url='vendor_login')
+def request_membership_upgrade(request):
+    vendor = request.user.vendor_profile
+    if request.method == 'POST':
+        plan = request.POST.get('plan', 'Pro Verified')
+        phone = request.POST.get('phone', '')
+        notes = request.POST.get('notes', '')
+        msg_body = f"Membership Upgrade Request: {plan} | Contact Phone: {phone} | Note: {notes}"
+        SupportTicket.objects.create(
+            vendor=vendor,
+            subject='billing',
+            message=msg_body,
+            status='open'
+        )
+        messages.success(request, f"Thank you! Your upgrade request for {plan} has been received. Our partnership executive will call you shortly.")
+    return redirect('vendor_subscription')
 
 @user_passes_test(is_vendor, login_url='vendor_login')
 def vendor_subscription(request):

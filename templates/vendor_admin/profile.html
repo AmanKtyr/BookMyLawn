@@ -2,364 +2,838 @@
 {% load static %}
 
 {% block content %}
-<div class="container-fluid py-4">
-    <div class="row">
-        <div class="col-12">
-            <!-- Header Section with Cover and Avatar -->
-            <form method="POST" enctype="multipart/form-data">
+<style>
+    .amenity-chip {
+        display: inline-flex;
+        align-items: center;
+        padding: 8px 16px;
+        margin: 4px;
+        border-radius: 30px;
+        border: 1px solid #e5e7eb;
+        background: #f9fafb;
+        color: #374151;
+        font-size: 13px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        user-select: none;
+    }
+    .amenity-chip:hover {
+        border-color: #e72e77;
+        background: #fdf2f6;
+        color: #e72e77;
+    }
+    .amenity-chip.active {
+        background: #e72e77;
+        border-color: #e72e77;
+        color: #ffffff;
+        box-shadow: 0 4px 12px rgba(231, 46, 119, 0.25);
+    }
+    .amenity-chip i {
+        margin-right: 6px;
+        font-size: 14px;
+    }
+    .nav-pills .nav-link {
+        color: #4b5563;
+        border-radius: 12px;
+        padding: 12px 18px;
+        transition: all 0.2s;
+    }
+    .nav-pills .nav-link.active {
+        background-color: #e72e77 !important;
+        color: #ffffff !important;
+        box-shadow: 0 6px 16px rgba(231, 46, 119, 0.3);
+    }
+    .policy-pill {
+        display: inline-block;
+        padding: 5px 12px;
+        background: #f3f4f6;
+        border-radius: 20px;
+        font-size: 12px;
+        color: #374151;
+        cursor: pointer;
+        margin-right: 6px;
+        margin-bottom: 6px;
+        transition: all 0.2s;
+    }
+    .policy-pill:hover {
+        background: #e72e77;
+        color: #fff;
+    }
+    .storefront-preview-card {
+        border-radius: 16px;
+        overflow: hidden;
+        border: 1px solid #e5e7eb;
+        background: #fff;
+        box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+    }
+    .preview-img-container {
+        position: relative;
+        height: 180px;
+        background: #f3f4f6;
+        overflow: hidden;
+    }
+</style>
+
+<div class="container-fluid py-3">
+    <div class="row justify-content-center">
+        <div class="col-12 col-xl-11">
+            
+            <form method="POST" enctype="multipart/form-data" id="vendorProfileForm">
                 {% csrf_token %}
-                <!-- Page Header -->
-                <div class="row align-items-center mb-4">
-                    <div class="col">
-                        <h2 class="h5 page-title">Vendor Profile</h2>
-                        <p class="small text-muted mb-0">Manage your storefront and how couples see you</p>
+
+                <!-- Page Header with Live Actions -->
+                <div class="d-flex flex-wrap justify-content-between align-items-center mb-4">
+                    <div>
+                        <h2 class="h3 page-title font-weight-bold mb-1">Storefront &amp; Profile Settings</h2>
+                        <p class="text-muted mb-0">Customize your public storefront, pricing, services &amp; policies to attract more wedding couples.</p>
                     </div>
-                    <div class="col-auto">
-                        <button type="submit" class="btn btn-primary shadow-sm" style="background: #e72e77; border-color: #e72e77;">
-                            <i class="fe fe-save mr-1"></i> Save Profile
+                    <div class="mt-3 mt-md-0 d-flex align-items-center">
+                        <a href="{% url 'vendor_details' vendor.uuid_field %}" target="_blank" class="btn btn-outline-primary rounded-pill font-weight-bold px-3 shadow-sm mr-2">
+                            <i class="fe fe-external-link mr-1"></i> View Live Storefront
+                        </a>
+                        <button type="submit" class="btn btn-primary rounded-pill font-weight-bold px-4 shadow-sm">
+                            <i class="fe fe-save mr-1"></i> Save Changes
                         </button>
                     </div>
                 </div>
 
+                <!-- Completeness Score Bar -->
+                <div class="card shadow-sm border-0 mb-4" style="border-radius: 16px;">
+                    <div class="card-body p-4">
+                        <div class="row align-items-center">
+                            <div class="col-lg-8 mb-3 mb-lg-0">
+                                <div class="d-flex align-items-center justify-content-between mb-2">
+                                    <div class="d-flex align-items-center">
+                                        <h6 class="font-weight-bold text-dark mb-0 mr-2">Storefront Strength</h6>
+                                        <span class="badge {% if profile_score >= 80 %}badge-success{% elif profile_score >= 50 %}badge-warning{% else %}badge-danger{% endif %} font-weight-bold px-3 py-1">
+                                            {{ profile_score }}% Complete
+                                        </span>
+                                    </div>
+                                    <small class="text-muted font-weight-bold">Target: 80%+ for Top Ranking</small>
+                                </div>
+                                <div class="progress" style="height: 10px; border-radius: 6px; background: #e5e7eb;">
+                                    <div class="progress-bar {% if profile_score >= 80 %}bg-success{% elif profile_score >= 50 %}bg-warning{% else %}bg-danger{% endif %}" role="progressbar" style="width: {{ profile_score }}%;"></div>
+                                </div>
+                                <div class="d-flex flex-wrap gap-2 mt-2 small text-muted">
+                                    <span class="mr-3"><i class="fe {% if vendor.name %}fe-check text-success{% else %}fe-circle text-muted{% endif %} mr-1"></i> Business Info</span>
+                                    <span class="mr-3"><i class="fe {% if vendor.price_starting > 0 %}fe-check text-success{% else %}fe-circle text-muted{% endif %} mr-1"></i> Pricing</span>
+                                    <span class="mr-3"><i class="fe {% if vendor.image %}fe-check text-success{% else %}fe-circle text-muted{% endif %} mr-1"></i> Cover Photo</span>
+                                    <span class="mr-3"><i class="fe {% if gallery.count >= 5 %}fe-check text-success{% else %}fe-circle text-muted{% endif %} mr-1"></i> 5+ Gallery Photos</span>
+                                    <span><i class="fe {% if vendor.payment_terms %}fe-check text-success{% else %}fe-circle text-muted{% endif %} mr-1"></i> Booking Policies</span>
+                                </div>
+                            </div>
+                            <div class="col-lg-4 text-lg-right border-lg-left pl-lg-4">
+                                <a href="{% url 'vendor_portfolio' %}" class="btn btn-sm btn-light border rounded-pill px-3 font-weight-bold mr-1 mb-1">
+                                    <i class="fe fe-image mr-1 text-primary"></i> Photos ({{ gallery.count }})
+                                </a>
+                                <a href="{% url 'vendor_calendar' %}" class="btn btn-sm btn-light border rounded-pill px-3 font-weight-bold mb-1">
+                                    <i class="fe fe-calendar mr-1 text-primary"></i> Calendar
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
                 <div class="row">
-                    <!-- Navigation Tabs -->
-                    <div class="col-md-3 mb-4">
-                        <div class="card shadow-sm border-0" style="border-radius: 16px;">
+                    <!-- Left Column: Navigation Tabs & Live Card Preview -->
+                    <div class="col-lg-4 mb-4">
+                        
+                        <!-- Navigation Tabs Menu -->
+                        <div class="card shadow-sm border-0 mb-4" style="border-radius: 16px;">
                             <div class="card-body p-3">
-                                <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
-                                    <a class="nav-link active rounded-lg py-3 mb-2 font-weight-bold" id="v-pills-basic-tab" data-toggle="pill" href="#v-pills-basic" role="tab" aria-controls="v-pills-basic" aria-selected="true" style="transition: all 0.2s;">
-                                        <i class="fe fe-info mr-2"></i> Business Profile
+                                <div class="nav flex-column nav-pills" id="profileTabs" role="tablist">
+                                    <a class="nav-link active font-weight-bold mb-2" id="tab-basic-btn" data-toggle="pill" href="#tab-basic" role="tab">
+                                        <i class="fe fe-briefcase mr-2"></i> 1. Business Profile
                                     </a>
-                                    <a class="nav-link rounded-lg py-3 mb-2 font-weight-bold" id="v-pills-pricing-tab" data-toggle="pill" href="#v-pills-pricing" role="tab" aria-controls="v-pills-pricing" aria-selected="false" style="transition: all 0.2s;">
-                                        <i class="fe fe-dollar-sign mr-2"></i> Pricing & Services
+                                    <a class="nav-link font-weight-bold mb-2" id="tab-pricing-btn" data-toggle="pill" href="#tab-pricing" role="tab">
+                                        <i class="fe fe-dollar-sign mr-2"></i> 2. Pricing &amp; Specifics
                                     </a>
-                                    <a class="nav-link rounded-lg py-3 mb-2 font-weight-bold" id="v-pills-policies-tab" data-toggle="pill" href="#v-pills-policies" role="tab" aria-controls="v-pills-policies" aria-selected="false" style="transition: all 0.2s;">
-                                        <i class="fe fe-shield mr-2"></i> Business Policies
+                                    <a class="nav-link font-weight-bold mb-2" id="tab-amenities-btn" data-toggle="pill" href="#tab-amenities" role="tab">
+                                        <i class="fe fe-check-square mr-2"></i> 3. Services &amp; Amenities
                                     </a>
-                                    <a class="nav-link rounded-lg py-3 mb-2 font-weight-bold" id="v-pills-web-tab" data-toggle="pill" href="#v-pills-web" role="tab" aria-controls="v-pills-web" aria-selected="false" style="transition: all 0.2s;">
-                                        <i class="fe fe-globe mr-2"></i> Web & Social
+                                    <a class="nav-link font-weight-bold mb-2" id="tab-policies-btn" data-toggle="pill" href="#tab-policies" role="tab">
+                                        <i class="fe fe-shield mr-2"></i> 4. Booking Policies
                                     </a>
-                                    <a class="nav-link rounded-lg py-3 font-weight-bold" id="v-pills-portfolio-tab" data-toggle="pill" href="#v-pills-portfolio" role="tab" aria-controls="v-pills-portfolio" aria-selected="false" style="transition: all 0.2s;">
-                                        <i class="fe fe-image mr-2"></i> Portfolio Gallery
+                                    <a class="nav-link font-weight-bold mb-2" id="tab-social-btn" data-toggle="pill" href="#tab-social" role="tab">
+                                        <i class="fe fe-globe mr-2"></i> 5. Social &amp; Digital
+                                    </a>
+                                    <a class="nav-link font-weight-bold text-primary" href="{% url 'vendor_portfolio' %}">
+                                        <i class="fe fe-image mr-2"></i> Portfolio &amp; Gallery &rarr;
                                     </a>
                                 </div>
                             </div>
                         </div>
-                    </div>
 
-                    <!-- Tab Content -->
-                    <div class="col-md-9">
-                        <div class="tab-content" id="v-pills-tabContent">
-                            
-                            <!-- Basic Info -->
-                            <div class="tab-pane fade show active" id="v-pills-basic" role="tabpanel" aria-labelledby="v-pills-basic-tab">
-                                <div class="card shadow-sm border-0 mb-4" style="border-radius: 16px;">
-                                    <div class="card-header bg-white border-0 pt-4 pb-0 px-4 px-md-5">
-                                        <h4 class="font-weight-bold text-dark mb-0">Business Profile</h4>
-                                        <p class="text-muted small">Update your storefront's core information visible to couples.</p>
-                                    </div>
-                                    <div class="card-body p-4 p-md-5">
-                                        <!-- Profile Picture Section -->
-                                        <div class="d-flex align-items-center mb-5 pb-4 border-bottom">
-                                            <div class="position-relative mr-4">
-                                                {% if vendor.image %}
-                                                <img src="{{ vendor.image.url }}" alt="Profile" class="avatar-img rounded-circle border shadow-sm" style="width: 120px; height: 120px; object-fit: cover; border-width: 4px !important; border-color: #fff !important; background: white;">
-                                                {% else %}
-                                                <div class="avatar-img rounded-circle border shadow-sm bg-light d-flex align-items-center justify-content-center" style="width: 120px; height: 120px; border-width: 4px !important; border-color: #fff !important;">
-                                                    <i class="fe fe-camera fe-32 text-muted"></i>
-                                                </div>
-                                                {% endif %}
-                                                <button type="button" class="btn btn-primary btn-sm position-absolute shadow-sm d-flex align-items-center justify-content-center" style="bottom: 0; right: 0; border-radius: 50%; width: 35px; height: 35px; padding: 0; background: #e72e77; border-color: #e72e77;" onclick="document.getElementById('profileImage').click()" title="Change Photo">
-                                                    <i class="fe fe-edit-2"></i>
-                                                </button>
-                                                <input type="file" name="image" id="profileImage" class="d-none" onchange="previewImage(this)">
-                                            </div>
-                                            <div>
-                                                <h5 class="font-weight-bold text-dark mb-1">Storefront Logo / Main Image</h5>
-                                                <p class="text-muted small mb-0">This image appears in search results and on your profile.</p>
-                                            </div>
-                                        </div>
-                                        <div class="form-row">
-                                            <div class="form-group col-md-6 mb-4">
-                                                <label for="name" class="font-weight-bold text-dark small text-uppercase">Business Name</label>
-                                                <input type="text" id="name" name="name" class="form-control form-control-lg bg-light border-0" value="{{ vendor.name }}" style="border-radius: 10px;">
-                                            </div>
-                                            <div class="form-group col-md-6 mb-4">
-                                                <label for="experience_years" class="font-weight-bold text-dark small text-uppercase">Years in Business</label>
-                                                <input type="number" id="experience_years" name="experience_years" class="form-control form-control-lg bg-light border-0" value="{{ vendor.experience_years|default:0 }}" style="border-radius: 10px;">
-                                            </div>
-                                        </div>
-                                        <div class="form-row">
-                                            <div class="form-group col-md-6 mb-4">
-                                                <label for="location" class="font-weight-bold text-dark small text-uppercase">City</label>
-                                                <input type="text" id="location" name="location" class="form-control form-control-lg bg-light border-0" value="{{ vendor.location }}" style="border-radius: 10px;">
-                                            </div>
-                                            <div class="form-group col-md-6 mb-4">
-                                                <label for="address" class="font-weight-bold text-dark small text-uppercase">Full Address</label>
-                                                <input type="text" id="address" name="address" class="form-control form-control-lg bg-light border-0" value="{{ vendor.address }}" style="border-radius: 10px;">
-                                            </div>
-                                        </div>
-                                        <div class="form-group mb-0">
-                                            <label for="description" class="font-weight-bold text-dark small text-uppercase">About Your Business</label>
-                                            <textarea class="form-control form-control-lg bg-light border-0" id="description" name="description" rows="5" style="border-radius: 10px;" placeholder="Tell couples what makes your services unique...">{{ vendor.description }}</textarea>
-                                        </div>
-                                    </div>
-                                </div>
+                        <!-- Live Storefront Mini Card Preview -->
+                        <div class="card shadow-sm border-0 mb-4" style="border-radius: 16px;">
+                            <div class="card-header bg-white border-0 pt-4 pb-0 px-4">
+                                <h6 class="font-weight-bold text-dark mb-0">
+                                    <i class="fe fe-eye mr-1 text-primary"></i> Live Search Result Card
+                                </h6>
+                                <p class="text-muted small mb-0">How couples see your venue in search</p>
                             </div>
-
-                            <!-- Pricing -->
-                            <div class="tab-pane fade" id="v-pills-pricing" role="tabpanel" aria-labelledby="v-pills-pricing-tab">
-                                <div class="card shadow-sm border-0 mb-4" style="border-radius: 16px;">
-                                    <div class="card-header bg-white border-0 pt-4 pb-0 px-4 px-md-5">
-                                        <h4 class="font-weight-bold text-dark mb-0">Pricing & Services</h4>
-                                        <p class="text-muted small">Help couples understand your packages and capacities.</p>
-                                    </div>
-                                    <div class="card-body p-4 p-md-5">
-                                        <div class="form-group mb-4">
-                                            <label for="price_starting" class="font-weight-bold text-dark small text-uppercase">Starting Package Price</label>
-                                            <div class="input-group input-group-lg">
-                                                <div class="input-group-prepend">
-                                                    <span class="input-group-text bg-light border-0 font-weight-bold text-muted">₹</span>
-                                                </div>
-                                                <input type="number" id="price_starting" name="price_starting" class="form-control bg-light border-0" value="{{ vendor.price_starting }}" style="border-radius: 0 10px 10px 0;">
-                                            </div>
-                                        </div>
-
-                                        {% if 'venue' in vendor.category.slug or 'lawn' in vendor.category.slug or 'banquet' in vendor.category.slug %}
-                                        <hr class="my-4 border-light">
-                                        <h6 class="font-weight-bold text-primary mb-3">Venue Specifics</h6>
-                                        <div class="form-row">
-                                            <div class="form-group col-md-6 mb-4">
-                                                <label for="veg_price" class="font-weight-bold text-dark small text-uppercase">Veg Plate Price (₹)</label>
-                                                <input type="number" id="veg_price" name="veg_price" class="form-control form-control-lg bg-light border-0" value="{{ vendor.veg_price }}" style="border-radius: 10px;">
-                                            </div>
-                                            <div class="form-group col-md-6 mb-4">
-                                                <label for="non_veg_price" class="font-weight-bold text-dark small text-uppercase">Non-Veg Plate Price (₹)</label>
-                                                <input type="number" id="non_veg_price" name="non_veg_price" class="form-control form-control-lg bg-light border-0" value="{{ vendor.non_veg_price }}" style="border-radius: 10px;">
-                                            </div>
-                                        </div>
-                                        <div class="form-row">
-                                            <div class="form-group col-md-6 mb-4">
-                                                <label for="capacity" class="font-weight-bold text-dark small text-uppercase">Total Capacity (Pax)</label>
-                                                <input type="number" id="capacity" name="capacity" class="form-control form-control-lg bg-light border-0" value="{{ vendor.capacity }}" style="border-radius: 10px;">
-                                            </div>
-                                            <div class="form-group col-md-6 mb-4">
-                                                <label for="rooms" class="font-weight-bold text-dark small text-uppercase">Available Rooms</label>
-                                                <input type="number" id="rooms" name="rooms" class="form-control form-control-lg bg-light border-0" value="{{ vendor.rooms }}" style="border-radius: 10px;">
-                                            </div>
+                            <div class="card-body p-4">
+                                <div class="storefront-preview-card">
+                                    <div class="preview-img-container">
+                                        {% if vendor.image %}
+                                        <img src="{{ vendor.image.url }}" id="cardPreviewImg" alt="{{ vendor.name }}" class="w-100 h-100" style="object-fit: cover;">
+                                        {% else %}
+                                        <div id="cardPreviewPlaceholder" class="w-100 h-100 d-flex align-items-center justify-content-center bg-light text-muted">
+                                            <i class="fe fe-image fe-32"></i>
                                         </div>
                                         {% endif %}
-
-                                        <hr class="my-4 border-light">
-                                        <div class="form-group mb-0">
-                                            <label for="amenities" class="font-weight-bold text-dark small text-uppercase">Provided Amenities & Offerings</label>
-                                            <input type="text" id="amenities" name="amenities" class="form-control form-control-lg bg-light border-0" value="{{ vendor.amenities }}" placeholder="E.g., Drone Shoot, Cinematic Video OR AC, Parking, DJ" style="border-radius: 10px;">
-                                            <small class="form-text text-muted mt-2"><i class="fe fe-info text-primary"></i> Separate items with commas.</small>
+                                        <span class="badge badge-primary position-absolute font-weight-bold" id="cardPreviewCategory" style="top: 10px; left: 10px; font-size: 11px;">
+                                            {{ vendor.category.name }}
+                                        </span>
+                                        {% if vendor.is_verified %}
+                                        <span class="badge badge-success position-absolute font-weight-bold" style="top: 10px; right: 10px; font-size: 11px;">
+                                            <i class="fe fe-check-circle"></i> Verified
+                                        </span>
+                                        {% endif %}
+                                    </div>
+                                    <div class="p-3">
+                                        <h6 class="font-weight-bold text-dark mb-1 text-truncate" id="cardPreviewTitle">{{ vendor.name }}</h6>
+                                        <p class="text-muted small mb-2"><i class="fe fe-map-pin text-primary mr-1"></i> <span id="cardPreviewCity">{{ vendor.location }}</span></p>
+                                        <div class="d-flex justify-content-between align-items-center pt-2 border-top">
+                                            <div>
+                                                <small class="text-muted d-block" style="font-size: 10px;">Starting Price</small>
+                                                <span class="font-weight-bold text-primary" style="font-size: 14px;">₹<span id="cardPreviewPrice">{{ vendor.price_starting }}</span></span>
+                                            </div>
+                                            <span class="badge badge-light border text-warning font-weight-bold">
+                                                4.8 <i class="fa fa-star"></i>
+                                            </span>
                                         </div>
                                     </div>
                                 </div>
                             </div>
+                        </div>
 
-                            <!-- Policies -->
-                            <div class="tab-pane fade" id="v-pills-policies" role="tabpanel" aria-labelledby="v-pills-policies-tab">
+                    </div>
+
+                    <!-- Right Column: Tab Panes Content -->
+                    <div class="col-lg-8">
+                        <div class="tab-content" id="profileTabsContent">
+                            
+                            <!-- TAB 1: Business Profile Basics -->
+                            <div class="tab-pane fade show active" id="tab-basic" role="tabpanel">
                                 <div class="card shadow-sm border-0 mb-4" style="border-radius: 16px;">
                                     <div class="card-header bg-white border-0 pt-4 pb-0 px-4 px-md-5">
-                                        <h4 class="font-weight-bold text-dark mb-0">Business Policies</h4>
-                                        <p class="text-muted small">Transparency helps build trust with couples before they even contact you.</p>
+                                        <h4 class="font-weight-bold text-dark mb-1">1. Business Profile Basics</h4>
+                                        <p class="text-muted small">Enter official branding and contact coordinates.</p>
                                     </div>
                                     <div class="card-body p-4 p-md-5">
-                                        <div class="form-group mb-4">
-                                            <label for="payment_terms" class="font-weight-bold text-dark small text-uppercase">Payment Terms</label>
-                                            <textarea class="form-control form-control-lg bg-light border-0" id="payment_terms" name="payment_terms" rows="3" style="border-radius: 10px;" placeholder="E.g., 50% advance to book, 50% on the day of the event.">{{ vendor.payment_terms }}</textarea>
+                                        
+                                        <!-- Storefront Primary Image / Logo Upload -->
+                                        <div class="d-flex align-items-center mb-4 pb-4 border-bottom">
+                                            <div class="position-relative mr-4" style="flex-shrink: 0;">
+                                                {% if vendor.image %}
+                                                <img src="{{ vendor.image.url }}" id="profileAvatarImg" alt="{{ vendor.name }}" class="rounded-circle border shadow-sm" style="width: 100px; height: 100px; object-fit: cover; border-width: 3px !important; border-color: #e72e77 !important;">
+                                                {% else %}
+                                                <div id="profileAvatarPlaceholder" class="rounded-circle border shadow-sm bg-light d-flex align-items-center justify-content-center" style="width: 100px; height: 100px; border-width: 3px !important; border-color: #e72e77 !important;">
+                                                    <i class="fe fe-camera fe-24 text-muted"></i>
+                                                </div>
+                                                {% endif %}
+                                                <button type="button" class="btn btn-primary btn-sm rounded-circle position-absolute shadow-sm d-flex align-items-center justify-content-center" style="bottom: 0; right: 0; width: 32px; height: 32px; padding: 0;" onclick="document.getElementById('profileImgInput').click()" title="Upload Photo">
+                                                    <i class="fe fe-camera"></i>
+                                                </button>
+                                                <input type="file" name="image" id="profileImgInput" class="d-none" accept="image/*" onchange="previewProfileImage(this)">
+                                            </div>
+                                            <div>
+                                                <h6 class="font-weight-bold text-dark mb-1">Storefront Primary Image / Logo</h6>
+                                                <p class="text-muted small mb-0">Couples see this on search cards, city listing directories, and at the top of your page. Recommended: 800x600px or square logo (JPG, PNG, WEBP - Max 5MB).</p>
+                                            </div>
                                         </div>
-                                        <div class="form-group mb-4">
-                                            <label for="cancellation_policy" class="font-weight-bold text-dark small text-uppercase">Cancellation Policy</label>
-                                            <textarea class="form-control form-control-lg bg-light border-0" id="cancellation_policy" name="cancellation_policy" rows="3" style="border-radius: 10px;" placeholder="E.g., Non-refundable advance. Or, 100% refund if cancelled 30 days prior.">{{ vendor.cancellation_policy }}</textarea>
+
+                                        <div class="form-row">
+                                            <div class="form-group col-md-6 mb-3">
+                                                <label class="font-weight-bold text-dark small text-uppercase">Business / Venue Name <span class="text-danger">*</span></label>
+                                                <input type="text" name="name" id="inputBusinessName" class="form-control form-control-lg bg-light border-0 rounded" value="{{ vendor.name }}" oninput="updatePreviewCard()" required>
+                                            </div>
+                                            <div class="form-group col-md-6 mb-3">
+                                                <label class="font-weight-bold text-dark small text-uppercase">Primary Business Category <span class="text-danger">*</span></label>
+                                                <select name="category" id="categorySelect" class="form-control form-control-lg bg-light border-0 rounded" onchange="onCategoryChange(this)" required>
+                                                    {% for cat in categories %}
+                                                    <option value="{{ cat.id }}" data-slug="{{ cat.slug|lower }}" {% if vendor.category.id == cat.id %}selected{% endif %}>{{ cat.name }}</option>
+                                                    {% endfor %}
+                                                </select>
+                                            </div>
                                         </div>
+
+                                        <div class="form-row">
+                                            <div class="form-group col-md-6 mb-3">
+                                                <label class="font-weight-bold text-dark small text-uppercase">City / Area <span class="text-danger">*</span></label>
+                                                <input type="text" name="location" id="inputLocation" class="form-control form-control-lg bg-light border-0 rounded" value="{{ vendor.location }}" placeholder="e.g. Lucknow, Gomti Nagar" oninput="updatePreviewCard()" required>
+                                            </div>
+                                            <div class="form-group col-md-6 mb-3">
+                                                <label class="font-weight-bold text-dark small text-uppercase">Years in Wedding Industry</label>
+                                                <input type="number" name="experience_years" class="form-control form-control-lg bg-light border-0 rounded" value="{{ vendor.experience_years|default:0 }}" min="0">
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group mb-3">
+                                            <label class="font-weight-bold text-dark small text-uppercase">Full Physical Address</label>
+                                            <input type="text" name="address" class="form-control form-control-lg bg-light border-0 rounded" value="{{ vendor.address }}" placeholder="Plot number, Street, Landmark, Pin code...">
+                                        </div>
+
                                         <div class="form-group mb-0">
-                                            <label for="travel_policy" class="font-weight-bold text-dark small text-uppercase">Travel & Outstation Policy</label>
-                                            <textarea class="form-control form-control-lg bg-light border-0" id="travel_policy" name="travel_policy" rows="3" style="border-radius: 10px;" placeholder="E.g., Client bears travel and accommodation charges for outstation weddings.">{{ vendor.travel_policy }}</textarea>
+                                            <label class="font-weight-bold text-dark small text-uppercase">About Your Business / Introduction <span class="text-danger">*</span></label>
+                                            <textarea name="description" class="form-control form-control-lg bg-light border-0 rounded" rows="5" placeholder="Highlight what makes your venue/service unforgettable: lawn size, decor versatility, culinary hospitality, parking convenience, and special highlights..." required>{{ vendor.description }}</textarea>
+                                            <small class="text-muted">A compelling 3-4 sentence description increases booking conversion by 40%.</small>
                                         </div>
+
                                     </div>
                                 </div>
                             </div>
 
-                            <!-- Web & Social -->
-                            <div class="tab-pane fade" id="v-pills-web" role="tabpanel" aria-labelledby="v-pills-web-tab">
+                            <!-- TAB 2: Pricing & Category Specifics -->
+                            <div class="tab-pane fade" id="tab-pricing" role="tabpanel">
                                 <div class="card shadow-sm border-0 mb-4" style="border-radius: 16px;">
                                     <div class="card-header bg-white border-0 pt-4 pb-0 px-4 px-md-5">
-                                        <h4 class="font-weight-bold text-dark mb-0">Web & Social Presence</h4>
-                                        <p class="text-muted small">Connect your external platforms to drive more traffic.</p>
+                                        <h4 class="font-weight-bold text-dark mb-1">2. Pricing &amp; Capacity</h4>
+                                        <p class="text-muted small">Catered for {{ vendor.category.name }}. Clear pricing sets transparent expectations.</p>
                                     </div>
                                     <div class="card-body p-4 p-md-5">
+                                        
+                                        <!-- Starting Price (Universal) -->
                                         <div class="form-group mb-4">
-                                            <label for="website_link" class="font-weight-bold text-dark small text-uppercase">Website URL</label>
+                                            <label class="font-weight-bold text-dark small text-uppercase">Starting Package Price (₹) <span class="text-danger">*</span></label>
+                                            <div class="input-group input-group-lg">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text bg-light border-0 font-weight-bold text-primary">₹</span>
+                                                </div>
+                                                <input type="number" name="price_starting" id="inputStartingPrice" class="form-control bg-light border-0" value="{{ vendor.price_starting }}" oninput="updatePreviewCard()" required>
+                                            </div>
+                                            <small class="text-muted">For Venues: Minimum rental or package. For Photographers/Makeup: Base day package.</small>
+                                        </div>
+
+                                        <!-- Venue Specific Details (Conditional if Venues/Lawns) -->
+                                        <div id="venueSpecificsBlock" style="{% if 'venue' in vendor.category.slug or 'lawn' in vendor.category.slug or 'banquet' in vendor.category.slug %}display: block;{% else %}display: none;{% endif %}">
+                                            <div class="p-3 bg-light rounded mb-4 border">
+                                                <div class="d-flex align-items-center mb-3">
+                                                    <div class="rounded-circle d-flex align-items-center justify-content-center text-white mr-2" style="width: 28px; height: 28px; background: #e72e77;">
+                                                        <i class="fe fe-map-pin" style="font-size: 13px;"></i>
+                                                    </div>
+                                                    <h6 class="font-weight-bold text-dark mb-0">Venue &amp; Lawn Space Details</h6>
+                                                </div>
+                                                <div class="form-row">
+                                                    <div class="form-group col-md-6 mb-3">
+                                                        <label class="font-weight-bold text-dark small text-uppercase">Veg Plate Starting Price (₹)</label>
+                                                        <input type="number" name="veg_price" class="form-control bg-white border-0" value="{{ vendor.veg_price|default:0 }}" placeholder="e.g. 1500">
+                                                    </div>
+                                                    <div class="form-group col-md-6 mb-3">
+                                                        <label class="font-weight-bold text-dark small text-uppercase">Non-Veg Plate Starting Price (₹)</label>
+                                                        <input type="number" name="non_veg_price" class="form-control bg-white border-0" value="{{ vendor.non_veg_price|default:0 }}" placeholder="e.g. 1800">
+                                                    </div>
+                                                </div>
+                                                <div class="form-row">
+                                                    <div class="form-group col-md-6 mb-0">
+                                                        <label class="font-weight-bold text-dark small text-uppercase">Maximum Guest Capacity (Pax)</label>
+                                                        <input type="number" name="capacity" class="form-control bg-white border-0" value="{{ vendor.capacity|default:0 }}" placeholder="e.g. 1200">
+                                                    </div>
+                                                    <div class="form-group col-md-6 mb-0">
+                                                        <label class="font-weight-bold text-dark small text-uppercase">Available AC Guest Rooms</label>
+                                                        <input type="number" name="rooms" class="form-control bg-white border-0" value="{{ vendor.rooms|default:0 }}" placeholder="e.g. 12">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div id="serviceSpecificsBlock" class="alert alert-light border small text-muted mb-0" style="{% if 'venue' in vendor.category.slug or 'lawn' in vendor.category.slug or 'banquet' in vendor.category.slug %}display: none;{% else %}display: block;{% endif %}">
+                                            <i class="fe fe-info text-primary mr-1"></i> As a <strong id="serviceCategoryLabel">{{ vendor.category.name }}</strong>, your starting package price will be highlighted on BookMyLawn. You can specify exact sub-packages (e.g. Pre-wedding, Bridal Makeup, Sangeet Decor) in your business overview.
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- TAB 3: Interactive Amenities & Service Tags -->
+                            <div class="tab-pane fade" id="tab-amenities" role="tabpanel">
+                                <div class="card shadow-sm border-0 mb-4" style="border-radius: 16px;">
+                                    <div class="card-header bg-white border-0 pt-4 pb-0 px-4 px-md-5">
+                                        <h4 class="font-weight-bold text-dark mb-1">3. Services &amp; Amenities Chips</h4>
+                                        <p class="text-muted small">Click any chip below to toggle features offered at your venue / business.</p>
+                                    </div>
+                                    <div class="card-body p-4 p-md-5">
+                                        
+                                        <!-- Hidden Input that holds the comma-separated amenities -->
+                                        <input type="hidden" name="amenities" id="amenitiesHiddenInput" value="{{ vendor.amenities }}">
+
+                                        <!-- Dynamic Category Filter Banner & Chips -->
+                                        <div class="d-flex flex-wrap align-items-center justify-content-between p-3 mb-3 bg-light rounded border">
+                                            <div class="d-flex align-items-center mb-2 mb-md-0">
+                                                <div class="rounded-circle d-flex align-items-center justify-content-center text-white mr-2" style="width: 28px; height: 28px; background: #e72e77;">
+                                                    <i class="fe fe-check-circle" style="font-size: 13px;"></i>
+                                                </div>
+                                                <div>
+                                                    <small class="text-muted d-block" style="font-size: 11px;">ADAPTED TO PRIMARY CATEGORY</small>
+                                                    <span class="font-weight-bold text-dark" id="amenityCategoryBadge">
+                                                        Showing Options For: <span class="text-primary" id="amenityCategoryName">{{ vendor.category.name }}</span>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                            <div class="d-flex align-items-center">
+                                                <span class="badge badge-light border text-dark font-weight-bold mr-2 px-3 py-2" id="selectedChipsCountBadge">0 selected</span>
+                                                <button type="button" class="btn btn-sm btn-outline-primary font-weight-bold rounded-pill px-3" id="toggleAllAmenitiesBtn" onclick="toggleShowAllAmenities()">
+                                                    <i class="fe fe-layers mr-1"></i> <span id="toggleAllBtnText">View All Categories</span>
+                                                </button>
+                                            </div>
+                                        </div>
+
+                                        <p class="text-muted small mb-2">
+                                            <i class="fe fe-info text-primary mr-1"></i> These service chips are dynamically tailored to your <strong>Primary Business Category</strong>. Click to select or deselect:
+                                        </p>
+
+                                        <div class="d-flex flex-wrap mb-4" id="amenitiesChipsContainer">
+                                            <!-- 1. VENUES & LAWNS -->
+                                            <span class="amenity-chip" data-category="venues" data-val="Open Lawn / Garden"><i class="fe fe-sun"></i> Open Lawn / Garden</span>
+                                            <span class="amenity-chip" data-category="venues" data-val="AC Banquet Hall"><i class="fe fe-home"></i> AC Banquet Hall</span>
+                                            <span class="amenity-chip" data-category="venues" data-val="Valet Parking"><i class="fe fe-navigation"></i> Valet Parking</span>
+                                            <span class="amenity-chip" data-category="venues" data-val="Bridal Dressing Room"><i class="fe fe-user-check"></i> Bridal Dressing Room</span>
+                                            <span class="amenity-chip" data-category="venues" data-val="Power Backup / Generator"><i class="fe fe-zap"></i> Power Backup / Generator</span>
+                                            <span class="amenity-chip" data-category="venues" data-val="Guest Rooms Available"><i class="fe fe-key"></i> Guest Rooms Available</span>
+                                            <span class="amenity-chip" data-category="venues" data-val="In-House Catering"><i class="fe fe-coffee"></i> In-House Catering</span>
+                                            <span class="amenity-chip" data-category="venues" data-val="Outside Catering Allowed"><i class="fe fe-check"></i> Outside Catering Allowed</span>
+                                            <span class="amenity-chip" data-category="venues" data-val="Outside Decorators Allowed"><i class="fe fe-layout"></i> Outside Decorators Allowed</span>
+                                            <span class="amenity-chip" data-category="venues" data-val="DJ &amp; Music Allowed"><i class="fe fe-music"></i> DJ &amp; Music Allowed</span>
+                                            <span class="amenity-chip" data-category="venues" data-val="Alcohol Permitted"><i class="fe fe-glass"></i> Alcohol Permitted</span>
+                                            <span class="amenity-chip" data-category="venues" data-val="Hawan / Mandap Fire Allowed"><i class="fe fe-heart"></i> Mandap Fire Allowed</span>
+                                            <span class="amenity-chip" data-category="venues" data-val="Swimming Pool / Poolside"><i class="fe fe-droplet"></i> Swimming Pool / Poolside</span>
+                                            <span class="amenity-chip" data-category="venues" data-val="24/7 Security &amp; CCTV"><i class="fe fe-shield"></i> 24/7 Security &amp; CCTV</span>
+                                            <span class="amenity-chip" data-category="venues" data-val="Ample Parking Space"><i class="fe fe-truck"></i> Ample Parking Space</span>
+
+                                            <!-- 2. PHOTOGRAPHY & VIDEOGRAPHY -->
+                                            <span class="amenity-chip" data-category="photographers" data-val="Candid Photography"><i class="fe fe-aperture"></i> Candid Photography</span>
+                                            <span class="amenity-chip" data-category="photographers" data-val="Traditional Photography"><i class="fe fe-camera"></i> Traditional Photography</span>
+                                            <span class="amenity-chip" data-category="photographers" data-val="Cinematic Wedding Teaser"><i class="fe fe-video"></i> Cinematic Wedding Teaser</span>
+                                            <span class="amenity-chip" data-category="photographers" data-val="Full HD Wedding Video"><i class="fe fe-film"></i> Full HD Wedding Video</span>
+                                            <span class="amenity-chip" data-category="photographers" data-val="Drone Shoot Coverage"><i class="fe fe-disc"></i> Drone Shoot Coverage</span>
+                                            <span class="amenity-chip" data-category="photographers" data-val="Pre-Wedding Shoot"><i class="fe fe-heart"></i> Pre-Wedding Shoot</span>
+                                            <span class="amenity-chip" data-category="photographers" data-val="Photobook &amp; Premium Album"><i class="fe fe-book"></i> Photobook &amp; Premium Album</span>
+                                            <span class="amenity-chip" data-category="photographers" data-val="Same Day Edit Reel"><i class="fe fe-play-circle"></i> Same Day Edit Reel</span>
+                                            <span class="amenity-chip" data-category="photographers" data-val="Multiple Camera Setup"><i class="fe fe-layers"></i> Multiple Camera Setup</span>
+                                            <span class="amenity-chip" data-category="photographers" data-val="Raw Footage Delivery"><i class="fe fe-hard-drive"></i> Raw Footage Delivery</span>
+                                            <span class="amenity-chip" data-category="photographers" data-val="Destination Wedding Coverage"><i class="fe fe-globe"></i> Destination Wedding Coverage</span>
+
+                                            <!-- 3. BRIDAL MAKEUP & HAIR -->
+                                            <span class="amenity-chip" data-category="makeup-artists" data-val="HD Bridal Makeup"><i class="fe fe-feather"></i> HD Bridal Makeup</span>
+                                            <span class="amenity-chip" data-category="makeup-artists" data-val="Airbrush Makeup"><i class="fe fe-wind"></i> Airbrush Makeup</span>
+                                            <span class="amenity-chip" data-category="makeup-artists" data-val="Hairstyling &amp; Draping"><i class="fe fe-scissors"></i> Hairstyling &amp; Draping</span>
+                                            <span class="amenity-chip" data-category="makeup-artists" data-val="Family &amp; Party Makeup"><i class="fe fe-users"></i> Family &amp; Party Makeup</span>
+                                            <span class="amenity-chip" data-category="makeup-artists" data-val="Paid Trial Available"><i class="fe fe-check-circle"></i> Paid Trial Available</span>
+                                            <span class="amenity-chip" data-category="makeup-artists" data-val="Free Consultation"><i class="fe fe-message-circle"></i> Free Consultation</span>
+                                            <span class="amenity-chip" data-category="makeup-artists" data-val="Nails &amp; Lashes Included"><i class="fe fe-star"></i> Nails &amp; Lashes Included</span>
+                                            <span class="amenity-chip" data-category="makeup-artists" data-val="On-Location Service (Travel to Venue)"><i class="fe fe-navigation"></i> Travels to Venue / On-Location</span>
+                                            <span class="amenity-chip" data-category="makeup-artists" data-val="International Products (MAC/Huda/Dior)"><i class="fe fe-award"></i> Premium Products (MAC/Huda)</span>
+                                            <span class="amenity-chip" data-category="makeup-artists" data-val="Pre-Bridal Skincare"><i class="fe fe-heart"></i> Pre-Bridal Skincare</span>
+                                            <span class="amenity-chip" data-category="makeup-artists" data-val="Groom Makeup &amp; Styling"><i class="fe fe-user"></i> Groom Makeup &amp; Styling</span>
+
+                                            <!-- 4. DECORATORS & PLANNERS -->
+                                            <span class="amenity-chip" data-category="decorators" data-val="Stage &amp; Mandap Decor"><i class="fe fe-grid"></i> Stage &amp; Mandap Decor</span>
+                                            <span class="amenity-chip" data-category="decorators" data-val="Floral Installations &amp; Exotic Flowers"><i class="fe fe-sun"></i> Floral Installations</span>
+                                            <span class="amenity-chip" data-category="decorators" data-val="Theme Lighting &amp; Trussing Setup"><i class="fe fe-zap"></i> Theme Lighting &amp; Trussing</span>
+                                            <span class="amenity-chip" data-category="decorators" data-val="Grand Entrance Arch"><i class="fe fe-compass"></i> Grand Entrance Arch</span>
+                                            <span class="amenity-chip" data-category="decorators" data-val="Couple Photobooth &amp; Selfie Corner"><i class="fe fe-camera"></i> Couple Photobooth &amp; Selfie Corner</span>
+                                            <span class="amenity-chip" data-category="decorators" data-val="Table Centerpieces &amp; Linen"><i class="fe fe-layout"></i> Table Centerpieces &amp; Linen</span>
+                                            <span class="amenity-chip" data-category="decorators" data-val="Fireworks &amp; Cold Pyro Entry"><i class="fe fe-activity"></i> Fireworks &amp; Cold Pyro Entry</span>
+                                            <span class="amenity-chip" data-category="decorators" data-val="Sound &amp; AV Equipment Rental"><i class="fe fe-volume-2"></i> Sound &amp; AV Equipment Rental</span>
+                                            <span class="amenity-chip" data-category="decorators" data-val="Destination Wedding Planning"><i class="fe fe-map"></i> Destination Wedding Planning</span>
+
+                                            <!-- 5. CATERING & FOOD SERVICES -->
+                                            <span class="amenity-chip" data-category="catering" data-val="Pure Veg Catering"><i class="fe fe-check-square"></i> Pure Veg Catering</span>
+                                            <span class="amenity-chip" data-category="catering" data-val="Veg &amp; Non-Veg Multi-Cuisine"><i class="fe fe-coffee"></i> Veg &amp; Non-Veg Multi-Cuisine</span>
+                                            <span class="amenity-chip" data-category="catering" data-val="Live Chaat &amp; Street Food Counters"><i class="fe fe-grid"></i> Live Chaat Counters</span>
+                                            <span class="amenity-chip" data-category="catering" data-val="Live Italian / Woodfire Counters"><i class="fe fe-zap"></i> Live Woodfire / Italian Counters</span>
+                                            <span class="amenity-chip" data-category="catering" data-val="Jain Food Option"><i class="fe fe-shield"></i> Jain &amp; Vegan Food Option</span>
+                                            <span class="amenity-chip" data-category="catering" data-val="Professional Bartending &amp; Mocktails"><i class="fe fe-glass"></i> Bartending &amp; Mocktail Bar</span>
+                                            <span class="amenity-chip" data-category="catering" data-val="Luxury Dessert &amp; Bakery Counters"><i class="fe fe-gift"></i> Luxury Dessert Counters</span>
+                                            <span class="amenity-chip" data-category="catering" data-val="Premium Bone China Crockery"><i class="fe fe-disc"></i> Premium Bone China Crockery</span>
+                                            <span class="amenity-chip" data-category="catering" data-val="Uniformed Service Staff"><i class="fe fe-users"></i> Uniformed Service Staff</span>
+
+                                            <!-- 6. MEHENDI ARTISTS -->
+                                            <span class="amenity-chip" data-category="mehendi-artists" data-val="Traditional Bridal Mehendi"><i class="fe fe-heart"></i> Traditional Bridal Mehendi</span>
+                                            <span class="amenity-chip" data-category="mehendi-artists" data-val="Arabic Mehendi Design"><i class="fe fe-feather"></i> Arabic Mehendi Design</span>
+                                            <span class="amenity-chip" data-category="mehendi-artists" data-val="Indo-Western &amp; Portrait Mehendi"><i class="fe fe-image"></i> Portrait &amp; Figure Mehendi</span>
+                                            <span class="amenity-chip" data-category="mehendi-artists" data-val="100% Organic &amp; Chemical-Free Henna"><i class="fe fe-shield"></i> 100% Organic Chemical-Free Henna</span>
+                                            <span class="amenity-chip" data-category="mehendi-artists" data-val="Guest Mehendi Team"><i class="fe fe-users"></i> Guest Mehendi Team</span>
+                                            <span class="amenity-chip" data-category="mehendi-artists" data-val="Dark Stain Guarantee Henna Oil"><i class="fe fe-droplet"></i> Dark Stain Guarantee Henna</span>
+                                            <span class="amenity-chip" data-category="mehendi-artists" data-val="On-Location Home / Venue Service"><i class="fe fe-home"></i> Home / Venue Visit Service</span>
+                                            <span class="amenity-chip" data-category="mehendi-artists" data-val="Rajasthani / Marwari Mehendi"><i class="fe fe-star"></i> Rajasthani / Marwari Henna</span>
+                                            <span class="amenity-chip" data-category="mehendi-artists" data-val="Groom Mehendi Design"><i class="fe fe-user-check"></i> Groom Mehendi Design</span>
+
+                                            <!-- 7. DJS & ENTERTAINMENT -->
+                                            <span class="amenity-chip" data-category="djs-entertainment" data-val="Professional Bollywood &amp; Punjabi DJ"><i class="fe fe-music"></i> Professional Bollywood &amp; Punjabi DJ</span>
+                                            <span class="amenity-chip" data-category="djs-entertainment" data-val="JBL / RCF Sound System Setup"><i class="fe fe-volume-2"></i> JBL / RCF Sound System Setup</span>
+                                            <span class="amenity-chip" data-category="djs-entertainment" data-val="Club Lighting, Lasers &amp; Sharpy"><i class="fe fe-zap"></i> Club Lighting, Lasers &amp; Sharpy</span>
+                                            <span class="amenity-chip" data-category="djs-entertainment" data-val="Smoke &amp; Heavy Fog Machine"><i class="fe fe-cloud"></i> Smoke &amp; Heavy Fog Machine</span>
+                                            <span class="amenity-chip" data-category="djs-entertainment" data-val="Sangeet Choreographer"><i class="fe fe-activity"></i> Sangeet Choreographer</span>
+                                            <span class="amenity-chip" data-category="djs-entertainment" data-val="Live Band &amp; Acoustic Singer"><i class="fe fe-mic"></i> Live Band &amp; Acoustic Singer</span>
+                                            <span class="amenity-chip" data-category="djs-entertainment" data-val="Live Punjabi Dhol Players"><i class="fe fe-radio"></i> Live Punjabi Dhol Players</span>
+                                            <span class="amenity-chip" data-category="djs-entertainment" data-val="Professional Event Anchor / Emcee"><i class="fe fe-mic"></i> Event Anchor / Emcee</span>
+                                            <span class="amenity-chip" data-category="djs-entertainment" data-val="LED Dance Floor Setup"><i class="fe fe-square"></i> LED Dance Floor Setup</span>
+                                            <span class="amenity-chip" data-category="djs-entertainment" data-val="Cold Pyro &amp; Confetti Blast"><i class="fe fe-star"></i> Cold Pyro &amp; Confetti Blast</span>
+
+                                            <!-- GENERAL / UNIVERSAL -->
+                                            <span class="amenity-chip" data-category="general" data-val="GST Invoice Available"><i class="fe fe-file-text"></i> GST Invoice Available</span>
+                                            <span class="amenity-chip" data-category="general" data-val="Online Payment / UPI Accepted"><i class="fe fe-credit-card"></i> UPI &amp; Online Payment</span>
+                                        </div>
+
+                                        <!-- Custom Tag Addition Input -->
+                                        <div class="form-group mb-0">
+                                            <label class="font-weight-bold text-dark small text-uppercase">Add Custom Feature / Specialty Tag</label>
+                                            <div class="input-group">
+                                                <input type="text" id="customAmenityInput" class="form-control bg-light border-0" placeholder="e.g. Poolside Mandap, 24/7 Security, Live Woodfire Pizza">
+                                                <div class="input-group-append">
+                                                    <button type="button" class="btn btn-outline-primary px-4 font-weight-bold" onclick="addCustomAmenity()">
+                                                        <i class="fe fe-plus mr-1"></i> Add Tag
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- TAB 4: Booking Policies & Terms -->
+                            <div class="tab-pane fade" id="tab-policies" role="tabpanel">
+                                <div class="card shadow-sm border-0 mb-4" style="border-radius: 16px;">
+                                    <div class="card-header bg-white border-0 pt-4 pb-0 px-4 px-md-5">
+                                        <h4 class="font-weight-bold text-dark mb-1">4. Booking Policies &amp; Terms</h4>
+                                        <p class="text-muted small">Clear policies prevent misunderstandings and build trust with couples.</p>
+                                    </div>
+                                    <div class="card-body p-4 p-md-5">
+                                        
+                                        <!-- Advance Payment Terms -->
+                                        <div class="form-group mb-4">
+                                            <div class="d-flex justify-content-between align-items-center mb-1">
+                                                <label class="font-weight-bold text-dark small text-uppercase mb-0">Advance Payment &amp; Milestone Terms</label>
+                                                <div class="small">
+                                                    <span class="policy-pill" onclick="insertPolicy('payment_terms', '25% advance to block the date, 50% 15 days before event, balance on the day of event.')">+ 25% Advance</span>
+                                                    <span class="policy-pill" onclick="insertPolicy('payment_terms', '50% advance upon contract signing, 50% on event date.')">+ 50% Advance</span>
+                                                </div>
+                                            </div>
+                                            <textarea name="payment_terms" id="inputPaymentTerms" class="form-control bg-light border-0 rounded" rows="3" placeholder="e.g. 25% advance to block the date, 50% one week prior, balance on event date.">{{ vendor.payment_terms }}</textarea>
+                                        </div>
+
+                                        <!-- Cancellation Policy -->
+                                        <div class="form-group mb-4">
+                                            <div class="d-flex justify-content-between align-items-center mb-1">
+                                                <label class="font-weight-bold text-dark small text-uppercase mb-0">Cancellation &amp; Refund Policy</label>
+                                                <div class="small">
+                                                    <span class="policy-pill" onclick="insertPolicy('cancellation_policy', 'Advance payment is non-refundable under all circumstances.')">+ Non-Refundable</span>
+                                                    <span class="policy-pill" onclick="insertPolicy('cancellation_policy', '100% refund if cancelled 60 days before event. Rescheduling permitted within 6 months.')">+ Flexible</span>
+                                                </div>
+                                            </div>
+                                            <textarea name="cancellation_policy" id="inputCancellationPolicy" class="form-control bg-light border-0 rounded" rows="3" placeholder="e.g. Advance is non-refundable. Rescheduling permitted subject to date availability within 6 months.">{{ vendor.cancellation_policy }}</textarea>
+                                        </div>
+
+                                        <!-- Outstation & Travel Policy -->
+                                        <div class="form-group mb-0">
+                                            <label class="font-weight-bold text-dark small text-uppercase">Outstation &amp; Travel Policy</label>
+                                            <textarea name="travel_policy" class="form-control bg-light border-0 rounded" rows="3" placeholder="e.g. Client bears travel, meal and hotel accommodation costs for destination weddings outside city limits.">{{ vendor.travel_policy }}</textarea>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- TAB 5: Social & Digital Presence -->
+                            <div class="tab-pane fade" id="tab-social" role="tabpanel">
+                                <div class="card shadow-sm border-0 mb-4" style="border-radius: 16px;">
+                                    <div class="card-header bg-white border-0 pt-4 pb-0 px-4 px-md-5">
+                                        <h4 class="font-weight-bold text-dark mb-1">5. Social Media &amp; Location Coordinates</h4>
+                                        <p class="text-muted small">Help modern couples connect with your active social media channels.</p>
+                                    </div>
+                                    <div class="card-body p-4 p-md-5">
+                                        
+                                        <div class="form-group mb-4">
+                                            <label class="font-weight-bold text-dark small text-uppercase">Official Website URL</label>
                                             <div class="input-group input-group-lg">
                                                 <div class="input-group-prepend">
                                                     <span class="input-group-text bg-light border-0 text-muted"><i class="fe fe-globe"></i></span>
                                                 </div>
-                                                <input type="url" id="website_link" name="website_link" class="form-control bg-light border-0" value="{{ vendor.website_link|default:'' }}" placeholder="https://..." style="border-radius: 0 10px 10px 0;">
+                                                <input type="url" name="website_link" class="form-control bg-light border-0" value="{{ vendor.website_link|default:'' }}" placeholder="https://yourlawn.com">
                                             </div>
                                         </div>
-                                        <div class="form-row">
-                                            <div class="form-group col-md-6 mb-4">
-                                                <label for="instagram_link" class="font-weight-bold text-dark small text-uppercase">Instagram URL</label>
-                                                <div class="input-group input-group-lg">
-                                                    <div class="input-group-prepend">
-                                                        <span class="input-group-text bg-light border-0 text-danger"><i class="fe fe-instagram"></i></span>
-                                                    </div>
-                                                    <input type="url" id="instagram_link" name="instagram_link" class="form-control bg-light border-0" value="{{ vendor.instagram_link|default:'' }}" placeholder="https://instagram.com/..." style="border-radius: 0 10px 10px 0;">
-                                                </div>
-                                            </div>
-                                            <div class="form-group col-md-6 mb-4">
-                                                <label for="facebook_link" class="font-weight-bold text-dark small text-uppercase">Facebook URL</label>
-                                                <div class="input-group input-group-lg">
-                                                    <div class="input-group-prepend">
-                                                        <span class="input-group-text bg-light border-0 text-primary"><i class="fe fe-facebook"></i></span>
-                                                    </div>
-                                                    <input type="url" id="facebook_link" name="facebook_link" class="form-control bg-light border-0" value="{{ vendor.facebook_link|default:'' }}" placeholder="https://facebook.com/..." style="border-radius: 0 10px 10px 0;">
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="form-group mb-0">
-                                            <label for="map_link" class="font-weight-bold text-dark small text-uppercase">Google Maps Embed URL</label>
+
+                                        <div class="form-group mb-4">
+                                            <label class="font-weight-bold text-dark small text-uppercase">Instagram Profile URL / Handle</label>
                                             <div class="input-group input-group-lg">
                                                 <div class="input-group-prepend">
-                                                    <span class="input-group-text bg-light border-0 text-muted"><i class="fe fe-map-pin"></i></span>
+                                                    <span class="input-group-text bg-light border-0 text-muted"><i class="fa fa-instagram text-danger"></i></span>
                                                 </div>
-                                                <input type="url" id="map_link" name="map_link" class="form-control bg-light border-0" value="{{ vendor.map_link }}" placeholder="https://google.com/maps/embed/..." style="border-radius: 0 10px 10px 0;">
+                                                <input type="url" name="instagram_link" class="form-control bg-light border-0" value="{{ vendor.instagram_link|default:'' }}" placeholder="https://instagram.com/yourweddingbusiness">
                                             </div>
-                                            <small class="form-text text-muted mt-2"><i class="fe fe-info text-primary"></i> Paste the "Embed a map" URL from Google Maps to show your location on your profile.</small>
                                         </div>
+
+                                        <div class="form-group mb-4">
+                                            <label class="font-weight-bold text-dark small text-uppercase">Facebook Page URL</label>
+                                            <div class="input-group input-group-lg">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text bg-light border-0 text-muted"><i class="fa fa-facebook text-primary"></i></span>
+                                                </div>
+                                                <input type="url" name="facebook_link" class="form-control bg-light border-0" value="{{ vendor.facebook_link|default:'' }}" placeholder="https://facebook.com/yourweddingbusiness">
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group mb-0">
+                                            <label class="font-weight-bold text-dark small text-uppercase">Google Maps Directions Link</label>
+                                            <div class="input-group input-group-lg">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text bg-light border-0 text-muted"><i class="fe fe-map-pin text-primary"></i></span>
+                                                </div>
+                                                <input type="url" name="map_link" class="form-control bg-light border-0" value="{{ vendor.map_link|default:'' }}" placeholder="https://maps.google.com/?q=...">
+                                            </div>
+                                            <small class="text-muted">Couples can click 'Get Directions' directly on your BookMyLawn profile.</small>
+                                        </div>
+
                                     </div>
                                 </div>
                             </div>
 
-                            <!-- Portfolio -->
-                            <div class="tab-pane fade" id="v-pills-portfolio" role="tabpanel" aria-labelledby="v-pills-portfolio-tab">
-                                <div class="card shadow-sm border-0 mb-4" style="border-radius: 16px;">
-                                    <div class="card-header bg-white border-0 pt-4 pb-0 px-4 px-md-5">
-                                        <h4 class="font-weight-bold text-dark mb-0">Portfolio Gallery</h4>
-                                        <p class="text-muted small">High-quality photos increase bookings by up to 60%.</p>
-                                    </div>
-                                    <div class="card-body p-4 p-md-5">
-                                        <div class="upload-area p-5 text-center bg-light mb-4" style="border: 2px dashed #ccc; border-radius: 16px; cursor: pointer; transition: all 0.3s;" onmouseover="this.style.borderColor='#e72e77'; this.style.backgroundColor='#fdf1f5'" onmouseout="this.style.borderColor='#ccc'; this.style.backgroundColor='#f8f9fa'" onclick="document.getElementById('galleryFiles').click()">
-                                            <i class="fe fe-upload-cloud fe-32 text-primary mb-3"></i>
-                                            <h5 class="text-dark font-weight-bold">Click to upload photos</h5>
-                                            <p class="text-muted small mb-0">Supports JPG, PNG (Max 5MB each)</p>
-                                            <input type="file" name="gallery_images" class="d-none" id="galleryFiles" multiple accept="image/*">
-                                        </div>
-                                        
-                                        <div id="preview-container" class="d-flex flex-wrap mb-4" style="gap: 10px;"></div>
-                                        
-                                        {% if gallery %}
-                                        <hr class="my-4 border-light">
-                                        <h6 class="font-weight-bold text-dark mb-3">Live Portfolio ({{ gallery.count }} photos)</h6>
-                                        <div class="row">
-                                            {% for img in gallery %}
-                                            <div class="col-6 col-md-4 col-lg-3 mb-4">
-                                                <div class="position-relative shadow-sm" style="border-radius: 12px; overflow: hidden; border: 1px solid #eee;">
-                                                    <img src="{{ img.image.url }}" class="w-100" style="height: 140px; object-fit: cover;">
-                                                    <button type="button" class="btn btn-sm btn-danger position-absolute" style="top: 8px; right: 8px; border-radius: 8px; opacity: 0.9;" title="Delete Image">
-                                                        <i class="fe fe-trash-2"></i>
-                                                    </button>
-                                                </div>
-                                            </div>
-                                            {% endfor %}
-                                        </div>
-                                        {% endif %}
-                                    </div>
-                                </div>
-                            </div>
                         </div>
-
-                        <!-- Sticky Save Button -->
-                        <div class="card shadow-sm border-0" style="border-radius: 16px; position: sticky; bottom: 20px; z-index: 100;">
-                            <div class="card-body d-flex flex-column flex-md-row justify-content-between align-items-center p-4">
-                                <div class="mb-3 mb-md-0">
-                                    <h6 class="mb-0 text-dark font-weight-bold">Ready to update your storefront?</h6>
-                                    <small class="text-muted">Changes will be visible to couples immediately.</small>
-                                </div>
-                                <button type="submit" class="btn btn-primary btn-lg px-5 shadow-sm" style="border-radius: 10px; font-weight: 600;">
-                                    <i class="fe fe-save mr-2"></i> Save Profile
-                                </button>
-                            </div>
-                        </div>
-                        
                     </div>
                 </div>
+
+                <!-- Floating Sticky Save Bar -->
+                <div class="card shadow-lg border-0 mb-5 position-sticky" style="bottom: 20px; z-index: 100; border-radius: 16px; background: rgba(255,255,255,0.96); backdrop-filter: blur(8px); border: 1px solid rgba(231,46,119,0.2) !important;">
+                    <div class="card-body p-3 d-flex flex-wrap justify-content-between align-items-center">
+                        <span class="text-muted small mb-2 mb-md-0">
+                            <i class="fe fe-info text-primary mr-1"></i> Make sure to click <strong>Save Changes</strong> to publish your updates.
+                        </span>
+                        <div class="d-flex align-items-center">
+                            <button type="submit" class="btn btn-primary rounded-pill font-weight-bold px-5 shadow-sm">
+                                <i class="fe fe-save mr-1"></i> Save Changes
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
             </form>
+
         </div>
     </div>
 </div>
 
-{% endblock %}
-
-{% block extra_js %}
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
-    {% if messages %}
-        {% for message in messages %}
-            Swal.fire({
-                icon: '{{ message.tags }}' === 'error' ? 'error' : 'success',
-                title: '{{ message.tags|title }}',
-                text: '{{ message }}',
-                confirmButtonColor: '#e72e77'
-            });
-        {% endfor %}
-    {% endif %}
+// --- Amenities Chips Management ---
+var currentAmenities = [];
+var hiddenInput = document.getElementById('amenitiesHiddenInput');
 
-    function previewImage(input) {
-        if (input.files && input.files[0]) {
-            var reader = new FileReader();
-            reader.onload = function(e) {
-                var img = document.querySelector('.avatar-img');
-                if (img.tagName.toLowerCase() === 'img') {
-                    img.src = e.target.result;
-                } else {
-                    img.outerHTML = '<img src="' + e.target.result + '" alt="Profile" class="avatar-img rounded-circle border shadow-sm" style="width: 150px; height: 150px; object-fit: cover; border-width: 5px !important; border-color: #fff !important; background: white;">';
-                }
-            }
-            reader.readAsDataURL(input.files[0]);
+function initAmenities() {
+    var raw = hiddenInput.value || '';
+    currentAmenities = raw.split(',').map(s => s.trim()).filter(Boolean);
+    
+    // Highlight existing chips
+    document.querySelectorAll('.amenity-chip').forEach(function(chip) {
+        var val = chip.getAttribute('data-val');
+        if (currentAmenities.indexOf(val) !== -1) {
+            chip.classList.add('active');
         }
-    }
 
-    // Gallery Live Preview
-    $('#galleryFiles').on('change', function() {
-        let files = $(this)[0].files;
-        let previewContainer = $('#preview-container');
-        previewContainer.empty();
-        
-        if (files) {
-            $.each(files, function(index, file) {
-                let reader = new FileReader();
-                reader.onload = function(e) {
-                    let wrapper = $('<div/>', { class: 'position-relative shadow-sm', style: 'border-radius: 10px; overflow: hidden; width: 100px; height: 100px;' });
-                    let img = $('<img/>', {
-                        src: e.target.result,
-                        class: 'w-100 h-100',
-                        style: 'object-fit: cover;'
-                    });
-                    wrapper.append(img);
-                    previewContainer.append(wrapper);
-                }
-                reader.readAsDataURL(file);
-            });
+        chip.addEventListener('click', function() {
+            var v = this.getAttribute('data-val');
+            var idx = currentAmenities.indexOf(v);
+            if (idx === -1) {
+                currentAmenities.push(v);
+                this.classList.add('active');
+            } else {
+                currentAmenities.splice(idx, 1);
+                this.classList.remove('active');
+            }
+            syncAmenitiesInput();
+        });
+    });
+}
+
+function syncAmenitiesInput() {
+    hiddenInput.value = currentAmenities.join(', ');
+    updateAmenityBadge();
+}
+
+function addCustomAmenity() {
+    var input = document.getElementById('customAmenityInput');
+    var val = input.value.trim();
+    if (!val) return;
+
+    if (currentAmenities.indexOf(val) === -1) {
+        currentAmenities.push(val);
+        syncAmenitiesInput();
+
+        // Create chip
+        var chip = document.createElement('span');
+        chip.className = 'amenity-chip active';
+        chip.setAttribute('data-val', val);
+        chip.setAttribute('data-category', 'general');
+        chip.innerHTML = '<i class="fe fe-check"></i> ' + val;
+        chip.addEventListener('click', function() {
+            var idx = currentAmenities.indexOf(val);
+            if (idx !== -1) currentAmenities.splice(idx, 1);
+            chip.remove();
+            syncAmenitiesInput();
+        });
+        document.getElementById('amenitiesChipsContainer').appendChild(chip);
+    }
+    input.value = '';
+}
+
+
+// --- Dynamic Category Change Handler & Services Filter ---
+var isShowingAllAmenities = false;
+
+function resolveCategoryKey(slug, name) {
+    var s = (slug || '').toLowerCase();
+    var n = (name || '').toLowerCase();
+    if (s.indexOf('photo') !== -1 || n.indexOf('photo') !== -1) return 'photographers';
+    if (s.indexOf('makeup') !== -1 || n.indexOf('makeup') !== -1 || s.indexOf('bridal') !== -1) return 'makeup-artists';
+    if (s.indexOf('decor') !== -1 || n.indexOf('decor') !== -1 || s.indexOf('plan') !== -1) return 'decorators';
+    if (s.indexOf('cater') !== -1 || n.indexOf('cater') !== -1 || s.indexOf('food') !== -1) return 'catering';
+    if (s.indexOf('mehendi') !== -1 || n.indexOf('mehendi') !== -1 || s.indexOf('mehndi') !== -1) return 'mehendi-artists';
+    if (s.indexOf('dj') !== -1 || n.indexOf('dj') !== -1 || s.indexOf('music') !== -1 || s.indexOf('entertainment') !== -1) return 'djs-entertainment';
+    return 'venues';
+}
+
+function filterAmenitiesByCategory(catKey, showAll) {
+    var chips = document.querySelectorAll('#amenitiesChipsContainer .amenity-chip');
+    chips.forEach(function(chip) {
+        var chipCat = chip.getAttribute('data-category') || 'general';
+        var isActive = chip.classList.contains('active');
+
+        if (showAll) {
+            chip.style.display = 'inline-flex';
+        } else {
+            // Keep active chips visible always so vendor never loses already selected choices
+            if (isActive || chipCat === catKey || chipCat === 'general') {
+                chip.style.display = 'inline-flex';
+            } else {
+                chip.style.display = 'none';
+            }
         }
     });
+}
+
+function toggleShowAllAmenities() {
+    isShowingAllAmenities = !isShowingAllAmenities;
+    var btnText = document.getElementById('toggleAllBtnText');
+    var select = document.getElementById('categorySelect');
+    var opt = select ? select.options[select.selectedIndex] : null;
+    var slug = opt ? (opt.getAttribute('data-slug') || '') : '';
+    var catName = opt ? opt.text : '';
+    var catKey = resolveCategoryKey(slug, catName);
+
+    if (isShowingAllAmenities) {
+        filterAmenitiesByCategory(catKey, true);
+        if (btnText) btnText.innerText = 'Show Only My Category Options';
+    } else {
+        filterAmenitiesByCategory(catKey, false);
+        if (btnText) btnText.innerText = 'View All Categories';
+    }
+}
+
+function onCategoryChange(select) {
+    if (!select) return;
+    var opt = select.options[select.selectedIndex];
+    if (!opt) return;
+    
+    var slug = (opt.getAttribute('data-slug') || '').toLowerCase();
+    var catName = opt.text;
+    var catKey = resolveCategoryKey(slug, catName);
+    
+    // 1. Live preview card update
+    var previewCat = document.getElementById('cardPreviewCategory');
+    if (previewCat) previewCat.innerText = catName;
+
+    // 2. Tab 2 specific blocks update
+    var serviceLabel = document.getElementById('serviceCategoryLabel');
+    if (serviceLabel) serviceLabel.innerText = catName;
+    
+    var venueBlock = document.getElementById('venueSpecificsBlock');
+    var serviceBlock = document.getElementById('serviceSpecificsBlock');
+    var isVenue = (catKey === 'venues');
+    
+    if (venueBlock) venueBlock.style.display = isVenue ? 'block' : 'none';
+    if (serviceBlock) serviceBlock.style.display = isVenue ? 'none' : 'block';
+
+    // 3. Tab 3 Services / Amenities dynamic adapt
+    var amenityCatName = document.getElementById('amenityCategoryName');
+    if (amenityCatName) amenityCatName.innerText = catName;
+    
+    isShowingAllAmenities = false;
+    var btnText = document.getElementById('toggleAllBtnText');
+    if (btnText) btnText.innerText = 'View All Categories';
+    
+    filterAmenitiesByCategory(catKey, false);
+}
+
+function updateAmenityBadge() {
+    var badge = document.getElementById('selectedChipsCountBadge');
+    if (badge) {
+        badge.innerText = currentAmenities.length + ' selected';
+    }
+}
+// --- Policy Fast-Filler ---
+function insertPolicy(elementId, text) {
+    if (elementId === 'payment_terms') {
+        document.getElementById('inputPaymentTerms').value = text;
+    } else if (elementId === 'cancellation_policy') {
+        document.getElementById('inputCancellationPolicy').value = text;
+    }
+}
+
+// --- Live Mini Card Preview Updater ---
+function updatePreviewCard() {
+    var name = document.getElementById('inputBusinessName').value;
+    var loc = document.getElementById('inputLocation').value;
+    var price = document.getElementById('inputStartingPrice').value;
+
+    if (name) document.getElementById('cardPreviewTitle').innerText = name;
+    if (loc) document.getElementById('cardPreviewCity').innerText = loc;
+    if (price) document.getElementById('cardPreviewPrice').innerText = Number(price).toLocaleString('en-IN');
+}
+
+// --- Profile Image Preview ---
+function previewProfileImage(input) {
+    if (input.files && input.files[0]) {
+        var reader = new FileReader();
+        reader.onload = function(e) {
+            var avatar = document.getElementById('profileAvatarImg');
+            var placeholder = document.getElementById('profileAvatarPlaceholder');
+            var cardImg = document.getElementById('cardPreviewImg');
+            var cardPlaceholder = document.getElementById('cardPreviewPlaceholder');
+
+            if (avatar) {
+                avatar.src = e.target.result;
+            } else if (placeholder) {
+                var newAvatar = document.createElement('img');
+                newAvatar.id = 'profileAvatarImg';
+                newAvatar.src = e.target.result;
+                newAvatar.className = 'rounded-circle border shadow-sm';
+                newAvatar.style = 'width: 100px; height: 100px; object-fit: cover; border-width: 3px !important; border-color: #e72e77 !important;';
+                placeholder.parentNode.replaceChild(newAvatar, placeholder);
+            }
+
+            if (cardImg) {
+                cardImg.src = e.target.result;
+            } else if (cardPlaceholder) {
+                var newCardImg = document.createElement('img');
+                newCardImg.id = 'cardPreviewImg';
+                newCardImg.src = e.target.result;
+                newCardImg.className = 'w-100 h-100';
+                newCardImg.style = 'object-fit: cover;';
+                cardPlaceholder.parentNode.replaceChild(newCardImg, cardPlaceholder);
+            }
+        };
+        reader.readAsDataURL(input.files[0]);
+    }
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+    initAmenities();
+    updateAmenityBadge();
+    var catSelect = document.getElementById('categorySelect');
+    if (catSelect) {
+        onCategoryChange(catSelect);
+    }
+});
 </script>
-<style>
-    .nav-pills .nav-link {
-        color: #495057;
-        background-color: transparent;
-    }
-    .nav-pills .nav-link.active, .nav-pills .show>.nav-link {
-        color: #fff;
-        background-color: #e72e77;
-    }
-    .form-control:focus {
-        border-color: #e72e77;
-        box-shadow: 0 0 0 0.2rem rgba(231, 46, 119, 0.25);
-    }
-</style>
 {% endblock %}

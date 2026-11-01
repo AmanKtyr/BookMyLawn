@@ -212,6 +212,56 @@
             width: 100%;
         }
 
+        /* Vendors Dropdown Menu */
+        .header__menu ul li.has-dropdown {
+            position: relative;
+        }
+        .header__menu ul li .dropdown {
+            position: absolute;
+            left: 0;
+            top: 40px;
+            width: 250px;
+            background: #ffffff;
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.12);
+            border-radius: 12px;
+            border: 1px solid #f0f0f0;
+            padding: 8px 0;
+            margin: 0;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.25s ease;
+            z-index: 999;
+            text-align: left;
+            display: block;
+        }
+        .header__menu ul li.has-dropdown:hover .dropdown {
+            opacity: 1;
+            visibility: visible;
+            top: 32px;
+        }
+        .header__menu ul li .dropdown li {
+            margin: 0;
+            display: block;
+            width: 100%;
+        }
+        .header__menu ul li .dropdown li a {
+            display: flex;
+            align-items: center;
+            padding: 8px 18px;
+            font-size: 13px;
+            font-weight: 500;
+            text-transform: capitalize;
+            color: #374151;
+            transition: background 0.2s, color 0.2s;
+        }
+        .header__menu ul li .dropdown li a:hover {
+            background: #fdf2f6;
+            color: #e72e77;
+        }
+        .header__menu ul li .dropdown li a::after {
+            display: none !important;
+        }
+
         /* Desktop Auth Buttons */
         .header__right {
             display: flex;
@@ -812,8 +862,23 @@
                                     href="/">Home</a></li>
                             <li class="{% if request.resolver_match.url_name == 'about_us' %}active{% endif %}"><a
                                     href="{% url 'about_us' %}">About Us</a></li>
-                            <li class="{% if request.resolver_match.url_name == 'vendors' %}active{% endif %}"><a
-                                    href="{% url 'vendors' %}">Vendors</a></li>
+                            <li class="has-dropdown {% if request.resolver_match.url_name == 'vendors' %}active{% endif %}">
+                                <a href="{% url 'vendors' %}">Vendors <i class="fa fa-angle-down ml-1" style="font-size: 11px;"></i></a>
+                                <ul class="dropdown">
+                                    <li><a href="{% url 'vendors' %}?category=venues"><i class="fa fa-map-pin text-primary mr-2" style="width: 18px;"></i> Venues &amp; Lawns</a></li>
+                                    <li><a href="{% url 'vendors' %}?category=photographers"><i class="fa fa-camera text-primary mr-2" style="width: 18px;"></i> Photographers</a></li>
+                                    <li><a href="{% url 'vendors' %}?category=makeup-artists"><i class="fa fa-paint-brush text-primary mr-2" style="width: 18px;"></i> Bridal Makeup</a></li>
+                                    <li><a href="{% url 'vendors' %}?category=decorators"><i class="fa fa-magic text-primary mr-2" style="width: 18px;"></i> Decorators &amp; Planners</a></li>
+                                    <li><a href="{% url 'vendors' %}?category=catering"><i class="fa fa-cutlery text-primary mr-2" style="width: 18px;"></i> Catering &amp; Food</a></li>
+                                    <li><a href="{% url 'vendors' %}?category=mehendi-artists"><i class="fa fa-hand-paper-o text-primary mr-2" style="width: 18px;"></i> Mehendi Artists</a></li>
+                                    <li><a href="{% url 'vendors' %}?category=djs-entertainment"><i class="fa fa-music text-primary mr-2" style="width: 18px;"></i> DJs &amp; Entertainment</a></li>
+                                    <li style="border-top: 1px solid #f0f0f0; margin-top: 5px; padding-top: 5px;">
+                                        <a href="{% url 'vendors' %}" style="color: #e72e77; font-weight: 700;">
+                                            <i class="fa fa-th-large text-primary mr-2" style="width: 18px;"></i> All Wedding Vendors &rarr;
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
                             <li class="{% if request.resolver_match.url_name == 'blog' %}active{% endif %}"><a 
                                     href="{% url 'blog' %}">Blog</a></li>
                             <li class="{% if request.resolver_match.url_name == 'real_weddings' %}active{% endif %}"><a

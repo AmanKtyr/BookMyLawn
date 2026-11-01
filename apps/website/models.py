@@ -97,6 +97,8 @@ class Review(models.Model):
     reviewer_name = models.CharField(max_length=100)
     rating = models.IntegerField(default=5)
     comment = models.TextField(blank=True)
+    vendor_reply = models.TextField(blank=True, null=True)
+    vendor_replied_at = models.DateTimeField(blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     
     def __str__(self):
@@ -168,6 +170,7 @@ class Inquiry(models.Model):
     customer_phone = models.CharField(max_length=20)
     event_date = models.DateField(null=True, blank=True)
     message = models.TextField()
+    vendor_notes = models.TextField(blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     status = models.CharField(max_length=20, choices=[('new', 'New'), ('contacted', 'Contacted'), ('closed', 'Closed')], default='new')
 

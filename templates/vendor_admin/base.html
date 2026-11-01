@@ -36,6 +36,15 @@
       a:hover { color: var(--theme-color-dark); }
       .navbar-brand.text-center { font-weight: 800; font-size: 1.2rem; color: var(--theme-color) !important; text-decoration: none; }
       .vertnav .nav-link:hover i { color: var(--theme-color); }
+      .navbar-nav .nav-item.active > .nav-link {
+        color: var(--theme-color) !important;
+        font-weight: 700 !important;
+        background: rgba(231, 46, 119, 0.08) !important;
+        border-radius: 8px !important;
+      }
+      .navbar-nav .nav-item.active > .nav-link i {
+        color: var(--theme-color) !important;
+      }
     </style>
   </head>
   <body class="vertical light">
@@ -82,7 +91,7 @@
             </a>
           </div>
           <ul class="navbar-nav flex-fill w-100 mb-2">
-            <li class="nav-item w-100">
+            <li class="nav-item w-100 {% if request.resolver_match.url_name == 'vendor_dashboard' %}active{% endif %}">
               <a class="nav-link" href="{% url 'vendor_dashboard' %}">
                 <i class="fe fe-home fe-16"></i>
                 <span class="ml-3 item-text">Dashboard</span>
@@ -93,19 +102,13 @@
             <span>Management</span>
           </p>
           <ul class="navbar-nav flex-fill w-100 mb-2">
-            <li class="nav-item w-100">
+            <li class="nav-item w-100 {% if request.resolver_match.url_name == 'vendor_inquiries' %}active{% endif %}">
               <a class="nav-link" href="{% url 'vendor_inquiries' %}">
                 <i class="fe fe-inbox fe-16"></i>
                 <span class="ml-3 item-text">Inquiries</span>
                 {% if new_inquiries_count > 0 %}
                 <span class="badge badge-pill badge-primary ml-auto">{{ new_inquiries_count }}</span>
                 {% endif %}
-              </a>
-            </li>
-            <li class="nav-item w-100">
-              <a class="nav-link" href="{% url 'vendor_reviews' %}">
-                <i class="fe fe-message-circle fe-16"></i>
-                <span class="ml-3 item-text">Reviews</span>
               </a>
             </li>
             <li class="nav-item w-100 {% if request.resolver_match.url_name == 'vendor_portfolio' %}active{% endif %}">
@@ -120,19 +123,25 @@
                 <span class="ml-3 item-text">Availability Calendar</span>
               </a>
             </li>
-            <li class="nav-item w-100">
+            <li class="nav-item w-100 {% if request.resolver_match.url_name == 'vendor_profile' %}active{% endif %}">
               <a class="nav-link" href="{% url 'vendor_profile' %}">
                 <i class="fe fe-user fe-16"></i>
                 <span class="ml-3 item-text">Profile Settings</span>
               </a>
             </li>
-            <li class="nav-item w-100">
+            <li class="nav-item w-100 {% if request.resolver_match.url_name == 'vendor_reviews' %}active{% endif %}">
+              <a class="nav-link" href="{% url 'vendor_reviews' %}">
+                <i class="fe fe-message-circle fe-16"></i>
+                <span class="ml-3 item-text">Reviews</span>
+              </a>
+            </li>
+            <li class="nav-item w-100 {% if request.resolver_match.url_name == 'vendor_subscription' %}active{% endif %}">
               <a class="nav-link" href="{% url 'vendor_subscription' %}">
                 <i class="fe fe-award fe-16 text-warning"></i>
                 <span class="ml-3 item-text">Membership Plan</span>
               </a>
             </li>
-            <li class="nav-item w-100">
+            <li class="nav-item w-100 {% if request.resolver_match.url_name == 'vendor_support' %}active{% endif %}">
               <a class="nav-link" href="{% url 'vendor_support' %}">
                 <i class="fe fe-headphones fe-16"></i>
                 <span class="ml-3 item-text">Help & Support</span>
