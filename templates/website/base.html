@@ -738,10 +738,7 @@
                 <li class="{% if request.resolver_match.url_name == 'about_us' %}active{% endif %}">
                     <a href="{% url 'about_us' %}"><i class="fa fa-info-circle"></i> <span>About Us</span></a>
                 </li>
-                <li class="{% if view_type == 'venues' %}active{% endif %}">
-                    <a href="{% url 'vendors' %}?type=venues"><i class="fa fa-map-marker"></i> <span>Venues</span></a>
-                </li>
-                <li class="{% if view_type == 'vendors' %}active{% endif %}">
+                <li class="{% if request.resolver_match.url_name == 'vendors' %}active{% endif %}">
                     <a href="{% url 'vendors' %}"><i class="fa fa-users"></i> <span>Vendors</span></a>
                 </li>
                 <li class="{% if request.resolver_match.url_name == 'blog' %}active{% endif %}">
@@ -815,9 +812,7 @@
                                     href="/">Home</a></li>
                             <li class="{% if request.resolver_match.url_name == 'about_us' %}active{% endif %}"><a
                                     href="{% url 'about_us' %}">About Us</a></li>
-                            <li class="{% if view_type == 'venues' %}active{% endif %}"><a
-                                    href="{% url 'vendors' %}?type=venues">Venues</a></li>
-                            <li class="{% if view_type == 'vendors' %}active{% endif %}"><a
+                            <li class="{% if request.resolver_match.url_name == 'vendors' %}active{% endif %}"><a
                                     href="{% url 'vendors' %}">Vendors</a></li>
                             <li class="{% if request.resolver_match.url_name == 'blog' %}active{% endif %}"><a 
                                     href="{% url 'blog' %}">Blog</a></li>

@@ -231,3 +231,33 @@ class Guest(models.Model):
 
     def __str__(self):
         return f"{self.name} ({self.rsvp_status})"
+
+class SupportTicket(models.Model):
+    STATUS_CHOICES = (
+        ('open', 'Open'),
+        ('in_progress', 'In Progress'),
+        ('resolved', 'Resolved'),
+        ('closed', 'Closed'),
+    )
+    SUBJECT_CHOICES = (
+        ('profile', 'Profile Update Issue'),
+        ('billing', 'Billing / Premium Subscription'),
+        ('leads', 'Not receiving enough leads'),
+        ('technical', 'Technical Error / Bug'),
+        ('other', 'Other'),
+    )
+    vendor = models.ForeignKey(Vendor, on_delete=models.CASCADE, related_name='support_tickets')
+    subject = models.CharField(max_length=50, choices=SUBJECT_CHOICES)
+    message = models.TextField()
+    attachment = models.ImageField(upload_to='support_tickets/', blank=True, null=True)
+    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='open')
+    admin_reply = models.TextField(blank=True, null=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        ordering = ['-created_at']
+
+    def __str__(self):
+        return f"Ticket #{self.id} - {self.vendor.name} ({self.get_subject_display()})"
+

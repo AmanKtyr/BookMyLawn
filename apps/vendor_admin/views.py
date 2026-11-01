@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required, user_passes_test
-from apps.website.models import Vendor, Inquiry, Review, OrderItem
+from apps.website.models import Vendor, Inquiry, Review, OrderItem, SupportTicket
 
 def is_vendor(user):
     return user.is_authenticated and hasattr(user, 'vendor_profile')
@@ -189,6 +189,21 @@ def vendor_subscription(request):
 def vendor_support(request):
     vendor = request.user.vendor_profile
     if request.method == 'POST':
-        messages.success(request, "Your support ticket has been raised. Our team will contact you shortly.")
+        subject = request.POST.get('subject')
+        message = request.POST.get('message')
+        attachment = request.FILES.get('attachment')
+        
+        if subject and message:
+            SupportTicket.objects.create(
+                vendor=vendor,
+                subject=subject,
+                message=message,
+                attachment=attachment
+            )
+            messages.success(request, "Your support ticket has been raised successfully. Our team will review your request and get back to you shortly.")
+        else:
+            messages.error(request, "Please fill in all required fields.")
         return redirect('vendor_support')
-    return render(request, 'vendor_admin/support.html', {'vendor': vendor})
+
+    tickets = vendor.support_tickets.all()
+    return render(request, 'vendor_admin/support.html', {'vendor': vendor, 'tickets': tickets})

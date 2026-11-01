@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Category, Vendor, Review, BlogPost, UserProfile, WeddingChecklist, RealWedding, VendorRequest
+from .models import Category, Vendor, Review, BlogPost, UserProfile, WeddingChecklist, RealWedding, VendorRequest, SupportTicket
 
 @admin.register(Category)
 class CategoryAdmin(admin.ModelAdmin):
@@ -40,3 +40,15 @@ class RealWeddingAdmin(admin.ModelAdmin):
 class VendorRequestAdmin(admin.ModelAdmin):
     list_display = ('business_name', 'owner_name', 'status', 'created_at')
     list_filter = ('status',)
+
+
+@admin.register(SupportTicket)
+class SupportTicketAdmin(admin.ModelAdmin):
+    list_display = ('id', 'vendor', 'subject', 'status', 'has_attachment', 'created_at')
+    list_filter = ('status', 'subject', 'created_at')
+    search_fields = ('vendor__name', 'message', 'admin_reply')
+    readonly_fields = ('created_at', 'updated_at')
+
+    def has_attachment(self, obj):
+        return bool(obj.attachment)
+    has_attachment.boolean = True
